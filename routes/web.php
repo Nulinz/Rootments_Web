@@ -169,6 +169,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('daily-attendance', 'Attd_cnt@daily_attd')->name('attendance.daily');
         Route::get('monthly-attendance', 'Attd_cnt@monthly_attd')->name('attendance.monthly');
         Route::get('individual-attendance', 'Attd_cnt@individual_attd')->name('attendance.individual');
+        Route::post('get-coordinates', 'location_cnt@index')->name('get.coordinates');
 
 
     });

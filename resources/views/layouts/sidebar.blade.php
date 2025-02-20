@@ -333,23 +333,53 @@
             </li>
             <li class="mb-3">
                 @php
-                    // if($attd_data=='attd_in'){
+                 $user_check = Auth::user()->id;
 
-                    //     $attd = 'CheckOut';
-                    //     $route = 'dashboard.checkin';
+                    $attd = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->count();
+
+                    // if($attd==0){
+
 
                     // }else{
-                    //     $attd = 'CheckIn';
-                    //     $route = 'dashboard.checkout';
+                    //     // $attd_ch = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
+                    //     // if(is_null($attd_ch->out_location)){
+                    //     //     $val = 'attd_out';
+                    //     // }else{
+                    //     //     $val = 'attd_mark';
+                    //     // }
+
+
                     // }
+                    // // if($attd_data=='attd_in'){
+
+                    // //     $attd = 'CheckOut';
+                    // //     $route = 'dashboard.checkin';
+
+                    // // }else{
+                    // //     $attd = 'CheckIn';
+                    // //     $route = 'dashboard.checkout';
+                    // // }
                 @endphp
-                <a href="{{ route('dashboard.checkin') }}">
+
+                @if($attd==0)
+
+                <a onclick="getLocation()" >
                     <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
                         <div class="btnname">
-                            <i class="fa-solid fa-right-to-bracket" style="color: green;"></i> &nbsp;{{'CheckIn'}}
+                            <i class="fa-solid fa-right-to-bracket" style="color: green;" ></i> &nbsp;CheckIn
                         </div>
                     </button>
                 </a>
+                @else
+                <a onclick="getLocation()" >
+
+                <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
+                    <div class="btnname">
+                        <i class="fa-solid fa-right-to-bracket" style="color: red;" ></i> &nbsp;CheckOut
+                    </div>
+                </button>
+                </a>
+                @endif
             </li>
 
         </ul>
@@ -634,13 +664,13 @@
                     </a>
                 </li>
                 <li class="mb-3">
-                    <a href="{{ route('logout') }}">
+                    {{-- <a>
                         <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
                             <div class="btnname">
-                                <i class="fa-solid fa-right-to-bracket" style="color: green;"></i> &nbsp;CheckIn
+                                <i class="fa-solid fa-right-to-bracket" style="color: green;" onclick="getLocation()"></i> &nbsp;CheckIn
                             </div>
                         </button>
-                    </a>
+                    </a> --}}
                 </li>
 
             </ul>
@@ -680,3 +710,49 @@
         </div>
     </div>
 </div>
+
+
+{{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMu1ziGPS3UWIMe2-KCxufJK6UBk-f6Xs&callback=initMap" async defer></script> --}}
+
+<script>
+    function getLocation() {
+
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    // Get latitude and longitude
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+
+                      // console.log(latitude,longitude);
+
+                    $.ajax({
+                        url: "{{ route('get.coordinates') }}", // Make sure this matches your route
+                        type: 'POST',
+                        dataType: 'json', // Expecting a JSON response
+                        data: {
+                            latitude: latitude,
+                            longitude: longitude,
+                            _token: '{{ csrf_token() }}' // CSRF token for security
+                        },
+                        success: function(data) {
+                            // Process and display the location data
+                            // if (data.attd_status=='Success') {
+                                //  alert('Status: ' + data.attd_status);
+                                window.location.reload();
+
+
+                        },
+                        // error: function(xhr, status, error) {
+                        //     // Handle errors here
+                        //     console.error('Error:', error);
+                        //     alert('Something went wrong.');
+                        // }
+                    });
+                });
+            }
+        }
+
+    // getLocation();
+
+</script>

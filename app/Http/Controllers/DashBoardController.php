@@ -38,7 +38,7 @@ class DashBoardController extends Controller
                     $join->on('users.id', '=', 'attendance.user_id')
                          ->whereDate('attendance.c_on', Carbon::today());
                 })
-                ->select('users.id as user_id', 'users.name', 'users.profile_image', 'attendance.in_time', 'attendance.user_id', 'attendance.attend_status', 'attendance.out_time','attendance.status')
+                ->select('users.id as user_id', 'users.name', 'users.profile_image', 'attendance.in_time', 'attendance.user_id', 'attendance.attend_status', 'attendance.out_time','attendance.status','attendance.in_location')
                 ->where('users.store_id', $store->id)
                 ->where('users.role_id', '!=', $storeManagerRole)
                 ->get();
@@ -136,12 +136,12 @@ class DashBoardController extends Controller
                 $subcategoryNames = $subcategoryTask->pluck('subcategory')->toArray();
                 $subcategorytaskCounts = $subcategoryTask->pluck('subtotal_tasks')->toArray();
 
-                $attd_data = $this->attd_row();
+                // $attd_data = $this->attd_row();
 
                 // dd($attd_data);
 
 
-         return view('generaldashboard.overview',['overview'=>$overview,'pendingLeaves'=>$pendingLeaves,'tolatask'=>$tolatask,'staffNames'=>$staffNames,'taskCounts'=>$taskCounts,'categoryNames'=>$categoryNames,'categorytaskCounts'=>$categorytaskCounts,'subcategoryNames'=>$subcategoryNames,'subcategorytaskCounts'=>$subcategorytaskCounts,'attd_data'=>$attd_data]);
+         return view('generaldashboard.overview',['overview'=>$overview,'pendingLeaves'=>$pendingLeaves,'tolatask'=>$tolatask,'staffNames'=>$staffNames,'taskCounts'=>$taskCounts,'categoryNames'=>$categoryNames,'categorytaskCounts'=>$categorytaskCounts,'subcategoryNames'=>$subcategoryNames,'subcategorytaskCounts'=>$subcategorytaskCounts]);
     }
 
     public function attendanceApprove(Request $request)

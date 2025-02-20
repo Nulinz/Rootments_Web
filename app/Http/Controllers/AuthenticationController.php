@@ -25,10 +25,10 @@ class AuthenticationController extends Controller
 
 
         if ($user) {
-            $alreadyLoggedIn = DB::table('attendance')
-                ->where('user_id', $user->id)
-                ->whereDate('c_on', now()->format('Y-m-d'))
-                ->exists();
+            // $alreadyLoggedIn = DB::table('attendance')
+            //     ->where('user_id', $user->id)
+            //     ->whereDate('c_on', now()->format('Y-m-d'))
+            //     ->exists();
 
             if (Auth::attempt(['emp_code' => $emp_code, 'password' => $password])) {
                 // if (!$alreadyLoggedIn) {

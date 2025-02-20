@@ -24,7 +24,7 @@
                                 <h6 class="m-0">To Do</h6>
                             </div>
                             <div class="todono totalno" id="todo-column">
-                                <h6 class="m-0 text-end"><span id="todo-count">{{ $tasks_todo_count ?? 0 }}</span></h6>
+                                <h6 class="m-0 text-end"><span id="todo-count">{{ $tasks_todo_count}}</span></h6>
                             </div>
                         </div>
 
@@ -182,7 +182,7 @@
                                 <h6 class="m-0">On Hold</h6>
                             </div>
                             <div class="onholdno totalno" id="onhold-column">
-                                <h6 class="m-0 text-end"><span id="onhold-count">{{ $tasks_onhold_count ?? 0 }}</span></h6>
+                                <h6 class="m-0 text-end"><span id="onhold-count">{{ $tasks_onhold_count}}</span></h6>
                             </div>
                         </div>
 
