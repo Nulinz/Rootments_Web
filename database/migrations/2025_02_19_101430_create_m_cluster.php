@@ -1,0 +1,30 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('m_cluster', function (Blueprint $table) {
+            $table->id();
+            $table->integer('cl_name');
+            $table->string('alter');
+            $table->string('location');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('m_cluster');
+    }
+};

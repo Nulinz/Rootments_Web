@@ -1,0 +1,53 @@
+.modal-content {
+    background-color: var(--secondary) !important;
+}
+
+.modal h4 {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.modal form label {
+    color: var(--label);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.modal form input,
+.modal form textarea,
+.modal form select {
+    border: 1px solid var(--input-border);
+    background-color: var(--secondary);
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.modal form select option {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.modal .table td,
+.modal .table th {
+    padding: 5px 5px;
+    background-color: transparent !important;
+    font-size: 13px;
+}
+
+.modal .table th {
+    color: var(--label);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* jQuery Toastr */
+#toast-container>div {
+    opacity: 1 !important;
+}
+
+.toast-success {
+    background-color: var(--main) !important;
+    color: var(--secondary) !important;
+}

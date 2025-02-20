@@ -1,0 +1,7 @@
+[12-Feb-2025 16:51:35 UTC] PHP Fatal error:  Trait "App\Http\Controllers\Api\Illuminate\Http\Request" not found in /home2/nuscmy3y/rootments.in/app/Http/Controllers/Api/TaskController.php on line 21
+[12-Feb-2025 16:51:47 UTC] PHP Fatal error:  Trait "App\Http\Controllers\Api\Illuminate\Http\Request" not found in /home2/nuscmy3y/rootments.in/app/Http/Controllers/Api/TaskController.php on line 21
+[13-Feb-2025 11:42:04 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\DashBoardController::index() in /home2/nuscmy3y/rootments.in/app/Http/Controllers/DashBoardController.php on line 22
+[13-Feb-2025 11:42:04 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\DashBoardController::index() in /home2/nuscmy3y/rootments.in/app/Http/Controllers/DashBoardController.php on line 22
+[13-Feb-2025 11:42:08 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\DashBoardController::index() in /home2/nuscmy3y/rootments.in/app/Http/Controllers/DashBoardController.php on line 22
+[13-Feb-2025 11:42:08 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\DashBoardController::index() in /home2/nuscmy3y/rootments.in/app/Http/Controllers/DashBoardController.php on line 22
+[13-Feb-2025 11:42:23 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\DashBoardController::index() in /home2/nuscmy3y/rootments.in/app/Http/Controllers/DashBoardController.php on line 22

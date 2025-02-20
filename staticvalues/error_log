@@ -1,0 +1,302 @@
+[01-Feb-2025 06:25:49 UTC] PHP Warning:  include(function.php): Failed to open stream: No such file or directory in /home2/nuscmy3y/rootments.in/staticvalues/todolist.php on line 5
+[01-Feb-2025 06:25:49 UTC] PHP Warning:  include(): Failed opening 'function.php' for inclusion (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home2/nuscmy3y/rootments.in/staticvalues/todolist.php on line 5
+[01-Feb-2025 06:25:49 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function retrive_cat() in /home2/nuscmy3y/rootments.in/staticvalues/todolist.php:13
+Stack trace:
+#0 {main}
+  thrown in /home2/nuscmy3y/rootments.in/staticvalues/todolist.php on line 13
+[01-Feb-2025 06:26:39 UTC] PHP Warning:  Undefined array key "subcategory" in /home2/nuscmy3y/rootments.in/staticvalues/todolist.php on line 14
+[01-Feb-2025 06:27:15 UTC] PHP Warning:  Undefined array key "subcategory" in /home2/nuscmy3y/rootments.in/staticvalues/todolist.php on line 14
+[01-Feb-2025 09:43:29 UTC] PHP Warning:  Undefined variable $status in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 10
+[01-Feb-2025 09:43:29 UTC] PHP Warning:  Undefined variable $id in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 10
+[01-Feb-2025 09:44:31 UTC] PHP Warning:  Undefined variable $status in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 10
+[01-Feb-2025 09:44:31 UTC] PHP Warning:  Undefined variable $id in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 10
+[01-Feb-2025 09:47:34 UTC] PHP Warning:  Undefined variable $status in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 10
+[01-Feb-2025 09:47:34 UTC] PHP Warning:  Undefined variable $id in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 10
+[01-Feb-2025 09:48:54 UTC] PHP Warning:  Undefined variable $status in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 10
+[01-Feb-2025 09:48:54 UTC] PHP Warning:  Undefined variable $id in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 10
+[01-Feb-2025 15:24:37 Asia/Kolkata] PHP Warning:  Undefined variable $status in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 11
+[01-Feb-2025 15:24:37 Asia/Kolkata] PHP Warning:  Undefined variable $id in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 11
+[01-Feb-2025 15:25:48 Asia/Kolkata] PHP Warning:  Undefined variable $status in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 11
+[01-Feb-2025 15:25:48 Asia/Kolkata] PHP Warning:  Undefined variable $id in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 11
+[01-Feb-2025 15:27:59 Asia/Kolkata] PHP Warning:  Undefined variable $status in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 11
+[01-Feb-2025 15:27:59 Asia/Kolkata] PHP Warning:  Undefined variable $id in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 11
+[01-Feb-2025 15:30:51 Asia/Kolkata] PHP Warning:  Undefined variable $status in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 11
+[01-Feb-2025 15:30:51 Asia/Kolkata] PHP Warning:  Undefined variable $id in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 11
+[01-Feb-2025 15:33:19 Asia/Kolkata] PHP Warning:  Undefined variable $status in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 11
+[01-Feb-2025 15:33:19 Asia/Kolkata] PHP Warning:  Undefined variable $id in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 11
+[01-Feb-2025 15:33:32 Asia/Kolkata] PHP Warning:  Undefined variable $status in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 11
+[01-Feb-2025 15:33:32 Asia/Kolkata] PHP Warning:  Undefined variable $id in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 11
+[01-Feb-2025 15:36:56 Asia/Kolkata] PHP Warning:  Undefined array key "id" in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 8
+[01-Feb-2025 15:36:56 Asia/Kolkata] PHP Warning:  Undefined array key "status" in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 9
+[01-Feb-2025 15:38:08 Asia/Kolkata] PHP Warning:  Undefined array key "id" in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 7
+[01-Feb-2025 15:38:08 Asia/Kolkata] PHP Warning:  Undefined array key "status" in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 8
+[01-Feb-2025 12:09:28 UTC] PHP Warning:  Undefined variable $data in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 2
+[01-Feb-2025 12:10:54 UTC] PHP Warning:  Undefined variable $data in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 2
+[01-Feb-2025 12:11:25 UTC] PHP Warning:  Undefined variable $data in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 2
+[01-Feb-2025 17:44:05 Asia/Kolkata] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 8
+[01-Feb-2025 17:44:05 Asia/Kolkata] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 9
+[01-Feb-2025 17:44:05 Asia/Kolkata] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 10
+[01-Feb-2025 17:44:25 Asia/Kolkata] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 8
+[01-Feb-2025 17:44:25 Asia/Kolkata] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 9
+[01-Feb-2025 17:44:25 Asia/Kolkata] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 10
+[01-Feb-2025 17:44:58 Asia/Kolkata] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 8
+[01-Feb-2025 17:44:58 Asia/Kolkata] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 9
+[01-Feb-2025 17:44:58 Asia/Kolkata] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 10
+[01-Feb-2025 17:45:36 Asia/Kolkata] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 8
+[01-Feb-2025 17:45:36 Asia/Kolkata] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 9
+[01-Feb-2025 17:45:36 Asia/Kolkata] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 10
+[01-Feb-2025 12:17:27 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[01-Feb-2025 12:18:24 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[01-Feb-2025 12:18:41 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[01-Feb-2025 12:19:01 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[01-Feb-2025 12:20:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[01-Feb-2025 12:24:34 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[01-Feb-2025 12:31:43 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[01-Feb-2025 12:32:55 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[01-Feb-2025 12:33:10 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[01-Feb-2025 12:43:00 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[01-Feb-2025 12:43:35 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[01-Feb-2025 12:44:24 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[01-Feb-2025 12:45:20 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[01-Feb-2025 12:46:02 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[02-Feb-2025 10:57:26 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[02-Feb-2025 12:46:59 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[02-Feb-2025 13:31:37 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[03-Feb-2025 04:16:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[03-Feb-2025 04:33:04 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[03-Feb-2025 05:53:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[03-Feb-2025 06:35:48 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[03-Feb-2025 11:02:37 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[03-Feb-2025 12:28:24 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[03-Feb-2025 13:16:34 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[03-Feb-2025 14:18:27 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 03:50:09 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 04:04:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 04:07:21 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 04:09:19 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 04:14:53 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 04:17:02 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 04:17:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 04:18:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 04:25:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 04:39:51 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 05:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 05:24:03 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 05:47:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 05:51:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 05:52:09 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 05:53:16 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 06:20:50 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 07:04:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 07:39:18 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 09:56:59 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 15:33:55 Asia/Kolkata] PHP Warning:  Undefined array key "id" in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 8
+[04-Feb-2025 15:33:55 Asia/Kolkata] PHP Warning:  Undefined array key "status" in /home2/nuscmy3y/rootments.in/staticvalues/task_update.php on line 9
+[04-Feb-2025 10:08:10 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 16:08:56 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 16:24:11 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 16:42:28 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 16:43:49 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[04-Feb-2025 17:01:20 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[05-Feb-2025 05:47:07 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[05-Feb-2025 06:04:22 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[05-Feb-2025 18:42:13 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 05:29:56 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 06:20:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 07:13:25 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 07:47:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 07:47:51 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 08:54:29 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 08:55:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 08:56:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 09:03:10 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 09:04:19 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 09:07:37 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 09:10:24 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 09:10:54 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 09:21:12 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 09:21:43 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 09:21:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 09:23:23 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 09:38:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 09:55:51 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 10:16:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 10:25:14 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 10:53:24 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 11:28:35 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 11:28:41 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 12:38:23 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 13:28:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 15:03:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[06-Feb-2025 17:25:26 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 04:40:59 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 05:00:51 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 05:23:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 05:30:56 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 05:37:55 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 07:30:11 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 07:46:37 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 09:14:18 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 09:21:13 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 09:28:23 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 09:35:57 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 09:59:04 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 10:04:36 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 11:42:53 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 11:45:43 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 11:52:25 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 11:55:42 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[07-Feb-2025 17:34:59 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 01:55:35 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 03:40:51 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 04:05:36 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 04:13:50 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 04:17:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 04:32:42 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 04:35:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 04:38:06 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 06:17:07 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 06:20:24 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 06:23:55 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 07:09:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 09:08:49 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 10:01:03 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 10:04:10 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[08-Feb-2025 12:36:36 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[09-Feb-2025 04:36:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[09-Feb-2025 09:05:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[09-Feb-2025 12:49:23 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[09-Feb-2025 23:08:03 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[10-Feb-2025 05:17:22 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[10-Feb-2025 07:16:22 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[10-Feb-2025 07:48:28 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[10-Feb-2025 07:57:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[10-Feb-2025 11:34:16 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[10-Feb-2025 11:45:49 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[10-Feb-2025 12:01:24 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[10-Feb-2025 14:22:02 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[10-Feb-2025 15:22:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 02:41:23 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 03:40:14 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 03:42:41 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 04:21:37 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 04:57:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 05:23:58 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 05:25:38 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 05:49:00 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 05:58:01 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 07:42:53 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 08:41:54 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 08:48:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 08:53:58 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 09:31:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 09:47:13 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 09:49:37 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 09:52:58 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 09:55:49 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 10:01:02 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 10:08:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 10:09:04 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 10:09:49 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 10:16:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 10:24:09 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 10:34:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 10:41:51 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 10:42:11 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 10:49:05 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 10:53:53 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 11:21:43 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 11:25:57 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 11:26:41 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 11:28:13 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 11:31:10 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 11:31:24 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 11:33:18 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 11:40:25 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 11:50:28 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 12:31:37 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 13:52:05 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[11-Feb-2025 14:45:05 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 03:37:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 03:37:43 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 03:38:27 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 04:51:16 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 04:54:28 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 05:14:38 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 05:20:09 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 06:31:55 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 06:48:06 UTC] PHP Warning:  Array to string conversion in /home2/nuscmy3y/rootments.in/staticvalues/googleReviewsApi.php on line 27
+[12-Feb-2025 06:48:28 UTC] PHP Warning:  Array to string conversion in /home2/nuscmy3y/rootments.in/staticvalues/googleReviewsApi.php on line 27
+[12-Feb-2025 06:50:05 UTC] PHP Warning:  Array to string conversion in /home2/nuscmy3y/rootments.in/staticvalues/googleReviewsApi.php on line 27
+[12-Feb-2025 07:31:06 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 07:56:35 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 08:28:58 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 09:27:18 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 09:30:28 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 09:56:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 10:19:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 11:24:29 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 11:31:05 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 12:08:42 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 12:28:25 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 12:39:48 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 12:41:28 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 14:57:52 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 15:17:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 16:23:29 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[12-Feb-2025 16:50:26 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 03:33:38 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 03:38:03 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 03:38:04 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 03:58:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 04:28:41 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 05:49:07 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 05:52:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 05:54:08 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 05:56:44 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 06:52:03 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 06:52:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 06:52:27 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 06:53:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 10:58:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 11:00:57 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 11:22:50 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 11:37:09 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 11:44:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 12:01:54 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 12:26:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 12:30:20 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 12:32:22 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 12:36:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 12:49:35 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 12:54:26 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 12:56:42 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 12:58:19 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 13:39:38 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 13:40:14 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[13-Feb-2025 15:46:27 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[14-Feb-2025 03:46:13 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[14-Feb-2025 03:47:57 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[14-Feb-2025 05:41:49 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[14-Feb-2025 06:42:05 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[14-Feb-2025 06:52:28 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[14-Feb-2025 07:36:08 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[14-Feb-2025 07:37:01 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[14-Feb-2025 07:38:27 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[14-Feb-2025 07:39:49 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/staticvalues/update_popup.php on line 4
+[15-Feb-2025 04:12:27 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 04:12:56 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 04:25:14 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 04:46:19 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 04:48:10 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 04:49:16 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 04:54:24 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 05:50:27 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 05:53:57 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 05:56:36 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 06:34:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 07:08:55 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 08:03:51 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 10:03:22 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 10:06:27 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
+[15-Feb-2025 12:44:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home2/nuscmy3y/rootments.in/beta_test/staticvalues/update_popup.php on line 4
