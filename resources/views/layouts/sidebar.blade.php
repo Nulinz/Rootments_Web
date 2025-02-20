@@ -332,10 +332,21 @@
                 </a>
             </li>
             <li class="mb-3">
-                <a href="{{ route('logout') }}">
+                @php
+                    if($attd_data=='attd_in'){
+
+                        $attd = 'CheckOut';
+                        $route = 'dashboard.checkin';
+
+                    }else{
+                        $attd = 'CheckIn';
+                        $route = 'dashboard.checkout';
+                    }
+                @endphp
+                <a href="{{ route('dashboard.checkin') }}">
                     <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
                         <div class="btnname">
-                            <i class="fa-solid fa-right-to-bracket" style="color: green;"></i> &nbsp;CheckIn
+                            <i class="fa-solid fa-right-to-bracket" style="color: green;"></i> &nbsp;{{$attd}}
                         </div>
                     </button>
                 </a>

@@ -136,8 +136,12 @@ class DashBoardController extends Controller
                 $subcategoryNames = $subcategoryTask->pluck('subcategory')->toArray();
                 $subcategorytaskCounts = $subcategoryTask->pluck('subtotal_tasks')->toArray();
 
+                $attd_data = $this->attd_row();
 
-        return view('generaldashboard.overview',['overview'=>$overview,'pendingLeaves'=>$pendingLeaves,'tolatask'=>$tolatask,'staffNames'=>$staffNames,'taskCounts'=>$taskCounts,'categoryNames'=>$categoryNames,'categorytaskCounts'=>$categorytaskCounts,'subcategoryNames'=>$subcategoryNames,'subcategorytaskCounts'=>$subcategorytaskCounts]);
+                // dd($attd_data);
+
+
+         return view('generaldashboard.overview',['overview'=>$overview,'pendingLeaves'=>$pendingLeaves,'tolatask'=>$tolatask,'staffNames'=>$staffNames,'taskCounts'=>$taskCounts,'categoryNames'=>$categoryNames,'categorytaskCounts'=>$categorytaskCounts,'subcategoryNames'=>$subcategoryNames,'subcategorytaskCounts'=>$subcategorytaskCounts,'attd_data'=>$attd_data]);
     }
 
     public function attendanceApprove(Request $request)
@@ -475,6 +479,32 @@ class DashBoardController extends Controller
     return response()->json(['success' => false, 'message' => 'Task not found']);
     }
 
+
+    public function attd_row()
+    {
+
+        $user_check = Auth::user()->id;
+
+        $attd = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->count();
+
+        if($attd==0){
+            $val = 'attd_in';
+        }else{
+             $attd_ch = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
+             if(is_null($attd_ch->out_location)){
+                  $val = 'attd_out';
+             }else{
+                  $val = 'attd_mark';
+             }
+
+        }
+
+        // dd($val);
+
+        return with([
+            'attd_data' => [$attd_ch->in_time ?? null,$attd_ch->out_time ?? null,$val],
+        ]);
+    }
 
 
     /**

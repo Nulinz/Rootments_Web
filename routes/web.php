@@ -32,6 +32,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         //Store Dashboard
         Route::get('dashboard', 'DashBoardController@index')->name('dashboard');
+        Route::get('dashboard/checkin', 'attd_cnt@attd_row')->name('dashboard.checkin');
+        Route::get('dashboard/checkin', 'attd_cnt@attd_row')->name('dashboard.checkin');
         Route::get('store-dashboard', 'DashBoardController@generalstoreindex')->name('store.dashboard');
         Route::get('mydash-dashboard', 'DashBoardController@mydashboardindex')->name('mydash.dashboard');
         Route::post('update_task','DashBoardController@updateTaskStatus')->name('update.task');
