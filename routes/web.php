@@ -72,7 +72,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('store-details/{id}', 'StoreController@detailslist')->name('store.details');
         Route::get('store-viewemp/{id}', 'StoreController@empview')->name('store.viewemp');
 
-
         //Employee
         Route::get('employee-list', 'EmployeeController@index')->name('employee.index');
         Route::get('employee-add', 'EmployeeController@create')->name('employee.add');
@@ -151,6 +150,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('cluster-profile/{id}', 'ClusterController@show')->name('cluster.profile');
         Route::get('cluster-edit', 'ClusterController@edit')->name('cluster.edit');
         Route::post('cluster-submit', 'ClusterController@create')->name('cluster.submit');
+        Route::post('cluster-overview', 'ClusterController@cluster_overview')->name('cluster.overview');
+        Route::post('cluster-strength', 'ClusterController@cluster_strength')->name('cluster.strength');
 
         //ajax route
         Route::post('/get_cluster_per', 'ClusterController@cluster_det')->name('get_cluster_per');
