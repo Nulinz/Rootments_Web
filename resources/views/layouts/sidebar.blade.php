@@ -119,7 +119,7 @@
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse10"
                     aria-expanded="false">
                     <div class="btnname">
-                        <i class="fa-solid fa-user"></i> &nbsp;Cluster
+                        <i class="fas fa-users-gear"></i> &nbsp;Cluster
                     </div>
                     <div class="righticon d-flex mx-auto">
                         <i class="fa-solid fa-angle-down toggle-icon"></i>

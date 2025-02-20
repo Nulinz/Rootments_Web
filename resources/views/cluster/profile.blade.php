@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <link rel="stylesheet" href="{{ asset('assets/css/profile.css') }}">
 
     <div class="sidebodydiv px-5 mb-4">
@@ -72,11 +73,11 @@
             <!-- Right Content -->
             <div class="contentright">
                 <div class="proftabs">
-                    <ul class="nav nav-tabs d-flex justify-content-start align-items-center gap-md-3 gap-xl-3"
-                        id="myTab" role="tablist">
+                    <ul class="nav nav-tabs d-flex justify-content-start align-items-center gap-md-3 gap-xl-3" id="myTab"
+                        role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="profiletabs active" id="store-tab" role="tab" data-bs-toggle="tab"
-                                type="button" data-bs-target="#store" aria-controls="store" aria-selected="true">Store
+                            <button class="profiletabs active" id="store-tab" role="tab" data-bs-toggle="tab" type="button"
+                                data-bs-target="#store" aria-controls="store" aria-selected="true">Store
                                 List</button>
                         </li>
                     </ul>
@@ -99,13 +100,11 @@
 
                                     <div class="select1 col-sm-12 col-md-4 mx-auto">
                                         <div class="d-flex gap-3">
-                                            <a href="" id="pdfLink"><img
-                                                    src="{{ asset('assets//images/printer.png') }}" id="print"
-                                                    alt="" height="35px" data-bs-toggle="tooltip"
+                                            <a href="" id="pdfLink"><img src="{{ asset('assets//images/printer.png') }}"
+                                                    id="print" alt="" height="35px" data-bs-toggle="tooltip"
                                                     data-bs-title="Print"></a>
-                                            <a href="" id="excelLink"><img
-                                                    src="{{ asset('assets/images/excel.png') }}" id="excel"
-                                                    alt="" height="35px" data-bs-toggle="tooltip"
+                                            <a href="" id="excelLink"><img src="{{ asset('assets/images/excel.png') }}"
+                                                    id="excel" alt="" height="35px" data-bs-toggle="tooltip"
                                                     data-bs-title="Excel"></a>
                                         </div>
                                     </div>
@@ -145,7 +144,7 @@
                         </div>
 
                         <script>
-                            $(document).ready(function() {
+                            $(document).ready(function () {
                                 function initTable(tableId, dropdownId, filterInputId) {
                                     var table = $(tableId).DataTable({
                                         "paging": true,
@@ -158,13 +157,13 @@
                                         "pageLength": 30,
                                         "dom": '<"top"f>rt<"bottom"ilp><"clear">',
                                     });
-                                    $(tableId + ' thead th').each(function(index) {
+                                    $(tableId + ' thead th').each(function (index) {
                                         var headerText = $(this).text();
                                         if (headerText != "" && headerText.toLowerCase() != "action") {
                                             $(dropdownId).append('<option value="' + index + '">' + headerText + '</option>');
                                         }
                                     });
-                                    $(filterInputId).on('keyup', function() {
+                                    $(filterInputId).on('keyup', function () {
                                         var selectedColumn = $(dropdownId).val();
                                         if (selectedColumn !== 'All') {
                                             table.column(selectedColumn).search($(this).val()).draw();
@@ -172,11 +171,11 @@
                                             table.search($(this).val()).draw();
                                         }
                                     });
-                                    $(dropdownId).on('change', function() {
+                                    $(dropdownId).on('change', function () {
                                         $(filterInputId).val('');
                                         table.search('').columns().search('').draw();
                                     });
-                                    $(filterInputId).on('keyup', function() {
+                                    $(filterInputId).on('keyup', function () {
                                         table.search($(this).val()).draw();
                                     });
                                 }

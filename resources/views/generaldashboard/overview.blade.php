@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
     <link rel="stylesheet" href="{{ asset('assets/css/dashboard_main.css') }}">
 
     <div class="sidebodydiv px-5 py-3">

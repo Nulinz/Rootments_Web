@@ -26,6 +26,16 @@ class ClusterController extends Controller
           return view('cluster.list',['cluster'=>$cluster]);
     }
 
+    public function cluster_overview(Request $req) 
+    {
+        return view ('cluster.overview');
+    }
+
+    public function cluster_strength(Request $req) 
+    {
+        return view ('cluster.strength');
+    }
+
     public function create(Request $req)
     {
            $create =DB::table('m_cluster')->insertGetId([
