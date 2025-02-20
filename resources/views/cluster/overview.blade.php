@@ -2,8 +2,6 @@
 
 @section('content')
 
-    <link rel="stylesheet" href="{{ asset('assets/css/dashboard_main.css') }}">
-
     <div class="sidebodydiv px-5 py-3">
         <div class="sidebodyhead">
             <h4 class="m-0">Dashboard - Cluster Manager</h4>
@@ -30,60 +28,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($cl_data as $cl)
                                     <tr>
-                                        <td>STR01</td>
-                                        <td>Rootments</td>
-                                        <td>Salem</td>
-                                        <td><span class="active">Active</span></td>
+                                        <td>{{$cl->store_code}}</td>
+                                        <td>{{$cl->store_name}}</td>
+                                        <td>{{$cl->store_geo}}</td>
+                                        <td>{{$cl->st_name ?? 'no name'}}</td>
                                     </tr>
-                                    <tr>
-                                        <td>STR02</td>
-                                        <td>Rootments</td>
-                                        <td>Kerala</td>
-                                        <td><span class="active">Active</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR03</td>
-                                        <td>Rootments</td>
-                                        <td>Coimbatore</td>
-                                        <td><span class="active">Active</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR04</td>
-                                        <td>Rootments</td>
-                                        <td>Palakkad</td>
-                                        <td><span class="inactive">Inactive</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR05</td>
-                                        <td>Rootments</td>
-                                        <td>Wayanad</td>
-                                        <td><span class="active">Active</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR06</td>
-                                        <td>Rootments</td>
-                                        <td>Varkhala</td>
-                                        <td><span class="inactive">Inactive</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR07</td>
-                                        <td>Rootments</td>
-                                        <td>Kochin</td>
-                                        <td><span class="inactive">Inactive</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR08</td>
-                                        <td>Rootments</td>
-                                        <td>Trivandram</td>
-                                        <td><span class="active">Active</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR09</td>
-                                        <td>Rootments</td>
-                                        <td>Kottayam</td>
-                                        <td><span class="inactive">Inactive</span></td>
-                                    </tr>
+                                   @endforeach
+
                                 </tbody>
                             </table>
                         </div>

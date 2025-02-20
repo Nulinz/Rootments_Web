@@ -10,7 +10,7 @@
         </div>
 
         <!-- Cluster Tabs -->
-        <?php include('./cluster_tabs.php'); ?>
+        @include('cluster.tabs')
 
         <div class="container px-0 mt-3 listtable">
             <div class="table-wrapper">
@@ -20,85 +20,27 @@
                             <th>Stores</th>
                             <th class="thdark">Store Manager</th>
                             <th class="thdark">Asst. Store Manager</th>
-                            <th class="thdark">Sales Executive</th>
-                            <th class="thdark">Quality Check</th>
+                            <th class="thdark">Senior Sales Associate</th>
+                            <th class="thdark">Fashion Stylist</th>
+                            <th class="thdark">Fashion Consultant</th>
+                            <th class="thdark">Quality Control</th>
+                            <th class="thdark">Cleaning Staff</th>
                             <th class="thdark">Tailor</th>
-                            <th class="thdark">Staff</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($store_list as $store)
+
+
                         <tr>
-                            <td class="tddark">Store 1</td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>5 / <span class="green">5</span></td>
-                            <td>3 / <span class="green">3</span></td>
-                            <td>3 / <span class="red">5</span></td>
-                            <td>9 / <span class="red">10</span></td>
+                            <td> <span class="tddark">{{$store['sl']}}</span></td>
+                            @foreach ($store['roles'] as $st)
+                            <td>{{$st['req_count']}} / <span class="green">{{$st['emp_count']}}</span></td>
+                          @endforeach
                         </tr>
-                        <tr>
-                            <td class="tddark">Store 2</td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>5 / <span class="green">5</span></td>
-                            <td>3 / <span class="green">3</span></td>
-                            <td>3 / <span class="red">5</span></td>
-                            <td>9 / <span class="red">10</span></td>
-                        </tr>
-                        <tr>
-                            <td class="tddark">Store 3</td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>5 / <span class="green">5</span></td>
-                            <td>3 / <span class="green">3</span></td>
-                            <td>3 / <span class="red">5</span></td>
-                            <td>9 / <span class="red">10</span></td>
-                        </tr>
-                        <tr>
-                            <td class="tddark">Store 4</td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>5 / <span class="green">5</span></td>
-                            <td>3 / <span class="green">3</span></td>
-                            <td>3 / <span class="red">5</span></td>
-                            <td>9 / <span class="red">10</span></td>
-                        </tr>
-                        <tr>
-                            <td class="tddark">Store 5</td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>5 / <span class="green">5</span></td>
-                            <td>3 / <span class="green">3</span></td>
-                            <td>3 / <span class="red">5</span></td>
-                            <td>9 / <span class="red">10</span></td>
-                        </tr>
-                        <tr>
-                            <td class="tddark">Store 6</td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>5 / <span class="green">5</span></td>
-                            <td>3 / <span class="green">3</span></td>
-                            <td>3 / <span class="red">5</span></td>
-                            <td>9 / <span class="red">10</span></td>
-                        </tr>
-                        <tr>
-                            <td class="tddark">Store 7</td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>5 / <span class="green">5</span></td>
-                            <td>3 / <span class="green">3</span></td>
-                            <td>3 / <span class="red">5</span></td>
-                            <td>9 / <span class="red">10</span></td>
-                        </tr>
-                        <tr>
-                            <td class="tddark">Store 8</td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>1 / <span class="green">1</span></td>
-                            <td>5 / <span class="green">5</span></td>
-                            <td>3 / <span class="green">3</span></td>
-                            <td>3 / <span class="red">5</span></td>
-                            <td>9 / <span class="red">10</span></td>
-                        </tr>
+
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>

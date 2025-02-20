@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Task;
 use App\Models\{User,Role,};
 use Carbon\Carbon;
+use App\Http\Controllers\DashBoardController;
 
 class ClusterController extends Controller
 {
@@ -26,14 +27,225 @@ class ClusterController extends Controller
           return view('cluster.list',['cluster'=>$cluster]);
     }
 
-    public function cluster_overview(Request $req) 
+    public function cluster_overview()
     {
-        return view ('cluster.overview');
+
+       $user =  Auth::user()->id;
+       $cluster = DB::table('m_cluster as mc')
+        ->leftJoin('users as user', 'user.id', '=', 'mc.cl_name') // Joining users table
+        ->where('mc.cl_name', $user) // Filter by the cluster id
+        ->select('user.name', 'user.contact_no','user.email','mc.alter','user.address','user.pincode','mc.location','user.profile_image','mc.id') // Select the required fields from users table
+        ->first(); // Get the first matching result
+
+
+        $cluster_list= DB::table('cluster_store as cs')
+        ->leftJoin('stores as store', 'store.id', '=', 'cs.store_id') // Joining users table
+        ->where('cs.cluster_id',$cluster->id)
+        ->get();
+
+        foreach($cluster_list as $cs){
+
+        $st_man = DB::table('users')->where('role_id',12)->where('store_id',$cs->store_id)->select('users.name')->first();
+
+        $cs->st_name = $st_man ? $st_man->name : null;
+
+        }
+
+        //   return($cluster_list);
+           return view('cluster.overview',['cl_data'=>$cluster_list]);
     }
 
-    public function cluster_strength(Request $req) 
+    public function cluster_mydashboard()
     {
-        return view ('cluster.strength');
+        $authId = Auth::user()->id;
+
+        $user = Auth::user();
+
+         $role = Role::find($user->role_id);
+
+         $store = DB::table('stores')->where('id', $user->store_id)->first();
+
+         $employeesQuery = DB::table('users')
+             ->select('id', 'name')
+             ->whereNotNull('role_id');
+
+         if (!in_array($user->dept, ['Admin', 'HR']) && $store) {
+             $employeesQuery->where('store_id', $store->id);
+         }
+
+         $employeesQuery->where('id', '!=', $user->id);
+
+         $employees = $employeesQuery->get();
+
+
+        $tasks_todo = DB::table('tasks')
+             ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
+             ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
+             ->leftJoin('roles as assigned_role', 'tasks.assign_to', '=', 'assigned_role.id')
+             ->leftJoin('roles as assigned_by_role', 'tasks.assign_by', '=', 'assigned_by_role.id')
+             ->leftJoin('users as assigned_by_user', 'tasks.assign_by', '=', 'assigned_by_user.id')
+             ->where('tasks.assign_to', $authId)
+             ->where('tasks.task_status', 'To Do')
+             ->select(
+                 'tasks.*',
+                 'categories.category',
+                 'sub_categories.subcategory',
+                 'assigned_role.role as assigned_role',
+                 'assigned_by_role.role as task_assigned',
+                 'assigned_by_user.name as assigned_by'
+             )
+             ->orderBy('tasks.id', 'DESC')
+             ->get();
+
+             $tasks_todo_count = DB::table('tasks')
+             ->where('assign_to', $authId)
+             ->where('task_status', 'To Do')
+             ->count();
+
+             $tasks_inprogress = DB::table('tasks')
+             ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
+             ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
+             ->leftJoin('roles as assigned_role', 'tasks.assign_to', '=', 'assigned_role.id')
+             ->leftJoin('roles as assigned_by_role', 'tasks.assign_by', '=', 'assigned_by_role.id')
+             ->leftJoin('users as assigned_by_user', 'tasks.assign_by', '=', 'assigned_by_user.id')
+             ->where('tasks.assign_to', $authId)
+             ->where('tasks.task_status', 'In Progress')
+             ->select(
+                 'tasks.*',
+                 'categories.category',
+                 'sub_categories.subcategory',
+                 'assigned_role.role as assigned_role',
+                 'assigned_by_role.role as task_assigned',
+                 'assigned_by_user.name as assigned_by'
+             )
+             ->orderBy('tasks.id', 'DESC')
+             ->get();
+
+             $tasks_inprogress_count = DB::table('tasks')
+             ->where('assign_to', $authId)
+             ->where('task_status', 'In Progress')
+             ->count();
+
+             $tasks_onhold = DB::table('tasks')
+             ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
+             ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
+             ->leftJoin('roles as assigned_role', 'tasks.assign_to', '=', 'assigned_role.id')
+             ->leftJoin('roles as assigned_by_role', 'tasks.assign_by', '=', 'assigned_by_role.id')
+             ->leftJoin('users as assigned_by_user', 'tasks.assign_by', '=', 'assigned_by_user.id')
+             ->where('tasks.assign_to', $authId)
+             ->where('tasks.task_status', 'On Hold')
+             ->select(
+                 'tasks.*',
+                 'categories.category',
+                 'sub_categories.subcategory',
+                 'assigned_role.role as assigned_role',
+                 'assigned_by_role.role as task_assigned',
+                 'assigned_by_user.name as assigned_by'
+             )
+             ->orderBy('tasks.id', 'DESC')
+             ->get();
+
+             $tasks_onhold_count = DB::table('tasks')
+             ->where('assign_to', $authId)
+             ->where('task_status', 'On Hold')
+             ->count();
+
+             $tasks_complete = DB::table('tasks')
+             ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
+             ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
+             ->leftJoin('roles as assigned_role', 'tasks.assign_to', '=', 'assigned_role.id')
+             ->leftJoin('roles as assigned_by_role', 'tasks.assign_by', '=', 'assigned_by_role.id')
+             ->leftJoin('users as assigned_by_user', 'tasks.assign_by', '=', 'assigned_by_user.id')
+             ->where('tasks.assign_to', $authId)
+             ->where('tasks.task_status', 'Completed')
+             ->select(
+                 'tasks.*',
+                 'categories.category',
+                 'sub_categories.subcategory',
+                 'assigned_role.role as assigned_role',
+                 'assigned_by_role.role as task_assigned',
+                 'assigned_by_user.name as assigned_by'
+             )
+             ->orderBy('tasks.id', 'DESC')
+             ->get();
+
+
+             $tasks_complete_count = DB::table('tasks')
+             ->where('assign_to', $authId)
+             ->where('task_status', 'Completed')
+             ->count();
+
+         return view('cluster.mydashboard', ['tasks_todo' => $tasks_todo,'tasks_todo_count'=>$tasks_todo_count,'tasks_inprogress'=>$tasks_inprogress,'tasks_inprogress_count'=>$tasks_inprogress_count,'tasks_onhold'=>$tasks_onhold,'tasks_onhold_count'=>$tasks_onhold_count,'tasks_complete'=>$tasks_complete,'tasks_complete_count'=>$tasks_complete_count,'employees'=>$employees,'role'=>$role]);
+
+
+        // return view ('cluster.mydashboard');
+    }
+
+    public function cluster_strength()
+    {
+
+        $user =  Auth::user()->id;
+        $cluster = DB::table('m_cluster as mc')
+         ->leftJoin('users as user', 'user.id', '=', 'mc.cl_name') // Joining users table
+         ->where('mc.cl_name', $user) // Filter by the cluster id
+         ->select('mc.id') // Select the required fields from users table
+         ->first(); // Get the first matching result
+
+        //  $cluster_list= DB::table('cluster_store as cs')
+        // ->leftJoin('stores as store', 'store.id', '=', 'cs.store_id') // Joining users table
+        // ->leftJoin('store_lists as sl', function($join) {
+        //     $join->on('sl.store_ref_id', '=', 'cs.store_id');// Join on store_id and store_ref_id
+        // })
+        // ->where('cs.cluster_id',$cluster->id)
+        // ->select('store.store_code','sl.role_id','sl.req_count','sl.emp_count') // Select the required fields from users table
+        // ->get();
+         $store_list= DB::table('cluster_store as cs')
+        ->leftJoin('stores as store', 'store.id', '=', 'cs.store_id') // Joining users table
+        ->where('cs.cluster_id',$cluster->id)
+        ->select('store.store_code','store.id') // Select the required fields from users table
+        ->get();
+
+        $role = [12, 13, 14, 15, 16, 17, 18, 19]; // List of role IDs
+foreach ($store_list as $sl) {
+    // Initialize an empty array to store the final roles for this store
+    $store_roles = [
+        'sl' => $sl->store_code, // Store the store code as 'sl'
+        'roles' => [] // This will hold the roles array
+    ];
+
+    foreach ($role as $r) {
+        // Fetch the role data for the current store and role
+        $rol_req = DB::table('store_lists')
+            ->where('store_ref_id', $sl->id)
+            ->where('role_id', $r)
+            ->select('role_id', 'req_count', 'emp_count')
+            ->first(); // Use first() to get a single result
+
+        // Check if the result is empty (i.e., no data for this role)
+        if (!$rol_req) {
+            // If no data, create a default entry with 0 counts
+            $rol_req = (object)[
+                'role_id' => $r,
+                'req_count' => 0,
+                'emp_count' => 0
+            ];
+        }
+
+        // Add the role data to the roles array
+        $store_roles['roles'][] = [
+            'role_id' => $rol_req->role_id,
+            'req_count' => $rol_req->req_count,
+            'emp_count' => $rol_req->emp_count
+        ];
+    }
+
+    // Add the store's roles with their data to the final list
+    $sl_list[] = $store_roles;
+}
+
+        // return $sl_list;
+
+      return view ('cluster.strength',['store_list'=>$sl_list]);
     }
 
     public function create(Request $req)

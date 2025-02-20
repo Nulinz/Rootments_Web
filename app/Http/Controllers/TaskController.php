@@ -10,6 +10,8 @@ use App\Services\FirebaseService;
 use App\Models\{User,Role};
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 
 class TaskController extends Controller
@@ -29,9 +31,9 @@ class TaskController extends Controller
 // $user = Auth::user();
 
 // $firstTaskIds = DB::table('tasks as t1')
-//     ->selectRaw('MIN(id) as id') 
+//     ->selectRaw('MIN(id) as id')
 //     ->groupBy('f_id')
-//     ->pluck('id'); 
+//     ->pluck('id');
 
 // $query = DB::table('tasks')
 //     ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
@@ -66,7 +68,7 @@ $store = DB::table('stores')->where('id', $user->store_id)->first();
 
 // Get the first task IDs per f_id
 $firstTaskIds = DB::table('tasks as t1')
-    ->selectRaw('MIN(id) as id') 
+    ->selectRaw('MIN(id) as id')
     ->groupBy('f_id')
     ->pluck('id');
 
@@ -137,34 +139,34 @@ $task = $query->get();
     //         ->select('roles.role_dept', 'roles.id', 'roles.role')
     //         ->groupBy('roles.role_dept', 'roles.id', 'roles.role')
     //         ->get();
-            
+
     //     $store= DB::table('stores')->where('id',$user->store_id)->first();
-        
-       
+
+
     //     $cat=DB::table('categories')->where('status',1)->get();
 
 
     //     return view('task.add',['cat'=>$cat,'assignedRoles'=>$assignedRoles]);
 
     // }
-    
+
     public function create()
 {
     $user = auth()->user();
     $role = Role::find($user->role_id);
     $store = DB::table('stores')->where('id', $user->store_id)->first();
-    
+
     $assignedRolesQuery = Role::join('role_based', 'roles.id', '=', 'role_based.assign_role_id')
         ->join('users', 'role_based.assign_role_id', '=', 'users.role_id')
         ->select('roles.role_dept', 'roles.id', 'roles.role')
         ->groupBy('roles.role_dept', 'roles.id', 'roles.role');
-    
+
     if (!in_array($user->dept, ['Admin', 'HR'])) {
         if ($store) {
             $assignedRolesQuery->where('users.store_id', $store->id);
         }
     }
-    
+
     $assignedRoles = $assignedRolesQuery->get();
 
 
@@ -234,7 +236,7 @@ public function store(Request $request)
         $task->assign_by = $assignBy;
 
         $task->save();
-        
+
         $task->f_id = $task->id;
         $task->save();
 
@@ -266,7 +268,7 @@ public function store(Request $request)
                 ];
             }
         } catch (\Exception $e) {
-            \Log::error('Notification Send Error: ' . $e->getMessage());
+            Log::error('Notification Send Error: ' . $e->getMessage());
             $notifications[] = [
                 'user_id' => $assignTo,
                 'error' => $e->getMessage()
@@ -318,7 +320,7 @@ public function completedtaskstore(Request $request)
     }
 
     try {
-        $task->save(); 
+        $task->save();
 
         $user = User::find($assignTo);
         if ($user && $user->device_token) {
@@ -339,7 +341,7 @@ public function completedtaskstore(Request $request)
                         ]);
         }
     } catch (\Exception $e) {
-        \Log::error('Error: ' . $e->getMessage());
+        Log::error('Error: ' . $e->getMessage());
         return response()->json([
             'status' => 'error',
             'message' => 'Task could not be saved.',
@@ -361,17 +363,17 @@ public function completedtaskstore(Request $request)
      */
    public function show($id)
 {
-    
+
 
     $taskCheck = DB::table('tasks')
         ->where('id', $id)
         ->select('id', 'f_id')
         ->first();
 
-   
+
 
     $queryTaskId = is_null($taskCheck->f_id) ? $id : $taskCheck->f_id;
-    
+
      $task = DB::table('tasks')
         ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
         ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
