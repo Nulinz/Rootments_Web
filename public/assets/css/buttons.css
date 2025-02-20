@@ -12,7 +12,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: 0.5s ease-in-out;
+    transition: var(--transition);
 }
 
 .btn0.active {
@@ -39,7 +39,7 @@
 a .formbtn,
 a .listbtn,
 a .headbtn {
-    transition: 0.5s ease-in-out;
+    transition: var(--transition);
     box-shadow: var(--box-shadow);
 }
 
@@ -52,7 +52,7 @@ a .headbtn {
     height: 35px;
     border-radius: 5px;
     width: 150px;
-    transition: 0.5s ease-in-out;
+    transition: var(--transition);
     box-shadow: var(--box-shadow);
 }
 
@@ -162,7 +162,7 @@ a .headbtn:hover {
         border-radius: 3px;
         font-size: 15px;
         border: 2px solid var(--green);
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* Delete Button */
@@ -175,7 +175,7 @@ a .headbtn:hover {
         border-radius: 3px;
         font-size: 15px;
         border: 2px solid var(--red);
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* Delete List Button */
@@ -188,7 +188,7 @@ a .headbtn:hover {
         border-radius: 3px;
         font-size: 12px;
         border: 2px solid var(--red);
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* List td Button */
@@ -201,7 +201,7 @@ a .headbtn:hover {
         border-radius: 3px;
         font-size: 12px;
         border: 1px solid var(--main);
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* Accordion Button */
@@ -222,7 +222,7 @@ a .headbtn:hover {
         font-size: 15px;
         color: var(--primary) !important;
         background-color: transparent;
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* Dashboard Button */
@@ -235,7 +235,7 @@ a .headbtn:hover {
         height: 35px;
         border-radius: 5px;
         width: 150px;
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
 }
@@ -290,7 +290,7 @@ a .headbtn:hover {
         border-radius: 3px;
         font-size: 15px;
         border: 2px solid var(--green);
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* Delete Button */
@@ -303,7 +303,7 @@ a .headbtn:hover {
         border-radius: 3px;
         font-size: 15px;
         border: 2px solid var(--red);
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* Delete List Button */
@@ -316,7 +316,7 @@ a .headbtn:hover {
         border-radius: 3px;
         font-size: 12px;
         border: 2px solid var(--red);
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* List td Button */
@@ -329,7 +329,7 @@ a .headbtn:hover {
         border-radius: 3px;
         font-size: 12px;
         border: 1px solid var(--main);
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* Accordion Button */
@@ -350,7 +350,7 @@ a .headbtn:hover {
         font-size: 13px;
         color: var(--primary) !important;
         background-color: transparent;
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* Dashboard Button */
@@ -363,7 +363,7 @@ a .headbtn:hover {
         height: 35px;
         border-radius: 5px;
         width: 150px;
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
 }
@@ -418,7 +418,7 @@ a .headbtn:hover {
         border-radius: 3px;
         font-size: 15px;
         border: 2px solid var(--green);
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* Delete Button */
@@ -431,7 +431,7 @@ a .headbtn:hover {
         border-radius: 3px;
         font-size: 15px;
         border: 2px solid var(--red);
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* Delete List Button */
@@ -444,7 +444,7 @@ a .headbtn:hover {
         border-radius: 3px;
         font-size: 10px;
         border: 2px solid var(--red);
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* List td Button */
@@ -457,7 +457,7 @@ a .headbtn:hover {
         border-radius: 3px;
         font-size: 12px;
         border: 1px solid var(--main);
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     /* Accordion Button */
@@ -478,7 +478,7 @@ a .headbtn:hover {
         font-size: 15px;
         color: var(--primary) !important;
         background-color: transparent;
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
         margin: 0px auto 8px auto;
     }
 
@@ -492,7 +492,7 @@ a .headbtn:hover {
         height: 30px;
         border-radius: 5px;
         width: 125px;
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
 }

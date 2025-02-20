@@ -212,13 +212,15 @@
         justify-content: space-between;
     }
 
-    .taskdate .startdate {
+    .taskdate .startdate,
+    .taskdate .starttime {
         font-size: 10px;
         font-weight: 500;
         color: var(--label);
     }
 
-    .taskdate .enddate {
+    .taskdate .enddate,
+    .taskdate .endtime {
         font-size: 10px;
         font-weight: 500;
         color: #ff0000;
@@ -442,13 +444,15 @@
         justify-content: space-between;
     }
 
-    .taskdate .startdate {
+    .taskdate .startdate,
+    .taskdate .starttime {
         font-size: 8px;
         font-weight: 500;
         color: var(--label);
     }
 
-    .taskdate .enddate {
+    .taskdate .enddate,
+    .taskdate .endtime {
         font-size: 8px;
         font-weight: 500;
         color: #ff0000;
@@ -688,13 +692,15 @@
         justify-content: space-between;
     }
 
-    .taskdate .startdate {
+    .taskdate .startdate,
+    .taskdate .starttime {
         font-size: 8px;
         font-weight: 500;
         color: var(--label);
     }
 
-    .taskdate .enddate {
+    .taskdate .enddate,
+    .taskdate .endtime {
         font-size: 8px;
         font-weight: 500;
         color: #ff0000;

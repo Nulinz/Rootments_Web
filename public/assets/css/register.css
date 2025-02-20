@@ -63,7 +63,7 @@ body {
     letter-spacing: 0.5px;
     margin-top: 10px;
     border: transparent;
-    transition: 0.5s ease-in-out;
+    transition: var(--transition);
 }
 
 .container button.hidden {

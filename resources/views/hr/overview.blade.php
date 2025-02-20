@@ -4,24 +4,11 @@
 
     <div class="sidebodydiv px-5 py-3">
         <div class="sidebodyhead">
-            <h4 class="m-0">Dashboard</h4>
+            <h4 class="m-0">Overview</h4>
         </div>
 
-        <div class="container-fluid px-0 header">
-            <div class="container px-0 mt-2 tabbtns">
-                <div class="my-2">
-                    <a href="{{ route('hr.dashboard') }}"><button class="dashtabs">Overview</button></a>
-                </div>
-                <div class="my-2">
-                    <a href="{{ route('hr.mydashboard') }}"><button class="dashtabs ">My
-                            Dashboard</button></a>
-                </div>
-                <div class="my-2">
-                    <a href="{{ route('hrkpi.dashboard') }}"><button class="dashtabs ">KPI
-                            Dashboard</button></a>
-                </div>
-            </div>
-        </div>
+        <!-- Tabs -->
+        @include ('hr.tabs')
 
         <div class="container px-0 mt-2">
             <div class="row">
@@ -136,8 +123,9 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             var roleNames = @json($roleNames);
             var userCounts = @json($userCounts);
 
@@ -163,7 +151,7 @@
                 },
                 dataLabels: {
                     enabled: true,
-                    formatter: function(val, opt) {
+                    formatter: function (val, opt) {
                         return opt.w.globals.labels[opt.dataPointIndex] + ': ' + val;
                     },
                     dropShadow: {
@@ -188,8 +176,8 @@
     </script>
 
     <script>
-        $(document).ready(function() {
-            $(document).on("click", ".approve-attendance", function() {
+        $(document).ready(function () {
+            $(document).on("click", ".approve-attendance", function () {
                 let userId = $(this).data("id");
 
                 console.log(userId);
@@ -200,7 +188,7 @@
                         user_id: userId,
                         _token: $('meta[name="csrf-token"]').attr("content")
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.success) {
                             alert("Attendance Approved!");
                             location.reload();
@@ -208,7 +196,7 @@
                             alert("Something went wrong!");
                         }
                     },
-                    error: function() {
+                    error: function () {
                         alert("Error occurred!");
                     }
                 });

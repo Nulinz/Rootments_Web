@@ -1,14 +1,18 @@
 @extends('layouts.app')
 @section('content')
+    <link rel="stylesheet" href="{{ asset('assets/css/dashboard_main.css') }}">
+
     <div class="sidebodydiv px-5 py-3">
         <div class="sidebodyhead">
             <h4 class="m-0">KPI Dashboard</h4>
         </div>
 
+        <!-- Tabs -->
+        @include ('hr.tabs')
 
-        <div class="container px-0 mt-3">
+        <div class="container px-0 mt-2">
             <div class="row">
-                <div class="sidebodyhead my-3">
+                <div class="sidebodyhead mt-2 mb-3">
                     <h4 class="m-0">HR Manager</h4>
                 </div>
                 <div class="col-sm-12 col-md-6 col-xl-4 mb-3 cards">
@@ -250,7 +254,7 @@
             },
             tooltip: {
                 y: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val
                     }
                 }
@@ -310,7 +314,7 @@
             },
             tooltip: {
                 y: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val
                     }
                 }
@@ -371,7 +375,7 @@
             },
             tooltip: {
                 y: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val
                     }
                 }
@@ -431,7 +435,7 @@
             },
             tooltip: {
                 y: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val
                     }
                 }
@@ -491,7 +495,7 @@
             },
             tooltip: {
                 y: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val
                     }
                 }
@@ -551,7 +555,7 @@
             },
             tooltip: {
                 y: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val
                     }
                 }
@@ -722,7 +726,7 @@
             },
             tooltip: {
                 y: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val
                     }
                 }
@@ -782,7 +786,7 @@
             },
             tooltip: {
                 y: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val
                     }
                 }
@@ -1008,7 +1012,7 @@
             },
             tooltip: {
                 y: {
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val
                     }
                 }

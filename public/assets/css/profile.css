@@ -73,7 +73,7 @@
         position: absolute;
         top: 0%;
         right: 0%;
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
         cursor: pointer;
         border-radius: 0px 6px 0px 6px;
     }
@@ -231,7 +231,7 @@
         position: absolute;
         top: 0%;
         right: 0%;
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
         cursor: pointer;
         border-radius: 0px 6px 0px 6px;
     }
@@ -377,7 +377,7 @@
         position: absolute;
         top: 0%;
         right: 0%;
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
         cursor: pointer;
         border-radius: 0px 6px 0px 6px;
     }

@@ -18,16 +18,16 @@
         height: 110px;
         width: 98%;
         background-color: var(--secondary);
-        /* box-shadow: var(--box-shadow); */
         border-radius: 8px;
     }
 
     .proftabs .nav-item .carddt {
         height: 100%;
         width: 100%;
-        padding: 15px;
+        padding: 10px;
         background-color: var(--secondary);
-        border: 2px solid var(--bg);
+        border: 2px solid var(--input-border);
+        box-shadow: var(--box-shadow);
         border-radius: 8px;
     }
 
@@ -50,7 +50,7 @@
 
     .cardct h4 {
         font-weight: 500;
-        font-size: 12px;
+        font-size: 10px;
         color: var(--label);
         letter-spacing: 0.5px;
         text-transform: uppercase;
@@ -58,14 +58,14 @@
 
     .cardct h5 {
         font-weight: 700;
-        font-size: 15px;
+        font-size: 12px;
         color: var(--primary);
     }
 
     .cardct h6 {
         font-weight: 500;
-        font-size: 13px;
-        color: var(--primary);
+        font-size: 10px;
+        color: var(--label);
     }
     
     .cardtotal {
@@ -101,7 +101,6 @@
         height: 150px;
         width: 95%;
         background-color: var(--secondary);
-        /* box-shadow: var(--box-shadow); */
         border-radius: 8px;
     }
 
@@ -109,6 +108,9 @@
         height: 100%;
         width: 100%;
         padding: 10px;
+        background-color: var(--secondary);
+        border: 2px solid var(--input-border);
+        box-shadow: var(--box-shadow);
     }
 
     .proftabs .carddt.active {
@@ -130,20 +132,20 @@
 
     .cardct h4 {
         font-weight: 600;
-        font-size: 12px;
+        font-size: 10px;
         color: var(--label);
         letter-spacing: 0.5px;
     }
 
     .cardct h5 {
         font-weight: 600;
-        font-size: 13px;
+        font-size: 12px;
         color: var(--primary);
     }
 
     .cardct h6 {
         font-weight: 450;
-        font-size: 12px;
+        font-size: 10px;
         color: var(--label);
     }
 
@@ -186,7 +188,6 @@
         height: 140px;
         width: 98%;
         background-color: var(--secondary);
-        /* box-shadow: var(--box-shadow); */
         border-radius: 8px;
     }
 
@@ -194,6 +195,9 @@
         height: 100%;
         width: 100%;
         padding: 10px;
+        background-color: var(--secondary);
+        border: 2px solid var(--input-border);
+        box-shadow: var(--box-shadow);
     }
 
     .proftabs .carddt.active {
@@ -216,20 +220,20 @@
 
     .cardct h4 {
         font-weight: 600;
-        font-size: 12px;
+        font-size: 10px;
         color: var(--label);
         letter-spacing: 0.5px;
     }
 
     .cardct h5 {
         font-weight: 600;
-        font-size: 13px;
+        font-size: 12px;
         color: var(--primary);
     }
 
     .cardct h6 {
         font-weight: 450;
-        font-size: 12px;
+        font-size: 10px;
         color: var(--label);
     }
 
@@ -272,7 +276,6 @@
         height: 140px;
         width: 100%;
         background-color: var(--secondary);
-        /* box-shadow: var(--box-shadow); */
         border-radius: 8px;
     }
 
@@ -280,6 +283,9 @@
         height: 100%;
         width: 100%;
         padding: 10px;
+        background-color: var(--secondary);
+        border: 2px solid var(--input-border);
+        box-shadow: var(--box-shadow);
     }
 
     .proftabs .carddt.active {
@@ -302,20 +308,20 @@
 
     .cardct h4 {
         font-weight: 600;
-        font-size: 12px;
+        font-size: 10px;
         color: var(--label);
         letter-spacing: 0.5px;
     }
 
     .cardct h5 {
         font-weight: 600;
-        font-size: 13px;
+        font-size: 12px;
         color: var(--primary);
     }
 
     .cardct h6 {
         font-weight: 450;
-        font-size: 12px;
+        font-size: 10px;
         color: var(--label);
     }
 

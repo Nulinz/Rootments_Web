@@ -31,11 +31,10 @@
                     <tbody>
                         @foreach ($store_list as $store)
 
-
                         <tr>
-                            <td> <span class="tddark">{{$store['sl']}}</span></td>
+                            <td> <span class="tddark" data-bs-toggle="tooltip" data-bs-title="Storename">{{$store['sl']}}</span></td>
                             @foreach ($store['roles'] as $st)
-                            <td>{{$st['req_count']}} / <span class="green">{{$st['emp_count']}}</span></td>
+                            <td>{{$st['emp_count']}} / <span class="green">{{$st['req_count']}}</span></td>
                           @endforeach
                         </tr>
 

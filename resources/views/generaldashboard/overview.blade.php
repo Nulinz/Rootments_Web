@@ -5,7 +5,7 @@
 
     <div class="sidebodydiv px-5 py-3">
         <div class="sidebodyhead">
-            <h4 class="m-0">Dashboard</h4>
+            <h4 class="m-0">Overview</h4>
         </div>
 
         <div class="container-fluid px-0 header">
@@ -155,7 +155,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             var taskCounts = @json($tolatask);
 
             var chartElement = document.querySelector("#chart1");
@@ -199,7 +199,7 @@
         });
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Fetch dynamic data from Laravel
             var taskCounts = @json($taskCounts);
             var staffNames = @json($staffNames);
@@ -217,7 +217,7 @@
                     height: 300,
                     type: 'bar',
                     events: {
-                        click: function(chart, w, e) {
+                        click: function (chart, w, e) {
                             console.log("Bar clicked!", w, e);
                         },
                     },
@@ -254,7 +254,7 @@
     </script>
     <!-- Chart 3 -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             var categoryNames = @json($categoryNames);
             var taskCounts = @json($categorytaskCounts);
 
@@ -293,7 +293,7 @@
         });
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             var subcategoryNames = {!! json_encode($subcategoryNames ?? []) !!};
             var subtaskCounts = {!! json_encode($subcategorytaskCounts ?? []) !!};
 
@@ -335,8 +335,8 @@
         });
     </script>
     <script>
-        $(document).ready(function() {
-            $(document).on("click", ".approve-attendance", function() {
+        $(document).ready(function () {
+            $(document).on("click", ".approve-attendance", function () {
                 let userId = $(this).data("id");
 
                 console.log(userId);
@@ -347,7 +347,7 @@
                         user_id: userId,
                         _token: $('meta[name="csrf-token"]').attr("content")
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.success) {
                             alert("Attendance Approved!");
                             location.reload();
@@ -355,7 +355,7 @@
                             alert("Something went wrong!");
                         }
                     },
-                    error: function() {
+                    error: function () {
                         alert("Error occurred!");
                     }
                 });
