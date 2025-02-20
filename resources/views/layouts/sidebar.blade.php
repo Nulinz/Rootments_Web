@@ -193,27 +193,30 @@
                     </ul>
                 </div>
             </li>
-            <!--<li class="mb-1">-->
-            <!--    <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"-->
-            <!--        data-bs-target="#collapse5" aria-expanded="false">-->
-            <!--        <div class="btnname">-->
-            <!--            <i class="fa-solid fa-clipboard-user"></i> &nbsp;Attendance-->
-            <!--        </div>-->
-            <!--        <div class="righticon d-flex mx-auto">-->
-            <!--            <i class="fa-solid fa-angle-down toggle-icon"></i>-->
-            <!--        </div>-->
-            <!--    </button>-->
-            <!--    <div class="collapse" id="collapse5">-->
-            <!--        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">-->
-            <!--            <li><a href="./list_daily_attendance.php"-->
-            <!--                    class="d-inline-flex text-decoration-none rounded mt-3">Daily</a>-->
-            <!--            </li>-->
-            <!--            <li><a href="./list_monthly_attendance.php"-->
-            <!--                    class="d-inline-flex text-decoration-none rounded">Monthly</a>-->
-            <!--            </li>-->
-            <!--        </ul>-->
-            <!--    </div>-->
-            <!--</li>-->
+            <li class="mb-1">
+                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"
+                    data-bs-target="#collapse5" aria-expanded="false">
+                    <div class="btnname">
+                        <i class="fa-solid fa-clipboard-user"></i> &nbsp;Attendance
+                    </div>
+                    <div class="righticon d-flex mx-auto">
+                        <i class="fa-solid fa-angle-down toggle-icon"></i>
+                    </div>
+                </button>
+                <div class="collapse" id="collapse5">
+                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                        <li><a href="{{ route('attendance.daily') }}"
+                                class="d-inline-flex text-decoration-none rounded mt-3">Daily</a>
+                        </li>
+                        <li><a href="{{ route('attendance.monthly') }}"
+                                class="d-inline-flex text-decoration-none rounded">Monthly</a>
+                        </li>
+                        <li><a href="{{ route('attendance.individual') }}"
+                                class="d-inline-flex text-decoration-none rounded">Individual</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"
                     data-bs-target="#collapse6" aria-expanded="false">
@@ -325,6 +328,15 @@
                         <!--    <h6 class="mb-0">{{ $total_count }}</h6>-->
                         <!--</div>-->
 
+                    </button>
+                </a>
+            </li>
+            <li class="mb-3">
+                <a href="{{ route('logout') }}">
+                    <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-right-to-bracket" style="color: green;"></i> &nbsp;CheckIn
+                        </div>
                     </button>
                 </a>
             </li>
@@ -513,27 +525,30 @@
                         </ul>
                     </div>
                 </li>
-                <!--<li class="mb-1">-->
-                <!--    <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"-->
-                <!--        data-bs-target="#collapse5" aria-expanded="false">-->
-                <!--        <div class="btnname">-->
-                <!--            <i class="fa-solid fa-clipboard-user"></i> &nbsp;Attendance-->
-                <!--        </div>-->
-                <!--        <div class="righticon d-flex mx-auto">-->
-                <!--            <i class="fa-solid fa-angle-down toggle-icon"></i>-->
-                <!--        </div>-->
-                <!--    </button>-->
-                <!--    <div class="collapse" id="collapse5">-->
-                <!--        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">-->
-                <!--            <li><a href="./list_daily_attendance.php"-->
-                <!--                    class="d-inline-flex text-decoration-none rounded mt-3">Daily</a>-->
-                <!--            </li>-->
-                <!--            <li><a href="./list_monthly_attendance.php"-->
-                <!--                    class="d-inline-flex text-decoration-none rounded">Monthly</a>-->
-                <!--            </li>-->
-                <!--        </ul>-->
-                <!--    </div>-->
-                <!--</li>-->
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#collapse5" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-clipboard-user"></i> &nbsp;Attendance
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" id="collapse5">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            <li><a href="{{ route('attendance.daily') }}"
+                                    class="d-inline-flex text-decoration-none rounded mt-3">Daily</a>
+                            </li>
+                            <li><a href="{{ route('attendance.monthly') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Monthly</a>
+                            </li>
+                            <li><a href="{{ route('attendance.individual') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Individual</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li class="mb-1">
                     <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"
                         data-bs-target="#collapse6" aria-expanded="false">
@@ -603,6 +618,15 @@
                             @endphp
                             <div class="righticon d-flex mx-auto approvalno">
                                 <h6 class="mb-0">{{ $total_count }}</h6>
+                            </div>
+                        </button>
+                    </a>
+                </li>
+                <li class="mb-3">
+                    <a href="{{ route('logout') }}">
+                        <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
+                            <div class="btnname">
+                                <i class="fa-solid fa-right-to-bracket" style="color: green;"></i> &nbsp;CheckIn
                             </div>
                         </button>
                     </a>

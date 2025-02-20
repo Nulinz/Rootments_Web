@@ -31,15 +31,15 @@ class AuthenticationController extends Controller
                 ->exists();
 
             if (Auth::attempt(['emp_code' => $emp_code, 'password' => $password])) {
-                if (!$alreadyLoggedIn) {
-                    DB::table('attendance')->insert([
-                        'user_id' => $user->id,
-                        'attend_status' => 'Present',
-                        'in_location' => 'Some Location',
-                        'in_time' => now()->format('H:i:s'),
-                        'c_on' => now()->format('Y-m-d')
-                    ]);
-                }
+                // if (!$alreadyLoggedIn) {
+                //     DB::table('attendance')->insert([
+                //         'user_id' => $user->id,
+                //         'attend_status' => 'Present',
+                //         'in_location' => 'Some Location',
+                //         'in_time' => now()->format('H:i:s'),
+                //         'c_on' => now()->format('Y-m-d')
+                //     ]);
+                // }
 
                 $user = DB::table('users')
                     ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
@@ -79,13 +79,13 @@ class AuthenticationController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
 
-            DB::table('attendance')
-                ->where('user_id', $user->id)
-                ->whereDate('in_time', now()->toDateString())
-                ->update([
-                    'out_time' => now()->format('H:i:s'),
-                    'u_by'=>now()->format('Y-m-d')
-                ]);
+            // DB::table('attendance')
+            //     ->where('user_id', $user->id)
+            //     ->whereDate('in_time', now()->toDateString())
+            //     ->update([
+            //         'out_time' => now()->format('H:i:s'),
+            //         'u_by'=>now()->format('Y-m-d')
+            //     ]);
 
             Auth::logout();
         }

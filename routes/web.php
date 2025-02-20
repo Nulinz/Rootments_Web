@@ -38,38 +38,28 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('store_dashboard', 'DashBoardController@useragainststask')->name('store.usertaskdashboard');
         Route::post('attendance-approve','DashBoardController@attendanceApprove')->name('attendance.approve');
 
-
         //Hr Dashboard
         Route::get('hr-dashboard', 'HrDashBoardController@index')->name('hr.dashboard');
         Route::get('hr-mydashboard', 'HrDashBoardController@mydashboard')->name('hr.mydashboard');
         Route::get('hrkpi-dashboard', 'HrDashBoardController@kpidashboard')->name('hrkpi.dashboard');
 
-
         //Settings
         Route::get('settings', 'SettingsController@index')->name('settings');
-
         Route::get('category', 'SettingsController@categorylist')->name('category');
         Route::post('category-store','SettingsController@categorystore')->name('category.store');
         Route::post('update-status/{id}','SettingsController@updateStatus')->name('update.status');
-
         Route::get('subcategory', 'SettingsController@subcategoryList')->name('subcategory');
         Route::post('sub-category-store','SettingsController@subcategorystore')->name('subcategory.store');
         Route::post('sub-update-status/{id}','SettingsController@subupdateStatus')->name('subupdate.status');
-
         Route::get('roles', 'SettingsController@roleList')->name('roles');
         Route::post('role-store','SettingsController@rolestore')->name('role.store');
         Route::post('role-update-status/{id}','SettingsController@roleupdateStatus')->name('roleupdate.status');
-
         Route::get('password', 'SettingsController@passwordList')->name('password');
         Route::post('settings-update','SettingsController@passwordupdate')->name('change_password.update');
-
         Route::get('theme-list', 'SettingsController@themeList')->name('theme');
-
         Route::get('permissions', 'SettingsController@permissionList')->name('permission');
         Route::post('permission.store','SettingsController@permissionstore')->name('permission.store');
         Route::get('permission.filter/{token}','SettingsController@filter')->name('permission.filter');
-
-
 
         //Store
         Route::get('store-list', 'StoreController@index')->name('store.index');
@@ -103,9 +93,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('employee-bankedit/{id}','EmployeeController@bankedit')->name('employee.bankedit');
         Route::post('employee-bankupdate/{id}','EmployeeController@bankdetailupdate')->name('employee.bankupdate');
 
-
-
-
         //Task
         Route::get('task-list', 'TaskController@index')->name('task.index');
         Route::get('task-add', 'TaskController@create')->name('task.add');
@@ -114,21 +101,17 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('task-view/{id}', 'TaskController@show')->name('task.view');
         Route::post('completedtaskstore','TaskController@completedtaskstore')->name('completedtaskstore');
 
-
         //Leave
         Route::get('leave-list', 'LeaveController@index')->name('leave.index');
         Route::get('leave-add', 'LeaveController@create')->name('leave.add');
         Route::post('leave-store','LeaveController@store')->name('leave.store');
         Route::post('update-leaveescalate','LeaveController@updateEscalate')->name('update.leaveescalate');
 
-
         //Repair
         Route::get('repair-list', 'RepairController@index')->name('repair.index');
         Route::get('repair-add', 'RepairController@create')->name('repair.add');
         Route::post('repair-store','RepairController@store')->name('repair.store');
         Route::post('get-storename','RepairController@getstorename')->name('get_store_name');
-
-
 
         //Transfer
         Route::get('transfer-list', 'TransferController@index')->name('transfer.index');
@@ -137,21 +120,16 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('get-empname','TransferController@getempname')->name('get_emp_name');
         Route::post('update-transferescalate','TransferController@updateEscalate')->name('update.transferescalate');
 
-
-
         //Resignation
         Route::get('resignation-list', 'ResignationController@index')->name('resignation.index');
         Route::get('resignation-add', 'ResignationController@create')->name('resignation.add');
         Route::post('resignation-store','ResignationController@store')->name('resignation.store');
         Route::post('update-reginescalate','ResignationController@updateEscalate')->name('update.reginescalate');
 
-
-
         //Recruitment
         Route::get('recruitment-list', 'RecruitmentController@index')->name('recruitment.index');
         Route::get('recruitment-add', 'RecruitmentController@create')->name('recruitment.add');
         Route::post('recruitment-store','RecruitmentController@store')->name('recruitment.store');
-
 
         //Approve
         Route::get('approve-list', 'ApproveController@index')->name('approve.index');
@@ -167,7 +145,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('approvelrecurit-update','ApproveController@updaterecuirt')->name('approvelrecurit.update');
         Route::post('approveltransfer-update','ApproveController@updatetransfer')->name('approveltransfer.update');
 
-
         // Cluster
         Route::get('cluster-list', 'ClusterController@index')->name('cluster.index');
         Route::get('cluster-create', 'ClusterController@drop_show')->name('cluster.new');
@@ -176,14 +153,18 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('cluster-submit', 'ClusterController@create')->name('cluster.submit');
 
         //ajax route
-
         Route::post('/get_cluster_per', 'ClusterController@cluster_det')->name('get_cluster_per');
         Route::post('payroll-drop', 'PayrollController@drop_show')->name('payroll.drop');
         Route::post('payroll-list_per', 'PayrollController@store_per')->name('payroll.listPerson');
 
-         // Payroll
+        // Payroll
         Route::get('payroll-list', 'PayrollController@index')->name('payroll.index');
         Route::get('view-salary', 'PayrollController@payroll_list')->name('payroll.payroll_list');
+
+        // Attendance
+        Route::get('daily-attendance', 'Attd_cnt@daily_attd')->name('attendance.daily');
+        Route::get('monthly-attendance', 'Attd_cnt@monthly_attd')->name('attendance.monthly');
+        Route::get('individual-attendance', 'Attd_cnt@individual_attd')->name('attendance.individual');
 
 
     });
