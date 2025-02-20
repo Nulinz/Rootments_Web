@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/navbar.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/aside.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/buttons.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/colors.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/common.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/form.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/list.css') }}">

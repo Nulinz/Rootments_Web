@@ -16,9 +16,9 @@
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('subcategory') }}" type="button">Sub Category</button>
                 </li>
-                <!--<li class="nav-item" role="presentation">-->
+                <!-- <li class="nav-item" role="presentation">-->
                 <!--    <button class="profiletabs" data-url="{{ route('roles') }}" type="button">Role</button>-->
-                <!--</li>-->
+                <!--</li> -->
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('password') }}" type="button">Password</button>
                 </li>
@@ -41,23 +41,23 @@
     </div>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             const loadContent = (url) => {
                 $("#tabContentWrapper").html('<p>Loading...</p>');
                 $.ajax({
                     url: url,
                     type: 'GET',
-                    success: function(data) {
+                    success: function (data) {
                         $("#tabContentWrapper").html(data);
                     },
-                    error: function() {
+                    error: function () {
                         $("#tabContentWrapper").html("<p>Error loading content</p>");
                     }
                 });
             };
 
-            $(".profiletabs").on("click", function() {
+            $(".profiletabs").on("click", function () {
                 $(".profiletabs").removeClass("active");
                 $(this).addClass("active");
 

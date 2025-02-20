@@ -20,6 +20,8 @@
                             <option value="Area">Area</option>
                             <option value="Cluster">Cluster</option>
                             <option value="Store">Store</option>
+                            <option value="Warehouse">Warehouse</option>
+                            <option value="Maintenance">Maintenance</option>
                             <!--<option value="Repair">Repair</option>-->
                             <!--<option value="Warehouse">Warehouse</option>-->
                             <!--<option value="Employee">Employee</option>-->
@@ -32,7 +34,8 @@
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 px-2 inputs">
                         <label for="roledescription">Description</label>
-                        <textarea rows="1" class="form-control" name="role_des" id="roledescription" placeholder="Enter Description"></textarea>
+                        <textarea rows="1" class="form-control" name="role_des" id="roledescription"
+                            placeholder="Enter Description"></textarea>
                     </div>
                 </div>
             </div>
@@ -56,12 +59,10 @@
 
                 <div class="select1 col-sm-12 col-md-4 mx-auto">
                     <div class="d-flex gap-3">
-                        <a href="" id="pdfLink"><img src="{{ asset('assets/images/printer.png') }}"
-                                id="print" alt="" height="35px" data-bs-toggle="tooltip"
-                                data-bs-title="Print"></a>
-                        <a href="" id="excelLink"><img src="{{ asset('assets/images/excel.png') }}"
-                                id="excel" alt="" height="35px" data-bs-toggle="tooltip"
-                                data-bs-title="Excel"></a>
+                        <a href="" id="pdfLink"><img src="{{ asset('assets/images/printer.png') }}" id="print" alt=""
+                                height="35px" data-bs-toggle="tooltip" data-bs-title="Print"></a>
+                        <a href="" id="excelLink"><img src="{{ asset('assets/images/excel.png') }}" id="excel" alt=""
+                                height="35px" data-bs-toggle="tooltip" data-bs-title="Excel"></a>
                     </div>
                 </div>
             </div>
@@ -95,13 +96,11 @@
                                 <td>
                                     <div class="d-flex gap-3">
                                         @if ($item->status == 1)
-                                            <a href="javascript:void(0)" class="update-status"
-                                                data-id="{{ $item->id }}">
+                                            <a href="javascript:void(0)" class="update-status" data-id="{{ $item->id }}">
                                                 <i class="fas fa-circle-xmark text-danger"></i>
                                             </a>
                                         @elseif ($item->status == 2)
-                                            <a href="javascript:void(0)" class="update-status"
-                                                data-id="{{ $item->id }}">
+                                            <a href="javascript:void(0)" class="update-status" data-id="{{ $item->id }}">
                                                 <i class="fas fa-check-circle text-success"></i>
 
                                             </a>
@@ -164,10 +163,10 @@
 <script>
     var updateStatusUrl = "{{ route('roleupdate.status', ':id') }}";
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-        $(".update-status").on("click", function() {
+        $(".update-status").on("click", function () {
             const categoryId = $(this).data("id");
             const statusCell = $(this).closest("tr").find(".status-text");
 
@@ -179,7 +178,7 @@
                 data: {
                     _token: csrfToken
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.status == 1) {
                         statusCell.text("Active");
                         statusCell.attr("data-status", 1);
@@ -218,7 +217,7 @@
                         });
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',

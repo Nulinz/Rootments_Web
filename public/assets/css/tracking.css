@@ -50,7 +50,7 @@
         border: 2px solid var(--primary);
         padding: 3px 10px;
         border-radius: 8px;
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     .prjtct h6 {
@@ -81,7 +81,7 @@
         color: var(--primary);
         padding: 2px 15px;
         border-radius: 5px;
-        transition: 0.5s ease-in-out;
+        transition: var(--transition);
     }
 
     .tmlnbtn:hover {
