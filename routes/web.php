@@ -183,6 +183,15 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('recruit-add', 'RecruitController@create')->name('recruit.add');
         Route::get('recruit-edit', 'RecruitController@edit')->name('recruit.edit');
 
+        // Area
+        Route::get('area-list', 'AreaController@list')->name('area.list');
+        Route::get('area-create', 'AreaController@create')->name('area.add');
+        Route::get('area-profile', 'AreaController@show')->name('area.profile');
+        Route::get('area-edit', 'AreaController@edit')->name('area.edit');
+        Route::get('area-overview', 'AreaController@area_overview')->name('area.dashboard');
+        Route::get('area-mydashboard', 'AreaController@area_mydashboard')->name('area.mydashboard');
+        Route::get('area-kpidashboard', 'AreaController@area_kpi')->name('area.kpidashboard');
+
     });
 
 });

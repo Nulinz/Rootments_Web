@@ -1,34 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-    @php
-        // dd($store);
-    @endphp
 
     <div class="sidebodydiv px-5 py-3 mb-3">
         <div class="sidebodyback mb-3" onclick="goBack()">
             <div class="backhead">
                 <h5><i class="fas fa-arrow-left"></i></h5>
-                <h6>Add Cluster Form</h6>
+                <h6>Edit Area Manager Form</h6>
             </div>
         </div>
         <div class="sidebodyhead my-3">
-            <h4 class="m-0">Cluster Details</h4>
+            <h4 class="m-0">Area Manager Details</h4>
         </div>
-        <form action="{{ route('cluster.submit') }}" method="POST">
-            @csrf
+        <form action="" method="POST">
             <div class="container-fluid maindiv">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
-                        <label for="clustername">Cluster Name <span>*</span></label>
-                        <select class="form-select" name="clustername" id="clustername" required autofocus>
+                        <label for="areaname">Area Manager Name <span>*</span></label>
+                        <select class="form-select" name="areaname" id="areaname" required autofocus>
                             <option value="" selected disabled>Select Options</option>
-                            @php
-                                foreach ($cluster as $index => $value) {
-                                    echo "<option value='{$value->id}'>{$value->name}</option>";
-                                }
-                            @endphp
-                            {{-- <option value=""></option> --}}
+                            <option value=""></option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
@@ -57,95 +48,51 @@
                             oninput="validate_pin(this)" placeholder="Enter Pincode" required readonly>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
-                        <label for="storeloc">Cluster Location</label>
-                        <input type="text" class="form-control" name="storeloc" id="storeloc"
-                            placeholder="Enter Cluster Location">
+                        <label for="arealoc">Area Manager Location</label>
+                        <input type="text" class="form-control" name="arealoc" id="arealoc"
+                            placeholder="Enter Area Manager Location">
                     </div>
                 </div>
             </div>
 
             <div class="sidebodyhead my-3">
-                <h4 class="m-0">Stores List</h4>
+                <h4 class="m-0">Cluster Manager List</h4>
             </div>
             <div class="container-fluid px-0">
                 <table id="dataTable" class="table">
                     <thead>
                         <tr>
                             <th>Select</th>
-                            <th>Store Code</th>
-                            <th>Store Name</th>
-                            <th>Store Manager</th>
-                            <th>Location</th>
-                            <th>Contact Number</th>
+                            <th>Cluster Manager Name</th>
+                            <th>Cluster Location</th>
+                            <th>Cluster Contact Number</th>
+                            <th>Cluster Email ID</th>
+                            <th>Cluster Stores Count</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- <tr>
+                        <tr>
                             <td>
                                 <div>
                                     <input type="checkbox">
                                 </div>
                             </td>
-                            <td>Store 01</td>
-                            <td>Suitor Guy Edappally</td>
                             <td>Sabari</td>
                             <td>Edappally</td>
                             <td>9876543210</td>
-                        </tr> --}}
+                            <td>sabari@gmail.com</td>
+                            <td>9</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
             <div class="col-sm-12 col-md-12 col-xl-12 mt-3 d-flex justify-content-center align-items-center">
                 <a href="">
-                    <button type="submit" class="formbtn">Save</button>
+                    <button type="submit" class="formbtn">Update</button>
                 </a>
             </div>
         </form>
     </div>
 
-    <script>
-        $('#clustername').on('change', function () {
-            // Trigger an AJAX request when the page is ready
-            var cluster_per = $(this).find('option:selected').val();
-            $.ajax({
-                url: '{{ route('get_cluster_per') }}', // Laravel route for the POST request
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}', // CSRF token for security
-                    cluster_per: cluster_per, // Send the selected store ID
-                },
-
-                success: function (response) {
-                    console.log(response);
-                    $('#mail').val(response.data.email);
-                    $('#contact').val(response.data.contact_no);
-                    $('#adrs').val(response.data.address + ',' + response.data.district + ',' + response
-                        .data.state);
-                    $('#pincode').val(response.data.pincode);
-
-                    $.each(response.store, function (index, value) {
-                        // Create a new table row
-                        var row = '<tr>' +
-                            '<td><div><input type="checkbox" name="store[]" value="' + value
-                                .store_ref_id + '"></div></td>' +
-                            '<td>' + value.store_name + '</td>' +
-                            '<td>' + value.store_code + '</td>' +
-                            '<td>' + value.user_name + '</td>' +
-                            '<td>' + value.store_geo + '</td>' +
-                            '<td>' + value.store_contact + '</td>' +
-                            '</tr>';
-
-                        // Append the new row to the tbody
-                        $('tbody').append(row);
-                    });
-
-                },
-                error: function (xhr, status, error) {
-
-                    alert('An error occurred: ' + error);
-                }
-            });
-        });
-    </script>
 @endsection
