@@ -5,8 +5,8 @@
                 <img src="{{ asset('assets/images/logo.png') }}" alt="" height="50px" class="mx-auto lightLogo">
             </a>
             <a href="./index.php" class="mx-auto">
-                <img src="{{ asset('assets/images/logo_1.png') }}" alt="" height="50px"
-                    class="mx-auto darkLogo" style="display: none;">
+                <img src="{{ asset('assets/images/logo_1.png') }}" alt="" height="50px" class="mx-auto darkLogo"
+                    style="display: none;">
             </a>
         </div>
         @php
@@ -152,27 +152,27 @@
                     </ul>
                 </div>
             </li>
-            <!--<li class="mb-1">-->
-            <!--    <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"-->
-            <!--        data-bs-target="#collapse8" aria-expanded="false">-->
-            <!--        <div class="btnname">-->
-            <!--            <i class="fa-solid fa-user-plus"></i> &nbsp;Recruitment-->
-            <!--        </div>-->
-            <!--        <div class="righticon d-flex mx-auto">-->
-            <!--            <i class="fa-solid fa-angle-down toggle-icon"></i>-->
-            <!--        </div>-->
-            <!--    </button>-->
-            <!--    <div class="collapse" id="collapse8">-->
-            <!--        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">-->
-            <!--            <li><a href="./list_recruit_job.php" class="d-inline-flex text-decoration-none rounded mt-3">Job-->
-            <!--                    Posting</a>-->
-            <!--            </li>-->
-            <!--        </ul>-->
-            <!--    </div>-->
-            <!--</li>-->
             <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"
-                    data-bs-target="#collapse9" aria-expanded="false">
+                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse8"
+                    aria-expanded="false">
+                    <div class="btnname">
+                        <i class="fa-solid fa-user-plus"></i> &nbsp;Recruitment
+                    </div>
+                    <div class="righticon d-flex mx-auto">
+                        <i class="fa-solid fa-angle-down toggle-icon"></i>
+                    </div>
+                </button>
+                <div class="collapse" id="collapse8">
+                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                        <li><a href="{{ route('recruit.list') }}" class="d-inline-flex text-decoration-none rounded mt-3">Job
+                                Posting</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="mb-1">
+                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse9"
+                    aria-expanded="false">
                     <div class="btnname">
                         <i class="fa-solid fa-credit-card"></i> &nbsp;Payroll
                     </div>
@@ -194,8 +194,8 @@
                 </div>
             </li>
             <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"
-                    data-bs-target="#collapse5" aria-expanded="false">
+                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse5"
+                    aria-expanded="false">
                     <div class="btnname">
                         <i class="fa-solid fa-clipboard-user"></i> &nbsp;Attendance
                     </div>
@@ -218,8 +218,8 @@
                 </div>
             </li>
             <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"
-                    data-bs-target="#collapse6" aria-expanded="false">
+                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse6"
+                    aria-expanded="false">
                     <div class="btnname">
                         <i class="fa-solid fa-comment-dots"></i> &nbsp;Request
                     </div>
@@ -333,9 +333,9 @@
             </li>
             <li class="mb-3">
                 @php
-                 $user_check = Auth::user()->id;
+                    $user_check = Auth::user()->id;
 
-                    $attd = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->count();
+                    $attd = DB::table('attendance')->where('user_id', $user_check)->whereDate('c_on', date('Y-m-d'))->count();
 
                     // if($attd==0){
 
@@ -361,24 +361,24 @@
                     // // }
                 @endphp
 
-                @if($attd==0)
+                @if($attd == 0)
 
-                <a onclick="getLocation()" >
-                    <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
-                        <div class="btnname">
-                            <i class="fa-solid fa-right-to-bracket" style="color: green;" ></i> &nbsp;CheckIn
-                        </div>
-                    </button>
-                </a>
+                    <a onclick="getLocation()">
+                        <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
+                            <div class="btnname">
+                                <i class="fa-solid fa-right-to-bracket" style="color: green;"></i> &nbsp;CheckIn
+                            </div>
+                        </button>
+                    </a>
                 @else
-                <a onclick="getLocation()" >
+                    <a onclick="getLocation()">
 
-                <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
-                    <div class="btnname">
-                        <i class="fa-solid fa-right-to-bracket" style="color: red;" ></i> &nbsp;CheckOut
-                    </div>
-                </button>
-                </a>
+                        <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
+                            <div class="btnname">
+                                <i class="fa-solid fa-right-to-bracket" style="color: red;"></i> &nbsp;CheckOut
+                            </div>
+                        </button>
+                    </a>
                 @endif
             </li>
 
@@ -667,7 +667,8 @@
                     {{-- <a>
                         <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
                             <div class="btnname">
-                                <i class="fa-solid fa-right-to-bracket" style="color: green;" onclick="getLocation()"></i> &nbsp;CheckIn
+                                <i class="fa-solid fa-right-to-bracket" style="color: green;"
+                                    onclick="getLocation()"></i> &nbsp;CheckIn
                             </div>
                         </button>
                     </a> --}}
@@ -717,40 +718,40 @@
     function getLocation() {
 
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    // Get latitude and longitude
-                    var latitude = position.coords.latitude;
-                    var longitude = position.coords.longitude;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                // Get latitude and longitude
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
 
-                      // console.log(latitude,longitude);
+                // console.log(latitude,longitude);
 
-                    $.ajax({
-                        url: "{{ route('get.coordinates') }}", // Make sure this matches your route
-                        type: 'POST',
-                        dataType: 'json', // Expecting a JSON response
-                        data: {
-                            latitude: latitude,
-                            longitude: longitude,
-                            _token: '{{ csrf_token() }}' // CSRF token for security
-                        },
-                        success: function(data) {
-                            // Process and display the location data
-                            // if (data.attd_status=='Success') {
-                                //  alert('Status: ' + data.attd_status);
-                                window.location.reload();
+                $.ajax({
+                    url: "{{ route('get.coordinates') }}", // Make sure this matches your route
+                    type: 'POST',
+                    dataType: 'json', // Expecting a JSON response
+                    data: {
+                        latitude: latitude,
+                        longitude: longitude,
+                        _token: '{{ csrf_token() }}' // CSRF token for security
+                    },
+                    success: function (data) {
+                        // Process and display the location data
+                        // if (data.attd_status=='Success') {
+                        //  alert('Status: ' + data.attd_status);
+                        window.location.reload();
 
 
-                        },
-                        // error: function(xhr, status, error) {
-                        //     // Handle errors here
-                        //     console.error('Error:', error);
-                        //     alert('Something went wrong.');
-                        // }
-                    });
+                    },
+                    // error: function(xhr, status, error) {
+                    //     // Handle errors here
+                    //     console.error('Error:', error);
+                    //     alert('Something went wrong.');
+                    // }
                 });
-            }
+            });
         }
+    }
 
     // getLocation();
 

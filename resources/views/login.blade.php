@@ -5,7 +5,7 @@
     <title>Rootments | Login</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" sizes="32*32" type="image/png">
+    <link rel="icon" href="{{ asset('assets/images/favicon_2.png') }}" sizes="32*32" type="image/png">
 
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
