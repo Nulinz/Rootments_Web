@@ -177,7 +177,7 @@ class ClusterController extends Controller
             ->where('task_status', 'Completed')
             ->count();
 
-        return view('cluster.mydashboard', ['tasks_todo' => $tasks_todo, 'tasks_todo_count' => $tasks_todo_count, 'tasks_inprogress' => $tasks_inprogress, 'tasks_inprogress_count' => $tasks_inprogress_count, 'tasks_onhold' => $tasks_onhold, 'tasks_onhold_count' => $tasks_onhold_count, 'tasks_complete' => $tasks_complete, 'tasks_complete_count' => $tasks_complete_count, 'employees' => $employees, 'role' => $role]);
+        return view('generaldashboard.mydashboard', ['tasks_todo' => $tasks_todo, 'tasks_todo_count' => $tasks_todo_count, 'tasks_inprogress' => $tasks_inprogress, 'tasks_inprogress_count' => $tasks_inprogress_count, 'tasks_onhold' => $tasks_onhold, 'tasks_onhold_count' => $tasks_onhold_count, 'tasks_complete' => $tasks_complete, 'tasks_complete_count' => $tasks_complete_count, 'employees' => $employees, 'role' => $role]);
 
 
         // return view ('cluster.mydashboard');

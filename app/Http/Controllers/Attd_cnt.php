@@ -86,6 +86,11 @@ class Attd_cnt extends Controller
         return view ('attendance.individual_list',['stores' => $stores]);
     }
 
+    public function overtime_attd()
+    {
+        return view ('attendance.overtime_list');
+    }
+
 
     public function get_store_per(Request $req)
     {

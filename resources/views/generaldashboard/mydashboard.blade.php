@@ -10,32 +10,7 @@
             <h4 class="m-0">My Dashboard</h4>
         </div>
 
-        <div class="container-fluid px-0 header">
-            <div class="container px-0 mt-2 tabbtns">
-                @php
-                    $roles_arr = [13, 14, 15, 16, 17, 18, 19];
-                    $userRoleId = Auth::user()->role_id;
-
-                @endphp
-                @if (!in_array($userRoleId, $roles_arr))
-                    <div class="my-2">
-                        <a href="{{ route('dashboard') }}"><button class="dashtabs">Overview</button></a>
-                    </div>
-                @endif
-                @if (!in_array($userRoleId, $roles_arr))
-                    <div class="my-2">
-                        <a href="{{ route('store.dashboard') }}"><button class="dashtabs ">Store
-                                Dashboard</button></a>
-                    </div>
-                @endif
-
-
-                <div class="my-2">
-                    <a href="{{ route('mydash.dashboard') }}"><button class="dashtabs ">My
-                            Dashboard</button></a>
-                </div>
-            </div>
-        </div>
+        @include('generaldashboard.tabs')
 
         <div class="container-fluid px-0 mt-2 stages">
             <div class="row">

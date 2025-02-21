@@ -23,7 +23,9 @@
                 $route = 'hr.dashboard';
             } elseif ($r_id == 12) {
                 $route = 'dashboard';
-            } else {
+            } elseif($r_id==11){
+                        $route = 'cluster.dashboard';
+            }else {
                 $route = 'mydash.dashboard';
             }
 
@@ -195,6 +197,9 @@
                         </li>
                         <li><a href="{{ route('attendance.individual') }}"
                                 class="d-inline-flex text-decoration-none rounded">Individual</a>
+                        </li>
+                        <li><a href="{{ route('attendance.overtime') }}"
+                                class="d-inline-flex text-decoration-none rounded">Overtime</a>
                         </li>
                     </ul>
                 </div>

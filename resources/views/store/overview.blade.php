@@ -8,21 +8,7 @@
             <h4 class="m-0">Overview</h4>
         </div>
 
-        <div class="container-fluid px-0 header">
-            <div class="container px-0 mt-2 tabbtns">
-                <div class="my-2">
-                    <a href="{{ route('dashboard') }}"><button class="dashtabs">Overview</button></a>
-                </div>
-                <div class="my-2">
-                    <a href="{{ route('store.dashboard') }}"><button class="dashtabs ">Store
-                            Dashboard</button></a>
-                </div>
-                <div class="my-2">
-                    <a href="{{ route('mydash.dashboard') }}"><button class="dashtabs ">My
-                            Dashboard</button></a>
-                </div>
-            </div>
-        </div>
+        @include('generaldashboard.tabs')
 
         <div class="container px-0 mt-2">
             <div class="row">

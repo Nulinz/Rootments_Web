@@ -141,7 +141,7 @@ class DashBoardController extends Controller
                 // dd($attd_data);
 
 
-         return view('generaldashboard.overview',['overview'=>$overview,'pendingLeaves'=>$pendingLeaves,'tolatask'=>$tolatask,'staffNames'=>$staffNames,'taskCounts'=>$taskCounts,'categoryNames'=>$categoryNames,'categorytaskCounts'=>$categorytaskCounts,'subcategoryNames'=>$subcategoryNames,'subcategorytaskCounts'=>$subcategorytaskCounts]);
+         return view('store.overview',['overview'=>$overview,'pendingLeaves'=>$pendingLeaves,'tolatask'=>$tolatask,'staffNames'=>$staffNames,'taskCounts'=>$taskCounts,'categoryNames'=>$categoryNames,'categorytaskCounts'=>$categorytaskCounts,'subcategoryNames'=>$subcategoryNames,'subcategorytaskCounts'=>$subcategorytaskCounts]);
     }
 
     public function attendanceApprove(Request $request)
@@ -186,7 +186,7 @@ class DashBoardController extends Controller
 
 
 
-        return view('generaldashboard.storedashboard', ['users' => $users]);
+        return view('store.storedashboard', ['users' => $users]);
     }
 
     public function useragainststask(Request $request)

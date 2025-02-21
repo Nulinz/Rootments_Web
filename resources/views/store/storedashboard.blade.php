@@ -11,21 +11,8 @@
             <h4 class="m-0">Store Dashboard</h4>
         </div>
 
-        <div class="container-fluid px-0 header">
-            <div class="container px-0 mt-2 tabbtns">
-                <div class="my-2">
-                    <a href="{{ route('dashboard') }}"><button class="dashtabs">Overview</button></a>
-                </div>
-                <div class="my-2">
-                    <a href="{{ route('store.dashboard') }}"><button class="dashtabs ">Store
-                            Dashboard</button></a>
-                </div>
-                <div class="my-2">
-                    <a href="{{ route('mydash.dashboard') }}"><button class="dashtabs ">My
-                            Dashboard</button></a>
-                </div>
-            </div>
-        </div>
+        @include('generaldashboard.tabs')
+
         <div class="container px-0 mt-2">
 
             <div class="proftabs mt-0 border-0">
@@ -204,10 +191,10 @@
             //                             <h6 class="mb-0">${task.task_title}</h6> <!-- Changed task.title -->
             //                         </div>
             //                         <div class="tasknamefile">
-            //                             ${task.task_file ? 
+            //                             ${task.task_file ?
             //                                 `<a href="${task.task_file}" data-bs-toggle="tooltip" data-bs-title="Attachment" download>
             //                                     <i class="fa-solid fa-paperclip"></i>
-            //                                 </a>` 
+            //                                 </a>`
             //                             : ''}
             //                         </div>
             //                     </div>
@@ -218,7 +205,7 @@
             //                     </div>
             //                     <div class="taskdescp mb-2">
             //                         <h6 class="mb-0">${task.task_description}</h6> <!-- Changed task.description -->
-            //                         <h5 class="mb-0">${task.assigned_by}</h5> 
+            //                         <h5 class="mb-0">${task.assigned_by}</h5>
             //                     </div>
             //                     <div class="taskdate">
             //                         <h6 class="m-0 startdate"><i class="fa-regular fa-calendar"></i>&nbsp; ${task.start_date}</h6>

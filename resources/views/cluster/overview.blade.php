@@ -8,7 +8,7 @@
         </div>
 
         <!-- Cluster Tabs -->
-        @include('cluster.tabs')
+        @include('generaldashboard.tabs')
 
         <div class="container px-0 mt-3">
             <div class="row">

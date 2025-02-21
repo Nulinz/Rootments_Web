@@ -8,7 +8,7 @@
         </div>
 
         <!-- Tabs -->
-        @include ('hr.tabs')
+        @include('generaldashboard.tabs')
 
         <div class="container px-0 mt-2">
             <div class="row">
