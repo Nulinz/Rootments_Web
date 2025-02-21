@@ -204,7 +204,7 @@ class ClusterController extends Controller
         $store_list = DB::table('cluster_store as cs')
             ->leftJoin('stores as store', 'store.id', '=', 'cs.store_id') // Joining users table
             ->where('cs.cluster_id', $cluster->id)
-            ->select('store.store_code', 'store.id') // Select the required fields from users table
+            ->select('store.store_code', 'store.id','store.store_name') // Select the required fields from users table
             ->get();
 
         $role = [12, 13, 14, 15, 16, 17, 18, 19]; // List of role IDs
@@ -212,6 +212,7 @@ class ClusterController extends Controller
             // Initialize an empty array to store the final roles for this store
             $store_roles = [
                 'sl' => $sl->store_code, // Store the store code as 'sl'
+                'st_name' => $sl->store_name, // Store the store code as 'sl'
                 'roles' => [] // This will hold the roles array
             ];
 

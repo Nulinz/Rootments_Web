@@ -712,7 +712,6 @@
 </div>
 
 
-{{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMu1ziGPS3UWIMe2-KCxufJK6UBk-f6Xs&callback=initMap" async defer></script> --}}
 
 <script>
     function getLocation() {

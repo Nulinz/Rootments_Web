@@ -80,7 +80,8 @@ class location_cnt extends Controller
                         'in_location' => $district,
                         'in_add' => $formattedAddress,
                         'in_time' => now()->format('H:i:s'),
-                        'c_on' => now()->format('Y-m-d')
+                        'c_on' => now()->format('Y-m-d'),
+                        'status' => 'Active'
                     ]);
                 }
             else{

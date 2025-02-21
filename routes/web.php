@@ -158,8 +158,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         //ajax route
         Route::post('/get_cluster_per', 'ClusterController@cluster_det')->name('get_cluster_per');
+        Route::post('/get_store_per', 'Attd_cnt@get_store_per')->name('get_store_per');
+
         Route::post('payroll-drop', 'PayrollController@drop_show')->name('payroll.drop');
         Route::post('payroll-list_per', 'PayrollController@store_per')->name('payroll.listPerson');
+        Route::post('/get_ind_attd', 'Attd_cnt@get_ind_attd')->name('get_ind_attd');
 
         // Payroll
         Route::get('payroll-list', 'PayrollController@index')->name('payroll.index');
@@ -167,7 +170,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         // Attendance
         Route::get('daily-attendance', 'Attd_cnt@daily_attd')->name('attendance.daily');
+        Route::post('daily-attendance', 'Attd_cnt@daily_attd')->name('attendance.list');
         Route::get('monthly-attendance', 'Attd_cnt@monthly_attd')->name('attendance.monthly');
+        Route::post('monthly-attendance', 'Attd_cnt@monthly_attd')->name('attendance.monthly_list');
         Route::get('individual-attendance', 'Attd_cnt@individual_attd')->name('attendance.individual');
         Route::post('get-coordinates', 'location_cnt@index')->name('get.coordinates');
 

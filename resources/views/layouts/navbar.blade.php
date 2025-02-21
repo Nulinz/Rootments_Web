@@ -44,6 +44,7 @@
             $user = DB::table('attendance')
                 ->leftJoin('users', 'attendance.user_id', '=', 'users.id')
                 ->where('users.id', $auth_id)
+                ->whereDate('c_on', date('Y-m-d'))
                 ->select('attendance.in_time', 'attendance.c_on')
                 ->first();
 
@@ -52,7 +53,7 @@
 
             if ($user) {
                 $in_time = !empty($user->in_time)
-                    ? Carbon::parse($user->in_time)->setTimezone($timezone)->format('H:i')
+                    ? Carbon::parse($user->in_time)->setTimezone($timezone)->format('h:i a')
                     : 'N/A';
 
                 $c_on = !empty($user->c_on)
@@ -66,7 +67,7 @@
 
 
 
-        <div class="user" data-bs-toggle="tooltip" data-bs-title="{{ 'In Time: ' . $in_time . ', Date: ' . $c_on }}">
+        <div class="user" data-bs-toggle="tooltip" data-bs-title="{{$in_time .'-'. $c_on }}">
 
             @php
                 $auth_id = Auth::user()->id;

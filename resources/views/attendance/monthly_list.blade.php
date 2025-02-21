@@ -7,7 +7,8 @@
             <h4 class="m-0">Monthly Attendance List</h4>
         </div>
 
-        <form action="" method="post" id="">
+        <form action="{{ route('attendance.monthly_list')}}" method="post" id="">
+            @csrf
             <div class="container-fluid maindiv my-3">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
@@ -18,25 +19,18 @@
                         <label for="stores">Stores <span>*</span></label>
                         <select class="form-select" name="stores" id="stores" required>
                             <option value="" selected disabled>Select Options</option>
-                            <option value="Store 1">Store 1</option>
-                            <option value="Store 2">Store 2</option>
-                            <option value="Store 3">Store 3</option>
-                            <option value="Store 4">Store 4</option>
-                            <option value="Store 5">Store 5</option>
-                            <option value="Store 6">Store 6</option>
-                            <option value="Store 7">Store 7</option>
-                            <option value="Store 8">Store 8</option>
-                            <option value="Store 9">Store 9</option>
-                            <option value="Store 10">Store 10</option>
-                            <option value="Store 11">Store 11</option>
-                            <option value="Store 12">Store 12</option>
+                            @foreach ($stores as $store)
+                                <option value="{{$store->id}}" {{ old('stores') == $store->id ? 'selected' : '' }}>
+                                    {{$store->store_name}}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
             </div>
 
             <div class="col-sm-12 col-md-12 col-xl-12 mt-3 w-50 d-flex justify-content-center align-items-center mx-auto">
-                <button type="button" class="formbtn">Save</button>
+                <button type="submit" class="formbtn">Save</button>
             </div>
         </form>
 
@@ -71,13 +65,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($lists as $list)
                         <tr>
-                            <td>1</td>
-                            <td>EMP01</td>
-                            <td>Sabari</td>
-                            <td>Admin</td>
-                            <td>25</td>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$list->emp_code}}</td>
+                            <td>{{$list->name}}</td>
+                            <td>{{$list->role}}</td>
+                            <td>{{$list->attd_count}}</td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
