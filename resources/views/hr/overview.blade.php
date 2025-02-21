@@ -39,7 +39,7 @@
                                                     @endif
                                                     <div>
                                                         <h5 class="mb-0">{{ $data->name }}</h5>
-                                                        <h6 class="mb-0">Kerala</h6>
+                                                        <h6 class="mb-0">{{ $data->in_location }}</h6>
                                                     </div>
                                                 </div>
                                             </td>
@@ -52,9 +52,12 @@
                                                         data-id="{{ $data->user_id }}" data-bs-title="Approved"><i
                                                             class="fas fa-circle-check text-success"></i></button>
                                                 @else
+                                                     @if(!empty($data->in_time))
+
                                                     <button class="approve-attendance" data-bs-toggle="tooltip"
                                                         data-id="{{ $data->user_id }}" data-bs-title="Not Approved"><i
                                                             class="fas fa-circle-check text-warning"></i></button>
+                                                    @endif
                                                 @endif
                                             </td>
                                         </tr>

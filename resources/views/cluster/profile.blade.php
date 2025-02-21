@@ -120,7 +120,7 @@
                                                 <th>Store Manager</th>
                                                 <th>Location</th>
                                                 <th>Contact Number</th>
-                                                {{-- <th>Status</th> --}}
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -132,9 +132,12 @@
                                                     <td>{{ $cs->store_code }}</td>
                                                     <td>{{ $cs->store_geo }}</td>
                                                     <td>{{ $cs->st_name }}</td>
-                                                    {{-- <td>
-                                                        <span class="text-success">Active</span>
-                                                    </td> --}}
+                                                    <td>
+                                                        <div class="d-flex gap-3">
+                                                            <a href="{{ route('store.view', ['id' => $cs->id]) }}" data-bs-toggle="tooltip"
+                                                                data-bs-title="View Profile"><i class="fas fa-eye"></i></a>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

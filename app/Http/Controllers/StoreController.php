@@ -15,13 +15,27 @@ class StoreController extends Controller
     {
         $user = Auth::user();
 
-        $query = DB::table('stores');
-        
-        if ($user->dept !== 'Admin' && $user->dept !== 'HR') {
-            $query->where('id', $user->store_id);
+        if($user->role_id==11){
+
+            $store = DB::table('m_cluster as mc')
+            ->leftJoin('cluster_store as cs','cs.cluster_id','=','mc.id')
+            ->leftJoin('stores as st','st.id','=','cs.store_id')
+            ->select('st.id','st.store_code','st.store_name','st.store_mail','st.store_contact')
+            ->where('cl_name',$user->id)
+            ->get();
+
+        }else{
+
+            $query = DB::table('stores');
+
+            if ($user->dept !== 'Admin' && $user->dept !== 'HR') {
+                $query->where('id', $user->store_id);
+            }
+
+            $store = $query->get();
         }
-        
-        $store = $query->get();
+
+
 
 
         return view('store.list',['store'=>$store]);
@@ -37,7 +51,7 @@ class StoreController extends Controller
         $store_no = 'STORE' . str_pad($max_id + 1, 2, '0', STR_PAD_LEFT);
 
         // $role_data= DB::table('roles')->groupBY('role')->get();
-        
+
         $role_data = DB::table('roles')
                     ->whereNotIn('id', [1,2,3,4,5,6,7,8,9,10,11])
                     ->groupBy('role')

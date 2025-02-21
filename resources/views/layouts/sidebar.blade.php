@@ -28,43 +28,10 @@
             }
 
         @endphp
+
         <ul class="list-unstyled mt-5 ps-0">
-            <!--<li class="mb-1">-->
-            <!--    <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"-->
-            <!--        data-bs-target="#collapse1" aria-expanded="false">-->
-            <!--        <div class="btnname">-->
-            <!--            <i class="bx bxs-dashboard"></i> &nbsp;Dashboard-->
-            <!--        </div>-->
-            <!--        <div class="righticon d-flex mx-auto">-->
-            <!--            <i class="fa-solid fa-angle-down toggle-icon"></i>-->
-            <!--        </div>-->
-            <!--    </button>-->
-            <!--    <div class="collapse" id="collapse1">-->
-            <!--        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">-->
-            <!--            <li><a href="{{ route('dashboard') }}"-->
-            <!--                    class="d-inline-flex text-decoration-none rounded mt-3">General</a>-->
-            <!--            </li>-->
-            <!--            <li><a href="./hr_dashboard.php" class="d-inline-flex text-decoration-none rounded">HR</a>-->
-            <!--            </li>-->
-            <!--            <li><a href="./operational_dashboard.php"-->
-            <!--                    class="d-inline-flex text-decoration-none rounded">Operational</a>-->
-            <!--            </li>-->
-            <!--            <li><a href="./area_dashboard.php" class="d-inline-flex text-decoration-none rounded">Area</a>-->
-            <!--            </li>-->
-            <!--            <li><a href="./cluster_dashboard.php"-->
-            <!--                    class="d-inline-flex text-decoration-none rounded">Cluster</a>-->
-            <!--            </li>-->
-            <!--            <li><a href="./repair_dashboard.php"-->
-            <!--                    class="d-inline-flex text-decoration-none rounded">Repair</a>-->
-            <!--            </li>-->
-            <!--            <li><a href="./warehouse_dashboard.php"-->
-            <!--                    class="d-inline-flex text-decoration-none rounded">Warehouse</a>-->
-            <!--            </li>-->
-            <!--            <li><a href="./store_dashboard.php" class="d-inline-flex text-decoration-none rounded">Store</a>-->
-            <!--            </li>-->
-            <!--        </ul>-->
-            <!--    </div>-->
-            <!--</li>-->
+
+
             <li class="mb-1">
                 <a href="{{ route($route) }}">
                     <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"
@@ -78,6 +45,8 @@
                     </button>
                 </a>
             </li>
+            @if(hasAccess($r_id, 'store'))
+
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse3"
                     aria-expanded="false">
@@ -97,6 +66,9 @@
                     </ul>
                 </div>
             </li>
+            @endif
+            @if(hasAccess($r_id, 'employee'))
+
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse2"
                     aria-expanded="false">
@@ -115,6 +87,8 @@
                     </ul>
                 </div>
             </li>
+            @endif
+            @if(hasAccess($r_id, 'cluster'))
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse10"
                     aria-expanded="false">
@@ -133,6 +107,8 @@
                     </ul>
                 </div>
             </li>
+            @endif
+            @if(hasAccess($r_id, 'task'))
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse4"
                     aria-expanded="false">
@@ -152,6 +128,8 @@
                     </ul>
                 </div>
             </li>
+            @endif
+            @if(hasAccess($r_id, 'recruitment'))
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse8"
                     aria-expanded="false">
@@ -170,6 +148,8 @@
                     </ul>
                 </div>
             </li>
+            @endif
+            @if(hasAccess($r_id, 'payroll'))
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse9"
                     aria-expanded="false">
@@ -193,6 +173,8 @@
                     </ul>
                 </div>
             </li>
+            @endif
+            @if(hasAccess($r_id, 'attendance'))
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse5"
                     aria-expanded="false">
@@ -217,6 +199,8 @@
                     </ul>
                 </div>
             </li>
+            @endif
+            @if(hasAccess($r_id, 'request'))
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse6"
                     aria-expanded="false">
@@ -245,13 +229,17 @@
                                 class="d-inline-flex text-decoration-none rounded">Resignation
                                 Request</a>
                         </li>
+                        @if(hasAccess($r_id, 'recruit_req'))
                         <li><a href="{{ route('recruitment.index') }}"
                                 class="d-inline-flex text-decoration-none rounded">Recruitment
                                 Request</a>
+                        @endif
                         </li>
                     </ul>
                 </div>
             </li>
+            @endif
+            @if(hasAccess($r_id, 'approval'))
             <li class="mb-1">
                 <a href="{{ route('approve.index') }}">
                     <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"
@@ -331,34 +319,14 @@
                     </button>
                 </a>
             </li>
+            @endif
             <li class="mb-3">
                 @php
                     $user_check = Auth::user()->id;
 
                     $attd = DB::table('attendance')->where('user_id', $user_check)->whereDate('c_on', date('Y-m-d'))->count();
 
-                    // if($attd==0){
 
-
-                    // }else{
-                    //     // $attd_ch = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
-                    //     // if(is_null($attd_ch->out_location)){
-                    //     //     $val = 'attd_out';
-                    //     // }else{
-                    //     //     $val = 'attd_mark';
-                    //     // }
-
-
-                    // }
-                    // // if($attd_data=='attd_in'){
-
-                    // //     $attd = 'CheckOut';
-                    // //     $route = 'dashboard.checkin';
-
-                    // // }else{
-                    // //     $attd = 'CheckIn';
-                    // //     $route = 'dashboard.checkout';
-                    // // }
                 @endphp
 
                 @if($attd == 0)
@@ -398,6 +366,8 @@
     </div>
 </aside>
 
+<?php
+/*
 <!-- Responsive Sidebar -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
@@ -711,6 +681,8 @@
         </div>
     </div>
 </div>
+*/
+?>
 
 
 

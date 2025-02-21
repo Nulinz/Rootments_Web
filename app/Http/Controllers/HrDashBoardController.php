@@ -36,7 +36,8 @@ class HrDashBoardController extends Controller
                 'attendance.user_id',
                 'attendance.attend_status',
                 'attendance.out_time',
-                'attendance.status'
+                'attendance.status',
+                'attendance.in_location'
             )
             ->whereIn('users.role_id', $managerRoles)
             ->where('users.id', '!=', $user->id)

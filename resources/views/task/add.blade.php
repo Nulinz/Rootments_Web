@@ -60,31 +60,59 @@
                                                 </div>
 
                                                 @php
-                                                    $user = auth()->user();
-                                                    $employeesQuery = \App\Models\User::where(
-                                                        'role_id',
-                                                        $role->id,
-                                                    )->where('id', '!=', $user->id);
+                                                   $user = auth()->user();
 
+                                                $employees = collect(); // Initialize an empty collection to hold all employees
+
+                                                if ($user->role_id != 11) {
+                                                    // Query for employees where role_id is not 11
+                                                    $employeesQuery = \App\Models\User::where('role_id', $role->id)
+                                                                                    ->where('id', '!=', $user->id);
+
+                                                    // If the user is not in Admin or HR, filter by store_id
                                                     if (!in_array($user->dept, ['Admin', 'HR'])) {
                                                         $employeesQuery->where('store_id', $user->store_id);
                                                     }
 
+                                                    // Get employees
                                                     $employees = $employeesQuery->get();
+                                                } else {
+                                                    // For users with role_id 11, get clusters associated with the user
+                                                    $emp_clusters = \App\Models\Cluster::where('cl_name', $user->id)->get();
+
+                                                    // Loop through each cluster and fetch related employees
+                                                    foreach ($emp_clusters as $emp_cluster) {
+                                                        // For each cluster, get related Clusterstore records
+                                                        $emp_store = \App\Models\Clusterstore::where('cluster_id', $emp_cluster->id)->get();
+
+                                                        // Loop through each store and get employees with role_id 12
+                                                        foreach ($emp_store as $store) {
+                                                            // Fetch employees for each store and role_id 12
+                                                            $storeEmployees = \App\Models\User::where('store_id', $store->store_id)
+                                                                                            ->where('role_id', 12)
+                                                                                            ->get(); // Use get() to get multiple employees
+
+                                                            // Merge the employees into the $employees collection
+                                                            $employees = $employees->merge($storeEmployees);
+                                                        }
+                                                    }
+                                                }
                                                 @endphp
 
-                                                @if ($employees->isNotEmpty())
+                                                {{-- @if ($employees->isNotEmpty()) --}}
                                                     <ul class="ms-4 list-unstyled">
                                                         @foreach ($employees as $employee)
+                                                                @if($employee->role_id==$role->id)
                                                             <li>
                                                                 <input type="checkbox"
                                                                     class="me-2 employee-checkbox role-{{ $role->id }}"
                                                                     name="assign_to[]" value="{{ $employee->id }}">
                                                                 <label>{{ $employee->name }}</label>
                                                             </li>
+                                                            @endif
                                                         @endforeach
                                                     </ul>
-                                                @endif
+                                                {{-- @endif --}}
                                             @endforeach
                                         @endforeach
 
@@ -145,7 +173,7 @@
         </form>
     </div>
 
-   
+
     <script>
         $(document).ready(function() {
             $('#category').on('change', function() {

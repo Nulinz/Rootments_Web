@@ -106,22 +106,11 @@ $query->where('tasks.assign_to', '!=', $user->id);
 
 $task = $query->get();
 
-        // $task = DB::table('tasks')
-        // ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
-        // ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
-        // ->leftJoin('users', 'tasks.assign_by', '=', 'users.id')
-        // ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
-        // ->select(
-        //     'tasks.*',
-        //     'categories.category',
-        //     'sub_categories.subcategory',
-        //     'users.name',
-        //     'roles.role_dept',
-        //     'roles.role'
-        // )
-        // ->get();
+        $count = DB::table('users')
+        ->leftJoin('m_cluster as mc', 'mc.cl_name', '=', 'users.id')
+        ->count();  // Counts all users, even those without a match in m_cluster
 
-        return view('task.list',['task'=>$task]);
+        return view('task.list',['task'=>$task,'count'=> $count]);
 
     }
 
@@ -150,8 +139,16 @@ $task = $query->get();
 
     // }
 
-    public function create()
+    public function create(Request $req)
 {
+
+
+    $hasCluster = $req->is('task-add/cluster');
+
+    if ($hasCluster) {
+        $cluster=1;
+     }
+
     $user = auth()->user();
     $role = Role::find($user->role_id);
     $store = DB::table('stores')->where('id', $user->store_id)->first();
@@ -172,10 +169,24 @@ $task = $query->get();
 
     $cat = DB::table('categories')->where('status', 1)->get();
 
+        // $user = Auth::user();
+
+        // $employeesQuery = DB::table('users')->where('role_id',$user->id)->where('id', '!=', $user->id);
+
+        // if (!in_array($user->dept, ['Admin', 'HR'])) {
+        //     $employeesQuery->where('store_id', $user->store_id);
+        // }
+
+        // $employees = $employeesQuery->get();
+
+        // return $employees;
+
     return view('task.add', [
         'cat' => $cat,
         'assignedRoles' => $assignedRoles,
-        'user'=>$user
+        'user'=>$user,
+        'employees'=>$employees ?? 0,
+        'cluster'=>$cluster ?? 0
     ]);
 }
 

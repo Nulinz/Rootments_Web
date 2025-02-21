@@ -4,7 +4,11 @@
     <div class="sidebodydiv px-5 py-3">
         <div class="sidebodyhead">
             <h4 class="m-0">Task List</h4>
-            <a href="{{ route('task.add') }}"><button class="listbtn">+ Add Task</button></a>
+            <div>
+                <a href="{{ route('task.add') }}"><button class="listbtn">+ Add Task</button></a>
+                {{-- <a href="{{ route('task.add') }}"><button class="listbtn">+ Add Task</button></a> --}}
+            </div>
+
         </div>
 
         <div class="container-fluid mt-4 listtable">
@@ -37,7 +41,7 @@
                             <th>Priority</th>
                             <th>Start Date</th>
                             <th>End Date</th>
-                           
+
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -49,9 +53,9 @@
                                 <td>{{ $data->category }}</td>
                                 <td>{{ $data->subcategory }}</td>
                                 <td>{{ $data->priority }}</td>
-                                <td>{{ $data->start_date }}</td> 
+                                <td>{{ $data->start_date }}</td>
                                 <td>{{ $data->end_date }}</td>
-                                
+
                                 <td>
                                     <div class="d-flex gap-3">
                                         <a href="{{ route('task.view', ['id' => $data->id]) }}" data-bs-toggle="tooltip"
@@ -66,20 +70,20 @@
             </div>
         </div>
     </div>
-    
+
     <script>
         document.getElementById("print").addEventListener("click", function(e) {
             e.preventDefault();
-    
+
             var table = document.querySelector(".example");
             var clonedTable = table.cloneNode(true);
-    
+
             clonedTable.querySelectorAll("tr").forEach(row => {
                 if (row.lastElementChild) {
                     row.removeChild(row.lastElementChild);
                 }
             });
-    
+
             var printWindow = window.open('', '', 'height=600,width=800');
             printWindow.document.write(`
             <html>
@@ -99,14 +103,14 @@
             printWindow.print();
             printWindow.close();
         });
-    
+
         document.getElementById("excel").addEventListener("click", function(e) {
             e.preventDefault();
-    
+
             var table = document.querySelector(".example");
             var csv = [];
             var rows = table.querySelectorAll("tr");
-    
+
             rows.forEach(row => {
                 var rowData = [];
                 var cells = Array.from(row.children);
@@ -115,7 +119,7 @@
                 });
                 csv.push(rowData.join(","));
             });
-    
+
             var csvBlob = new Blob([csv.join("\n")], {
                 type: "text/csv"
             });

@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cluster extends Model
+class Clusterstore extends Model
 {
     use HasFactory;
 
-    protected  $table= 'm_cluster';
+    protected $table= 'cluster_store';
 }

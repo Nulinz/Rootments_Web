@@ -97,6 +97,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         // Task
         Route::get('task-list', 'TaskController@index')->name('task.index');
         Route::get('task-add', 'TaskController@create')->name('task.add');
+        Route::get('task-add/cluster', 'TaskController@create')->name('task.add');
         Route::post('get-subcategories', 'TaskController@getSubcategories')->name('get_sub_cat');
         Route::post('task-store', 'TaskController@store')->name('task.store');
         Route::get('task-view/{id}', 'TaskController@show')->name('task.view');
@@ -132,7 +133,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('recruitment-add', 'RecruitmentController@create')->name('recruitment.add');
         Route::post('recruitment-store', 'RecruitmentController@store')->name('recruitment.store');
 
-        // Request Approval 
+        // Request Approval
         Route::get('approve-list', 'ApproveController@index')->name('approve.index');
         Route::get('approveleave-list', 'ApproveController@leaveindex')->name('approveleave.index');
         Route::get('approverepair-list', 'ApproveController@repairindex')->name('approverepair.index');

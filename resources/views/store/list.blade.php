@@ -59,20 +59,20 @@
             </div>
         </div>
     </div>
-    
+
     <script>
         document.getElementById("print").addEventListener("click", function(e) {
             e.preventDefault();
-        
+
             var table = document.querySelector(".example");
             var clonedTable = table.cloneNode(true);
-        
+
             clonedTable.querySelectorAll("tr").forEach(row => {
                 if (row.lastElementChild) {
                     row.removeChild(row.lastElementChild);
                 }
             });
-        
+
             var printWindow = window.open('', '', 'height=600,width=800');
             printWindow.document.write(`
             <html>
@@ -92,14 +92,14 @@
             printWindow.print();
             printWindow.close();
         });
-        
+
         document.getElementById("excel").addEventListener("click", function(e) {
             e.preventDefault();
-        
+
             var table = document.querySelector(".example");
             var csv = [];
             var rows = table.querySelectorAll("tr");
-        
+
             rows.forEach(row => {
                 var rowData = [];
                 var cells = Array.from(row.children);
@@ -108,7 +108,7 @@
                 });
                 csv.push(rowData.join(","));
             });
-        
+
             var csvBlob = new Blob([csv.join("\n")], {
                 type: "text/csv"
             });
