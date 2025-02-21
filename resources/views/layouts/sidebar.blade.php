@@ -142,7 +142,8 @@
                 </button>
                 <div class="collapse" id="collapse8">
                     <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                        <li><a href="{{ route('recruit.list') }}" class="d-inline-flex text-decoration-none rounded mt-3">Job
+                        <li><a href="{{ route('recruit.list') }}"
+                                class="d-inline-flex text-decoration-none rounded mt-3">Job
                                 Posting</a>
                         </li>
                     </ul>
@@ -480,25 +481,25 @@
                         </ul>
                     </div>
                 </li>
-                <!--<li class="mb-1">-->
-                <!--    <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"-->
-                <!--        data-bs-target="#collapse8" aria-expanded="false">-->
-                <!--        <div class="btnname">-->
-                <!--            <i class="fa-solid fa-user-plus"></i> &nbsp;Recruitment-->
-                <!--        </div>-->
-                <!--        <div class="righticon d-flex mx-auto">-->
-                <!--            <i class="fa-solid fa-angle-down toggle-icon"></i>-->
-                <!--        </div>-->
-                <!--    </button>-->
-                <!--    <div class="collapse" id="collapse8">-->
-                <!--        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">-->
-                <!--            <li><a href="./list_recruit_job.php"-->
-                <!--                    class="d-inline-flex text-decoration-none rounded mt-3">Job-->
-                <!--                    Posting</a>-->
-                <!--            </li>-->
-                <!--        </ul>-->
-                <!--    </div>-->
-                <!--</li>-->
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#collapse8" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-user-plus"></i> &nbsp;Recruitment
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" id="collapse8">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            <li><a href="{{ route('recruit.list') }}"
+                                    class="d-inline-flex text-decoration-none rounded mt-3">Job
+                                    Posting</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <!--<li class="mb-1">-->
                 <!--    <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"-->
                 <!--        data-bs-target="#collapse9" aria-expanded="false">-->

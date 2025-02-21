@@ -16,9 +16,9 @@
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('subcategory') }}" type="button">Sub Category</button>
                 </li>
-                <!-- <li class="nav-item" role="presentation">-->
-                <!--    <button class="profiletabs" data-url="{{ route('roles') }}" type="button">Role</button>-->
-                <!--</li> -->
+                <!-- <li class="nav-item" role="presentation">
+                    <button class="profiletabs" data-url="{{ route('roles') }}" type="button">Role</button>
+                </li> -->
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('password') }}" type="button">Password</button>
                 </li>
@@ -26,9 +26,9 @@
                     <button class="profiletabs" data-url="{{ route('permission') }}" type="button">Roles &
                         Permissions</button>
                 </li>
-                <!--<li class="nav-item" role="presentation">-->
-                <!--    <button class="profiletabs" data-url="{{ route('theme') }}" type="button">Themes</button>-->
-                <!--</li>-->
+                <!--<li class="nav-item" role="presentation">
+                    <button class="profiletabs" data-url="{{ route('theme') }}" type="button">Themes</button>
+                </li>-->
             </ul>
 
         </div>

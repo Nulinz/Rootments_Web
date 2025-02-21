@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
     <link rel="stylesheet" href="{{ asset('assets/css/dashboard_main.css') }}">
 
     <div class="sidebodydiv px-5 py-3">
@@ -139,34 +140,23 @@
                 }],
                 chart: {
                     type: "bar",
-                    height: 400,
-                    dropShadow: {
-                        enabled: true
-                    }, // Adds shadow for a 3D effect
+                    height: 320,
                 },
                 plotOptions: {
                     bar: {
                         borderRadius: 0,
                         horizontal: true,
-                        barHeight: '80%', // Funnel shape effect
-                        isFunnel: true, // ApexCharts funnel chart
+                        barHeight: '80%',
                     },
                 },
                 dataLabels: {
-                    enabled: true,
+                    enabled: false,
                     formatter: function (val, opt) {
                         return opt.w.globals.labels[opt.dataPointIndex] + ': ' + val;
                     },
-                    dropShadow: {
-                        enabled: true
-                    }, // Adds depth effect
-                },
-                title: {
-                    text: 'Users Per Role Funnel',
-                    align: 'center',
                 },
                 xaxis: {
-                    categories: roleNames, // Dynamic role names
+                    categories: roleNames,
                 },
                 legend: {
                     show: false
