@@ -6,26 +6,21 @@
         </button>
         <div class="navlogo">
             <a href="./index.php" class="mx-auto">
-                <img src="{{ asset('assets/images/logo.png') }}" alt="" height="40px"
-                    class="mx-auto lightLogo">
+                <img src="{{ asset('assets/images/logo.png') }}" alt="" height="40px" class="mx-auto lightLogo">
             </a>
             <a href="./index.php" class="mx-auto">
-                <img src="{{ asset('assets/images/logo_1.png') }}" alt="" height="40px"
-                    class="mx-auto darkLogo" style="display: none;">
+                <img src="{{ asset('assets/images/logo_1.png') }}" alt="" height="40px" class="mx-auto darkLogo"
+                    style="display: none;">
             </a>
         </div>
         <div class="headimg">
             <a href="{{ route('settings') }}" data-bs-toggle="tooltip" data-bs-title="Settings">
-                <!--<img src="{{ asset('assets/images/setting.png') }}" height="28px" alt="">-->
-                <!--<i class="fas fa-gear"></i>-->
-                <i class='bx bx-cog'></i>
+                <i class="bx bx-cog"></i>
             </a>
         </div>
         <div class="headimg">
             <a href="" data-bs-toggle="tooltip" data-bs-title="Notifications">
-                <!--<img src="{{ asset('assets/images/bell.png') }}" height="28px" alt="">-->
-                <!--<i class="fas fa-bell"></i>-->
-                <i class='bx bx-bell'></i>
+                <i class="bx bx-bell"></i>
             </a>
         </div>
         <div class="theme-toggle" data-bs-toggle="tooltip" data-bs-title="Theme">
@@ -67,7 +62,7 @@
 
 
 
-        <div class="user" data-bs-toggle="tooltip" data-bs-title="{{$in_time .'-'. $c_on }}">
+        <div class="user" data-bs-toggle="tooltip" data-bs-title="{{$in_time . ' - ' . $c_on }}">
 
             @php
                 $auth_id = Auth::user()->id;

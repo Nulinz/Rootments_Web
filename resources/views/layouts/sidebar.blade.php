@@ -110,6 +110,25 @@
                 </div>
             </li>
             @endif
+            <li class="mb-1">
+                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse11"
+                    aria-expanded="false">
+                    <div class="btnname">
+                        <i class="fa-solid fa-chart-area"></i> &nbsp;Area
+                    </div>
+                    <div class="righticon d-flex mx-auto">
+                        <i class="fa-solid fa-angle-down toggle-icon"></i>
+                    </div>
+                </button>
+                <div class="collapse" id="collapse11">
+                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                        <li><a href="{{ route('area.list') }}"
+                                class="d-inline-flex text-decoration-none rounded mt-3">Area
+                                List</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             @if(hasAccess($r_id, 'task'))
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse4"

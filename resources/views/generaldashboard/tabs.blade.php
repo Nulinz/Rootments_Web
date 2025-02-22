@@ -28,17 +28,20 @@
         @endif
         @if($r_id == 3 || $r_id == 4 || $r_id == 5)
         <div class="my-2">
-            <a href="{{ route('hrkpi.dashboard') }}"><button class="dashtabs ">KPI
+            <a href="{{ route('hrkpi.dashboard') }}"><button class="dashtabs ">HR KPI
                     Dashboard</button></a>
         </div>
         @endif
+        <div class="my-2">
+            <a href="{{ route('area.kpidashboard') }}"><button class="dashtabs ">Area KPI
+                    Dashboard</button></a>
+        </div>
         @if($r_id==12)
         <div class="my-2">
             <a href="{{ route('store.dashboard') }}"><button class="dashtabs ">Store
                     Dashboard</button></a>
         </div>
         @endif
-
         @if($r_id==11)
         <div class="my-2">
             <a href="{{ route('cluster.strength') }}"><button class="dashtabs">Store Strength</button></a>
