@@ -88,7 +88,18 @@ class Attd_cnt extends Controller
 
     public function overtime_attd()
     {
-        return view ('attendance.overtime_list');
+        $att_ot = DB::table('attd_ot as over')
+        ->leftJoin('attendance as at','at.id','=','over.attd_id')
+        ->leftJoin('users','users.id','=','at.user_id')
+        ->leftJoin('roles','roles.id','=','users.role_id')
+        ->leftJoin('stores','stores.id','=','users.store_id')
+        ->select('users.name','users.emp_code','roles.role','stores.store_name','over.cat','over.time','over.id','at.c_on')
+        ->where('over.status','pending')
+        ->orderByDesc('over.id')
+        ->get();
+
+        // return($att_ot);
+         return view ('attendance.overtime_list',['ot_lists'=>$att_ot]);
     }
 
 
@@ -98,6 +109,24 @@ class Attd_cnt extends Controller
         $emp_list = DB::table('users')->where('store_id',$req->store_id)->select('id','name')->get();
 
         return response()->json($emp_list,200);
+    }
+
+
+    public function ot_approve(Request $req)
+    {
+
+        $prime_id = $req->input('attd_id');
+
+        $updated = DB::table('attd_ot')
+                     ->where('id', $prime_id)
+                     ->update(['status' => 'approved']);
+
+        if ($updated) {
+            return response()->json(['success' => true, 'message' => 'OT or Late approved!']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'User not found or already approved!']);
+
     }
 
 

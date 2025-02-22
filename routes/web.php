@@ -177,6 +177,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('individual-attendance', 'Attd_cnt@individual_attd')->name('attendance.individual');
         Route::get('overtime-attendance', 'Attd_cnt@overtime_attd')->name('attendance.overtime');
         Route::post('get-coordinates', 'location_cnt@index')->name('get.coordinates');
+        Route::post('attendance-ot', 'Attd_cnt@ot_approve')->name('ot.approve');
 
         // Recruitment
         Route::get('recruit-list', 'RecruitController@list')->name('recruit.list');

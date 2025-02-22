@@ -68,13 +68,25 @@ class location_cnt extends Controller
 
             $user = Auth::user()->id;
 
+            if(!is_null(Auth::user()->store_id)){
+
+            $st_time = DB::table('stores')->where('id',Auth::user()->store_id)->select('stores.store_start_time','stores.store_end_time')->first();
+
+            // dd($st_time);
+
+            }
+
+            // dd($st_end_time,now()->format('H:i:s'));
+           // Get the current time and the end time
+
+
             $alreadyLoggedIn = DB::table('attendance')
             ->where('user_id', $user)
             ->whereDate('c_on', now()->format('Y-m-d'))
             ->exists();
 
             if (!$alreadyLoggedIn) {
-                    DB::table('attendance')->insert([
+                   $last_id  = DB::table('attendance')->insertGetId([
                         'user_id' => $user,
                         'attend_status' => 'Present',
                         'in_location' => $district,
@@ -83,26 +95,72 @@ class location_cnt extends Controller
                         'c_on' => now()->format('Y-m-d'),
                         'status' => 'Active'
                     ]);
+
+                    $c_time = Carbon::now(); // Get the current time using Carbon
+
+                    // Assuming store_start_time is stored in $st_time->store_start_time as a Carbon instance
+                    $start_time = Carbon::parse($st_time->store_start_time); // Convert store start time to a Carbon instance
+
+                    // Calculate the 5-minute range (+5 and -5 minutes)
+                    $start_time_plus_5 = $start_time->copy()->addMinutes(5);
+                    $start_time_minus_5 = $start_time->copy()->subMinutes(5);
+
+
+
+
+                    if (!($c_time >= $start_time_minus_5 && $c_time <= $start_time_plus_5)) {
+
+
+
+                       // Calculate the difference in hours, minutes, and seconds
+                        $diff = $start_time->diff($c_time);
+
+                        // Format the difference in hours, minutes, and seconds
+                        $late = $diff->format('%H:%I');  // Example output: 02:30:00
+
+                        // Output the result
+                        // dd($formattedDiff);
+
+
+                        DB::table('attd_ot')->insert([
+                            'attd_id' => $last_id,
+                            'cat' => 'late',
+                            'time' => $late,
+                            'status' => 'pending',
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]);
+                    }
+
+
                 }
             else{
 
-                $str = Auth::user();
+                $get_last = DB::table('attendance')
+                ->where('user_id', $user)
+                ->whereDate('c_on', now()->format('Y-m-d'))
+                ->orderBy('id', 'desc')->first();  // Get the first record
 
-                $st_end_time = DB::table('stores')->where('id',$str->store_id)->select('stores.store_end_time')->first();
+                $c_time = now()->format('H:i:s');
 
-                // dd($st_end_time,now()->format('H:i:s'));
-               // Get the current time and the end time
-                    $c_time = now()->format('H:i:s');
-
-                    if ($c_time > $st_end_time->store_end_time) {
+                    if ($c_time > $st_time->store_end_time) {
                         // Define the two times
-                        $time1 = Carbon::createFromFormat('H:i:s', $st_end_time->store_end_time);
+                        $time1 = Carbon::createFromFormat('H:i:s', $st_time->store_end_time);
                         $time2 = Carbon::createFromFormat('H:i:s', $c_time);
 
                         // Calculate the difference
                         $diff = $time1->diff($time2);
 
                         $ot = $diff->format('%H:%I');
+
+                        DB::table('attd_ot')->insert([
+                            'attd_id' => $get_last->id,
+                            'cat' => 'ot',
+                            'time' => $ot,
+                            'status' => 'pending',
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]);
                     }
 
 
@@ -114,9 +172,10 @@ class location_cnt extends Controller
                         'out_time' => now()->format('H:i:s'),
                         'out_location' => $district,
                         'out_add' => $formattedAddress,
-                        'ot' => $ot ?? 0,
                         'u_by'=>now()->format('Y-m-d')
                     ]);
+
+
 
 
 
