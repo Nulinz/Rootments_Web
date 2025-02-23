@@ -115,17 +115,19 @@ class Attd_cnt extends Controller
     public function ot_approve(Request $req)
     {
 
-        $prime_id = $req->input('attd_id');
+        $prime_id = $req->input('ot_id');
+        $ot_amount = $req->input('ot_amount');
 
         $updated = DB::table('attd_ot')
                      ->where('id', $prime_id)
-                     ->update(['status' => 'approved']);
+                     ->update(['status' => 'approved','amount'=>$ot_amount]);
 
         if ($updated) {
-            return response()->json(['success' => true, 'message' => 'OT or Late approved!']);
+            return redirect()->route('attendance.overtime')->with(['success' => true, 'message' => 'OT or Late approved!']);
+
         }
 
-        return response()->json(['success' => false, 'message' => 'User not found or already approved!']);
+        return redirect()->route('attendance.overtime')->with('attendance.overtime',['success' => false, 'message' => 'User not found or already approved!']);
 
     }
 

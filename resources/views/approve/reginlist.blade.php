@@ -34,17 +34,17 @@
                     <th>Status</th>
                      @php
                         $user_id = Auth::user()->id;
-                    
+
                         $user = DB::table('users')
                             ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
                             ->where('users.id', $user_id)
                             ->select('users.name', 'users.emp_code', 'roles.role', 'roles.role_dept', 'users.role_id')
                             ->first();
                     @endphp
-                    
-                    @if(optional($user)->role_id != 3)
+
+                    {{-- @if(optional($user)->role_id != 3)
                         <th>OverAll Status</th>
-                    @endif
+                    @endif --}}
                 </tr>
             </thead>
             <tbody>
@@ -52,10 +52,18 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $data->emp_code }}</td>
-                        <td>{{ $data->emp_name }}</td>
+                        <td>{{ $data->name }}</td>
                         <td>{{ $data->store_name }}</td>
-                        <td>{{ $data->res_date }}</td>
+                        <td>{{ date("d-m-Y",strtotime($data->res_date)) }}</td>
                         <td>{{ $data->res_reason }}</td>
+                        <td>
+                            <button class="listtdbtn" data-id="{{ $data->id }}" data-role='12'
+                                data-bs-toggle="modal" data-bs-target="#updateResignApproval">
+                                Update
+                            </button>
+                        </td>
+                            <?php
+                            /*
                         <td>
                             @php
                                 $user = auth()->user();
@@ -91,18 +99,20 @@
                         </td>
                          @if(optional($user)->role_id != 3)
                          <td>
-                             
+
                                  @if($data->request_status == 'Rejected')
                                <span class="text-danger">Rejected</span>
                                @elseif($data->status == 'Rejected')
                                 <span class="text-danger">Rejected</span>
                                 @else
                                <span class="text-success"> {{$data->status}}</span>
-                                
+
                                @endif
-                         
+
                         </td>
                          @endif
+                         */
+                        ?>
                     </tr>
                 @endforeach
             </tbody>
@@ -127,8 +137,22 @@
                         <label for="sts" class="col-form-label">Status</label>
                         <select class="form-select" name="status" id="sts">
                             <option value="" selected disabled>Select Options</option>
+                            {{-- <option value="Approved">Approved</option>
+                            <option value="Rejected">Rejected</option> --}}
+                            @if ($user->role_id == 12)
+                            <option>Escalate</option>
+                            @else
                             <option value="Approved">Approved</option>
                             <option value="Rejected">Rejected</option>
+                            @endif
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-12 mb-3" id="hr" style="display:none">
+                        <label for="sts" class="col-form-label">HR List</label>
+                        <select class="form-select sts" name="hr"  required>
+                            @foreach ($hr_list as $hr)
+                                <option value="{{$hr->id}}">{{$hr->name}}</option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -192,47 +216,82 @@
         $('#updateResginForm').on('submit', function(e) {
             e.preventDefault();
 
-            const formData = $(this).serialize();
+            // const formData = $(this).serialize();
+
+
+
+            // $.ajax({
+            //     url: '{{ route('approvelresgin.update') }}',
+            //     type: 'POST',
+            //     data: formData,
+            //     headers: {
+            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+            //             'content')
+            //     },
+            //     success: function(response) {
+            //         alert(response.message);
+            //         location.reload();
+            //     },
+            //     error: function(error) {
+            //         alert('An error occurred. Please try again.');
+            //         console.error(error);
+            //     }
+            // });
+
+            const formData = new FormData(this); // Create FormData object from the form
 
             console.log(formData);
 
             $.ajax({
-                url: '{{ route('approvelresgin.update') }}',
+                url: '{{ route('approvelresgin.update') }}', // Laravel route for the POST request
                 type: 'POST',
-                data: formData,
+                data: formData, // Send FormData directly
+                processData: false, // Don't process the data (because it's FormData)
+                contentType: false, // Don't set content-type (FormData will automatically set it)
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                        'content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // CSRF token for security
                 },
                 success: function(response) {
                     alert(response.message);
-                    location.reload();
+                    location.reload(); // Reload the page on success
                 },
-                error: function(error) {
-                    alert('An error occurred. Please try again.');
-                    console.error(error);
+                error: function(xhr, status, error) {
+                    alert('An error occurred: ' + error); // Show an error message
                 }
             });
         });
     });
 </script>
 <script>
-    $(document).ready(function() {
-        $(".esulate_button").on("click", function() {
-            let id = $(this).data("id");
+    // $(document).ready(function() {
+    //     $(".esulate_button").on("click", function() {
+    //         let id = $(this).data("id");
 
-            $.ajax({
-                url: "{{ route('update.reginescalate') }}",
-                type: "POST",
-                data: {
-                    id: id,
-                    _token: "{{ csrf_token() }}"
-                },
-                success: function(response) {
-                    alert(response.message);
-                    location.reload();
-                }
-            });
+    //         $.ajax({
+    //             url: "{{ route('update.reginescalate') }}",
+    //             type: "POST",
+    //             data: {
+    //                 id: id,
+    //                 _token: "{{ csrf_token() }}"
+    //             },
+    //             success: function(response) {
+    //                 alert(response.message);
+    //                 location.reload();
+    //             }
+    //         });
+    //     });
+    // });
+
+    $(document).ready(function() {
+        $("#sts").on("change", function() {
+            let sts = $(this).find("option:selected").val();
+
+            if(sts=='Escalate'){
+                    $('#hr').show();
+            }else{
+                $('#hr').hide();
+            }
+
         });
     });
 </script>

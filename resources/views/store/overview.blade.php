@@ -48,7 +48,7 @@
                                             <td>{{ $data->out_time }}</td>
                                             <td>
                                                 @if ($data->status == 'approved')
-                                                    <button class="approve-attendance" data-bs-toggle="tooltip"
+                                                    <button class="" data-bs-toggle="tooltip"
                                                         data-id="{{ $data->user_id }}" data-bs-title="Approved"><i
                                                             class="fas fa-circle-check text-success"></i></button>
                                                 @else

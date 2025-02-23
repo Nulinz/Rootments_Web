@@ -2,6 +2,7 @@
 
 <link rel="stylesheet" href="{{ asset('assets/css/profile.css') }}">
 
+
 @section('content')
     <div class="sidebodydiv px-5 py-3">
         <div class="sidebodyhead">
@@ -24,7 +25,7 @@
                     data-bs-toggle="tab" type="button" data-bs-target="#repair" aria-controls="repair"
                     aria-selected="false">Repair &nbsp;<span class="aprvlcnt">{{ $repair_count }}</span></button>
             </li> --}}
-                <li class="nav-item" role="presentation">
+                {{-- <li class="nav-item" role="presentation">
                     <button class="profiletabs" id="transfer-tab" data-url="{{ route('approvetransfer.index') }}"
                         role="tab" data-bs-toggle="tab" type="button" data-bs-target="#transfer"
                         aria-controls="transfer" aria-selected="false">Transfer &nbsp;</button>
@@ -32,7 +33,7 @@
                         <!--role="tab" data-bs-toggle="tab" type="button" data-bs-target="#transfer"-->
                         <!--aria-controls="transfer" aria-selected="false">Transfer &nbsp;<span-->
                         <!--    class="aprvlcnt">{{ $transfer_count }}</span></button>-->
-                </li>
+                </li> --}}
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" id="resign-tab" data-url="{{ route('approveresgin.index') }}" role="tab"
                         data-bs-toggle="tab" type="button" data-bs-target="#resign" aria-controls="resign"
@@ -41,14 +42,14 @@
                         <!--data-bs-toggle="tab" type="button" data-bs-target="#resign" aria-controls="resign"-->
                         <!--aria-selected="false">Resign &nbsp;<span class="aprvlcnt">{{ $resign_count }}</span></button>-->
                 </li>
-                <li class="nav-item" role="presentation">
+                {{-- <li class="nav-item" role="presentation">
                     <button class="profiletabs" id="recruit-tab" data-url="{{ route('approverecruit.index') }}"
                         role="tab" data-bs-toggle="tab" type="button" data-bs-target="#recruit" aria-controls="recruit"
                         aria-selected="false">Recruit &nbsp;</button>
                         <!--<button class="profiletabs" id="recruit-tab" data-url="{{ route('approverecruit.index') }}"-->
                         <!--role="tab" data-bs-toggle="tab" type="button" data-bs-target="#recruit" aria-controls="recruit"-->
                         <!--aria-selected="false">Recruit &nbsp;<span class="aprvlcnt">{{ $recruit_count }}</span></button>-->
-                </li>
+                </li> --}}
             </ul>
         </div>
 

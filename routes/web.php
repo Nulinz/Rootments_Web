@@ -96,8 +96,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         // Task
         Route::get('task-list', 'TaskController@index')->name('task.index');
-        Route::get('task-add', 'TaskController@create')->name('task.add');
-        Route::get('task-add/cluster', 'TaskController@create')->name('task.add');
+        Route::get('task-add', 'TaskController@create_task')->name('task.add');
+        // Route::get('task-add/hr', 'TaskController@create_task')->name('task.hr');
+        Route::get('task-add/cluster', 'TaskController@create')->name('task.add.cluster');
         Route::post('get-subcategories', 'TaskController@getSubcategories')->name('get_sub_cat');
         Route::post('task-store', 'TaskController@store')->name('task.store');
         Route::get('task-view/{id}', 'TaskController@show')->name('task.view');
@@ -158,16 +159,23 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('cluster-strength', 'ClusterController@cluster_strength')->name('cluster.strength');
 
         // AJAX Route
+        Route::post('/get_area_per', 'AreaController@area_per')->name('get_area_per');
+        Route::post('/get_cluster_store', 'AreaController@cluster_store')->name('get_cluster_store');
+
         Route::post('/get_cluster_per', 'ClusterController@cluster_det')->name('get_cluster_per');
         Route::post('/get_store_per', 'Attd_cnt@get_store_per')->name('get_store_per');
 
         Route::post('payroll-drop', 'PayrollController@drop_show')->name('payroll.drop');
-        Route::post('payroll-list_per', 'PayrollController@store_per')->name('payroll.listPerson');
+        Route::post('payroll-list', 'PayrollController@store_per')->name('payroll.listPerson');
+        Route::post('payroll-list-insert', 'PayrollController@store')->name('payroll.insert');
+        Route::post('payroll-drop-store', 'PayrollController@store_list')->name('payroll.store_list');
+
         Route::post('/get_ind_attd', 'Attd_cnt@get_ind_attd')->name('get_ind_attd');
 
         // Payroll
         Route::get('payroll-list', 'PayrollController@index')->name('payroll.index');
         Route::get('view-salary', 'PayrollController@payroll_list')->name('payroll.payroll_list');
+        Route::post('view-salary', 'PayrollController@salary_list')->name('salary.list');
 
         // Attendance
         Route::get('daily-attendance', 'Attd_cnt@daily_attd')->name('attendance.daily');
@@ -187,7 +195,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         // Area
         Route::get('area-list', 'AreaController@list')->name('area.list');
         Route::get('area-create', 'AreaController@create')->name('area.add');
-        Route::get('area-profile', 'AreaController@show')->name('area.profile');
+        Route::post('area-create', 'AreaController@create_area')->name('area.create');
+        Route::get('area-profile/{id}', 'AreaController@show')->name('area.profile');
         Route::get('area-edit', 'AreaController@edit')->name('area.edit');
         Route::get('area-overview', 'AreaController@area_overview')->name('area.dashboard');
         Route::get('area-mydashboard', 'AreaController@area_mydashboard')->name('area.mydashboard');

@@ -41,20 +41,22 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($list as $ls)
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$ls->name}}</td>
+                            <td>{{$ls->location}}</td>
+                            <td>{{$ls->contact_no}}</td>
+                            <td>{{$ls->email}}</td>
+                            <td>{{$ls->cluster_count}}</td>
                             <td>
                                 <div class="d-flex gap-3">
-                                    <a href="{{ route('area.profile') }}" data-bs-toggle="tooltip"
+                                    <a href="{{ route('area.profile', ['id' => $ls->id]) }}" data-bs-toggle="tooltip"
                                         data-bs-title="View Profile"><i class="fas fa-eye"></i></a>
                                 </div>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

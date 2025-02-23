@@ -57,6 +57,8 @@ class AuthenticationController extends Controller
                         $route = 'dashboard';
                     }elseif($r_id==11){
                         $route = 'cluster.dashboard';
+                    }elseif($r_id==10){
+                        $route = 'area.dashboard';
                     }else{
                         $route = 'mydash.dashboard';
                     }

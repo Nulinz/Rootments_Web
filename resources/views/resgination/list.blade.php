@@ -46,7 +46,7 @@
                                 <td>{{ $data->emp_code }}</td>
                                 <td>{{ $data->emp_name }}</td>
                                 <td>{{ $data->store_name }}</td>
-                                <td>{{ $data->res_date }}</td>
+                                <td>{{ date("d-m-Y",strtotime($data->res_date)) }}</td>
                                 <td>{{ $data->res_reason }}</td>
                                 <td>
                                     @if($data->status == 'Approved')

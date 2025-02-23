@@ -44,6 +44,21 @@
                         <textarea rows="1" class="form-control" name="res_reason" id="reason" placeholder="Enter Reason For Leaving"
                             required></textarea>
                     </div>
+                    @php
+                    $user = auth()->user();
+                    $role = $user->role_id;
+
+                    @endphp
+                    @if($role < 13 || $role > 19)
+                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                        <label for="reqtype">Request To <span>*</span></label>
+                        <select class="form-select" name="request_to" id="" required>
+                            @foreach ($hr_list as $hr)
+                            <option value="{{$hr->id}}">{{$hr->name}}</option>
+                        @endforeach
+                        </select>
+                    </div>
+                    @endif
                 </div>
             </div>
 
@@ -52,7 +67,7 @@
             </div>
         </form>
     </div>
-   
+
     <script>
         $(document).ready(function() {
             $.ajax({

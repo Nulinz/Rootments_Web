@@ -106,38 +106,17 @@ $query->where('tasks.assign_to', '!=', $user->id);
 
 $task = $query->get();
 
-        $count = DB::table('users')
-        ->leftJoin('m_cluster as mc', 'mc.cl_name', '=', 'users.id')
-        ->count();  // Counts all users, even those without a match in m_cluster
+        $cluster_check = DB::table('m_cluster')
+        ->where('cl_name','=',$user->id)
+        ->count();
 
-        return view('task.list',['task'=>$task,'count'=> $count]);
+        // return $cluster_check;
+
+     return view('task.list',['task'=>$task,'count'=> $cluster_check,'r_id'=>$user->role_id]);
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    // public function create()
-    // {
-    //     $user = auth()->user();
 
-    //     $role = Role::find($user->role_id);
-
-    //     $assignedRoles = Role::join('role_based', 'roles.id', '=', 'role_based.assign_role_id')
-    //         ->where('role_based.role_id', $role->id)
-    //         ->select('roles.role_dept', 'roles.id', 'roles.role')
-    //         ->groupBy('roles.role_dept', 'roles.id', 'roles.role')
-    //         ->get();
-
-    //     $store= DB::table('stores')->where('id',$user->store_id)->first();
-
-
-    //     $cat=DB::table('categories')->where('status',1)->get();
-
-
-    //     return view('task.add',['cat'=>$cat,'assignedRoles'=>$assignedRoles]);
-
-    // }
 
     public function create(Request $req)
 {
@@ -189,6 +168,93 @@ $task = $query->get();
         'cluster'=>$cluster ?? 0
     ]);
 }
+
+
+public function create_task(Request $req)
+{
+
+    // $hasCluster = $req->is('task-add/hr');
+
+    // if ($hasCluster) {
+    //     $cluster=1;
+    //  }
+
+    $user = auth()->user();
+    $r_id = $user->role_id;
+    // $r_id = 12;
+    switch($r_id) {
+        case 3:
+        case 4:
+        case 5:
+            $arr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            break;
+        case 10:
+            $arr = [11, 12];
+            break;
+        case 11:
+            $arr = [11, 12, 13, 14, 15, 16, 17, 18, 19];
+            break;
+        case 12:
+            $arr = [13, 14, 15, 16, 17, 18, 19];
+            break;
+        case 13:
+        case 14:
+        case 15:
+        case 16:
+        case 17:
+        case 18:
+        case 19:
+            $arr = range(12, 19);  // Array from 12 to 19
+            $arr = array_diff($arr, [$r_id]); // Exclude the current role ID
+            break;
+    }
+
+
+  $list =  DB::table('users')
+    ->leftJoin('roles','roles.id','=','users.role_id')
+    ->select('users.name','roles.role','roles.role_dept','users.id','users.store_id');
+
+
+    if(($r_id >= 12 && $r_id <= 19)) {
+        $list->where('users.store_id', $user->store_id)
+            ->where('users.id', '!=', $user->id);
+
+
+    }else{
+        $list->leftJoin('stores', 'stores.id', '=', 'users.store_id')
+        ->select('users.name', 'roles.role', 'roles.role_dept', 'users.id', 'users.store_id', 'stores.store_name', 'stores.store_code') // Adjust store fields as needed
+        ->whereIn('users.role_id', $arr)
+        ->where('users.id', '!=', $user->id);
+
+        // if($r_id==11){
+        //     $list->orderBy('users.store_id')
+        //             ->orderBy('users.role_id');
+        // }else{
+        //     $list->orderBy('users.role_id');
+        // }
+
+        $list->orderBy('users.role_id');
+
+    }
+
+
+
+
+
+    $list = $list->get();
+
+    $cat = DB::table('categories')->where('status', 1)->get();
+
+
+    //  return $list;
+
+    return view('task.add1', [
+        'cat' => $cat,
+        'user'=>$list,
+
+    ]);
+}
+
 
 
     public function getSubcategories(Request $request)

@@ -6,32 +6,25 @@
             <h4 class="m-0">View Salary List</h4>
         </div>
 
-        <form action="" method="post" id="">
+        @if(request()->isMethod('get'))
+        <form action="{{route('salary.list')}}" method="post" id="">
+            @csrf
             <div class="container-fluid maindiv bg-white my-3">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="store">Store Name</label>
                         <select class="form-select" name="store" id="store" autofocus>
                             <option value="" selected disabled>Select Stores</option>
-                            <option value="">Store List</option>
+                           @foreach ($store as $st)
+                               <option value="{{$st->id}}">{{$st->store_name}}</option>
+                           @endforeach
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="month">Month</label>
                         <select class="form-select" name="month" id="month">
                             <option value="" selected disabled>Select Options</option>
-                            <option value="January">January</option>
-                            <option value="February">February</option>
-                            <option value="March">March</option>
-                            <option value="April">April</option>
-                            <option value="May">May</option>
-                            <option value="June">June</option>
-                            <option value="July">July</option>
-                            <option value="August">August</option>
-                            <option value="September">September</option>
-                            <option value="October">October</option>
-                            <option value="November">November</option>
-                            <option value="December">December</option>
+
                         </select>
                     </div>
                 </div>
@@ -41,7 +34,8 @@
                 <button type="submit" name="sal_form" class="formbtn">Save</button>
             </div>
         </form>
-
+        @endif
+        @if(request()->isMethod('post'))
         <div class="container-fluid mt-4 listtable">
             <div class="filter-container row mb-3">
                 <div class="custom-search-container col-sm-12 col-md-8">
@@ -62,109 +56,145 @@
             </div>
             <div class="table-wrapper">
                 <form action="" method="POST" id="my_form">
-                    <table class="example table table-hover table-striped">
+                    <table class=" table table-hover table-striped">
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th style="width: 100px">Employee</th>
                                 <th style="width: 100px">Salary</th>
                                 <th>TWD</th>
-                                <th>LOP</th>
                                 <th>TPD</th>
+                                <th>LOP</th>
                                 <th>Incentives</th>
                                 <th>OT</th>
                                 <th>Bonus</th>
+                                <th>Deduct</th>
                                 <th>Advance</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($sal_list as $sal)
                             <tr>
-                                <td>1</td>
-                                <td>EMP02 <br> Revathi</td>
-                                <td>28000</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$sal->emp_code}} <br> {{$sal->name}}</td>
+                                <td>{{$sal->salary}}</td>
+                                <td>{{$sal->total_work}}</td>
+                                <td>{{$sal->present}}</td>
+                                <td>{{$sal->lop}}</td>
+                                <td>{{$sal->incentive}}</td>
+                                <td>{{$sal->ot}}</td>
+                                <td>{{$sal->bonus}}</td>
+                                <td>{{$sal->deduct}}</td>
+                                <td>{{$sal->advance}}</td>
+                                <td>{{$sal->total}}</td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
-                    <div class="col-sm-12 col-md-12 col-xl-12 mt-3 d-flex justify-content-center align-items-center">
+                    {{-- <div class="col-sm-12 col-md-12 col-xl-12 mt-3 d-flex justify-content-center align-items-center">
                         <button type="submit" class="formbtn">Save</button>
-                    </div>
+                    </div> --}}
                 </form>
             </div>
         </div>
+        @endif
     </div>
 
     <script>
-        document.getElementById("print").addEventListener("click", function(e) {
-            e.preventDefault();
+         $('#store').on('change', function() {
+            // Trigger an AJAX request when the page is ready
+            var store = $(this).val();
+            $.ajax({
+                url: '{{ route('payroll.store_list') }}', // Laravel route for the POST request
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}', // CSRF token for security
+                    store: store, // Send the selected store ID
+                },
 
-            var table = document.querySelector(".example");
-            var clonedTable = table.cloneNode(true);
+                success: function(response) {
+                     console.log(response);
 
-            clonedTable.querySelectorAll("tr").forEach(row => {
-                row.querySelectorAll("td input").forEach(input => {
-                    var value = input.value;
-                    var textNode = document.createTextNode(value);
-                    var parent = input.parentNode;
-                    parent.innerHTML = '';
-                    parent.appendChild(textNode);
-                });
+
+                    $('#month').empty(); // Clears all existing options in the select dropdown
+
+                    $.each(response, function(index, value) {
+                        var option = $('<option></option>').attr('value', index).text(value);
+                        $('#month').append(option);
+                    });
+
+
+                },
+                error: function(xhr, status, error) {
+
+                    alert('An error occurred: ' + error);
+                }
             });
-
-            var printWindow = window.open('', '', 'height=600,width=800');
-            printWindow.document.write(`
-                <html>
-                    <head>
-                        <title>Payroll Lists</title>
-                        <style>
-                            table { width: 100%; border-collapse: collapse; }
-                            table, th, td { border: 1px solid black; }
-                            th, td { padding: 8px; text-align: left; }
-                        </style>
-                    </head>
-                    <body>${clonedTable.outerHTML}</body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.focus();
-            printWindow.print();
-            printWindow.close();
         });
 
-        document.getElementById("excel").addEventListener("click", function(e) {
-            e.preventDefault();
+        // document.getElementById("print").addEventListener("click", function(e) {
+        //     e.preventDefault();
 
-            var table = document.querySelector(".example");
-            var csv = [];
-            var rows = table.querySelectorAll("tr");
+        //     var table = document.querySelector(".example");
+        //     var clonedTable = table.cloneNode(true);
 
-            rows.forEach(row => {
-                var rowData = [];
-                var cells = Array.from(row.children);
-                cells.slice(0, -1).forEach(cell => {
-                    rowData.push('"' + cell.textContent.trim() + '"');
-                });
-                csv.push(rowData.join(","));
-            });
+        //     clonedTable.querySelectorAll("tr").forEach(row => {
+        //         row.querySelectorAll("td input").forEach(input => {
+        //             var value = input.value;
+        //             var textNode = document.createTextNode(value);
+        //             var parent = input.parentNode;
+        //             parent.innerHTML = '';
+        //             parent.appendChild(textNode);
+        //         });
+        //     });
 
-            var csvBlob = new Blob([csv.join("\n")], {
-                type: "text/csv"
-            });
-            var link = document.createElement("a");
-            link.href = URL.createObjectURL(csvBlob);
-            link.download = "Payroll-List.csv";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
+        //     var printWindow = window.open('', '', 'height=600,width=800');
+        //     printWindow.document.write(`
+        //         <html>
+        //             <head>
+        //                 <title>Payroll Lists</title>
+        //                 <style>
+        //                     table { width: 100%; border-collapse: collapse; }
+        //                     table, th, td { border: 1px solid black; }
+        //                     th, td { padding: 8px; text-align: left; }
+        //                 </style>
+        //             </head>
+        //             <body>${clonedTable.outerHTML}</body>
+        //         </html>
+        //     `);
+        //     printWindow.document.close();
+        //     printWindow.focus();
+        //     printWindow.print();
+        //     printWindow.close();
+        // });
+
+        // document.getElementById("excel").addEventListener("click", function(e) {
+        //     e.preventDefault();
+
+        //     var table = document.querySelector(".example");
+        //     var csv = [];
+        //     var rows = table.querySelectorAll("tr");
+
+        //     rows.forEach(row => {
+        //         var rowData = [];
+        //         var cells = Array.from(row.children);
+        //         cells.slice(0, -1).forEach(cell => {
+        //             rowData.push('"' + cell.textContent.trim() + '"');
+        //         });
+        //         csv.push(rowData.join(","));
+        //     });
+
+        //     var csvBlob = new Blob([csv.join("\n")], {
+        //         type: "text/csv"
+        //     });
+        //     var link = document.createElement("a");
+        //     link.href = URL.createObjectURL(csvBlob);
+        //     link.download = "Payroll-List.csv";
+        //     document.body.appendChild(link);
+        //     link.click();
+        //     document.body.removeChild(link);
+        // });
     </script>
 
 @endsection

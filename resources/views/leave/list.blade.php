@@ -31,8 +31,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Employee Code</th>
-                            <th>Employee Name</th>
+
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th>Request Type</th>
@@ -44,17 +43,18 @@
                         @foreach ($leave as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->emp_code }}</td>
-                                <td>{{ $data->name }}</td>
-                                <td>{{ $data->start_date }}</td>
-                                <td>{{ $data->end_date }}</td>
+                                <td>{{date("d-m-Y",strtotime($data->start_date)) }}</td>
+                                <td>{{ date("d-m-Y",strtotime($data->end_date)) }}</td>
                                 <td>{{ $data->request_type }}</td>
                                 <td>{{ $data->reason }}</td>
                                 <td>
+                                    {{-- <span class="text-success">{{ $data->status }}</span> --}}
                                     @if($data->status == 'Approved')
                                     <span class="text-success">Approved</span>
                                     @elseif($data->status == 'Rejected')
                                     <span class="text-danger">Rejected</span>
+                                    @elseif($data->status == 'Escalate')
+                                    <span class="text-warning">Escalate</span>
                                     @else
                                     <span class="text-warning">Pending</span>
                                     @endif

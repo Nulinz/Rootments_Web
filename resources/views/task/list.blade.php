@@ -4,10 +4,16 @@
     <div class="sidebodydiv px-5 py-3">
         <div class="sidebodyhead">
             <h4 class="m-0">Task List</h4>
-            <div>
-                <a href="{{ route('task.add') }}"><button class="listbtn">+ Add Task</button></a>
-                {{-- <a href="{{ route('task.add') }}"><button class="listbtn">+ Add Task</button></a> --}}
+            <div class="d-flex justify-content-around">
+
+                @if(($r_id==12)&&($count>0))
+                {{-- <a href="{{ route('task.add.cluster') }}"><button class="listbtn">+ Cluster Task</button></a> --}}
+                @endif
+               <a href="{{ route('task.add') }}"><button class="listbtn">+ Add Task</button></a>
+
+
             </div>
+
 
         </div>
 

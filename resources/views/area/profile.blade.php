@@ -31,37 +31,37 @@
                             </div>
                             <div
                                 class="col-sm-12 col-md-12 col-xl-12 mb-3 d-flex justify-content-center align-items-center">
-                                <img src="{{ ('assets/images/avatar.png') }}" width="125px" height="125px" alt=""
+                                <img src="{{ asset($area->profile_image ?? 'assets/images/avatar.png') }}" width="125px" height="125px" alt=""
                                     class="profileimg">
                             </div>
                             <div class="row mt-2">
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Area Manager Name</h6>
-                                    <h5 class="mb-0">Sabari</h5>
+                                    <h5 class="mb-0">{{ $area->name }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Email ID</h6>
-                                    <h5 class="mb-0">sabari@email.com</h5>
+                                    <h5 class="mb-0">{{ $area->email }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Contact Number</h6>
-                                    <h5 class="mb-0">8124519096</h5>
+                                    <h5 class="mb-0">{{ $area->contact_no }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Alternate Contact Number</h6>
-                                    <h5 class="mb-0">8608338833</h5>
+                                    <h5 class="mb-0">{{ $area->name }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Address</h6>
-                                    <h5 class="mb-0">Arisipalayam</h5>
+                                    <h5 class="mb-0">{{ $area->address }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Pincode</h6>
-                                    <h5 class="mb-0">636004</h5>
+                                    <h5 class="mb-0">{{ $area->pincode }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Area Manager Geolocation</h6>
-                                    <h5 class="mb-0">Geolocation</h5>
+                                    <h5 class="mb-0">{{ $area->location }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -124,20 +124,22 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @foreach ($list as $ls)
                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>{{$loop->iteration}}</td>
+                                                <td>{{$ls->name}}</td>
+                                                <td>{{$ls->contact_no}}</td>
+                                                <td>{{$ls->email}}</td>
+                                                <td>{{$ls->location}}</td>
+                                                <td>{{$ls->cluster_store_count}}</td>
                                                 <td>
                                                     <div class="d-flex gap-3">
-                                                        <a href="" data-bs-toggle="tooltip" data-bs-title="View Profile"><i
-                                                                class="fas fa-eye"></i></a>
+                                                        <a href="{{ route('cluster.profile', ['id' => $ls->id]) }}" data-bs-toggle="tooltip"
+                                                            data-bs-title="View Profile"><i class="fas fa-eye"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>

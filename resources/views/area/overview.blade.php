@@ -17,8 +17,9 @@
                             <h6 class="card1h6 mb-2">Cluster Stores</h6>
                             <select class="form-select mb-2" name="store" id="store">
                                 <option value="" selected disabled>Select Options</option>
-                                <option value="">Cluster 1</option>
-                                <option value="">Cluster 2</option>
+                                @foreach ($list as $ls)
+                                <option value="{{$ls->id}}">{{$ls->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="cardtable">
@@ -28,64 +29,20 @@
                                         <th>Store Code</th>
                                         <th>Store Name</th>
                                         <th>Location</th>
-                                        <th>Status</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($store as $st)
                                     <tr>
-                                        <td>STR01</td>
-                                        <td>Rootments</td>
-                                        <td>Salem</td>
-                                        <td><span class="active">Active</span></td>
+
+                                        <td>{{$st->store_code}}</td>
+                                        <td>{{$st->store_name}}</td>
+                                        <td>{{$st->store_geo}}</td>
+
                                     </tr>
-                                    <tr>
-                                        <td>STR02</td>
-                                        <td>Rootments</td>
-                                        <td>Kerala</td>
-                                        <td><span class="active">Active</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR03</td>
-                                        <td>Rootments</td>
-                                        <td>Coimbatore</td>
-                                        <td><span class="active">Active</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR04</td>
-                                        <td>Rootments</td>
-                                        <td>Palakkad</td>
-                                        <td><span class="inactive">Inactive</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR05</td>
-                                        <td>Rootments</td>
-                                        <td>Wayanad</td>
-                                        <td><span class="active">Active</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR06</td>
-                                        <td>Rootments</td>
-                                        <td>Varkhala</td>
-                                        <td><span class="inactive">Inactive</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR07</td>
-                                        <td>Rootments</td>
-                                        <td>Kochin</td>
-                                        <td><span class="inactive">Inactive</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR08</td>
-                                        <td>Rootments</td>
-                                        <td>Trivandram</td>
-                                        <td><span class="active">Active</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>STR09</td>
-                                        <td>Rootments</td>
-                                        <td>Kottayam</td>
-                                        <td><span class="inactive">Inactive</span></td>
-                                    </tr>
+                                    @endforeach
+
                                 </tbody>
                             </table>
                         </div>
@@ -102,6 +59,45 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('#store').on('change', function () {
+            // Trigger an AJAX request when the page is ready
+            var cluster = $(this).find('option:selected').val();
+            $.ajax({
+                url: '{{ route('get_cluster_store') }}', // Laravel route for the POST request
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}', // CSRF token for security
+                    cluster: cluster, // Send the selected store ID
+                },
+
+                success: function (response) {
+                    // console.log(response);
+
+                    $('tbody').empty();
+
+                    $.each(response, function (index, value) {
+                        // Create a new table row
+                        var row = '<tr>' +
+
+                            '<td>' + value.store_code + '</td>' +
+                            '<td>' + value.store_name + '</td>' +
+                            '<td>' + value.store_geo + '</td>' +
+                            '</tr>';
+
+                        // Append the new row to the tbody
+                        $('tbody').append(row);
+                    });
+
+                },
+                error: function (xhr, status, error) {
+
+                    alert('An error occurred: ' + error);
+                }
+            });
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@latest"></script>
 

@@ -110,6 +110,7 @@
                 </div>
             </li>
             @endif
+            @if(hasAccess($r_id, 'area'))
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse11"
                     aria-expanded="false">
@@ -129,6 +130,7 @@
                     </ul>
                 </div>
             </li>
+            @endif
             @if(hasAccess($r_id, 'task'))
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse4"
@@ -151,7 +153,7 @@
             </li>
             @endif
             @if(hasAccess($r_id, 'recruitment'))
-            <li class="mb-1">
+            {{-- <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse8"
                     aria-expanded="false">
                     <div class="btnname">
@@ -169,7 +171,7 @@
                         </li>
                     </ul>
                 </div>
-            </li>
+            </li> --}}
             @endif
             @if(hasAccess($r_id, 'payroll'))
             <li class="mb-1">
@@ -246,18 +248,18 @@
                                 class="d-inline-flex text-decoration-none rounded">Repair
                                 Request</a>
                         </li> --}}
-                        <li><a href="{{ route('transfer.index') }}"
+                        {{-- <li><a href="{{ route('transfer.index') }}"
                                 class="d-inline-flex text-decoration-none rounded">Transfer
                                 Request</a>
-                        </li>
+                        </li> --}}
                         <li><a href="{{ route('resignation.index') }}"
                                 class="d-inline-flex text-decoration-none rounded">Resignation
                                 Request</a>
                         </li>
                         @if(hasAccess($r_id, 'recruit_req'))
-                        <li><a href="{{ route('recruitment.index') }}"
+                        {{-- <li><a href="{{ route('recruitment.index') }}"
                                 class="d-inline-flex text-decoration-none rounded">Recruitment
-                                Request</a>
+                                Request</a> --}}
                         @endif
                         </li>
                     </ul>

@@ -31,7 +31,9 @@ class ResignationController extends Controller
      */
     public function create()
     {
-        return view('resgination.add');
+        $hr = DB::table('users')->where('role_id', [3,4,5])->select('users.id','users.name')->get();
+
+        return view('resgination.add',['hr_list'=>$hr]);
 
     }
 
@@ -40,12 +42,12 @@ class ResignationController extends Controller
      */
     public function store(Request $request)
     {
-        $user_id = auth()->user()->id;
+        $user_id = auth()->user();
 
           $role_get = DB::table('roles')
             ->leftJoin('users', 'users.role_id', '=', 'roles.id')
             ->select('roles.id', 'roles.role', 'roles.role_dept')
-            ->where('users.id', $user_id)
+            ->where('users.id', $user_id->id)
             ->first();
 
         if ($role_get) {
@@ -56,28 +58,36 @@ class ResignationController extends Controller
             $resgination->store_id =$request->store_id;
             $resgination->res_date =$request->res_date;
             $resgination->res_reason =$request->res_reason;
-            $resgination->created_by=$user_id;
+            $resgination->created_by=$user_id->id;
 
             $role = $role_get->role;
             $role_dept = $role_get->role_dept;
 
-            $manager_departments = ['Operation', 'Finance', 'IT', 'Sales/Marketing', 'Area', 'Cluster'];
+            if($user_id->role_id >= 13 && $user_id->role_id <= 19){
 
-            if ($role === 'Store Manager' && $role_dept === 'Store') {
-                $resgination->request_to = 3;
-            } elseif ($role === 'Manager') {
-                if ($role_dept === 'HR') {
-                    $resgination->request_to = 1;
-                } elseif (in_array($role_dept, $manager_departments)) {
-                    $resgination->request_to = 3;
-                } else {
-                    $resgination->request_to = 12;
+                $store_man = DB::table('users')->where('store_id',$user_id->store_id)->where('role_id',12)->first();
+                        $resgination->request_to = $store_man->id;
+                }else{
+                    $resgination->request_to = $request->request_to;
                 }
-            } elseif ($role === 'Managing Director') {
-                $resgination->request_to = 3;
-            } else {
-                $resgination->request_to = 12;
-            }
+
+            // $manager_departments = ['Operation', 'Finance', 'IT', 'Sales/Marketing', 'Area', 'Cluster'];
+
+            // if ($role === 'Store Manager' && $role_dept === 'Store') {
+            //     $resgination->request_to = 3;
+            // } elseif ($role === 'Manager') {
+            //     if ($role_dept === 'HR') {
+            //         $resgination->request_to = 1;
+            //     } elseif (in_array($role_dept, $manager_departments)) {
+            //         $resgination->request_to = 3;
+            //     } else {
+            //         $resgination->request_to = 12;
+            //     }
+            // } elseif ($role === 'Managing Director') {
+            //     $resgination->request_to = 3;
+            // } else {
+            //     $resgination->request_to = 12;
+            // }
             $resgination->save();
         }
 

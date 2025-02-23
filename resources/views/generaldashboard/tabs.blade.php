@@ -12,18 +12,29 @@
         $r_id = $role_get->role_id;
         if ($r_id == 3 || $r_id == 4 || $r_id == 5) {
             $route = 'hr.dashboard';
+            $over = 'HR';
         } elseif ($r_id == 12) {
             $route = 'dashboard';
+            $over = 'Store';
         } elseif($r_id==11){
                     $route = 'cluster.dashboard';
-        }else {
+                    $over = 'Cluster';
+        }elseif($r_id==10){
+                    $route = 'area.dashboard';
+                    $over = 'Area';
+        }
+        else {
             $route = 'mydash.dashboard';
         }
 
+            $cluster_check = DB::table('m_cluster')
+            ->where('cl_name','=',$user->id)
+            ->count();
+
     @endphp
-        @if($r_id == 3 || $r_id == 4 || $r_id == 5 || $r_id==12 || $r_id==11)
+        @if($r_id == 3 || $r_id == 4 || $r_id == 5 || $r_id==12 || $r_id==11 || $r_id==10)
         <div class="my-2">
-            <a href="{{ route($route) }}"><button class="dashtabs">Overview</button></a>
+            <a href="{{ route($route) }}"><button class="dashtabs">{{$over}} Overview</button></a>
         </div>
         @endif
         @if($r_id == 3 || $r_id == 4 || $r_id == 5)
@@ -32,10 +43,12 @@
                     Dashboard</button></a>
         </div>
         @endif
+        @if($r_id==10)
         <div class="my-2">
             <a href="{{ route('area.kpidashboard') }}"><button class="dashtabs ">Area KPI
                     Dashboard</button></a>
         </div>
+        @endif
         @if($r_id==12)
         <div class="my-2">
             <a href="{{ route('store.dashboard') }}"><button class="dashtabs ">Store
@@ -47,6 +60,18 @@
             <a href="{{ route('cluster.strength') }}"><button class="dashtabs">Store Strength</button></a>
         </div>
         @endif
+
+      {{-- checking the store manager as cluster manger  --}}
+
+      @if(($r_id==12)&&($cluster_check>0))
+        <div class="my-2">
+            <a href="{{ route('cluster.dashboard') }}"><button class="dashtabs">Cluster Overview</button></a>
+        </div>
+      <div class="my-2">
+          <a href="{{ route('cluster.strength') }}"><button class="dashtabs">Store Strength</button></a>
+      </div>
+      @endif
+
         <div class="my-2">
             <a href="{{ route('mydash.dashboard') }}"><button class="dashtabs ">My
                     Dashboard</button></a>

@@ -57,8 +57,8 @@ class DashBoardController extends Controller
                         'leaves.request_to'
                     )
                     ->whereIn('users.id', $storeMembers)
-                    ->where('leaves.request_to', $role_get->role_id)
-                    ->where('leaves.status', 'Pending')
+                    ->where('leaves.request_to',  $user->id)
+                    ->where('leaves.request_status', 'Pending')
                     ->get();
             } else {
                 $pendingLeaves = collect();

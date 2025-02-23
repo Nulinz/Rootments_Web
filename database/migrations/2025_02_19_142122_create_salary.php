@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('lop')->nullable();
             $table->integer('incentive')->nullable();
             $table->integer('ot')->nullable();
+            $table->integer('deduct')->nullable();
             $table->integer('bonus')->nullable();
             $table->integer('advance')->nullable();
             $table->integer('total')->nullable();

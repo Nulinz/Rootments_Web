@@ -8,18 +8,23 @@
                 <h5><i class="fas fa-arrow-left"></i></h5>
                 <h6>Add Area Manager Form</h6>
             </div>
-        </div>
+    </div>
         <div class="sidebodyhead my-3">
             <h4 class="m-0">Area Manager Details</h4>
         </div>
-        <form action="" method="POST">
+        <form action="{{ route('area.create')}}" method="POST">
+            @csrf
             <div class="container-fluid maindiv">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="areaname">Area Manager Name <span>*</span></label>
                         <select class="form-select" name="areaname" id="areaname" required autofocus>
                             <option value="" selected disabled>Select Options</option>
-                            <option value=""></option>
+
+                            @foreach ($am as $area)
+
+                                <option value="{{$area->id}}">{{$area->name}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
@@ -71,18 +76,21 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($cluster as $cs)
                         <tr>
                             <td>
                                 <div>
-                                    <input type="checkbox">
+                                    <input type="checkbox" name="cl_id[]" value="{{$cs->id}}">
                                 </div>
                             </td>
-                            <td>Sabari</td>
-                            <td>Edappally</td>
-                            <td>9876543210</td>
-                            <td>sabari@gmail.com</td>
-                            <td>9</td>
+                            <td>{{$cs->name}}</td>
+                            <td>{{$cs->location}}</td>
+                            <td>{{$cs->contact_no}}</td>
+                            <td>{{$cs->email}}</td>
+                            <td>{{$cs->cluster_count}}</td>
                         </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>
@@ -94,5 +102,35 @@
             </div>
         </form>
     </div>
+
+    <script>
+        $('#areaname').on('change', function () {
+            // Trigger an AJAX request when the page is ready
+            var area_per = $(this).find('option:selected').val();
+            $.ajax({
+                url: '{{ route('get_area_per') }}', // Laravel route for the POST request
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}', // CSRF token for security
+                    area_per: area_per, // Send the selected store ID
+                },
+
+                success: function (response) {
+                    console.log(response);
+                    $('#mail').val(response.email);
+                    $('#contact').val(response.contact_no);
+                    $('#adrs').val(response.address + ',' + response.district + ',' + response.state);
+                    $('#pincode').val(response.pincode);
+
+
+
+                },
+                error: function (xhr, status, error) {
+
+                    alert('An error occurred: ' + error);
+                }
+            });
+        });
+    </script>
 
 @endsection

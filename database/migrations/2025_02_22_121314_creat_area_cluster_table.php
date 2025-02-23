@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cluster_store', function (Blueprint $table) {
+        Schema::create('area_cluster', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cluster_id');
-            $table->integer('store_id');
+            $table->integer('area_id')->nullable();
+            $table->integer('cluster_id')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cluster_store');
+        Schema::table('area_cluster', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -116,11 +116,76 @@ if ($role_get->role_id == 12) {
 
     public function leaveindex()
     {
-        // $user = auth()->user();
 
-        // $store = DB::table('stores')->where('id', $user->store_id)->first();
 
-        // $storeMembers = DB::table('users')->where('store_id', $user->store_id)->pluck('id')->toArray();
+        $user = auth()->user();
+
+        $hr = DB::table('users')->where('role_id', [3,4,5])->select('users.id','users.name')->get();
+
+        $arr = [3,4,5];
+
+        if(in_array($user->role_id,$arr)){
+
+            // $leave = DB::table('leaves')
+            // ->leftJoin('users','users.id','=','leaves.user_id')
+            // ->leftJoin('roles','roles.id','=','users.role_id')
+            // ->where('request_status','Escalate')
+            // ->Where('esculate_status','Pending')
+            // ->where(function($query) use ($user) {
+            //     $query->where('request_to', $user->id)
+            //           ->orWhere('esculate_to', $user->id);
+            // })
+
+            // ->select('users.name','users.emp_code','roles.role','roles.role_dept','leaves.request_status','leaves.request_type','leaves.id')
+            // ->get();
+
+            $leave = DB::table('leaves')
+            ->leftJoin('users', 'users.id', '=', 'leaves.user_id')
+            ->leftJoin('roles', 'roles.id', '=', 'users.role_id')
+            ->leftJoin('stores', 'stores.id', '=', 'users.store_id')
+            ->where(function($query) {
+                $query->where('leaves.request_status', 'Pending')
+                      ->orWhere('leaves.request_status', 'Escalate');
+            })
+            ->where('leaves.esculate_status', 'Pending')
+            ->where(function($query) use ($user) {
+                $query->where('leaves.request_to', $user->id)
+                      ->orWhere('leaves.esculate_to', $user->id);
+            })
+            ->select('leaves.id', 'users.name', 'users.emp_code', 'roles.role', 'roles.role_dept', 'leaves.request_status', 'leaves.request_type','stores.store_name','leaves.start_date','leaves.end_date')
+            ->get();
+
+
+        }else{
+
+            $leave = DB::table('leaves')
+            ->join('users', 'users.id', '=', 'leaves.user_id')
+            ->leftJoin('roles', 'roles.id', '=', 'users.role_id')
+            ->leftJoin('stores', 'stores.id', '=', 'users.store_id')
+            ->where('leaves.request_to', $user->id)
+            ->where('leaves.request_status', 'Pending')
+            ->select('users.name','users.emp_code','roles.role','roles.role_dept','leaves.request_status','leaves.request_type','leaves.id','stores.store_name','leaves.start_date','leaves.end_date')
+            ->get();
+
+
+            //     $l_id =[];
+            // foreach($leave as $lv){
+            //         $l_id = $lv->id;
+            // }
+
+            // $list =DB::table('leaves')
+            // ->leftJoin('users','users.id','=','leaves.request_to')
+            // ->leftJoin('roles','roles.id','=','users.role_id')
+
+        }
+
+
+
+
+        //  return $leave;
+          return view('approve.leavelist', ['leave' => $leave,'hr_list'=>$hr]);
+
+             // $storeMembers = DB::table('users')->where('store_id', $user->store_id)->pluck('id')->toArray();
 
         // $role_get = DB::table('roles')
         //     ->join('users', 'users.role_id', '=', 'roles.id')
@@ -130,41 +195,15 @@ if ($role_get->role_id == 12) {
 
         // if ($role_get) {
         //     $leave = DB::table('leaves')
+        //         ->join('users', 'users.id', '=', 'leaves.user_id')
         //         ->where(function ($query) use ($role_get) {
         //             $query->where('leaves.request_to', $role_get->role_id)
         //                 ->orWhere('leaves.esculate_to', $role_get->role_id);
         //         })
-        //          ->whereIn('users.id', $storeMembers)
+        //         ->whereIn('users.id', $storeMembers)
+        //         ->select('leaves.id as l_id','leaves.request_type')
         //         ->get();
         // }
-
-
-        $user = auth()->user();
-
-        $store = DB::table('stores')->where('id', $user->store_id)->first();
-
-        $storeMembers = DB::table('users')->where('store_id', $user->store_id)->pluck('id')->toArray();
-
-        $role_get = DB::table('roles')
-            ->join('users', 'users.role_id', '=', 'roles.id')
-            ->select('roles.id as role_id', 'roles.role', 'roles.role_dept')
-            ->where('users.id', $user->id)
-            ->first();
-
-        if ($role_get) {
-            $leave = DB::table('leaves')
-                ->join('users', 'users.id', '=', 'leaves.user_id')
-                ->where(function ($query) use ($role_get) {
-                    $query->where('leaves.request_to', $role_get->role_id)
-                        ->orWhere('leaves.esculate_to', $role_get->role_id);
-                })
-                ->whereIn('users.id', $storeMembers)
-                ->select('leaves.id as l_id','leaves.request_type')
-                ->get();
-        }
-
-
-        return view('approve.leavelist', ['leave' => $leave]);
     }
 
 
@@ -225,27 +264,62 @@ if ($role_get->role_id == 12) {
     {
         $user = auth()->user();
 
-        $role_get = DB::table('roles')
-            ->join('users', 'users.role_id', '=', 'roles.id')
-            ->where('users.id', $user->id)
-            ->select('roles.id as role_id', 'roles.role', 'roles.role_dept')
-            ->first();
+        $hr = DB::table('users')->where('role_id', [3,4,5])->select('users.id','users.name')->get();
 
-        $resignation = collect();
+        $arr = [3,4,5];
 
-        if ($role_get) {
-            $resignation = DB::table('resignations')
-                ->leftJoin('stores', 'stores.id', '=', 'resignations.store_id')
-                ->leftJoin('users', 'users.id', '=', 'resignations.emp_id')
-                ->select('resignations.*', 'stores.store_name', 'users.emp_code')
-                ->where(function ($query) use ($role_get) {
-                    $query->where('resignations.request_to', $role_get->role_id)
-                          ->orWhere('resignations.esculate_to', $role_get->role_id);
-                })
-                ->get();
-        }
+        if(in_array($user->role_id,$arr)){
 
-        return view('approve.reginlist',['resgination'=>$resignation]);
+        $resignation = DB::table('resignations')
+        ->leftJoin('users', 'users.id', '=', 'resignations.emp_id')
+        ->leftJoin('roles', 'roles.id', '=', 'users.role_id')
+        ->leftJoin('stores', 'stores.id', '=', 'users.store_id')
+        ->where(function($query) {
+            $query->where('resignations.request_status', 'Pending')
+                  ->orWhere('resignations.request_status', 'Escalate');
+        })
+        ->where('resignations.esculate_status', 'Pending')
+        ->where(function($query) use ($user) {
+            $query->where('resignations.request_to', $user->id)
+                  ->orWhere('resignations.esculate_to', $user->id);
+        })
+        ->select('resignations.id', 'users.name', 'users.emp_code', 'roles.role', 'roles.role_dept', 'resignations.request_status','stores.store_name','resignations.res_date','resignations.res_reason')
+        ->get();
+    }else{
+
+        $resignation = DB::table('resignations')
+        ->join('users', 'users.id', '=', 'resignations.emp_id')
+        ->leftJoin('roles', 'roles.id', '=', 'users.role_id')
+        ->leftJoin('stores', 'stores.id', '=', 'users.store_id')
+        ->where('resignations.request_to', $user->id)
+        ->where('resignations.request_status', 'Pending')
+        ->select('users.name','users.emp_code','roles.role','roles.role_dept','resignations.request_status','resignations.id','stores.store_name','resignations.res_date','resignations.res_reason')
+        ->get();
+    }
+
+
+
+        // $role_get = DB::table('roles')
+        //     ->join('users', 'users.role_id', '=', 'roles.id')
+        //     ->where('users.id', $user->id)
+        //     ->select('roles.id as role_id', 'roles.role', 'roles.role_dept')
+        //     ->first();
+
+        // $resignation = collect();
+
+        // if ($role_get) {
+        //     $resignation = DB::table('resignations')
+        //         ->leftJoin('stores', 'stores.id', '=', 'resignations.store_id')
+        //         ->leftJoin('users', 'users.id', '=', 'resignations.emp_id')
+        //         ->select('resignations.*', 'stores.store_name', 'users.emp_code')
+        //         ->where(function ($query) use ($role_get) {
+        //             $query->where('resignations.request_to', $role_get->role_id)
+        //                   ->orWhere('resignations.esculate_to', $role_get->role_id);
+        //         })
+        //         ->get();
+        // // }
+
+        return view('approve.reginlist',['resgination'=>$resignation,'hr_list'=>$hr]);
     }
 
 
@@ -296,38 +370,73 @@ if ($role_get->role_id == 12) {
             'status' => 'required',
         ]);
 
-        try {
-            $user = auth()->user();
 
-            $leave = Leave::findOrFail($request->id);
+            //  $user = auth()->user();
 
+            //  $leave = Leave::findOrFail($request->id);
 
-            if ($user->role_id == 12) {
-                $leave->request_status = $request->status;
-                if($request->status == 'Rejected')
-                {
-                     $leave->status = $request->status;
+            if($request->status == 'Escalate'){
+
+                DB::table('leaves')
+                ->where('id',$request->id)
+                ->update([
+                    'esculate_to'=>$request->hr,
+                    'request_status'=>$request->status,
+                    'status'=>$request->status
+                ]);
+                //  $notification = Notification::create([
+                //             'user_id' => $leave->user_id,
+                //             'noty_type' => 'leave',
+                //             'type_id' => $request->id,
+                //         ]);
+            }else{
+
+                $status =  DB::table('leaves')->where('id',$request->id)->first();
+
+                if($status->request_status=='Pending'){
+                    $col = 'request_status';
+                }else{
+                    $col = 'esculate_status';
                 }
-            } elseif ($user->role_id == 3) {
-                $leave->esculate_status = $request->status;
-                $leave->status = $request->status;
 
-                 $notification = Notification::create([
-                            'user_id' => $leave->user_id,
-                            'noty_type' => 'leave',
-                            'type_id' => $request->id,
-                        ]);
-
-            } else {
-                return response()->json(['error' => 'Unauthorized action.'], 403);
+                DB::table('leaves')
+                ->where('id',$request->id)
+                ->update([
+                    $col=>$request->status,
+                    'status'=>$request->status
+                ]);
             }
 
-            $leave->save();
-
             return response()->json(['message' => 'Leave updated successfully!'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to update leave.'], 500);
-        }
+
+                // $leave->status = $request->status;
+
+
+
+            // if ($user->role_id == 12) {
+            //     $leave->request_status = $request->status;
+            //     if($request->status == 'Rejected')
+            //     {
+            //          $leave->status = $request->status;
+            //     }
+            // } elseif ($user->role_id == 3) {
+            //     $leave->esculate_status = $request->status;
+            //     $leave->status = $request->status;
+
+            //      $notification = Notification::create([
+            //                 'user_id' => $leave->user_id,
+            //                 'noty_type' => 'leave',
+            //                 'type_id' => $request->id,
+            //             ]);
+
+            // } else {
+            //     return response()->json(['error' => 'Unauthorized action.'], 403);
+            // }
+
+            // $leave->save();
+
+            // return response()->json(['message' => 'Leave updated successfully!'], 200);
+
     }
 
 
@@ -358,37 +467,72 @@ if ($role_get->role_id == 12) {
             'status' => 'required',
         ]);
 
+        if($request->status == 'Escalate'){
 
+            DB::table('resignations')
+            ->where('id',$request->id)
+            ->update([
+                'esculate_to'=>$request->hr,
+                'request_status'=>$request->status,
+                'status'=>$request->status
+            ]);
+            //  $notification = Notification::create([
+            //             'user_id' => $leave->user_id,
+            //             'noty_type' => 'leave',
+            //             'type_id' => $request->id,
+            //         ]);
+        }else{
 
-            try {
-                $user = auth()->user();
+            $status =  DB::table('resignations')->where('id',$request->id)->first();
 
-                $resgin = Resignation::findOrFail($request->id);
+            if($status->request_status=='Pending'){
+                $col = 'request_status';
+            }else{
+                $col = 'esculate_status';
+            }
 
-                if ($user->role_id == 12) {
-                    $resgin->request_status = $request->status;
-                    if($request->status == 'Rejected')
-                {
-                     $resgin->status = $request->status;
-                }
-                } elseif ($user->role_id == 3) {
-                    $resgin->esculate_status = $request->status;
-                    $resgin->status = $request->status;
-                        $notification = Notification::create([
-                            'user_id' => $resgin->emp_id,
-                            'noty_type' => 'resignation',
-                            'type_id' => $request->id,
-                        ]);
-                } else {
-                    return response()->json(['error' => 'Unauthorized action.'], 403);
-                }
-
-                $resgin->save();
-
-            return response()->json(['message' => 'Resgination updated successfully!'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to update Resgination.'], 500);
+            DB::table('resignations')
+            ->where('id',$request->id)
+            ->update([
+                $col=>$request->status,
+                'status'=>$request->status
+            ]);
         }
+
+        return response()->json(['message' => 'Resgination updated successfully!'], 200);
+
+
+
+
+            // try {
+            //     $user = auth()->user();
+
+            //     $resgin = Resignation::findOrFail($request->id);
+
+            //     if ($user->role_id == 12) {
+            //         $resgin->request_status = $request->status;
+            //         if($request->status == 'Rejected')
+            //     {
+            //          $resgin->status = $request->status;
+            //     }
+            //     } elseif ($user->role_id == 3) {
+            //         $resgin->esculate_status = $request->status;
+            //         $resgin->status = $request->status;
+            //             $notification = Notification::create([
+            //                 'user_id' => $resgin->emp_id,
+            //                 'noty_type' => 'resignation',
+            //                 'type_id' => $request->id,
+            //             ]);
+            //     } else {
+            //         return response()->json(['error' => 'Unauthorized action.'], 403);
+            //     }
+
+        //         $resgin->save();
+
+        //     return response()->json(['message' => 'Resgination updated successfully!'], 200);
+        // } catch (\Exception $e) {
+        //     return response()->json(['error' => 'Failed to update Resgination.'], 500);
+        // }
     }
 
     public function updaterecuirt(Request $request)

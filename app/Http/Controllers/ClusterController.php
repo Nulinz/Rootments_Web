@@ -297,17 +297,16 @@ class ClusterController extends Controller
 
         $cluster = DB::table('users')
             ->leftJoin('m_cluster', 'users.id', '=', 'm_cluster.cl_name')  // Correct LEFT JOIN condition
-            ->where('users.role_id', 11)  // Filter users with role_id = 11
-            ->where('users.status', 1)  // Filter users with status = 1
+            ->whereIn('users.role_id', [11, 12])  // Filter users with role_id = 11
             ->whereNull('m_cluster.cl_name')  // Exclude users whose ID is in the cl_name column
             ->select('users.id', 'users.name')
             ->get();
 
 
 
-        // return $store;
+        //  return $cluster;
 
-        return view('cluster.add', ['cluster' => $cluster]);
+         return view('cluster.add', ['cluster' => $cluster]);
     }
 
     public function cluster_det(Request $req)

@@ -6,12 +6,14 @@
             <h4 class="m-0">Salary Generation List</h4>
         </div>
 
-        <form action="" method="post" id="">
+        @if(request()->isMethod('get'))
+        <form action="{{route('payroll.listPerson')}}" method="post" id="">
+            @csrf
             <div class="container-fluid maindiv bg-white my-3">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="month">Month</label>
-                        <input type="month" class="form-control" name="" id="month">
+                        <input type="month" class="form-control" name="month" id="month">
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="store">Store Name</label>
@@ -32,14 +34,15 @@
                 <button type="submit" name="sal_form" class="formbtn">Save</button>
             </div>
         </form>
-
+        @endif
+        @if(request()->isMethod('post'))
         <div class="container-fluid mt-4 listtable">
             <div class="filter-container row mb-3">
                 <div class="custom-search-container col-sm-12 col-md-8">
-                    <select class="headerDropdown form-select filter-option">
+                    {{-- <select class="headerDropdown form-select filter-option">
                         <option value="All" selected>All</option>
                     </select>
-                    <input type="text" id="customSearch" class="form-control filterInput" placeholder=" Search">
+                    <input type="text" id="customSearch" class="form-control filterInput" placeholder=" Search"> --}}
                 </div>
 
                 <div class="select1 col-sm-12 col-md-4 mx-auto">
@@ -52,12 +55,11 @@
                 </div>
             </div>
             <div class="table-wrapper">
-                <form action="" method="POST" id="my_form">
-                    <input type="text" class="form-control" name="post_form" id="post_form"
-                        placeholder="Enter Total Working Days">
-                    <input type="text" class="form-control" name="post_store" id="post_form"
-                        placeholder="Enter Total Working Days">
-                    <table class="example table table-hover table-striped">
+                <form action="{{route('payroll.insert')}}" method="POST" id="my_form">
+                    @csrf
+                    <input type="hidden" class="form-control" name="month" id="" value="{{$post_mon}}">
+                    <input type="hidden" class="form-control" name="store" id="" value="{{$post_store}}">
+                    <table class=" table table-hover table-striped">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -69,34 +71,47 @@
                                 <th>Incentives</th>
                                 <th>OT</th>
                                 <th>Bonus</th>
+                                <th>Deduction</th>
                                 <th>Advance</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
                         <tbody>
+
+                            @foreach ($u_list as $ul)
+                            @php
+                            // dd($u_list);
+                        @endphp
                             <tr>
-                                <td>1</td>
-                                <td>EMP02 <br> Revathi</td>
-                                <td>28000</td>
-                                <td><input type="number" class="form-control" id="twd" name="" value="0">
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$ul->emp_code}} <br> {{$ul->name}}</td>
+                                <td>
+                                    <input hidden type="text" class="form-control"  name="empId[]" value="{{$ul->emp_id}}">
+                                    <input type="number" class="form-control" id="base" name="salary[]" value="{{$ul->base_salary}}" readonly>
                                 </td>
-                                <td><input type="number" class="form-control" id="tpd" name="" value="0">
+                                <td><input type="number" class="form-control" id="twd" name="totalWork[]" value="{{$twd}}">
                                 </td>
-                                <td><input type="number" class="form-control" id="lop" name="" value="0">
+                                <td><input type="number" class="form-control" id="tpd" name="present[]" value="{{$ul->attendance_count ?? 0}}">
                                 </td>
-                                <td><input type="number" class="form-control" id="incentives" name=""
+                                <td><input type="number" class="form-control" id="lop" name="lop[]" value="{{$twd-$ul->attendance_count}}">
+                                </td>
+                                <td><input type="number" class="form-control" id="incentives" name="incentive[]"
                                         value="0"></td>
-                                <td><input type="number" class="form-control" id="ot" name="" value="0">
+                                <td><input type="number" class="form-control" id="over_time" name="ot[]" value="{{$ul->total_ot ?? 0}}">
                                 </td>
-                                <td><input type="number" class="form-control" id="bonus" name=""
+                                <td><input type="number" class="form-control" id="bonus" name="bonus[]"
                                         value="0">
                                 </td>
-                                <td><input type="number" class="form-control" id="advance" name=""
+                                <td><input type="number" class="form-control" id="deduct" name="deduct[]"
+                                        value="{{$ul->total_late ?? 0}}">
+                                </td>
+                                <td><input type="number" class="form-control" id="advance" name="advance[]"
                                         value="0">
                                 </td>
-                                <td><input type="number" class="form-control" id="total" name=""
+                                <td><input type="number" class="form-control" id="total" name="total[]"
                                         value="0" readonly></td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                     <div class="col-sm-12 col-md-12 col-xl-12 mt-3 d-flex justify-content-center align-items-center">
@@ -105,7 +120,63 @@
                 </form>
             </div>
         </div>
+        @endif
     </div>
+
+    <script>
+        $(document).on('change', '#incentives, #bonus, #advance, #deduct, #over_time, #lop, #tpd, #twd', function () {
+        // Get the current row
+        let $currentRow = $(this).closest('tr');
+
+        // Get the values of inputs within the current row
+        let twd = parseFloat($currentRow.find('#twd').val()) || 0;
+        let inc = parseFloat($currentRow.find('#incentives').val()) || 0;
+        let bonus = parseFloat($currentRow.find('#bonus').val()) || 0;
+        let adv = parseFloat($currentRow.find('#advance').val()) || 0;
+         let ded = parseFloat($currentRow.find('#deduct').val()) || 0;
+        let ot = parseFloat($currentRow.find('#over_time').val()) || 0;
+        let lop = parseFloat($currentRow.find('#lop').val()) || 0;
+        let tpd = parseFloat($currentRow.find('#tpd').val()) || 0;
+        let base = parseFloat($currentRow.find('#base').val()) || 0;
+
+        let per_day = parseInt(base / twd);
+
+
+        let plus = parseFloat(per_day * tpd) + parseFloat(inc) + parseFloat(ot) + parseFloat(bonus);
+        let minus = parseFloat(ded) + parseFloat(adv);
+
+        // Ensure that the calculation doesn't result in NaN
+        let total = plus - minus;
+
+          console.log(plus);
+
+          $currentRow.find('#lop').val(twd-tpd)
+
+
+        // Set the total in the current row's `.total` input
+        $currentRow.find('#total').val(total)
+
+
+
+        // let add = parseInt(base / 26);
+        // let lop_amt = one * lop;
+        // let per_amt = 50;
+        // let per_amt1 = per * per_amt;
+        // let total = (((base) - (lop_amt + per_amt1)))
+        // let total1 = parseFloat(total) + parseInt(inc) + parseInt(add);
+
+        //   $(".total").val(total1);
+
+        // $currentRow.find('.total').val(total1);
+
+
+        // console.log("Inc Value: " + inc);
+        // console.log("Per Value: " + per);
+        // console.log("Lop Value: " + base);
+
+        // You can perform additional actions here with the retrieved values
+    });
+    </script>
 
     <script>
         $('#month').on('change', function() {
@@ -120,20 +191,16 @@
                 },
 
                 success: function(response) {
-                    // console.log(response);
+                     console.log(response);
 
+
+                    $('#store').empty(); // Clears all existing options in the select dropdown
 
                     $.each(response, function(index, value) {
-                        // Dynamically create an option element for each store
-                        var option = $('<option></option>').attr('value', value.id + '-Store')
-                            .text(value
-                                .store_name + '-' + value.store_code);
-
-                        // Append the option to the select element
+                        var option = $('<option></option>').attr('value', value.id).text(value.store_name + ' - ' + value.store_code);
                         $('#store').append(option);
-
                     });
-                    $('#store').append('<option value="4-office">Office</option>');
+                    // $('#store').append('<option value="4-office">Office</option>');
 
                 },
                 error: function(xhr, status, error) {
@@ -143,107 +210,42 @@
             });
         });
 
-        $('.store').on('change', function() {
-            // Trigger an AJAX request when the page is ready
-            var store = $(this).val();
-            var mon = $('#month').val();
+        // $('.store').on('change', function() {
+        //     // Trigger an AJAX request when the page is ready
+        //     var store = $(this).val();
+        //     var mon = $('#month').val();
 
-            $.ajax({
-                url: '{{ route('payroll.listPerson') }}', // Laravel route for the POST request
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}', // CSRF token for security
-                    mon: mon, // Send the selected store ID
-                    store: store, // Send the selected store ID
-                },
+        //     $.ajax({
+        //         url: '{{ route('payroll.listPerson') }}', // Laravel route for the POST request
+        //         type: 'POST',
+        //         data: {
+        //             _token: '{{ csrf_token() }}', // CSRF token for security
+        //             mon: mon, // Send the selected store ID
+        //             store: store, // Send the selected store ID
+        //         },
 
-                success: function(response) {
-                    // console.log(response);
+        //         success: function(response) {
+        //             // console.log(response);
 
 
-                    $.each(response, function(index, value) {
-                        // Dynamically create an option element for each store
-                        var option = $('<option></option>').attr('value', value.id + '-Store')
-                            .text(value
-                                .store_name + '-' + value.store_code);
+        //             $.each(response, function(index, value) {
+        //                 // Dynamically create an option element for each store
+        //                 var option = $('<option></option>').attr('value', value.id + '-Store')
+        //                     .text(value
+        //                         .store_name + '-' + value.store_code);
 
-                        // Append the option to the select element
-                        $('#store').append(option);
+        //                 // Append the option to the select element
+        //                 $('#store').append(option);
 
-                    });
-                    $('#store').append('<option value="4-office">Office</option>');
+        //             });
+        //             $('#store').append('<option value="4-office">Office</option>');
 
-                },
-                error: function(xhr, status, error) {
+        //         },
+        //         error: function(xhr, status, error) {
 
-                    alert('An error occurred: ' + error);
-                }
-            });
-        });
+        //             alert('An error occurred: ' + error);
+        //         }
+        //     });
+        // });
     </script>
-    {{--
-    <script>
-        document.getElementById("print").addEventListener("click", function(e) {
-            e.preventDefault();
-
-            var table = document.querySelector(".example");
-            var clonedTable = table.cloneNode(true);
-
-            clonedTable.querySelectorAll("tr").forEach(row => {
-                row.querySelectorAll("td input").forEach(input => {
-                    var value = input.value;
-                    var textNode = document.createTextNode(value);
-                    var parent = input.parentNode;
-                    parent.innerHTML = '';
-                    parent.appendChild(textNode);
-                });
-            });
-
-            var printWindow = window.open('', '', 'height=600,width=800');
-            printWindow.document.write(`
-                <html>
-                    <head>
-                        <title>Payroll Lists</title>
-                        <style>
-                            table { width: 100%; border-collapse: collapse; }
-                            table, th, td { border: 1px solid black; }
-                            th, td { padding: 8px; text-align: left; }
-                        </style>
-                    </head>
-                    <body>${clonedTable.outerHTML}</body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.focus();
-            printWindow.print();
-            printWindow.close();
-        });
-
-        document.getElementById("excel").addEventListener("click", function(e) {
-            e.preventDefault();
-
-            var table = document.querySelector(".example");
-            var csv = [];
-            var rows = table.querySelectorAll("tr");
-
-            rows.forEach(row => {
-                var rowData = [];
-                var cells = Array.from(row.children);
-                cells.slice(0, -1).forEach(cell => {
-                    rowData.push('"' + cell.textContent.trim() + '"');
-                });
-                csv.push(rowData.join(","));
-            });
-
-            var csvBlob = new Blob([csv.join("\n")], {
-                type: "text/csv"
-            });
-            var link = document.createElement("a");
-            link.href = URL.createObjectURL(csvBlob);
-            link.download = "Payroll-List.csv";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-    </script> --}}
-@endsection
+   @endsection

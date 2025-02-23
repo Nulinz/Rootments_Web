@@ -30,6 +30,8 @@
                     <th>Employee Name</th>
                     <th>Department</th>
                     <th>Role</th>
+                    <th>Store</th>
+                    <th>Date</th>
                     <th>Request</th>
                     <th>Status</th>
                     @php
@@ -42,28 +44,41 @@
                             ->first();
                     @endphp
 
-                    @if (optional($user)->role_id == 3)
+                    {{-- @if (optional($user)->role_id == 3)
                         <th>OverAll Status</th>
-                    @endif
+                    @endif --}}
 
                 </tr>
             </thead>
+
             <tbody>
                 @foreach ($leave as $data)
                     @php
-                        $user = DB::table('users')
-                            ->leftjoin('roles', 'users.role_id', '=', 'roles.id')
-                            ->where('users.id', $data->created_by)
-                            ->select('users.name', 'users.emp_code', 'roles.role', 'roles.role_dept')
-                            ->first();
+
+                        // $user = DB::table('users')
+                        //     ->leftjoin('roles', 'users.role_id', '=', 'roles.id')
+                        //     ->where('users.id', $data->created_by)
+                        //     ->select('users.name', 'users.emp_code', 'roles.role', 'roles.role_dept')
+                        //     ->first();
                     @endphp
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $user->emp_code }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->role_dept }}</td>
-                        <td>{{ $user->role }}</td>
+                        <td>{{ $data->emp_code }}</td>
+                        <td>{{ $data->name }}</td>
+                        <td>{{ $data->role_dept }}</td>
+                        <td>{{ $data->role }}</td>
+                        <td>{{ $data->store_name }}</td>
+                        <td>{{ date("d-m-Y",strtotime($data->start_date))}} <br> {{ date("d-m-Y",strtotime($data->end_date))}}</td>
                         <td>{{ $data->request_type }}</td>
+                        <td>
+                            <button class="listtdbtn" data-id="{{ $data->id }}" data-role='12'
+                                data-bs-toggle="modal" data-bs-target="#updateLeaveApproval">
+                                Update
+                            </button>
+                        </td>
+                        <?php
+                        /*
+
                         <td>
                             @php
                                 $user = auth()->user();
@@ -96,6 +111,7 @@
                                 @endif
                             @endif
                         </td>
+
                         @if (optional($user)->role_id == 3)
                             <td>
 
@@ -108,9 +124,12 @@
                                 @endif
                             </td>
                         @endif
+                        */
+                        ?>
                     </tr>
                 @endforeach
             </tbody>
+
         </table>
     </div>
 </div>
@@ -134,6 +153,18 @@
                             <option value="" selected disabled>Select Options</option>
                             <option value="Approved">Approved</option>
                             <option value="Rejected">Rejected</option>
+                            @if ($user->role_id == 12)
+                            <option>Escalate</option>
+                            @endif
+                        </select>
+                    </div>
+
+                    <div class="col-sm-12 col-md-12 mb-3" id="hr" style="display:none">
+                        <label for="sts" class="col-form-label">HR List</label>
+                        <select class="form-select sts" name="hr"  required>
+                            @foreach ($hr_list as $hr)
+                                <option value="{{$hr->id}}">{{$hr->name}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <!-- Move the button inside the form -->
@@ -196,49 +227,63 @@
         });
 
         $('#updateLeaveForm').on('submit', function(e) {
-            e.preventDefault();
+        e.preventDefault();
 
-            const formData = $(this).serialize();
+        const formData = new FormData(this); // Create FormData object from the form
 
-            $.ajax({
-                url: '{{ route('approveleave.update') }}',
-                type: 'POST',
-                data: formData,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                        'content')
-                },
-                success: function(response) {
-                    alert(response.message);
-                    location.reload();
-                },
-                error: function(error) {
-                    alert('An error occurred. Please try again.');
-                    console.error(error);
-                }
-            });
+        $.ajax({
+            url: '{{ route('approveleave.update') }}', // Laravel route for the POST request
+            type: 'POST',
+            data: formData, // Send FormData directly
+            processData: false, // Don't process the data (because it's FormData)
+            contentType: false, // Don't set content-type (FormData will automatically set it)
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // CSRF token for security
+            },
+            success: function(response) {
+                alert(response.message);
+                location.reload(); // Reload the page on success
+            },
+            error: function(xhr, status, error) {
+                alert('An error occurred: ' + error); // Show an error message
+            }
         });
+         });
     });
+
 </script>
 
 <script>
-    $(document).ready(function() {
-        $(".esulate_button").on("click", function() {
-            let id = $(this).data("id");
-            console.log(id);
+    // $(document).ready(function() {
+    //     $(".esulate_button").on("click", function() {
+    //         let id = $(this).data("id");
+    //         console.log(id);
 
-            $.ajax({
-                url: "{{ route('update.leaveescalate') }}",
-                type: "POST",
-                data: {
-                    id: id,
-                    _token: "{{ csrf_token() }}"
-                },
-                success: function(response) {
-                    alert(response.message);
-                    location.reload();
-                }
-            });
+    //         $.ajax({
+    //             url: "{{ route('update.leaveescalate') }}",
+    //             type: "POST",
+    //             data: {
+    //                 id: id,
+    //                 _token: "{{ csrf_token() }}"
+    //             },
+    //             success: function(response) {
+    //                 alert(response.message);
+    //                 location.reload();
+    //             }
+    //         });
+    //     });
+    // });
+
+    $(document).ready(function() {
+        $("#sts").on("change", function() {
+            let sts = $(this).find("option:selected").val();
+
+            if(sts=='Escalate'){
+                    $('#hr').show();
+            }else{
+                $('#hr').hide();
+            }
+
         });
     });
 </script>
