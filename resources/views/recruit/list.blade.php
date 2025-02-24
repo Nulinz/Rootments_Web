@@ -19,8 +19,10 @@
 
                 <div class="select1 col-sm-12 col-md-4 mx-auto">
                     <div class="d-flex gap-3">
-                        <a href="" id="pdfLink"><img src="{{ asset('assets/images/printer.png') }}" id="print" alt="" height="35px"></a>
-                        <a href="" id="excelLink"><img src="{{ asset('assets/images/excel.png') }}" id="excel" alt="" height="35px"></a>
+                        <!--<a href="" id="pdfLink"><img src="{{ asset('assets/images/printer.png') }}" id="print" alt=""-->
+                        <!--        height="28px" data-bs-toggle="tooltip" data-bs-title="Print"></a>-->
+                        <!--<a href="" id="excelLink"><img src="{{ asset('assets/images/excel.png') }}" id="excel" alt=""-->
+                        <!--        height="30px" data-bs-toggle="tooltip" data-bs-title="Excel"></a>-->
                     </div>
                 </div>
             </div>

@@ -24,10 +24,10 @@
                                 <div class="col-12 cardsh5">
                                     <h5 class="mb-0">Area Manager Details</h5>
                                 </div>
-                                <a class="editicon" href="{{ route('area.edit') }}" data-bs-toggle="tooltip"
-                                    data-bs-title="Edit Cluster">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
+                                <!--<a class="editicon" href="{{ route('area.edit') }}" data-bs-toggle="tooltip"-->
+                                <!--    data-bs-title="Edit Cluster">-->
+                                <!--    <i class="fa-solid fa-pen-to-square"></i>-->
+                                <!--</a>-->
                             </div>
                             <div
                                 class="col-sm-12 col-md-12 col-xl-12 mb-3 d-flex justify-content-center align-items-center">
@@ -128,9 +128,9 @@
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
                                                 <td>{{$ls->name}}</td>
+                                                <td>{{$ls->location}}</td>
                                                 <td>{{$ls->contact_no}}</td>
                                                 <td>{{$ls->email}}</td>
-                                                <td>{{$ls->location}}</td>
                                                 <td>{{$ls->cluster_store_count}}</td>
                                                 <td>
                                                     <div class="d-flex gap-3">

@@ -80,18 +80,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- <tr>
+                        @foreach($stores as $st)
+                         <tr>
                             <td>
                                 <div>
-                                    <input type="checkbox">
+                                    <input type="checkbox" name="store[]" value="{{$st->st_id}}">
                                 </div>
                             </td>
-                            <td>Store 01</td>
-                            <td>Suitor Guy Edappally</td>
-                            <td>Sabari</td>
-                            <td>Edappally</td>
-                            <td>9876543210</td>
-                        </tr> --}}
+                            <td>{{$st->store_code}}</td>
+                            <td>{{$st->store_name}}</td>
+                            <td>{{$st->user_name ?? 'No Manager'}}</td>
+                            <td>{{$st->store_geo}}</td>
+                            <td>{{$st->store_contact}}</td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -118,27 +120,26 @@
 
                 success: function (response) {
                     console.log(response);
-                    $('#mail').val(response.data.email);
-                    $('#contact').val(response.data.contact_no);
-                    $('#adrs').val(response.data.address + ',' + response.data.district + ',' + response
-                        .data.state);
-                    $('#pincode').val(response.data.pincode);
+                    $('#mail').val(response.email);
+                    $('#contact').val(response.contact_no);
+                    $('#adrs').val(response.address + ',' + response.district + ',' + response.state);
+                    $('#pincode').val(response.pincode);
 
-                    $.each(response.store, function (index, value) {
-                        // Create a new table row
-                        var row = '<tr>' +
-                            '<td><div><input type="checkbox" name="store[]" value="' + value
-                                .store_ref_id + '"></div></td>' +
-                            '<td>' + value.store_name + '</td>' +
-                            '<td>' + value.store_code + '</td>' +
-                            '<td>' + value.user_name + '</td>' +
-                            '<td>' + value.store_geo + '</td>' +
-                            '<td>' + value.store_contact + '</td>' +
-                            '</tr>';
+                    // $.each(response.store, function (index, value) {
+                    //     // Create a new table row
+                    //     var row = '<tr>' +
+                    //         '<td><div><input type="checkbox" name="store[]" value="' + value
+                    //             .store_ref_id + '"></div></td>' +
+                    //         '<td>' + value.store_name + '</td>' +
+                    //         '<td>' + value.store_code + '</td>' +
+                    //         '<td>' + value.user_name + '</td>' +
+                    //         '<td>' + value.store_geo + '</td>' +
+                    //         '<td>' + value.store_contact + '</td>' +
+                    //         '</tr>';
 
-                        // Append the new row to the tbody
-                        $('tbody').append(row);
-                    });
+                    //     // Append the new row to the tbody
+                    //     $('tbody').append(row);
+                    // });
 
                 },
                 error: function (xhr, status, error) {

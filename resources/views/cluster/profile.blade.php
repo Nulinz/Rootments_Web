@@ -24,10 +24,10 @@
                                 <div class="col-12 cardsh5">
                                     <h5 class="mb-0">Cluster Details</h5>
                                 </div>
-                                <a class="editicon" href="{{ route('cluster.edit') }}" data-bs-toggle="tooltip"
-                                    data-bs-title="Edit Cluster">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
+                                <!--<a class="editicon" href="{{ route('cluster.edit') }}" data-bs-toggle="tooltip"-->
+                                <!--    data-bs-title="Edit Cluster">-->
+                                <!--    <i class="fa-solid fa-pen-to-square"></i>-->
+                                <!--</a>-->
                             </div>
                             <div
                                 class="col-sm-12 col-md-12 col-xl-12 mb-3 d-flex justify-content-center align-items-center">
@@ -129,9 +129,9 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $cs->store_code }}</td>
                                                     <td>{{ $cs->store_name }}</td>
-                                                    <td>{{ $cs->store_code }}</td>
-                                                    <td>{{ $cs->store_geo }}</td>
                                                     <td>{{ $cs->st_name }}</td>
+                                                    <td>{{ $cs->store_geo }}</td>
+                                                    <td>{{ $cs->store_contact }}</td>
                                                     <td>
                                                         <div class="d-flex gap-3">
                                                             <a href="{{ route('store.view', ['id' => $cs->id]) }}" data-bs-toggle="tooltip"

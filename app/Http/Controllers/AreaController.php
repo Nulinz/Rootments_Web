@@ -13,10 +13,12 @@ class AreaController extends Controller
         $list = DB::table('m_area')
         ->leftJoin('users','users.id','=','m_area.a_man')
         ->leftJoin('area_cluster as ac','ac.area_id','=','m_area.id')
-        ->select('m_area.id','users.name','m_area.location','users.contact_no','users.email',DB::raw('COUNT(ac.id) as cluster_count'))->get();
+        ->select('m_area.id','users.name','m_area.location','users.contact_no','users.email',DB::raw('COUNT(ac.id) as cluster_count'))
+        ->groupBy('m_area.a_man')
+        ->get();
 
-        // return $list;
-         return view('area.list',['list'=>$list]);
+        //  return $list;
+          return view('area.list',['list'=>$list]);
     }
 
     public function create()
@@ -99,6 +101,7 @@ class AreaController extends Controller
 
     public function show(string $id)
     {
+        // $id = $req->id;
 
         $area = DB::table('m_area as ma')
         ->leftJoin('users as user', 'user.id', '=', 'ma.a_man') // Joining users table
@@ -126,7 +129,7 @@ class AreaController extends Controller
 
         //   return($cluster_list);
 
-         return view('area.profile',['area'=>$area,'list'=>$cluster_list]);
+           return view('area.profile',['area'=>$area,'list'=>$cluster_list]);
     }
 
     public function edit(string $id)

@@ -19,10 +19,10 @@
 
                 <div class="select1 col-sm-12 col-md-4 mx-auto">
                     <div class="d-flex gap-3">
-                        <a href="" id="pdfLink"><img src="{{ asset('assets/images/printer.png') }}" id="print" alt=""
-                                height="28px" data-bs-toggle="tooltip" data-bs-title="Print"></a>
-                        <a href="" id="excelLink"><img src="{{ asset('assets/images/excel.png') }}" id="excel" alt=""
-                                height="30px" data-bs-toggle="tooltip" data-bs-title="Excel"></a>
+                        <!--<a href="" id="pdfLink"><img src="{{ asset('assets/images/printer.png') }}" id="print" alt=""-->
+                        <!--        height="28px" data-bs-toggle="tooltip" data-bs-title="Print"></a>-->
+                        <!--<a href="" id="excelLink"><img src="{{ asset('assets/images/excel.png') }}" id="excel" alt=""-->
+                        <!--        height="30px" data-bs-toggle="tooltip" data-bs-title="Excel"></a>-->
                     </div>
                 </div>
             </div>
@@ -51,8 +51,7 @@
                             <td>{{$ls->cluster_count}}</td>
                             <td>
                                 <div class="d-flex gap-3">
-                                    <a href="{{ route('area.profile', ['id' => $ls->id]) }}" data-bs-toggle="tooltip"
-                                        data-bs-title="View Profile"><i class="fas fa-eye"></i></a>
+                                   <a href="{{ route('area.profile', ['id' => $ls->id]) }}" data-bs-toggle="tooltip" data-bs-title="View Profile"><i class="fas fa-eye"></i></a>
                                 </div>
                             </td>
                         </tr>

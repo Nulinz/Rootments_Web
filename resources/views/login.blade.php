@@ -2,7 +2,10 @@
 <html>
 
 <head>
-    <title>Rootments | Login</title>
+    <title>Rootments</title>
+
+    <!-- Chrome Theme Changing -->
+    <meta name="theme-color" content="#231F20">
 
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('assets/images/favicon_2.png') }}" sizes="32*32" type="image/png">
@@ -20,10 +23,10 @@
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ asset('assets/css/login.css') }}">
-    
+
     <!-- SwalFire -->
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-   
+
 </head>
 
 <body>
@@ -62,7 +65,7 @@
             </div>
         </form>
     </div>
-    
+
     <!-- SwalFire -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 

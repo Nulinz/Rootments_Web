@@ -33,17 +33,17 @@ class AuthController extends Controller
         return response()->json(['error' => 'Invalid credentials'], 401);
     }
 
-   
+
     $user->device_token = $request->device_token;
     $user->save();
-    
-     $inserted = DB::table('attendence')->insert([
-            'user_id' => $user->id,
-            'attend_status' => 'Present', 
-            'in_location' => 'Some Location', 
-            'in_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
-            'c_on' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
-        ]);
+
+    //  $inserted = DB::table('attendence')->insert([
+    //         'user_id' => $user->id,
+    //         'attend_status' => 'Present',
+    //         'in_location' => 'Some Location',
+    //         'in_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
+    //         'c_on' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
+    //     ]);
 
 
     $token = $user->createToken('token')->plainTextToken;
@@ -56,8 +56,8 @@ class AuthController extends Controller
         'id' => $user->id,
         'name' => $user->name,
         'emp_code' => $user->emp_code,
-        'role' => $user->role ? $user->role->role : null, 
-        'role_id' => $user->role ? $user->role->id : null, 
+        'role' => $user->role ? $user->role->role : null,
+        'role_id' => $user->role ? $user->role->id : null,
         'store_id' => $user->store_id,
         'profile_image_url' => $profileImageUrl,
         'token' => $token,
@@ -73,55 +73,55 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $user = Auth::user();
-    
+
         if ($user) {
-           
-            $user->device_token = null; 
+
+            $user->device_token = null;
             $user->save();
-            
-             $out=DB::table('attendence')
-            ->where('user_id', $user->id)
-            ->whereDate('c_on', now()->setTimezone('Asia/Kolkata')->format('Y-m-d'))
-            ->update([
-                'out_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
-                'u_by' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
-            ]);
-    
+
+            //  $out=DB::table('attendence')
+            // ->where('user_id', $user->id)
+            // ->whereDate('c_on', now()->setTimezone('Asia/Kolkata')->format('Y-m-d'))
+            // ->update([
+            //     'out_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
+            //     'u_by' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
+            // ]);
+
             $request->user()->currentAccessToken()->delete();
-    
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Successfully logged out.',
             ]);
         }
-    
+
         return response()->json(['error' => 'Unauthorized'], 401);
     }
-    
+
     public function update(Request $request)
     {
         $request->validate([
             'password' => ['sometimes', 'nullable', 'min:6'],
         ]);
-    
+
         $user_id = $request->input('user_id');
         $password = $request->password;
-    
+
         $user = User::where('id', $user_id)->first();
-    
+
         if (!$user) {
             return response()->json(['status' => 'error', 'message' => 'Unauthorized Profile'], 404);
         }
-    
+
         if ($password) {
             if (Hash::check($password, $user->password)) {
                 return response()->json(['status' => 'error', 'message' => 'You Entered Old Password'], 400);
             }
-            
+
             $user->password = Hash::make($password);
             $user->save();
         }
-    
+
         return response()->json(['status' => 'success', 'message' => 'Password Updated Successfully'], 200);
     }
 

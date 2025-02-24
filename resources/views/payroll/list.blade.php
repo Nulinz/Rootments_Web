@@ -37,23 +37,23 @@
         @endif
         @if(request()->isMethod('post'))
         <div class="container-fluid mt-4 listtable">
-            <div class="filter-container row mb-3">
-                <div class="custom-search-container col-sm-12 col-md-8">
-                    {{-- <select class="headerDropdown form-select filter-option">
-                        <option value="All" selected>All</option>
-                    </select>
-                    <input type="text" id="customSearch" class="form-control filterInput" placeholder=" Search"> --}}
-                </div>
+            <!--<div class="filter-container row mb-3">-->
+            <!--    <div class="custom-search-container col-sm-12 col-md-8">-->
+            <!--        <select class="headerDropdown form-select filter-option">-->
+            <!--            <option value="All" selected>All</option>-->
+            <!--        </select>-->
+            <!--        <input type="text" id="customSearch" class="form-control filterInput" placeholder=" Search">-->
+            <!--    </div>-->
 
-                <div class="select1 col-sm-12 col-md-4 mx-auto">
-                    <div class="d-flex gap-3">
-                        <a id="pdfLink"><img src="{{ asset('assets/images/printer.png') }}" id="print" alt=""
-                                height="28px" data-bs-toggle="tooltip" data-bs-title="Print"></a>
-                        <a id="excelLink"><img src="{{ asset('assets/images/excel.png') }}" id="excel" alt=""
-                                height="30px" data-bs-toggle="tooltip" data-bs-title="Excel"></a>
-                    </div>
-                </div>
-            </div>
+            <!--    <div class="select1 col-sm-12 col-md-4 mx-auto">-->
+            <!--        <div class="d-flex gap-3">-->
+            <!--            <a id="pdfLink"><img src="{{ asset('assets/images/printer.png') }}" id="print" alt=""-->
+            <!--                    height="28px" data-bs-toggle="tooltip" data-bs-title="Print"></a>-->
+            <!--            <a id="excelLink"><img src="{{ asset('assets/images/excel.png') }}" id="excel" alt=""-->
+            <!--                    height="30px" data-bs-toggle="tooltip" data-bs-title="Excel"></a>-->
+            <!--        </div>-->
+            <!--    </div>-->
+            <!--</div>-->
             <div class="table-wrapper">
                 <form action="{{route('payroll.insert')}}" method="POST" id="my_form">
                     @csrf

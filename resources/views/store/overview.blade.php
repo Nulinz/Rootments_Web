@@ -44,8 +44,8 @@
                                                 </div>
                                             </td>
 
-                                            <td>{{ $data->in_time }}</td>
-                                            <td>{{ $data->out_time }}</td>
+                                            <td>{{ date("h:i",strtotime($data->in_time)) }}</td>
+                                            <td>{{ date("h:i",strtotime($data->out_time)) }}</td>
                                             <td>
                                                 @if ($data->status == 'approved')
                                                     <button class="" data-bs-toggle="tooltip"
@@ -112,7 +112,11 @@
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center justify-content-start gap-2">
-                                                    <img src="{{ asset($data->profile_image) }}" alt="">
+                                                    @if ($data->profile_image)
+                                                        <img src="{{ asset($data->profile_image) }}" alt="">
+                                                    @else
+                                                        <img src="{{ asset('assets/images/avatar.png') }}" alt="">
+                                                    @endif
                                                     <div>
                                                         <h5 class="mb-0">{{ $data->name }}</h5>
                                                         <h6 class="mb-0">

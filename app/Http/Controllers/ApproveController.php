@@ -120,7 +120,7 @@ if ($role_get->role_id == 12) {
 
         $user = auth()->user();
 
-        $hr = DB::table('users')->where('role_id', [3,4,5])->select('users.id','users.name')->get();
+        $hr = DB::table('users')->whereIn('role_id', [3,4,5])->select('users.id','users.name')->get();
 
         $arr = [3,4,5];
 
@@ -264,7 +264,7 @@ if ($role_get->role_id == 12) {
     {
         $user = auth()->user();
 
-        $hr = DB::table('users')->where('role_id', [3,4,5])->select('users.id','users.name')->get();
+        $hr = DB::table('users')->whereIn('role_id', [3,4,5])->select('users.id','users.name')->get();
 
         $arr = [3,4,5];
 

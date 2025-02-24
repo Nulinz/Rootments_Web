@@ -10,11 +10,7 @@
                 {{-- <a href="{{ route('task.add.cluster') }}"><button class="listbtn">+ Cluster Task</button></a> --}}
                 @endif
                <a href="{{ route('task.add') }}"><button class="listbtn">+ Add Task</button></a>
-
-
             </div>
-
-
         </div>
 
         <div class="container-fluid mt-4 listtable">
@@ -28,10 +24,10 @@
 
                 <div class="select1 col-sm-12 col-md-4 mx-auto">
                     <div class="d-flex gap-3">
-                        <a href="" id="print" data-bs-toggle="tooltip" data-bs-title="Print"><img src="{{ asset('assets/images/printer.png') }}" id="print"
-                                alt="" height="25px"></a>
-                        <a href="" id="excel" data-bs-toggle="tooltip" data-bs-title="Excel"><img src="{{ asset('assets/images/excel.png') }}" id="excel"
-                                alt="" height="30px"></a>
+                        <!--<a href="" id="print" data-bs-toggle="tooltip" data-bs-title="Print"><img src="{{ asset('assets/images/printer.png') }}" id="print"-->
+                        <!--        alt="" height="25px"></a>-->
+                        <!--<a href="" id="excel" data-bs-toggle="tooltip" data-bs-title="Excel"><img src="{{ asset('assets/images/excel.png') }}" id="excel"-->
+                        <!--        alt="" height="30px"></a>-->
                     </div>
                 </div>
             </div>

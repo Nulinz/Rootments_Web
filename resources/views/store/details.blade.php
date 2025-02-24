@@ -13,10 +13,10 @@
 
             <div class="select1 col-sm-12 col-md-4 mx-auto">
                 <div class="d-flex gap-3">
-                    <a href="" id="pdfLink"><img src="{{ asset('assets/images/printer.png') }}" id="print"
-                            alt="" height="35px" data-bs-toggle="tooltip" data-bs-title="Print"></a>
-                    <a href="" id="excelLink"><img src="{{ asset('assets/images/excel.png') }}" id="excel"
-                            alt="" height="35px" data-bs-toggle="tooltip" data-bs-title="Excel"></a>
+                    <!--<a href="" id="pdfLink"><img src="{{ asset('assets/images/printer.png') }}" id="print"-->
+                    <!--        alt="" height="35px" data-bs-toggle="tooltip" data-bs-title="Print"></a>-->
+                    <!--<a href="" id="excelLink"><img src="{{ asset('assets/images/excel.png') }}" id="excel"-->
+                    <!--        alt="" height="35px" data-bs-toggle="tooltip" data-bs-title="Excel"></a>-->
                 </div>
             </div>
         </div>
@@ -29,8 +29,8 @@
                         <th>Employee Code</th>
                         <th>Employee Name</th>
                         <th>Role</th>
-                        <th>In-time</th>
-                        <th>Out-time</th>
+                        <!--<th>In-time</th>-->
+                        <!--<th>Out-time</th>-->
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -41,8 +41,8 @@
                             <td>{{ $data->emp_code }}</td>
                             <td>{{ $data->name }}</td>
                             <td>{{ $data->role }}</td>
-                            <td>{{ (new DateTime($data->login_time, new DateTimeZone('UTC')))->setTimezone(new DateTimeZone('Asia/Kolkata'))->format('h:i A') }}</td>
-                            <td>{{ (new DateTime($data->logout_time, new DateTimeZone('UTC')))->setTimezone(new DateTimeZone('Asia/Kolkata'))->format('h:i A') }}</td>
+                            <!--<td>{{ (new DateTime($data->login_time, new DateTimeZone('UTC')))->setTimezone(new DateTimeZone('Asia/Kolkata'))->format('h:i A') }}</td>-->
+                            <!--<td>{{ (new DateTime($data->logout_time, new DateTimeZone('UTC')))->setTimezone(new DateTimeZone('Asia/Kolkata'))->format('h:i A') }}</td>-->
                             <td>
                                 <div class="d-flex gap-3">
                                     <a target="__blank" href="{{ route('store.viewemp', ['id' => $data->userId]) }}"

@@ -4,7 +4,7 @@
 
     <div class="sidebodydiv px-5 py-3">
         <div class="sidebodyhead">
-            <h4 class="m-0">Overtime List</h4>
+            <h4 class="m-0">Overtime / Late List</h4>
         </div>
 
         <div class="container-fluid mt-4 listtable">
@@ -18,10 +18,10 @@
 
                 <div class="select1 col-sm-12 col-md-4 mx-auto">
                     <div class="d-flex gap-3">
-                        <a href="" id="pdfLink"><img src="./images/printer.png" id="print" alt=""
-                                height="28px" data-bs-toggle="tooltip" data-bs-title="Print"></a>
-                        <a href="" id="excelLink"><img src="./images/excel.png" id="excel" alt=""
-                                height="30px" data-bs-toggle="tooltip" data-bs-title="Excel"></a>
+                        <!--<a href="" id="pdfLink"><img src="{{ asset('assets/images/printer.png') }}" id="print" alt=""-->
+                        <!--        height="28px" data-bs-toggle="tooltip" data-bs-title="Print"></a>-->
+                        <!--<a href="" id="excelLink"><img src="{{ asset('assets/images/excel.png') }}" id="excel" alt=""-->
+                        <!--        height="30px" data-bs-toggle="tooltip" data-bs-title="Excel"></a>-->
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     {{-- <a><i class="fas fa-circle-check text-success"></i></a> --}}
-                                    <button class="approve-ot"  data-bs-toggle="modal" data-bs-target="#updateLeaveApproval"
+                                    <button class="approve-ot listtdicon"  data-bs-toggle="modal" data-bs-target="#updateLeaveApproval"
                                     data-id="{{ $ot->id }}" data-bs-title="Approved"><i
                                         class="fas fa-circle-check text-success"></i></button>
                                 </div>
@@ -75,7 +75,7 @@ aria-hidden="true">
 <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title fs-5" id="updateLeaveApprovalLabel">Update OT Approval</h4>
+            <h4 class="modal-title fs-5" id="updateLeaveApprovalLabel">Update OverTime/Late Approval</h4>
             <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -85,7 +85,7 @@ aria-hidden="true">
 
                 <input type="hidden" id="ot_id" name="ot_id">
                 <div class="col-sm-12 col-md-12 mb-3">
-                    <label for="sts" class="col-form-label">OT amount</label>
+                    <label for="sts" class="col-form-label">OverTime/Late amount</label>
                     <input type="number" class="form-control" name="ot_amount" >
                 </div>
 

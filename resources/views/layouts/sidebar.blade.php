@@ -36,7 +36,7 @@
 
             <li class="mb-1">
                 <a href="{{ route($route) }}">
-                    <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('dashboard.*') ? 'active' : '' }}" data-bs-toggle="collapse"
                         data-bs-target="#collapse1" aria-expanded="false">
                         <div class="btnname">
                             <i class="bx bxs-dashboard"></i> &nbsp;Dashboard
@@ -50,7 +50,7 @@
             @if(hasAccess($r_id, 'store'))
 
             <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse3"
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('store.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse3"
                     aria-expanded="false">
                     <div class="btnname">
                         <i class="fa-solid fa-shop"></i> &nbsp;Store
@@ -72,7 +72,7 @@
             @if(hasAccess($r_id, 'employee'))
 
             <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse2"
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('employee.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse2"
                     aria-expanded="false">
                     <div class="btnname">
                         <i class="fa-solid fa-user"></i> &nbsp;Employee
@@ -92,7 +92,7 @@
             @endif
             @if(hasAccess($r_id, 'cluster'))
             <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse10"
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('cluster.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse10"
                     aria-expanded="false">
                     <div class="btnname">
                         <i class="fas fa-users-gear"></i> &nbsp;Cluster
@@ -112,7 +112,7 @@
             @endif
             @if(hasAccess($r_id, 'area'))
             <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse11"
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('area.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse11"
                     aria-expanded="false">
                     <div class="btnname">
                         <i class="fa-solid fa-chart-area"></i> &nbsp;Area
@@ -133,7 +133,7 @@
             @endif
             @if(hasAccess($r_id, 'task'))
             <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse4"
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('task.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse4"
                     aria-expanded="false">
                     <div class="btnname">
                         <i class="fa-solid fa-list-check"></i> &nbsp;Task
@@ -154,7 +154,7 @@
             @endif
             @if(hasAccess($r_id, 'recruitment'))
             {{-- <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse8"
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('recruit.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse8"
                     aria-expanded="false">
                     <div class="btnname">
                         <i class="fa-solid fa-user-plus"></i> &nbsp;Recruitment
@@ -175,7 +175,7 @@
             @endif
             @if(hasAccess($r_id, 'payroll'))
             <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse9"
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('payroll.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse9"
                     aria-expanded="false">
                     <div class="btnname">
                         <i class="fa-solid fa-credit-card"></i> &nbsp;Payroll
@@ -200,7 +200,7 @@
             @endif
             @if(hasAccess($r_id, 'attendance'))
             <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse5"
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('attendance.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse5"
                     aria-expanded="false">
                     <div class="btnname">
                         <i class="fa-solid fa-clipboard-user"></i> &nbsp;Attendance
@@ -221,7 +221,7 @@
                                 class="d-inline-flex text-decoration-none rounded">Individual</a>
                         </li>
                         <li><a href="{{ route('attendance.overtime') }}"
-                                class="d-inline-flex text-decoration-none rounded">Overtime</a>
+                                class="d-inline-flex text-decoration-none rounded">Overtime / Late</a>
                         </li>
                     </ul>
                 </div>
@@ -229,7 +229,7 @@
             @endif
             @if(hasAccess($r_id, 'request'))
             <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#collapse6"
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('leave.*', 'repair.*', 'transfer.*', 'resignation.*', 'recruitment.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse6"
                     aria-expanded="false">
                     <div class="btnname">
                         <i class="fa-solid fa-comment-dots"></i> &nbsp;Request
@@ -269,7 +269,7 @@
             @if(hasAccess($r_id, 'approval'))
             <li class="mb-1">
                 <a href="{{ route('approve.index') }}">
-                    <button class="btn0 mx-auto btn-toggle collapsed" data-bs-toggle="collapse"
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('approve.*') ? 'active' : '' }}" data-bs-toggle="collapse"
                         data-bs-target="#collapse7" aria-expanded="false">
                         <div class="btnname">
                             <i class="fa-solid fa-clipboard-check"></i> &nbsp;Approval List

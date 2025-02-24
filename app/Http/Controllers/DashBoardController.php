@@ -307,6 +307,7 @@ class DashBoardController extends Controller
 
     }
 
+
     public function mydashboardindex()
     {
        $authId = Auth::user()->id;
@@ -317,17 +318,19 @@ class DashBoardController extends Controller
 
         $store = DB::table('stores')->where('id', $user->store_id)->first();
 
-        $employeesQuery = DB::table('users')
-            ->select('id', 'name')
-            ->whereNotNull('role_id');
+        // $employeesQuery = DB::table('users')
+        //     ->select('id', 'name')
+        //     ->whereNotNull('role_id');
 
-        if (!in_array($user->dept, ['Admin', 'HR']) && $store) {
-            $employeesQuery->where('store_id', $store->id);
-        }
+        // if (!in_array($user->dept, ['Admin', 'HR']) && $store) {
+        //     $employeesQuery->where('store_id', $store->id);
+        // }
 
-        $employeesQuery->where('id', '!=', $user->id);
+        // $employeesQuery->where('id', '!=', $user->id);
 
-        $employees = $employeesQuery->get();
+        // $employees = $employeesQuery->get();
+
+
 
 
        $tasks_todo = DB::table('tasks')
@@ -427,7 +430,94 @@ class DashBoardController extends Controller
             ->where('task_status', 'Completed')
             ->count();
 
-        return view('generaldashboard.mydashboard', ['tasks_todo' => $tasks_todo,'tasks_todo_count'=>$tasks_todo_count,'tasks_inprogress'=>$tasks_inprogress,'tasks_inprogress_count'=>$tasks_inprogress_count,'tasks_onhold'=>$tasks_onhold,'tasks_onhold_count'=>$tasks_onhold_count,'tasks_complete'=>$tasks_complete,'tasks_complete_count'=>$tasks_complete_count,'employees'=>$employees,'role'=>$role]);
+            // assign to employees list
+
+
+    // $user = auth()->user();
+    $r_id = $user->role_id;
+
+    $cluster_check = DB::table('m_cluster as mc')
+    ->leftJoin('users','users.id','=','mc.cl_name')
+    ->where('mc.cl_name','=',$user->id)
+    ->where('users.role_id',12)
+    ->count();
+
+    // $r_id = 12;
+    switch($r_id) {
+        case 3:
+        case 4:
+        case 5:
+            $arr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            break;
+        case 10:
+            $arr = [11, 12];
+            break;
+        case 11:
+            $arr = [12];
+            break;
+        case 12:
+            if($cluster_check==0){
+                $arr = [13, 14, 15, 16, 17, 18, 19];
+            }else{
+                $arr = [12 ,13, 14, 15, 16, 17, 18, 19];
+            }
+
+            break;
+        case 13:
+        case 14:
+        case 15:
+        case 16:
+        case 17:
+        case 18:
+        case 19:
+            $arr = range(12, 19);  // Array from 12 to 19
+            $arr = array_diff($arr, [$r_id]); // Exclude the current role ID
+            break;
+    }
+
+
+
+
+  $list =  DB::table('users')
+    ->leftJoin('roles','roles.id','=','users.role_id')
+    ->select('users.name','roles.role','roles.role_dept','users.id','users.store_id');
+
+
+    if(($r_id >= 12 && $r_id <= 19)) {
+
+        if($cluster_check==0){
+            $list->where('users.store_id', $user->store_id)
+            ->where('users.id', '!=', $user->id);
+        }else{
+
+            $list->leftJoin('stores', 'stores.id', '=', 'users.store_id')
+            ->where(function($query) use ($user) {
+                // Include all users with role_id = 12
+                $query->where('users.role_id', 12)
+                      // Include all users from the current user's store
+                      ->orWhere('users.store_id', $user->store_id);
+                    })
+            ->where('users.id', '!=', $user->id)
+            ->orderBy('users.role_id');
+
+
+        }
+
+
+    }
+
+    else{
+        $list->leftJoin('stores', 'stores.id', '=', 'users.store_id')
+        ->select('users.name', 'roles.role', 'roles.role_dept', 'users.id', 'users.store_id', 'stores.store_name', 'stores.store_code') // Adjust store fields as needed
+        ->whereIn('users.role_id', $arr)
+        ->where('users.id', '!=', $user->id);
+        $list->orderBy('users.role_id');
+
+    }
+
+    $list = $list->get();
+
+        return view('generaldashboard.mydashboard', ['tasks_todo' => $tasks_todo,'tasks_todo_count'=>$tasks_todo_count,'tasks_inprogress'=>$tasks_inprogress,'tasks_inprogress_count'=>$tasks_inprogress_count,'tasks_onhold'=>$tasks_onhold,'tasks_onhold_count'=>$tasks_onhold_count,'tasks_complete'=>$tasks_complete,'tasks_complete_count'=>$tasks_complete_count,'employees'=>$list,'role'=>$role]);
     }
 
 

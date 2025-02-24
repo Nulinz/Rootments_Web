@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Task;
-use App\Models\{User, Role, };
+use App\Models\{User, Role};
 use Carbon\Carbon;
 use App\Http\Controllers\DashBoardController;
 
@@ -23,6 +23,10 @@ class ClusterController extends Controller
             ->select('mc.id', 'mc.cl_name', 'mc.location', DB::raw('COUNT(cs.cluster_id) as cl_count'), 'users.contact_no', 'users.email', 'users.name')
             ->groupBy('mc.id')
             ->get();
+
+
+
+
         // return $cluster;
         return view('cluster.list', ['cluster' => $cluster]);
     }
@@ -303,10 +307,47 @@ class ClusterController extends Controller
             ->get();
 
 
+     $store = DB::table('stores')
+                ->leftJoin('cluster_store as cs', 'cs.store_id', '=', 'stores.id') // LEFT JOIN with the stores table
+                ->leftJoin('users', function ($join) {
+                    $join->on('users.store_id', '=', 'stores.id') // Join on store_id and store_ref_id
+                        ->where('users.role_id', 12); // Additional condition for users' role_id = 12
+                })
+                 ->whereNull('cs.store_id')
+                ->select(
+                    'stores.id as st_id',
+                    'stores.store_code',
+                    'stores.store_name',
+                    'users.name as user_name', // Select the user name from the users table
+                    'stores.store_geo',
+                    'stores.store_contact'
+                )
+                ->get(); // Execute the query and get the result
 
-        //  return $cluster;
+            // $new_obg = [];
 
-         return view('cluster.add', ['cluster' => $cluster]);
+            // foreach ($store as $st) {
+
+            //     $count = DB::table('cluster_store')->where('store_id', $st->store_ref_id)->count();
+
+            //     if ($count > 0) {
+            //         continue;
+            //     } else {
+            //         $new_obg[] = $st;
+            //     }
+            // }
+
+
+            // $arr = [
+            //     'data' => $data,
+            //     'store' => $new_obg,
+            // ];
+
+
+
+        //  return $store;
+
+          return view('cluster.add', ['cluster' => $cluster,'stores'=>$store]);
     }
 
     public function cluster_det(Request $req)
@@ -315,44 +356,8 @@ class ClusterController extends Controller
 
         // $store = DB::table('stores')->where('status','1')->select('*')->get();
 
-        $store = DB::table('store_lists')
-            ->leftJoin('stores', 'store_lists.store_ref_id', '=', 'stores.id') // LEFT JOIN with the stores table
-            ->leftJoin('users', function ($join) {
-                $join->on('users.store_id', '=', 'store_lists.store_ref_id') // Join on store_id and store_ref_id
-                    ->where('users.role_id', 12); // Additional condition for users' role_id = 12
-            })
-            ->where('store_lists.role_id', 12) // Filter store_lists by role_id = 12
-            ->select(
-                'store_lists.id',
-                'store_lists.store_ref_id',
-                'stores.store_code',
-                'stores.store_name',
-                'users.name as user_name', // Select the user name from the users table
-                'stores.store_geo',
-                'stores.store_contact'
-            )
-            ->get(); // Execute the query and get the result
 
-        $new_obg = [];
-
-        foreach ($store as $st) {
-
-            $count = DB::table('cluster_store')->where('store_id', $st->store_ref_id)->count();
-
-            if ($count > 0) {
-                continue;
-            } else {
-                $new_obg[] = $st;
-            }
-        }
-
-
-        $arr = [
-            'data' => $data,
-            'store' => $new_obg,
-        ];
-
-        return response()->json($arr, 200);
+        return response()->json($data, 200);
         // return view('');
     }
 

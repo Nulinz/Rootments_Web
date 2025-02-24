@@ -60,7 +60,7 @@
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Store End Time</h6>
                                     <h5 class="mb-0">
-                                       
+
                                         {{ (new DateTime($store->store_end_time))->format('h:i A') }}
 
                                     </h5>

@@ -68,11 +68,11 @@
                                         <div class="taskdate mb-2">
                                             <h6 class="m-0 startdate">
                                                 <i class="fa-regular fa-calendar"></i>&nbsp;
-                                                {{ $task->start_date }}
+                                                {{ date("d-m-Y",strtotime($task->start_date)) }}
                                             </h6>
                                             <h6 class="m-0 enddate">
                                                 <i class="fas fa-flag"></i>&nbsp;
-                                                {{ $task->end_date }}
+                                                {{ date("d-m-Y",strtotime($task->end_date)) ?? 'no' }}
                                             </h6>
                                         </div>
                                         <div class="taskdate">
@@ -149,11 +149,11 @@
                                         <div class="taskdate mb-2">
                                             <h6 class="m-0 startdate">
                                                 <i class="fa-regular fa-calendar"></i>&nbsp;
-                                                {{ $task->start_date }}
+                                                {{ date("d-m-Y",strtotime($task->start_date)) }}
                                             </h6>
                                             <h6 class="m-0 enddate">
                                                 <i class="fas fa-flag"></i>&nbsp;
-                                                {{ $task->end_date }}
+                                                {{ date("d-m-Y",strtotime($task->end_date)) }}
                                             </h6>
                                         </div>
                                         <div class="taskdate">
@@ -224,11 +224,11 @@
                                         <div class="taskdate mb-2">
                                             <h6 class="m-0 startdate">
                                                 <i class="fa-regular fa-calendar"></i>&nbsp;
-                                                {{ $task->start_date }}
+                                                {{ date("d-m-Y",strtotime($task->start_date)) }}
                                             </h6>
                                             <h6 class="m-0 enddate">
                                                 <i class="fas fa-flag"></i>&nbsp;
-                                                {{ $task->end_date }}
+                                                {{ date("d-m-Y",strtotime($task->end_date)) }}
                                             </h6>
                                         </div>
                                         <div class="taskdate">
@@ -306,11 +306,11 @@
                                         <div class="taskdate mb-2">
                                             <h6 class="m-0 startdate">
                                                 <i class="fa-regular fa-calendar"></i>&nbsp;
-                                                {{ $task->start_date }}
+                                                {{ date("d-m-Y",strtotime($task->start_date)) }}
                                             </h6>
                                             <h6 class="m-0 enddate">
                                                 <i class="fas fa-flag"></i>&nbsp;
-                                                {{ $task->end_date }}
+                                                {{ date("d-m-Y",strtotime($task->end_date)) }}
                                             </h6>
                                         </div>
                                         <div class="taskdate">
@@ -360,8 +360,11 @@
                             <label for="assignto" class="col-form-label">Assign To</label>
                             <select class="form-select" name="assign_to" id="assignto" required>
                                 <option value="" selected disabled>Select Employee</option>
-                                @foreach ($employees as $employee)
-                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                @foreach ($employees as $us)
+                                    <option value="{{ $us->id }}">{{ $us->name }} - {{ $us->role }} - {{ $us->role_dept }}
+                                        @if(!empty($us->store_name))
+                                        - {{ $us->store_name }}
+                                        @endif</option>
                                 @endforeach
                             </select>
                         </div>

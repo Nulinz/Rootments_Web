@@ -101,34 +101,34 @@ class TaskController extends Controller
      */
     public function create()
     {
-    
+
 
         $user = auth()->user();
-        
+
         if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        
+
         // Fetch all roles, excluding the logged-in user's role if they belong to a store
         $rolesQuery = Role::select('id', 'role', 'role_dept');
-        
+
         if (!is_null($user->store_id)) {
             $rolesQuery->where('id', '!=', $user->role_id);
         }
-        
+
         $roles = $rolesQuery->get();
-        
+
         // Fetch employees, excluding the logged-in user
         $employeesQuery = User::select('id', 'name', 'role_id', 'store_id')
             ->where('id', '!=', $user->id); // Exclude logged-in user
-        
+
         if (!is_null($user->store_id)) {
             $employeesQuery->where('store_id', $user->store_id);
         }
-        
+
         $employees = $employeesQuery->get()->groupBy('role_id');
-        
-        
+
+
         return response()->json([
             'data' => [
                 'roles' => $roles,   // Filtered roles list
@@ -173,7 +173,7 @@ class TaskController extends Controller
 
             $task->assign_by = $request->assign_by;
             $task->save();
-            
+
             $task->f_id = $task->id;
             $task->save();
 
@@ -534,12 +534,12 @@ public function completedtaskstore(Request $request)
 
 public function notification_list(Request $request)
 {
-    
+
     $user = $request->input('user_id');
-    
-    
+
+
     if (!$user) {
-        
+
         return response()->json(['message' => 'Unauthorized'], 401);
     }
 
@@ -562,7 +562,7 @@ public function notification_list(Request $request)
         switch ($notification->noty_type) {
             case 'task':
                 $details = DB::table('tasks')
-                    ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id') 
+                    ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
                     ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
                     ->leftJoin('users as assigned_to_user', 'tasks.assign_to', '=', 'assigned_to_user.id')
                     ->leftJoin('users as assigned_by_user', 'tasks.assign_by', '=', 'assigned_by_user.id')
@@ -633,8 +633,8 @@ public function notification_list(Request $request)
         }
 
         // Convert created_at to IST
-        $created_at_ist = $notification->created_at 
-            ? Carbon::parse($notification->created_at)->toDateTimeString() 
+        $created_at_ist = $notification->created_at
+            ? Carbon::parse($notification->created_at)->toDateTimeString()
             : null;
 
         // Add to response data
@@ -696,14 +696,79 @@ public function tasktimeline(Request $request)
             'assigned_by_role.role as assigned_by_role'
         )
         ->get();
-        
+
 
     return response()->json([
         'data' => $tasks,
     ]);
 }
 
-    
+
+     public function attd_row()
+        {
+
+            $user_check = Auth::user()->id;
+
+            $attd = DB::table('attendence')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->count();
+
+            if($attd==0){
+                $val = 'attd_in';
+            }else{
+                 $attd_ch = DB::table('attendence')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
+                 if(is_null($attd_ch->out_location)){
+                      $val = 'attd_out';
+                 }else{
+                      $val = 'attd_mark';
+                 }
+
+            }
+
+            return response()->json([
+                'status'=>'Success',
+                'data' => [$attd_ch->in_time ?? null,$attd_ch->out_time ?? null,$val],
+            ]);
+        }
+
+         public function attd_in(Request $req)
+        {
+             $user_check = Auth::user()->id;
+
+             $inserted = DB::table('attendence')->insert([
+            'user_id' => $user_check,
+            'attend_status' => 'Present',
+            'in_location' => $req->loc,
+            'in_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
+            'c_on' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
+           ]);
+
+            return response()->json([
+                'status'=>'Success',
+
+            ]);
+        }
+
+         public function attd_out(Request $req)
+        {
+
+            $user_check = Auth::user()->id;
+
+            $attd = DB::table('attendence')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
+
+
+            DB::table('attendence')
+                ->where('id', $attd->id)
+                ->update([
+                'out_location'=>$req->loc,
+                'out_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
+                'u_by' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
+                 ]);
+
+            return response()->json([
+                'status'=>'Success',
+
+            ]);
+        }
+
 
     public function show(string $id)
     {

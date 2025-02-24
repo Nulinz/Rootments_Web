@@ -73,8 +73,7 @@
       @endif
 
         <div class="my-2">
-            <a href="{{ route('mydash.dashboard') }}"><button class="dashtabs ">My
-                    Dashboard</button></a>
+            <a href="{{ route('mydash.dashboard') }}"><button class="dashtabs">My Dashboard</button></a>
         </div>
     </div>
 </div>

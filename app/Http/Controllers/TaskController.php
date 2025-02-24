@@ -122,11 +122,11 @@ $task = $query->get();
 {
 
 
-    $hasCluster = $req->is('task-add/cluster');
+    // $hasCluster = $req->is('task-add/cluster');
 
-    if ($hasCluster) {
-        $cluster=1;
-     }
+    // if ($hasCluster) {
+    //     $cluster=1;
+    //  }
 
     $user = auth()->user();
     $role = Role::find($user->role_id);
@@ -181,6 +181,13 @@ public function create_task(Request $req)
 
     $user = auth()->user();
     $r_id = $user->role_id;
+
+    $cluster_check = DB::table('m_cluster as mc')
+    ->leftJoin('users','users.id','=','mc.cl_name')
+    ->where('mc.cl_name','=',$user->id)
+    ->where('users.role_id',12)
+    ->count();
+
     // $r_id = 12;
     switch($r_id) {
         case 3:
@@ -192,10 +199,15 @@ public function create_task(Request $req)
             $arr = [11, 12];
             break;
         case 11:
-            $arr = [11, 12, 13, 14, 15, 16, 17, 18, 19];
+            $arr = [12];
             break;
         case 12:
-            $arr = [13, 14, 15, 16, 17, 18, 19];
+            if($cluster_check==0){
+                $arr = [13, 14, 15, 16, 17, 18, 19];
+            }else{
+                $arr = [12 ,13, 14, 15, 16, 17, 18, 19];
+            }
+
             break;
         case 13:
         case 14:
@@ -210,17 +222,37 @@ public function create_task(Request $req)
     }
 
 
+
+
   $list =  DB::table('users')
     ->leftJoin('roles','roles.id','=','users.role_id')
     ->select('users.name','roles.role','roles.role_dept','users.id','users.store_id');
 
 
     if(($r_id >= 12 && $r_id <= 19)) {
-        $list->where('users.store_id', $user->store_id)
+
+        if($cluster_check==0){
+            $list->where('users.store_id', $user->store_id)
             ->where('users.id', '!=', $user->id);
+        }else{
+
+            $list->leftJoin('stores', 'stores.id', '=', 'users.store_id')
+            ->where(function($query) use ($user) {
+                // Include all users with role_id = 12
+                $query->where('users.role_id', 12)
+                      // Include all users from the current user's store
+                      ->orWhere('users.store_id', $user->store_id);
+                    })
+            ->where('users.id', '!=', $user->id)
+            ->orderBy('users.role_id');
 
 
-    }else{
+        }
+
+
+    }
+
+    else{
         $list->leftJoin('stores', 'stores.id', '=', 'users.store_id')
         ->select('users.name', 'roles.role', 'roles.role_dept', 'users.id', 'users.store_id', 'stores.store_name', 'stores.store_code') // Adjust store fields as needed
         ->whereIn('users.role_id', $arr)

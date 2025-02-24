@@ -48,10 +48,10 @@
                                         data-bs-toggle="dropdown" id="assignto" aria-expanded="false">
                                         Select Options
                                     </button>
-                                    <ul class="dropdown-menu w-100 px-3" id="roleDropdownMenu">
-                                            <ul class="ms-4 list-unstyled">
+                                    <ul class="dropdown-menu w-100 px-1" id="roleDropdownMenu">
+                                            <ul class="ms-2 list-unstyled">
                                                 @foreach ($user as $us)
-                                                    <li>
+                                                    <li class="d-flex justify-content-start gap-1">
                                                         <input type="checkbox"
                                                             class="me-2 employee-checkbox role"
                                                             name="assign_to[]" value="{{ $us->id }}">

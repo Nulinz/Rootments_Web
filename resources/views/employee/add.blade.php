@@ -71,9 +71,8 @@
                 </div>
                 <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                     <label for="aadhar">Aadhar Number <span>*</span></label>
-                    <input type="number" class="form-control" name="aadhar_no" id="aadhar" autocomplete="off" minlength="12"
-                        oninput="validate_aadhar(this)" min="000000000000" max="999999999999"
-                        placeholder="Enter Aadhar Number" required>
+                    <input type="number" class="form-control" name="aadhar_no" id="aadhar" oninput="validate_aadhar(this)"
+                        min="000000000000" max="999999999999" placeholder="Enter Aadhar Number" required>
                     @error('aadhar_no')
                         <h6 class="errormsg">{{ $message }}</h6>
                     @enderror
