@@ -12,6 +12,7 @@ use App\Models\Transfer;
 use App\Models\User;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
+use App\Services\FirebaseService;
 
 class ApproveController extends Controller
 {
@@ -152,7 +153,7 @@ if ($role_get->role_id == 12) {
                 $query->where('leaves.request_to', $user->id)
                       ->orWhere('leaves.esculate_to', $user->id);
             })
-            ->select('leaves.id', 'users.name', 'users.emp_code', 'roles.role', 'roles.role_dept', 'leaves.request_status', 'leaves.request_type','stores.store_name','leaves.start_date','leaves.end_date')
+            ->select('leaves.id', 'users.name', 'users.emp_code', 'roles.role', 'roles.role_dept', 'leaves.request_status', 'leaves.request_type','stores.store_name','leaves.start_date','leaves.end_date','leaves.start_time','leaves.end_time')
             ->get();
 
 
@@ -164,7 +165,7 @@ if ($role_get->role_id == 12) {
             ->leftJoin('stores', 'stores.id', '=', 'users.store_id')
             ->where('leaves.request_to', $user->id)
             ->where('leaves.request_status', 'Pending')
-            ->select('users.name','users.emp_code','roles.role','roles.role_dept','leaves.request_status','leaves.request_type','leaves.id','stores.store_name','leaves.start_date','leaves.end_date')
+            ->select('users.name','users.emp_code','roles.role','roles.role_dept','leaves.request_status','leaves.request_type','leaves.id','stores.store_name','leaves.start_date','leaves.end_date','leaves.start_time','leaves.end_time')
             ->get();
 
 
@@ -406,6 +407,24 @@ if ($role_get->role_id == 12) {
                     'status'=>$request->status
                 ]);
             }
+
+            $user_id = Auth::user();
+
+             $req_token  = DB::table('users')->where('id',$status->user_id)->first();
+
+             if ($req_token->device_token) {
+                     $taskTitle = "Leave Request Updated";
+                    $taskBody = $user_id->name. " Leave Request Updated to".$request->status ;
+
+                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                    Notification::create([
+                        'user_id' => $status->user_id,
+                        'noty_type' => 'leave',
+                        'type_id' => $request->id
+                    ]);
+            } // notification end
+
 
             return response()->json(['message' => 'Leave updated successfully!'], 200);
 

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('area_id')->nullable();
             $table->integer('cluster_id')->nullable();
+            $table->integer('c_by')->nullable();
             $table->timestamps();
         });
     }

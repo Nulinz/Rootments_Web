@@ -77,7 +77,7 @@ class AuthController extends Controller
         if ($user) {
 
             $user->device_token = null;
-            $user->save();
+            // $user->save();
 
             //  $out=DB::table('attendence')
             // ->where('user_id', $user->id)

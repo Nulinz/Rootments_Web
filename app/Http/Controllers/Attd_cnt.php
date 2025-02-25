@@ -156,13 +156,13 @@ class Attd_cnt extends Controller
 
         $user_check = Auth::user()->id;
 
-        $attd = DB::table('attendence')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->count();
+        $attd = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->count();
 
         if($attd==0){
             $val = 'attd_in';
         }else{
-             $attd_ch = DB::table('attendence')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
-             if(is_null($attd_ch->out_location)){
+             $attd_ch = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
+             if(is_null($attd_ch->out_time)){
                   $val = 'attd_out';
              }else{
                   $val = 'attd_mark';
@@ -179,7 +179,7 @@ class Attd_cnt extends Controller
     {
          $user_check = Auth::user()->id;
 
-         $inserted = DB::table('attendence')->insert([
+         $inserted = DB::table('attendance')->insert([
         'user_id' => $user_check,
         'attend_status' => 'Present',
         'in_location' => $req->loc,
@@ -198,10 +198,10 @@ class Attd_cnt extends Controller
 
         $user_check = Auth::user()->id;
 
-        $attd = DB::table('attendence')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
+        $attd = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
 
 
-        DB::table('attendence')
+        DB::table('attendance')
             ->where('id', $attd->id)
             ->update([
             'out_location'=>$req->loc,

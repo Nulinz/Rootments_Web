@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('a_man')->nullable();
             $table->string('alter')->nullable();
             $table->string('location')->nullable();
+            $table->integer('c_by')->nullable();
             $table->timestamps();
         });
     }

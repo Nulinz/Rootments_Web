@@ -29,7 +29,7 @@
     function setTheme(theme) {
         document.documentElement.className = theme;
         localStorage.setItem('theme', theme);
-    
+
         if (theme === 'theme-dark') {
             lightLogo.style.display = 'none';
             darkLogo.style.display = 'block';
@@ -54,7 +54,7 @@
             allowClear: true,
             width: '100%'
         }).prop('required', true);
-        
+
         // Drag & Drop Sorting
         if ($('#sortable-list').length) {
             new Sortable(document.getElementById('sortable-list'), {

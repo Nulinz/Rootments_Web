@@ -27,7 +27,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
     Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('/auth/logout', 'AuthController@logout')->name('auth.logout');
-    
+
     Route::post('/auth/authpassword-update','AuthController@update')->name('change_password.update');
 
         // Task
@@ -59,8 +59,24 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
         Route::get('tasktimeline', 'TaskController@tasktimeline')->name('tasktimeline.list');
 
+        // Attendance staus
+
+       Route::get('attd_row', 'TaskController@attd_row')->name('attd_status');
+
+
+
+
+       // Attendance Insert and update
+
+       Route::post('attd_in', 'TaskController@attd_in')->name('attd_in');
+       Route::post('attd_out', 'TaskController@attd_out')->name('attd_out');
+
 
 
     });
+
+              //post method HR
+       Route::post('hr_list', 'TaskController@hr_list')->name('hr_list');
+
 });
 

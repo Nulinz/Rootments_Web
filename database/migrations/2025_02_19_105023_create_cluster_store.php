@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('cluster_store', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cluster_id');
-            $table->integer('store_id');
+            $table->integer('cluster_id')->nullable();
+            $table->integer('store_id')->nullable();
+            $table->integer('c_by')->nullable();
             $table->timestamps();
         });
     }

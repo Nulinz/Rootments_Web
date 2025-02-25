@@ -44,8 +44,13 @@
                                                 </div>
                                             </td>
 
-                                            <td>{{ date("h:i",strtotime($data->in_time)) }}</td>
-                                            <td>{{ date("h:i",strtotime($data->out_time)) }}</td>
+                                           <td>@if(!is_null($data->in_time))
+                                                    {{ date("h:i", strtotime($data->in_time)) }}
+                                                @endif</td>
+                                            <td>@if(!is_null($data->out_time))
+                                                    {{ date("h:i", strtotime($data->out_time)) }}
+                                                @endif</td>
+                                            <td>
                                             <td>
                                                 @if ($data->status == 'approved')
                                                     <button class="" data-bs-toggle="tooltip"

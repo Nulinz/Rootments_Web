@@ -69,7 +69,7 @@
                         <td>{{ $data->role }}</td>
                         <td>{{ $data->store_name }}</td>
                         <td>{{ date("d-m-Y",strtotime($data->start_date))}} <br> {{ date("d-m-Y",strtotime($data->end_date))}}</td>
-                        <td>{{ $data->request_type }}</td>
+                        <td>{{ $data->request_type }} <br>  @if($data->request_type=='Permission'){{date("h:i",strtotime($data->start_time))}} - {{date("h:i",strtotime($data->end_time))}}@endif</td>
                         <td>
                             <button class="listtdbtn" data-id="{{ $data->id }}" data-role='12'
                                 data-bs-toggle="modal" data-bs-target="#updateLeaveApproval">

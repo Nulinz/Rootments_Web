@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Resignation;
 use Illuminate\Support\Facades\Auth;
+use App\Services\FirebaseService;
+use App\Models\Notification;
 
 class ResignationController extends Controller
 {
@@ -31,7 +33,7 @@ class ResignationController extends Controller
      */
     public function create()
     {
-        $hr = DB::table('users')->where('role_id', [3,4,5])->select('users.id','users.name')->get();
+        $hr = DB::table('users')->whereIn('role_id', [3,4,5])->select('users.id','users.name')->get();
 
         return view('resgination.add',['hr_list'=>$hr]);
 
@@ -66,29 +68,33 @@ class ResignationController extends Controller
             if($user_id->role_id >= 13 && $user_id->role_id <= 19){
 
                 $store_man = DB::table('users')->where('store_id',$user_id->store_id)->where('role_id',12)->first();
-                        $resgination->request_to = $store_man->id;
+                        $resgination->request_to = $store_man->id ?? 2;
+                         $req_to = $store_man->id ?? 2;
+                        $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
                 }else{
                     $resgination->request_to = $request->request_to;
+                     $req_to = $request->request_to;
+                    $req_token  = DB::table('users')->where('id',$request->request_to)->first();
                 }
 
-            // $manager_departments = ['Operation', 'Finance', 'IT', 'Sales/Marketing', 'Area', 'Cluster'];
 
-            // if ($role === 'Store Manager' && $role_dept === 'Store') {
-            //     $resgination->request_to = 3;
-            // } elseif ($role === 'Manager') {
-            //     if ($role_dept === 'HR') {
-            //         $resgination->request_to = 1;
-            //     } elseif (in_array($role_dept, $manager_departments)) {
-            //         $resgination->request_to = 3;
-            //     } else {
-            //         $resgination->request_to = 12;
-            //     }
-            // } elseif ($role === 'Managing Director') {
-            //     $resgination->request_to = 3;
-            // } else {
-            //     $resgination->request_to = 12;
-            // }
             $resgination->save();
+
+
+
+            if ($req_token->device_token) {
+                    $taskTitle = "Resignation Request";
+                    $taskBody = $user_id->name. "Requested for Resignation";
+
+                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                    Notification::create([
+                        'user_id' => $req_to,
+                        'noty_type' => 'resignation',
+                        'type_id' => $resgination->id
+                    ]);
+            } // notification end
+
         }
 
         return redirect()->route('resignation.index')->with([

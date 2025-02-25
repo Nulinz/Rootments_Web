@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('time')->nullable();
             $table->string('amount')->nullable();
             $table->string('status')->nullable();
+            $table->integer('c_by')->nullable();
             $table->timestamps();
         });
     }

@@ -27,6 +27,7 @@ return new class extends Migration
             $table->integer('bonus')->nullable();
             $table->integer('advance')->nullable();
             $table->integer('total')->nullable();
+            $table->integer('c_by')->nullable();
             $table->timestamps();
         });
     }
