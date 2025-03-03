@@ -19,7 +19,7 @@ class maintain_cnt extends Controller
 
         $main_emp = $this->attd_index('Maintenance');
 
-        return view('maintain.maintain_index');
+        return view('maintain.maintain_index',['main_emp'=>$main_emp]);
     }
 
     /**

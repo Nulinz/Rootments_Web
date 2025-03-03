@@ -449,6 +449,9 @@ class DashBoardController extends Controller
         case 5:
             $arr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
             break;
+        case 7:
+            $arr = [25];
+            break;
         case 10:
             $arr = [11, 12];
             break;
@@ -472,6 +475,33 @@ class DashBoardController extends Controller
         case 19:
             $arr = range(12, 19);  // Array from 12 to 19
             $arr = array_diff($arr, [$r_id]); // Exclude the current role ID
+            break;
+        case 25:
+            $arr = [7];
+            break;
+        case 30:
+            $arr = [31,35,36];
+            break;
+        case 31:
+        case 35:
+        case 36:
+            $arr = [30, 31, 35, 36];
+            $arr = array_diff($arr, [$r_id]); // Exclude $r_id
+            break;
+        case 37:
+            $arr = [32,38,39,40];
+            break;
+        case 38:
+        case 39:
+        case 40:
+            $arr = [37, 38, 39, 40];
+            $arr = array_diff($arr, [$r_id]); // Exclude $r_id
+            break;
+        case 41:
+            $arr = [42];
+            break;
+        case 42:
+            $arr = [41];
             break;
     }
 

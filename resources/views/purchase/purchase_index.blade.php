@@ -30,23 +30,44 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img src="{{ asset('assets/images/avatar.png') }}" alt="">
-                                                <div>
-                                                    <h5 class="mb-0">Sheik</h5>
-                                                    <h6 class="mb-0">Salem</h6>
+                                    @foreach ($pur_emp as $pur)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-start gap-2">
+
+                                                        <img src="{{ asset($pur->profile_image ?? 'assets/images/avatar.png') }}" alt="">
+
+                                                    <div>
+                                                        <h5 class="mb-0">{{ $pur->name }}</h5>
+                                                        <h6 class="mb-0">{{ $pur->in_location ?? 'No location' }}</h6>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <button class="" data-bs-toggle="tooltip" data-bs-title="Approved"><i
-                                                    class="fas fa-circle-check text-success"></i></button>
-                                        </td>
-                                    </tr>
+                                            </td>
+
+                                            <td>@if(!is_null($pur->in_time))
+                                                    {{ date("h:i", strtotime($pur->in_time)) }}
+                                                @endif
+                                            </td>
+                                            <td>@if(!is_null($pur->out_time))
+                                                    {{ date("h:i", strtotime($pur->out_time)) }}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($pur->status == 'approved')
+                                                    <button class="" data-bs-toggle="tooltip"
+                                                        data-id="{{ $pur->user_id }}" data-bs-title="Approved"><i
+                                                            class="fas fa-circle-check text-success"></i></button>
+                                                @else
+                                                     @if(!empty($pur->in_time))
+
+                                                    <button class="approve-attendance" data-bs-toggle="tooltip"
+                                                        data-id="{{ $pur->user_id }}" data-bs-title="Not Approved"><i
+                                                            class="fas fa-circle-check text-warning"></i></button>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
 
                                 </tbody>
                             </table>

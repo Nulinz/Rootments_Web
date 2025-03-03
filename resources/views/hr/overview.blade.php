@@ -179,7 +179,7 @@
                                                 @else
                                                      @if(!empty($hr->in_time))
 
-                                                    <button class="approve-attendance" data-bs-toggle="tooltip"
+                                                    <button class="approve-attendance1" data-bs-toggle="tooltip"
                                                         data-id="{{ $hr->user_id }}" data-bs-title="Not Approved"><i
                                                             class="fas fa-circle-check text-warning"></i></button>
                                                     @endif
@@ -269,5 +269,32 @@
                 });
             });
         });
+
+
+        $('.approve-attendance1').on("click",function () {
+                let userId = $(this).data("id");
+
+                console.log(userId);
+                $.ajax({
+                    url: "{{ route('attendance.approve') }}",
+                    type: "POST",
+                    data: {
+                        user_id: userId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            alert("Attendance Approved!");
+                            location.reload();
+                        } else {
+                            alert("Something went wrong!");
+                        }
+                    },
+                    error: function () {
+                        alert("Error occurred!");
+                    }
+                });
+            });
+
     </script>
 @endsection

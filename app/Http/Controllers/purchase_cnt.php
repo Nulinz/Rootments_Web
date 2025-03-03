@@ -16,9 +16,9 @@ class purchase_cnt extends Controller
      */
     public function index()
     {
-        $main_emp = $this->attd_index('Purchase');
+        $pur_emp = $this->attd_index('Purchase');
 
-        return view('purchase.purchase_index');
+        return view('purchase.purchase_index',['pur_emp'=>$pur_emp]);
     }
 
     /**

@@ -16,10 +16,10 @@ class warehouse_cnt extends Controller
      */
     public function index()
     {
-        $main_emp = $this->attd_index('Warehouse');
+        $ware_emp = $this->attd_index('Warehouse');
 
 
-        return view('warehouse.warehouse_index');
+        return view('warehouse.warehouse_index',['ware_emp'=>$ware_emp]);
     }
 
     /**

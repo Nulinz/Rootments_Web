@@ -19,7 +19,7 @@ class fin_cnt extends Controller
 
         $hr_emp = $this->attd_index('Finance');
 
-        return view('finance.finance_index');
+        return view('finance.finance_index',['hr_emp'=>$hr_emp]);
     }
 
     /**

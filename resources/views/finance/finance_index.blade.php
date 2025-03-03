@@ -30,23 +30,44 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img src="{{ asset('assets/images/avatar.png') }}" alt="">
-                                                <div>
-                                                    <h5 class="mb-0">Sheik</h5>
-                                                    <h6 class="mb-0">Salem</h6>
+                                    @foreach ($hr_emp as $hr)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-start gap-2">
+
+                                                    <img src="{{ asset($hr->profile_image ?? 'assets/images/avatar.png') }}" alt="">
+
+                                                    <div>
+                                                        <h5 class="mb-0">{{ $hr->name }}</h5>
+                                                        <h6 class="mb-0">{{ $hr->in_location ?? 'No location' }}</h6>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <button class="" data-bs-toggle="tooltip" data-bs-title="Approved"><i
-                                                    class="fas fa-circle-check text-success"></i></button>
-                                        </td>
-                                    </tr>
+                                            </td>
+
+                                            <td>@if(!is_null($hr->in_time))
+                                                    {{ date("h:i", strtotime($hr->in_time)) }}
+                                                @endif
+                                            </td>
+                                            <td>@if(!is_null($hr->out_time))
+                                                    {{ date("h:i", strtotime($hr->out_time)) }}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($hr->status == 'approved')
+                                                    <button class="" data-bs-toggle="tooltip"
+                                                        data-id="{{ $hr->user_id }}" data-bs-title="Approved"><i
+                                                            class="fas fa-circle-check text-success"></i></button>
+                                                @else
+                                                     @if(!empty($hr->in_time))
+
+                                                    <button class="approve-attendance" data-bs-toggle="tooltip"
+                                                        data-id="{{ $hr->user_id }}" data-bs-title="Not Approved"><i
+                                                            class="fas fa-circle-check text-warning"></i></button>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
 
                                 </tbody>
                             </table>
@@ -57,5 +78,33 @@
             </div>
         </div>
     </div>
+
+    <script>
+            $('.approve-attendance').on("click",function () {
+                let userId = $(this).data("id");
+
+                console.log(userId);
+                $.ajax({
+                    url: "{{ route('attendance.approve') }}",
+                    type: "POST",
+                    data: {
+                        user_id: userId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            alert("Attendance Approved!");
+                            location.reload();
+                        } else {
+                            alert("Something went wrong!");
+                        }
+                    },
+                    error: function () {
+                        alert("Error occurred!");
+                    }
+                });
+            });
+
+    </script>
 
 @endsection
