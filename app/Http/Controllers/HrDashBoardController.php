@@ -8,18 +8,22 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Task;
 use App\Models\{User,Role};
 use Carbon\Carbon;
+use App\Http\Controllers\trait\common;
 
 class HrDashBoardController extends Controller
 {
+    use common;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+
+
         $user = Auth::user();
 
         $managerRoles = DB::table('roles')
-            ->whereIn('role', ['Manager', 'Store Manager'])
+            ->whereIn('id', [12,17,30,37,41])
             ->pluck('id')
             ->toArray();
 
@@ -42,6 +46,35 @@ class HrDashBoardController extends Controller
             ->whereIn('users.role_id', $managerRoles)
             ->where('users.id', '!=', $user->id)
             ->get();
+
+            $hr_emp = $this->attd_index('HR');
+
+            //   dd($hr_emp);
+
+
+            // employyes list from hr department
+
+
+
+            // $hr_emp = DB::table('roles')->where('role_dept','HR')
+            // ->leftJoin('users as us','us.role_id','=','roles.id')
+            // ->leftJoin('attendance',function($query){
+            //     $query->on('us.id','=','attendance.user_id')
+            //     ->whereDate('attendance.c_on', Carbon::today());
+            // })
+            // ->where('us.id', '!=', $user->id)
+            // ->select( 'us.id as user_id',
+            // 'us.name',
+            // 'us.profile_image',
+            // 'attendance.in_time',
+            // 'attendance.user_id',
+            // 'attendance.attend_status',
+            // 'attendance.out_time',
+            // 'attendance.status',
+            // 'attendance.in_location')
+            // ->get();
+
+            //   dd($hr_emp);
 
             $roleData = DB::table('users')
             ->join('roles', 'users.role_id', '=', 'roles.id')
@@ -171,7 +204,7 @@ class HrDashBoardController extends Controller
 
         // return($pendingLeaves);
 
-         return view('hr.overview',['overview'=>$overview,'roleNames'=>$roleNames,'userCounts'=>$userCounts,'pendingRequests'=>$pendingLeaves]);
+          return view('hr.overview',['overview'=>$overview,'roleNames'=>$roleNames,'userCounts'=>$userCounts,'pendingRequests'=>$pendingLeaves,'hr_emp'=>$hr_emp]);
     }
 
    public function mydashboard()

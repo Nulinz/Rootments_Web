@@ -22,7 +22,8 @@ if (!function_exists('hasAccess')) {
                         'attendance' => [3,4,5],
                         'request' => [3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34],
                         'approval' => [3,4,5,12],
-                        'recruit_req' => [3,4,5,6,7,8,9,10,11,12]
+                        'recruit_req' => [3,4,5,6,7,8,9,10,11,12],
+                        'cat/sub'=>[3,4,5]
 
                         ];
         return in_array($role, $menuItems[$menuItem]);

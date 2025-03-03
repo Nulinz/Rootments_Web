@@ -3,6 +3,8 @@
         @php
         $user = auth()->user();
 
+        $asm_count = DB::table('asm_store')->where('store_id',$user->store_id)->where('emp_id',$user->id)->count();
+
         // Get user role details
         $role_get = DB::table('roles')
             ->join('users', 'users.role_id', '=', 'roles.id')
@@ -13,7 +15,7 @@
         if ($r_id == 3 || $r_id == 4 || $r_id == 5) {
             $route = 'hr.dashboard';
             $over = 'HR';
-        } elseif ($r_id == 12) {
+        } elseif (($r_id == 12) || ($asm_count>0)) {
             $route = 'dashboard';
             $over = 'Store';
         } elseif($r_id==11){
@@ -32,7 +34,7 @@
             ->count();
 
     @endphp
-        @if($r_id == 3 || $r_id == 4 || $r_id == 5 || $r_id==12 || $r_id==11 || $r_id==10)
+        @if($r_id == 3 || $r_id == 4 || $r_id == 5 || $r_id==12 || $r_id==11 || $r_id==10 || ($asm_count>0))
         <div class="my-2">
             <a href="{{ route($route) }}"><button class="dashtabs">{{$over}} Overview</button></a>
         </div>
@@ -49,7 +51,7 @@
                     Dashboard</button></a>
         </div>
         @endif
-        @if($r_id==12)
+        @if(($r_id==12)||($asm_count>0))
         <div class="my-2">
             <a href="{{ route('store.dashboard') }}"><button class="dashtabs ">Store
                     Dashboard</button></a>

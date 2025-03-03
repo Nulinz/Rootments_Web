@@ -5,12 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Store extends Model
+class Asm_store extends Model
 {
     use HasFactory;
 
-    public function user()
-    {
-        return $this->hasMany(User::class,'store_id');
-    }
+    protected $fillable = ['store','emp_id'];
+    protected $table = 'asm_store';
 }

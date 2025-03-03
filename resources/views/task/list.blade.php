@@ -55,8 +55,8 @@
                                 <td>{{ $data->category }}</td>
                                 <td>{{ $data->subcategory }}</td>
                                 <td>{{ $data->priority }}</td>
-                                <td>{{ $data->start_date }}</td>
-                                <td>{{ $data->end_date }}</td>
+                                <td>{{ date("d-m-Y",strtotime($data->start_date)) }}</td>
+                                <td>{{ date("d-m-Y",strtotime($data->end_date)) }}</td>
 
                                 <td>
                                     <div class="d-flex gap-3">

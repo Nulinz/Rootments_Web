@@ -5,12 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Store extends Model
+class Attendance extends Model
 {
     use HasFactory;
 
-    public function user()
+    protected $table='attendance';
+
+    public function users()
     {
-        return $this->hasMany(User::class,'store_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
+
 }

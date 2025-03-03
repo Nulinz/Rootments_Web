@@ -1,25 +1,34 @@
 <div class="tab-content" id="myTabContent">
 
+    @php
+        // dd($stores);
+    @endphp
     <!-- Category Tab -->
     <div class="container px-0">
-        <form action="{{ route('category.store') }}" method="POST">
+        <form action="{{ route('insert_asm')}}" method="POST">
             @csrf
             <div class="container-fluid maindiv">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 px-2 inputs">
-                        <label for="title">Category <span>*</span></label>
-                        <input type="text" class="form-control" name="category" id="title"
-                            placeholder="Enter Category" required>
+                        <label for="title">Store<span>*</span></label>
+                       <select name="store" id="store" class="form-select">
+
+                                @foreach ($stores as $id => $store_name)
+                                    <option value="{{$id}}">{{$store_name}}</option>
+                                @endforeach
+                       </select>
                     </div>
-                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 px-2 inputs">
-                        <label for="title">Title <span>*</span></label>
-                        <input type="text" class="form-control" name="cat_tittle" id="title"
-                            placeholder="Enter Title" required>
+                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 px-2 inputs">
+                        <label for="title">Assitant Manageer <span>*</span></label>
+                        <select name="asm" id="asm" class="form-select">
+                                <option disabled>Select Assitant</option>
+                        </select>
+
                     </div>
-                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 px-2 inputs">
+                    {{-- <div class="col-sm-12 col-md-4 col-xl-4 mb-3 px-2 inputs">
                         <label for="description">Description</label>
                         <textarea rows="1" class="form-control" name="cat_des" id="description" placeholder="Enter Description"></textarea>
-                    </div>
+                    </div>  --}}
                 </div>
             </div>
 
@@ -29,7 +38,7 @@
         </form>
 
         <div class="sidebodyhead mt-4">
-            <h4 class="m-0">Category Details</h4>
+            <h4 class="m-0">Assigned Details</h4>
         </div>
         <div class="mt-3 listtable">
             <div class="filter-container row mb-3">
@@ -50,7 +59,7 @@
                 </div>
             </div>
 
-            <div class="table-wrapper">
+            {{-- <div class="table-wrapper">
                 <table class="table table-hover table-striped" id="table1">
                     <thead>
                         <tr>
@@ -96,15 +105,49 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
+            </div> --}}
         </div>
     </div>
 
 </div>
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
-
 <script>
+    $('#store').on('change', function () {
+        // Trigger an AJAX request when the page is ready
+        $('#asm').empty();
+        var store_id = $(this).find('option:selected').val();
+        $.ajax({
+            url: '{{ route('get_assistant') }}', // Laravel route for the POST request
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}', // CSRF token for security
+                store_id: store_id, // Send the selected store ID
+            },
+
+            success: function (response) {
+                console.log(response);
+
+                $.each(response, function(index, value) {
+                    // Create a new option element
+                    var option = '<option value="' + value.id + '">' + value.name + '</option>';
+
+                    // Append the new option to the select dropdown
+                    $('#asm').append(option);
+                });
+
+
+            },
+            error: function (xhr, status, error) {
+
+                alert('An error occurred: ' + error);
+            }
+        });
+    });
+</script>
+{{--
+<meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+
+{{-- <script>
     $(document).ready(function () {
         function initTable(tableId, dropdownId, filterInputId) {
             var table = $(tableId).DataTable({
@@ -216,5 +259,5 @@
         //     });
         // });
     });
-</script>
+</script> --}}
 

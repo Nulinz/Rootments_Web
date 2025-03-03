@@ -780,13 +780,7 @@ public function tasktimeline(Request $request)
             //  $user_check = $req->id;
               $user_check = Auth::user()->id;
 
-              if(!is_null(Auth::user()->store_id)){
 
-            $st_time = DB::table('stores')->where('id',Auth::user()->store_id)->select('stores.store_start_time','stores.store_end_time')->first();
-
-            // dd($st_time);
-
-            }
 
             $input = explode(',',$req->loc);
 
@@ -840,6 +834,12 @@ public function tasktimeline(Request $request)
                     ]);
 
 
+         if(!is_null(Auth::user()->store_id)){
+
+            $st_time = DB::table('stores')->where('id',Auth::user()->store_id)->select('stores.store_start_time','stores.store_end_time')->first();
+
+            // dd($st_time);
+
 
 
             $c_time = Carbon::now(); // Get the current time using Carbon
@@ -874,13 +874,20 @@ public function tasktimeline(Request $request)
                         ]);
                     }
 
+         }
 
 
+            if($inserted){
             return response()->json([
                 'status'=>'Success',
 
 
-            ]);
+            ],200);
+            }else{
+                return response()->json([
+                    'status'=>'Failure'
+                     ],500);
+            }
         }
 
          public function attd_out(Request $req)
@@ -890,13 +897,7 @@ public function tasktimeline(Request $request)
 
             $attd = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
 
-             if(!is_null(Auth::user()->store_id)){
 
-            $st_time = DB::table('stores')->where('id',Auth::user()->store_id)->select('stores.store_start_time','stores.store_end_time')->first();
-
-            // dd($st_time);
-
-            }
 
             $input = explode(',',$req->loc);
 
@@ -941,7 +942,7 @@ public function tasktimeline(Request $request)
 
 
 
-            DB::table('attendance')
+           $check_out =  DB::table('attendance')
                 ->where('id', $attd->id)
                 ->update([
                 'out_time' => now()->format('H:i:s'),
@@ -949,6 +950,15 @@ public function tasktimeline(Request $request)
                 'out_add' => $formattedAddress,
                 'u_by'=>now()->format('Y-m-d')
                  ]);
+
+
+         if(!is_null(Auth::user()->store_id)){
+
+            $st_time = DB::table('stores')->where('id',Auth::user()->store_id)->select('stores.store_start_time','stores.store_end_time')->first();
+
+            // dd($st_time);
+
+
 
                  $c_time = now()->format('H:i:s');
 
@@ -972,10 +982,19 @@ public function tasktimeline(Request $request)
                         ]);
                     }
 
-            return response()->json([
-                'status'=>'Success',
+         }
 
-            ]);
+            if($check_out){
+                  return response()->json([
+                    'status'=>'Success'
+
+                ],200);
+            }else{
+                return response()->json([
+                    'status'=>'Failure'
+                     ],500);
+            }
+
         }
 
 

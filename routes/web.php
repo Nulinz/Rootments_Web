@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashBoardController;
+use Illuminate\Support\Facades\DB;
 
 
 /*
@@ -63,6 +64,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('permission.store', 'SettingsController@permissionstore')->name('permission.store');
         Route::get('permission.filter/{token}', 'SettingsController@filter')->name('permission.filter');
 
+        Route::get('assign_asm', 'SettingsController@assign_asm')->name('assign.assign_asm');
+        Route::post('get_assistant', 'SettingsController@get_asm')->name('get_assistant');
+        Route::post('insert_asm', 'SettingsController@insert_asm')->name('insert_asm');
+
         // Store
         Route::get('store-list', 'StoreController@index')->name('store.index');
         Route::get('store-add', 'StoreController@create')->name('store.add');
@@ -73,6 +78,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('store-strength/{id}', 'StoreController@strlist')->name('store.strength');
         Route::get('store-details/{id}', 'StoreController@detailslist')->name('store.details');
         Route::get('store-viewemp/{id}', 'StoreController@empview')->name('store.viewemp');
+
+
 
         // Employee
         Route::get('employee-list', 'EmployeeController@index')->name('employee.index');
@@ -201,6 +208,93 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('area-overview', 'AreaController@area_overview')->name('area.dashboard');
         Route::get('area-mydashboard', 'AreaController@area_mydashboard')->name('area.mydashboard');
         Route::get('area-kpidashboard', 'AreaController@area_kpi')->name('area.kpidashboard');
+
+        // Route::get('get_model', function() {
+        //     //  $role = \App\Models\Role::with(['users_rel:id,name,role_id'])->select('id', 'role_dept')->whereIn('id', [3, 4, 5])->whereHas('users_rel')
+        //     // // $role = \App\Models\User::with(['role_rel:id,role_dept'])  // Eager load the 'role_rel' relationship with specified columns
+        //     // // ->select('id', 'role_id', 'name')  // Select only 'id', 'role_id', and 'name' from the 'users' table
+        //     // // ->whereIn('role_id', [3, 4, 5])  // Filter users with specific role_ids
+        //     // ->get();
+
+        //     // $role = \App\Models\Role::all();
+
+        //     DB::enableQueryLog();
+        //     // $user = \App\Models\User::with([
+        //     //     'role_rel' => function ($query) {
+        //     //         $query->where('role_dept', 'store')  // Apply filter on the `role_dept` column
+        //     //               ->select('id', 'role', 'role_dept');  // Select specific columns from `Role`
+        //     //     },
+        //     //     'store_rel' => function ($query) {
+        //     //         $query->select('id', 'store_name');  // Select specific columns from `Store`
+        //     //     }
+        //     // ])
+        //     // ->select('id', 'name', 'emp_code', 'store_id', 'role_id')  // Select specific columns from the `User` model
+        //     // ->get();
+
+
+        //     // $roles = \App\Models\Role::  // Add withCount to count the related users
+        //     //     with([
+        //     //         'users' => function ($query) {
+        //     //             // Select specific columns from the `users` model
+        //     //             $query->select('id', 'name', 'emp_code', 'role_id');
+        //     //         }
+        //     //     ])
+        //     //     ->withCount('users')
+        //     //     ->wherehas('users')  // Only roles that do not have users
+        //     //     ->where('role_dept', 'Store')  // Filter roles by `role_dept`
+        //     //     ->select('id', 'role_dept')  // Select specific columns from the `Role` model
+        //     //     ->get();
+
+
+        //         // $role = \App\Models\Role::with('users:id,name,role_id')->where('role_dept','Store')->get();  // Find role with id 1
+        //         // $users = $role->users;
+
+        //         $role = \App\Models\Role::with('users:id,name,role_id')->where('role_dept','Store')->get();  // Find role with id 1
+
+
+
+
+
+        //     // $user = \App\Models\User::with([
+        //     //     'role_rel',
+        //     //     'store_rel'
+        //     // ])
+        //     // ->select('id', 'name', 'emp_code','store_id','role_id')  // Select specific columns
+        //     // ->get();
+
+        //     //  dd(DB::getQueryLog());
+        //     // $pwd = Hash::make('123456');
+
+
+        //     //  dd(DB::getQueryLog());
+
+        //     // $role = \App\Models\Role::with(['users_rel' => function($query) {
+        //     //     // Filter users by their IDs (3, 4, 5)
+        //     //     $query->whereIn('id', [3, 4, 5]);
+        //     // }])->get();
+        //     // $role = \App\Models\Role::find(12);  // Find the role with role_id 12
+        //     // $users = $role->users_rel;  // Get all users who belong to role_id 12
+
+
+        //             // $cluster = \App\Models\Cluster::with('cluster_store')->find(1);
+        //             // foreach ($role as $u) {
+        //             //    echo  $rel =  $u->name."<br>";
+        //             //     // foreach($rel as $r){
+        //             //     //     echo  $r->name. "<br>";
+        //             //     // }
+        //             //     // echo $role->role_dept . "<br>";
+        //             // }
+        //                   return response()->json($role);
+        // });
+
+         // Finance
+         Route::get('finance_index', 'fin_cnt@index')->name('fin.index');
+         // Maintainence
+         Route::get('maintain_index', 'maintain_cnt@index')->name('main.index');
+         // Warehouse
+         Route::get('warehouse_index', 'warehouse_cnt@index')->name('warehouse.index');
+         // Purchase
+         Route::get('purchase_index', 'purchase_cnt@index')->name('purchase.index');
 
     });
 

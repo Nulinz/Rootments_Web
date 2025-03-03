@@ -10,4 +10,9 @@ class Cluster extends Model
     use HasFactory;
 
     protected  $table= 'm_cluster';
+
+    public function cluster_store(){
+
+       return $this->hasMany(Clusterstore::class,'cluster_id');
+    }
 }

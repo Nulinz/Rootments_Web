@@ -71,6 +71,70 @@
                                 </tbody>
                             </table>
                         </div>
+
+
+                    </div>
+
+                     {{-- checking the own employees attendnace --}}
+                    <div class="cardsdiv">
+                        <div class="cardshead">
+                            <h6 class="card1h6 mb-2">Employee Login</h6>
+                        </div>
+                        <div class="cardtable">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Login</th>
+                                        <th>Logout</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($hr_emp as $hr)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-start gap-2">
+                                                    @if ($hr->profile_image)
+                                                        <img src="{{ asset($data->profile_image) }}" alt="">
+                                                    @else
+                                                        <img src="{{ asset('assets/images/avatar.png') }}" alt="">
+                                                    @endif
+                                                    <div>
+                                                        <h5 class="mb-0">{{ $hr->name }}</h5>
+                                                        <h6 class="mb-0">{{ $data->in_location }}</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td>@if(!is_null($hr->in_time))
+                                                    {{ date("h:i", strtotime($hr->in_time)) }}
+                                                @endif</td>
+                                            <td>@if(!is_null($hr->out_time))
+                                                    {{ date("h:i", strtotime($hr->out_time)) }}
+                                                @endif</td>
+                                            <td>
+                                                @if ($hr->status == 'approved')
+                                                    <button class="" data-bs-toggle="tooltip"
+                                                        data-id="{{ $hr->user_id }}" data-bs-title="Approved"><i
+                                                            class="fas fa-circle-check text-success"></i></button>
+                                                @else
+                                                     @if(!empty($hr->in_time))
+
+                                                    <button class="approve-attendance" data-bs-toggle="tooltip"
+                                                        data-id="{{ $hr->user_id }}" data-bs-title="Not Approved"><i
+                                                            class="fas fa-circle-check text-warning"></i></button>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+
+
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-4 col-xl-4 mb-3 cards">

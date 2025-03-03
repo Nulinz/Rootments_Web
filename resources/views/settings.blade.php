@@ -10,21 +10,27 @@
         <div class="proftabs">
             <ul class="nav nav-tabs d-flex justify-content-start align-items-center gap-md-3 border-0" id="myTab"
                 role="tablist">
-                <li class="nav-item" role="presentation">
+
+                @if(hasAccess($role,'cat/sub'))
+                {{-- <li class="nav-item" role="presentation">
                     <button class="profiletabs active" data-url="{{ route('category') }}" type="button">Category</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('subcategory') }}" type="button">Sub Category</button>
-                </li>
+                </li> --}}
+                @endif
                 <!-- <li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('roles') }}" type="button">Role</button>
                 </li> -->
                 <li class="nav-item" role="presentation">
-                    <button class="profiletabs" data-url="{{ route('password') }}" type="button">Password</button>
+                    <button class="profiletabs @if(!(hasAccess($role,'cat/sub'))){{'active'}}@endif" data-url="{{ route('password') }}" type="button">Password</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('permission') }}" type="button">Roles &
                         Permissions</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="profiletabs" data-url="{{ route('assign.assign_asm') }}" type="button">Assign ASM</button>
                 </li>
                 <!--<li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('theme') }}" type="button">Themes</button>
@@ -62,6 +68,8 @@
                 $(this).addClass("active");
 
                 const url = $(this).data("url");
+                console.log(url);
+
                 loadContent(url);
             });
 

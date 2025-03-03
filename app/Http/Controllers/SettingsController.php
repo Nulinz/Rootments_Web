@@ -9,15 +9,17 @@ use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-
+use App\Models\{User,Asm_store};
+use Exception;
 
 class SettingsController extends Controller
 {
 
     public function index()
     {
-        return view('settings');
+        $role = DB::table('users')->where('id', Auth::user()->id)->first();
+
+        return view('settings',['role'=>$role->role_id]);
     }
     public function categorylist()
     {
@@ -47,9 +49,9 @@ class SettingsController extends Controller
         ]);
     }
 
-    public function updateStatus($id)
+    public function updateStatus(Request $req)
     {
-        $category = Category::find($id);
+        $category = Category::find($req->id);
 
         if ($category) {
             $category->status = ($category->status == 1) ? 2 : 1;
@@ -125,67 +127,67 @@ class SettingsController extends Controller
     }
 
 
-    public function permissionList()
-    {
-        $this->data['roles'] = DB::table('roles')->get();
+    // public function permissionList()
+    // {
+    //     $this->data['roles'] = DB::table('roles')->get();
 
-    $this->data['filter'] = '';
-    $this->data['role'] = '';
+    // $this->data['filter'] = '';
+    // $this->data['role'] = '';
 
-        return view('settings.permission',$this->data);
-    }
+    //     return view('settings.permission',$this->data);
+    // }
 
-    public function permissionstore(Request $request)
-    {
-        $requestData = json_decode($request->getContent(), true);
-
-
-        $role = $requestData['role'];
-        $permissions = $requestData['permissions'];
-
-        DB::table('permissions')->where('role', $role)->delete();
-
-        foreach ($permissions as $permission) {
-            DB::table('permissions')->insert([
-                'role' => $role,
-                'module_name' => $permission['Module_name'] ?? '',
-                'permission_view' => $permission['view_form'] ?? '0',
-                'permission_add' => $permission['add_form'] ?? '0',
-                'permission_edit' => $permission['edit_form'] ?? '0',
-                'permission_delete' => $permission['delete_form'] ?? '0',
-                'permission_recommend' => $permission['recommend_form'] ?? '0',
-                'permission_verify' => $permission['verify_form'] ?? '0',
-                'permission_approval' => $permission['approval_form'] ?? '0',
-                'permission_show' => $permission['show_form'] ?? '0',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Permissions added successfully',
-        ]);
-    }
+    // public function permissionstore(Request $request)
+    // {
+    //     $requestData = json_decode($request->getContent(), true);
 
 
+    //     $role = $requestData['role'];
+    //     $permissions = $requestData['permissions'];
 
-    public function filter($id)
-    {
+    //     DB::table('permissions')->where('role', $role)->delete();
 
-        $this->data['uniqueId']=$id;
-        $this->data['roles'] = DB::select("
-        SELECT a.*, b.designation,b.id as role_id
-        FROM users AS a
-        LEFT JOIN destinations AS b
-        ON a.role_id = b.id
-        GROUP BY b.designation
-    ");
-        $this->data['filter']=DB::SELECT("SELECT * FROM permissions WHERE role='$id'");
+    //     foreach ($permissions as $permission) {
+    //         DB::table('permissions')->insert([
+    //             'role' => $role,
+    //             'module_name' => $permission['Module_name'] ?? '',
+    //             'permission_view' => $permission['view_form'] ?? '0',
+    //             'permission_add' => $permission['add_form'] ?? '0',
+    //             'permission_edit' => $permission['edit_form'] ?? '0',
+    //             'permission_delete' => $permission['delete_form'] ?? '0',
+    //             'permission_recommend' => $permission['recommend_form'] ?? '0',
+    //             'permission_verify' => $permission['verify_form'] ?? '0',
+    //             'permission_approval' => $permission['approval_form'] ?? '0',
+    //             'permission_show' => $permission['show_form'] ?? '0',
+    //             'created_at' => now(),
+    //             'updated_at' => now(),
+    //         ]);
+    //     }
 
-        return view('permission.list',$this->data);
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Permissions added successfully',
+    //     ]);
+    // }
 
-    }
+
+
+    // public function filter($id)
+    // {
+
+    //     $this->data['uniqueId']=$id;
+    //     $this->data['roles'] = DB::select("
+    //     SELECT a.*, b.designation,b.id as role_id
+    //     FROM users AS a
+    //     LEFT JOIN destinations AS b
+    //     ON a.role_id = b.id
+    //     GROUP BY b.designation
+    // ");
+    //     $this->data['filter']=DB::SELECT("SELECT * FROM permissions WHERE role='$id'");
+
+    //     return view('permission.list',$this->data);
+
+    // }
 
 
     public function roleList()
@@ -285,5 +287,86 @@ class SettingsController extends Controller
         }
 
         return redirect()->back()->with(['status' => 'error', 'message' => 'Unauthroized Profile']);
+    }
+
+    public function assign_asm()
+    {
+    //   /  $user = Auth::user();
+
+        $stores = DB::table('stores')->pluck('store_name','id');
+
+        // $asm = DB::table('users')->where('store_id',$user->store_id)->where('')->pluck('name','id');
+
+
+
+        // $stores = DB::table('stores')->get();
+
+         //  return $stores;
+
+        //  return view('settings.assing_asm', compact('stores'));
+
+         return view('settings.assing_asm',['stores'=>$stores]);
+
+        // return response()->json([
+        //     'store' => $stores,
+        // ]);
+
+        //
+    }
+
+
+
+    public function get_asm(Request $req)
+    {
+    //   /  $user = Auth::user();
+
+        $asm = DB::table('users')->where('store_id',$req->store_id)->where('role_id',13)->select('users.id','users.name')->get();
+
+        return response()->json($asm,200);
+
+        //
+    }
+
+    public function insert_asm(Request $req)
+    {
+    //   /  $user = Auth::user();
+
+            $asm = new Asm_store();
+
+            //  dd($req);
+
+             try{
+
+            $asm->store_id = $req->store;
+            $asm->emp_id = $req->asm;
+            $asm->c_by = Auth::user()->id;
+            $asm->save();
+
+             }
+             catch(\Exception $e){
+
+                Log::error('Error saving ASM: ' . $e->getMessage());
+
+
+             }
+
+
+
+            if($asm){
+                return  redirect()->back()->with(['status'=>'success', 'message'=>'Asm Assigned Successfully']);
+                //  return response()->json(
+                //     [
+                //         'status'=>true,
+                //         'message'=>'Asm Assigned Successfully',
+                //     ]);
+            }
+
+
+
+        // $asm = DB::table('users')->where('store_id',$req->store_id)->where('role_id',13)->select('users.id','users.name')->get();
+
+        // return response()->json($asm,200);
+
+        //
     }
 }
