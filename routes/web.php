@@ -290,7 +290,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
          // Finance
          Route::get('finance_index', 'fin_cnt@index')->name('fin.index');
          // Maintainence
-         Route::get('maintain_index', 'maintain_cnt@index')->name('main.index');
+         Route::get('maintain_index', 'maintain_cnt@index')->name('maintain.index');
          // Warehouse
          Route::get('warehouse_index', 'warehouse_cnt@index')->name('warehouse.index');
          // Purchase
