@@ -8,6 +8,8 @@ use App\Models\Leave;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use App\Services\FirebaseService;
+use Illuminate\Support\Facades\Log;
+
 
 
 class LeaveController extends Controller
@@ -93,10 +95,12 @@ class LeaveController extends Controller
 
                 }
 
+                $arr1 = DB::table('users')->where('role_id',$arr)->select('id')->first();
+
                 // dd($dept);
 
-                $leave->request_to = $arr;
-                $req_token  = DB::table('users')->where('id',$request->request_to)->first();
+                $leave->request_to = $arr1->id;
+                $req_token  = DB::table('users')->where('id',$arr1->id)->first();
 
                 }
                 else{
@@ -122,6 +126,11 @@ class LeaveController extends Controller
                         'type_id' => $leave->id
                     ]);
             } // notification end
+            else {
+                // Optionally handle the case where the device token is empty
+                // For example, log it or send a different type of notification
+                Log::warning('Device token missing for user: ' . $req_to);
+            }
 
             //  Notification::create([
             //             'user_id' => $user_id,

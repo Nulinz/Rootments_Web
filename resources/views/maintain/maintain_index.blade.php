@@ -114,110 +114,30 @@
                         <div class="cardtable">
                             <table class="table">
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img src="./images/avatar.png" alt="">
-                                                <div>
-                                                    <h5 class="mb-0">Sheik</h5>
-                                                    <h6 class="mb-0">Requesting for leave 12/12/2024 to
-                                                        13/12/2024 for one day</h6>
+                                    @foreach ($pendingLeaves as $data)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-start gap-2">
+                                                    @if ($data->profile_image)
+                                                        <img src="{{ asset($data->profile_image) }}" alt="">
+                                                    @else
+                                                        <img src="{{ asset('assets/images/avatar.png') }}" alt="">
+                                                    @endif
+                                                    <div>
+                                                        <h5 class="mb-0">{{ $data->name }}</h5>
+                                                        <h6 class="mb-0">
+                                                            Requesting for leave
+                                                            {{ date('m-d-Y', strtotime($data->start_date)) }} to
+                                                            {{ date('m-d-Y', strtotime($data->end_date)) }} -
+                                                            {{ $data->reason }}
+                                                        </h6>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td><a href="" class="text-decoration-underline">View</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img src="./images/avatar.png" alt="">
-                                                <div>
-                                                    <h5 class="mb-0">Sabari</h5>
-                                                    <h6 class="mb-0">Requesting for leave 12/12/2024 to
-                                                        13/12/2024 for one day</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><a href="" class="text-decoration-underline">View</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img src="./images/avatar.png" alt="">
-                                                <div>
-                                                    <h5 class="mb-0">Naveen</h5>
-                                                    <h6 class="mb-0">Requesting for leave 12/12/2024 to
-                                                        13/12/2024 for one day</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><a href="" class="text-decoration-underline">View</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img src="./images/avatar.png" alt="">
-                                                <div>
-                                                    <h5 class="mb-0">Sugan</h5>
-                                                    <h6 class="mb-0">Requesting for leave 12/12/2024 to
-                                                        13/12/2024 for one day</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><a href="" class="text-decoration-underline">View</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img src="./images/avatar.png" alt="">
-                                                <div>
-                                                    <h5 class="mb-0">Venkat</h5>
-                                                    <h6 class="mb-0">Requesting for leave 12/12/2024 to
-                                                        13/12/2024 for one day</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><a href="" class="text-decoration-underline">View</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img src="./images/avatar.png" alt="">
-                                                <div>
-                                                    <h5 class="mb-0">Hari</h5>
-                                                    <h6 class="mb-0">Requesting for leave 12/12/2024 to
-                                                        13/12/2024 for one day</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><a href="" class="text-decoration-underline">View</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img src="./images/avatar.png" alt="">
-                                                <div>
-                                                    <h5 class="mb-0">Saravanan</h5>
-                                                    <h6 class="mb-0">Requesting for leave 12/12/2024 to
-                                                        13/12/2024 for one day</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><a href="" class="text-decoration-underline">View</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img src="./images/avatar.png" alt="">
-                                                <div>
-                                                    <h5 class="mb-0">Bala Krishnan</h5>
-                                                    <h6 class="mb-0">Requesting for leave 12/12/2024 to
-                                                        13/12/2024 for one day</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><a href="" class="text-decoration-underline">View</a></td>
-                                    </tr>
+                                            </td>
+                                            <td><a href="{{ route('approve.index') }}"
+                                                    class="text-decoration-underline">View</a></td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -231,174 +151,202 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
 
-    <!-- Chart 1 -->
-    <script>
-        var options = {
-            series: [110, 100, 220],
-            labels: ['To Do', 'In Progress', 'Completed'],
-            colors: ['#003f5c', '#58508d', '#bc5090', '#0427B9'],
-            chart: {
-                type: 'donut',
-                height: 315,
-            },
-            legend: {
-                position: 'bottom'
-            },
-            dataLabels: {
-                enabled: false
-            },
-            responsive: [{
-                breakpoint: 300,
-                options: {
-                    chart: {
-                        height: 320,
-                    },
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }]
-        };
+     <!-- Chart 1 -->
+     <script>
+        var taskCounts = @json($task);
 
-        var chart = new ApexCharts(document.querySelector("#chart1"), options);
-        chart.render();
-    </script>
+           var chartElement = document.querySelector("#chart1");
 
-    <!-- Chart 2 -->
-    <script>
-        var options = {
-            series: [{
-                data: [20, 50, 80, 10, 100, 30, 90, 60, 100, 75, 85]
-            }],
-            chart: {
-                height: 300,
-                type: 'bar',
-                events: {
-                    click: function (chart, w, e) {
-                    },
-                },
-            },
-            colors: ['#0427B9'],
-            plotOptions: {
-                bar: {
-                    columnWidth: '45%',
-                    distributed: true,
-                    borderRadius: 5,
-                },
-            },
-            dataLabels: {
-                enabled: false
-            },
-            legend: {
-                show: false
-            },
-            xaxis: {
-                categories: ['Staff 1', 'Staff 2', 'Staff 3', 'Staff 4', 'Staff 5', 'Staff 6', 'Staff 7', 'Staff 8', 'Staff 9', 'Staff 10', 'Staff 11'],
-                labels: {
-                    style: {
-                        fontSize: '6px',
-                        fontWeight: 500,
-                    },
-                },
-            },
-        };
+           var seriesData = [
+               Number(taskCounts.todo) || 0,
+               Number(taskCounts.in_progress) || 0,
+               Number(taskCounts.on_hold) || 0,
+               Number(taskCounts.completed) || 0
+           ];
 
-        var chart = new ApexCharts(document.querySelector("#chart2"), options);
-        chart.render();
-    </script>
+       var options = {
+           series: seriesData,
+           labels: ['To Do', 'In Progress', 'On Hold', 'Completed'],
+           colors: ['#003f5c', '#58508d', '#bc5090', '#0427B9'],
+           chart: {
+               type: 'donut',
+               height: 315,
+           },
+           legend: {
+               position: 'bottom'
+           },
+           dataLabels: {
+               enabled: false
+           },
+           responsive: [{
+               breakpoint: 300,
+               options: {
+                   chart: {
+                       height: 320,
+                   },
+                   legend: {
+                       position: 'bottom'
+                   }
+               }
+           }]
+       };
 
-    <!-- Chart 3 -->
-    <script>
-        var options = {
-            series: [110, 100, 220, 350, 190],
-            labels: ['Tailoring', 'Inventory Managemnet', 'Customer Assistant', 'Store Maintanace', 'Sales Management'],
-            colors: ['#991f17', '#b04238', '#c86558', '#b3bfd1', '#d7e1ee'],
-            chart: {
-                type: 'donut',
-                height: 315,
-            },
-            legend: {
-                position: 'bottom'
-            },
-            dataLabels: {
-                enabled: false
-            },
-            responsive: [{
-                breakpoint: 480,
-                options: {
-                    chart: {
-                        height: 320,
-                    },
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }]
-        };
+       var chart = new ApexCharts(document.querySelector("#chart1"), options);
+       chart.render();
+   </script>
 
-        var chart = new ApexCharts(document.querySelector("#chart3"), options);
-        chart.render();
-    </script>
+   <!-- Chart 2 -->
+   <script>
+       var taskCounts = @json($taskCounts);
+           var staffNames = @json($staffNames);
 
-    <!-- Chart 4 -->
-    <script>
-        var options = {
-            series: [110, 100, 220, 350, 190],
-            labels: ['Tailoring', 'Inventory Managemnet', 'Customer Assistant', 'Store Maintanace', 'Sales Management'],
-            colors: ['#0427B9', '#435DCA', '#8192DB', '#9AA8E2', '#C0C8ED'],
-            chart: {
-                type: 'donut',
-                height: 315,
-            },
-            legend: {
-                position: 'bottom'
-            },
-            dataLabels: {
-                enabled: false
-            },
-            responsive: [{
-                breakpoint: 480,
-                options: {
-                    chart: {
-                        height: 320,
-                    },
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }]
-        };
+           // Ensure the chart container exists
+           var chartElement = document.querySelector("#chart2");
 
-        var chart = new ApexCharts(document.querySelector("#chart4"), options);
-        chart.render();
-    </script>
+       var options = {
+           series: [{
+               data: taskCounts
+           }],
+           chart: {
+               height: 300,
+               type: 'bar',
+               events: {
+                   click: function (chart, w, e) {
+                   },
+               },
+           },
+           colors: ['#0427B9'],
+           plotOptions: {
+               bar: {
+                   columnWidth: '45%',
+                   distributed: true,
+                   borderRadius: 5,
+               },
+           },
+           dataLabels: {
+               enabled: false
+           },
+           legend: {
+               show: false
+           },
+           xaxis: {
+               categories: staffNames,
+               labels: {
+                   style: {
+                       fontSize: '6px',
+                       fontWeight: 500,
+                   },
+               },
+           },
+       };
 
-    <script>
-        $('.approve-attendance').on("click",function () {
-            let userId = $(this).data("id");
+       var chart = new ApexCharts(document.querySelector("#chart2"), options);
+       chart.render();
+   </script>
 
-            // console.log(userId);
-            $.ajax({
-                url: "{{ route('attendance.approve') }}",
-                type: "POST",
-                data: {
-                    user_id: userId,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function (response) {
-                    if (response.success) {
-                        alert("Attendance Approved!");
-                        location.reload();
-                    } else {
-                        alert("Something went wrong!");
-                    }
-                },
-                error: function () {
-                    alert("Error occurred!");
-                }
-            });
-        });
+   <!-- Chart 3 -->
+   <script>
 
-</script>
+           var categoryNames = @json($categoryNames);
+           var taskCounts = @json($categorytaskCounts);
+
+           var chartElement = document.querySelector("#chart3");
+
+
+       var options = {
+           series: taskCounts,
+           labels: categoryNames,
+           colors: ['#991f17', '#b04238', '#c86558', '#b3bfd1', '#d7e1ee'],
+           chart: {
+               type: 'donut',
+               height: 315,
+           },
+           legend: {
+               position: 'bottom'
+           },
+           dataLabels: {
+               enabled: false
+           },
+           responsive: [{
+               breakpoint: 480,
+               options: {
+                   chart: {
+                       height: 320,
+                   },
+                   legend: {
+                       position: 'bottom'
+                   }
+               }
+           }]
+       };
+
+       var chart = new ApexCharts(document.querySelector("#chart3"), options);
+       chart.render();
+   </script>
+
+   <!-- Chart 4 -->
+   <script>
+        var subcategoryNames = {!! json_encode($subcategoryNames ?? []) !!};
+           var subtaskCounts = {!! json_encode($subcategorytaskCounts ?? []) !!};
+
+           var chartElement = document.querySelector("#chart4");
+       var options = {
+           series: subtaskCounts,
+           labels: subcategoryNames,
+           colors: ['#0427B9', '#435DCA', '#8192DB', '#9AA8E2', '#C0C8ED'],
+           chart: {
+               type: 'donut',
+               height: 315,
+           },
+           legend: {
+               position: 'bottom'
+           },
+           dataLabels: {
+               enabled: false
+           },
+           responsive: [{
+               breakpoint: 480,
+               options: {
+                   chart: {
+                       height: 320,
+                   },
+                   legend: {
+                       position: 'bottom'
+                   }
+               }
+           }]
+       };
+
+       var chart = new ApexCharts(document.querySelector("#chart4"), options);
+       chart.render();
+   </script>
+
+   <script>
+           $('.approve-attendance').on("click",function () {
+               let userId = $(this).data("id");
+
+               console.log(userId);
+               $.ajax({
+                   url: "{{ route('attendance.approve') }}",
+                   type: "POST",
+                   data: {
+                       user_id: userId,
+                       _token: '{{ csrf_token() }}'
+                   },
+                   success: function (response) {
+                       if (response.success) {
+                           alert("Attendance Approved!");
+                           location.reload();
+                       } else {
+                           alert("Something went wrong!");
+                       }
+                   },
+                   error: function () {
+                       alert("Error occurred!");
+                   }
+               });
+           });
+
+   </script>
 
 @endsection

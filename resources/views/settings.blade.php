@@ -12,12 +12,12 @@
                 role="tablist">
 
                 @if(hasAccess($role,'cat/sub'))
-                {{-- <li class="nav-item" role="presentation">
-                    <button class="profiletabs active" data-url="{{ route('category') }}" type="button">Category</button>
+                <li class="nav-item" role="presentation">
+                    <button class="profiletabs" data-url="{{ route('category') }}" type="button">Category</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('subcategory') }}" type="button">Sub Category</button>
-                </li> --}}
+                </li>
                 @endif
                 <!-- <li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('roles') }}" type="button">Role</button>
@@ -25,10 +25,10 @@
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs @if(!(hasAccess($role,'cat/sub'))){{'active'}}@endif" data-url="{{ route('password') }}" type="button">Password</button>
                 </li>
-                <li class="nav-item" role="presentation">
+                {{-- <li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('permission') }}" type="button">Roles &
                         Permissions</button>
-                </li>
+                </li> --}}
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('assign.assign_asm') }}" type="button">Assign ASM</button>
                 </li>
@@ -47,33 +47,33 @@
     </div>
 
     <script>
-        $(document).ready(function () {
+            $(document).ready(function () {
 
-            const loadContent = (url) => {
-                $("#tabContentWrapper").html('<p>Loading...</p>');
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    success: function (data) {
-                        $("#tabContentWrapper").html(data);
-                    },
-                    error: function () {
-                        $("#tabContentWrapper").html("<p>Error loading content</p>");
-                    }
-                });
-            };
+                const loadContent = (url) => {
+                    $("#tabContentWrapper").html('<p>Loading...</p>');
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function (data) {
+                            $("#tabContentWrapper").html(data);
+                        },
+                        error: function () {
+                            $("#tabContentWrapper").html("<p>Error loading content</p>");
+                        }
+                    });
+                };
 
             $(".profiletabs").on("click", function () {
                 $(".profiletabs").removeClass("active");
                 $(this).addClass("active");
 
                 const url = $(this).data("url");
-                console.log(url);
+                // console.log(url);
 
                 loadContent(url);
             });
 
-            $(".profiletabs.active").trigger("click");
+              $(".profiletabs.active").trigger("click");
         });
     </script>
 @endsection

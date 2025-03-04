@@ -17,9 +17,133 @@ class fin_cnt extends Controller
     public function index()
     {
 
+        $user = Auth::user();
+
         $hr_emp = $this->attd_index('Finance');
 
-        return view('finance.finance_index',['hr_emp'=>$hr_emp]);
+        $role_mem = DB::table('roles')->where('role_dept', 'Finance')
+        ->leftJoin('users as us','us.role_id','=','roles.id')
+        ->select('us.id')->get();
+
+        $men = [];
+
+        foreach($role_mem as $role_men1){
+
+                 $men[] = $role_men1->id;
+
+                // dd($role_men1->id);
+        }
+
+
+
+
+        if (!empty($men)) {
+
+            $totaltask = DB::table('tasks')
+                ->whereIn('tasks.assign_to',$men)
+                ->selectRaw("
+                    SUM(CASE WHEN task_status = 'To Do' THEN 1 ELSE 0 END) AS todo,
+                    SUM(CASE WHEN task_status = 'In Progress' THEN 1 ELSE 0 END) AS in_progress,
+                    SUM(CASE WHEN task_status = 'On Hold' THEN 1 ELSE 0 END) AS on_hold,
+                    SUM(CASE WHEN task_status = 'Completed' THEN 1 ELSE 0 END) AS completed
+                ")
+                ->first();
+
+            $task = [
+                'todo' => $totaltask->todo ?? 0,
+                'in_progress' => $totaltask->in_progress ?? 0,
+                'on_hold' => $totaltask->on_hold ?? 0,
+                'completed' => $totaltask->completed ?? 0,
+            ];
+        }
+        else {
+            $task = [
+                'todo' => 0,
+                'in_progress' => 0,
+                'on_hold' => 0,
+                'completed' => 0,
+            ];
+        }
+
+        // dd($task);
+
+        if (!empty($men)) {
+            $teampertask = DB::table('tasks')
+                ->join('users', 'tasks.assign_to', '=', 'users.id')
+                ->whereIn('tasks.assign_to',$men)
+                ->selectRaw("
+                    users.name,
+                    COUNT(*) AS total_tasks
+                ")
+                ->groupBy('users.name')
+                ->get();
+        } else {
+            $teampertask = collect();
+        }
+
+        $staffNames = $teampertask->pluck('name')->toArray();
+        $taskCounts = $teampertask->pluck('total_tasks')->toArray();
+
+
+
+        // category and subcategory charts.....
+
+            $categoryTask = DB::table('tasks')
+                    ->join('categories', 'tasks.category_id', '=', 'categories.id')
+                    ->whereIn('tasks.assign_to',$men)
+                    ->where('tasks.task_status', 'Completed')
+                    ->select(
+                        'categories.category',
+                        DB::raw('COUNT(*) as total_tasks')
+                    )
+                    ->groupBy('categories.category')
+                    ->get();
+
+                $categoryNames = $categoryTask->pluck('category')->toArray();
+                $categorytaskCounts = $categoryTask->pluck('total_tasks')->toArray();
+
+            $subcategoryTask = DB::table('tasks')
+                    ->join('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
+                    ->join('categories', 'tasks.category_id', '=', 'categories.id')
+                    ->whereIn('tasks.assign_to', $men)
+                    ->where('tasks.task_status', 'Completed')
+                    ->select(
+                        'categories.category',
+                        'sub_categories.subcategory',
+                        DB::raw('COUNT(*) as subtotal_tasks')
+                    )
+                    ->groupBy('categories.category', 'sub_categories.subcategory')
+                    ->get();
+            $subcategoryNames = $subcategoryTask->pluck('subcategory')->toArray();
+            $subcategorytaskCounts = $subcategoryTask->pluck('subtotal_tasks')->toArray();
+
+
+            //    dd($categoryTask);
+
+               if (!empty($men)) {
+                $pendingLeaves = DB::table('leaves')
+                    ->leftJoin('users', 'leaves.user_id', '=', 'users.id')
+                    ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
+                    ->select(
+                        'leaves.*',
+                        'users.name',
+                        'users.profile_image',
+                        'users.emp_code',
+                        'users.store_id',
+                        'leaves.request_to'
+                    )
+                    ->whereIn('users.id', $men)
+                    ->where('leaves.request_to',  $user->id)
+                    ->where('leaves.request_status', 'Pending')
+                    ->get();
+            } else {
+                $pendingLeaves = collect();
+            }
+
+            // dd($pendingLeaves);
+
+
+        return view('finance.finance_index',['hr_emp'=>$hr_emp,'task'=>$task,'staffNames'=>$staffNames,'taskCounts'=>$taskCounts,'categoryNames'=>$categoryNames,'categorytaskCounts'=>$categorytaskCounts,'subcategoryNames'=>$subcategoryNames,'subcategorytaskCounts'=>$subcategorytaskCounts,'pendingLeaves'=>$pendingLeaves]);
     }
 
     /**

@@ -25,7 +25,9 @@ class SettingsController extends Controller
     {
         $cat=DB::table('categories')->get();
 
-        return view('settings.category',['cat'=>$cat]);
+        // dd($cat);
+
+        return view('settings.category',['cat'=> $cat]);
     }
 
     public function categorystore(Request $request)
@@ -349,7 +351,7 @@ class SettingsController extends Controller
              }
              catch(\Exception $e){
 
-                Log::error('Error saving ASM: ' . $e->getMessage());
+                // Log::error('Error saving ASM: ' . $e->getMessage());
 
 
              }
