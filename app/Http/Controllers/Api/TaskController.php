@@ -386,76 +386,107 @@ public function completedtaskstore(Request $request)
         ]);
      }
 
-      public function leavestore(Request $request)
-    {
-          $user_id = auth()->user();
+    //   public function leavestore(Request $request)
+    // {
 
-          $role_get = DB::table('roles')
-            ->leftJoin('users', 'users.role_id', '=', 'roles.id')
-            ->select('roles.id', 'roles.role', 'roles.role_dept')
-            ->where('users.id', $user_id->id)
-            ->first();
 
-        if ($role_get) {
-            $leave = new Leave();
-            if($request->request_type!='Permission'){
-                 $leave->start_date = $request->start_date;
-                 $leave->end_date = $request->end_date;
-            }else{
-                 $leave->start_date = $request->start_date;
-                 $leave->end_date = $request->start_date;
-            }
+    //       $user_id = auth()->user();
 
-            $leave->request_type = $request->request_type;
-            $leave->reason = $request->reason;
-            $leave->start_time = $request->start_time;
-            $leave->end_time = $request->end_time;
-            $leave->user_id = $user_id->id;
-            $leave->created_by = $user_id->id;
+    //       $role_get = DB::table('roles')
+    //         ->leftJoin('users', 'users.role_id', '=', 'roles.id')
+    //         ->select('roles.id', 'roles.role', 'roles.role_dept')
+    //         ->where('users.id', $user_id->id)
+    //         ->first();
 
-            if($user_id->role_id >= 13 && $user_id->role_id <= 19){
+    //     if ($role_get) {
+    //         $leave = new Leave();
+    //         if($request->request_type!='Permission'){
+    //              $leave->start_date = $request->start_date;
+    //              $leave->end_date = $request->end_date;
+    //         }else{
+    //              $leave->start_date = $request->start_date;
+    //              $leave->end_date = $request->start_date;
+    //         }
 
-            $store_man = DB::table('users')->where('store_id',$user_id->store_id)->where('role_id',12)->first();
-                    $leave->request_to = $store_man->id ?? 2;
-                    $req_to = $store_man->id ?? 2;
-                    $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
-            }else{
-                $leave->request_to = $request->request_to;
-                $req_to = $request->request_to;
-                $req_token  = DB::table('users')->where('id',$request->request_to)->first();
-            }
+    //         $leave->request_type = $request->request_type;
+    //         $leave->reason = $request->reason;
+    //         $leave->start_time = $request->start_time;
+    //         $leave->end_time = $request->end_time;
+    //         $leave->user_id = $user_id->id;
+    //         $leave->created_by = $user_id->id;
 
-            $leave->save();
+    //         if($user_id->role_id >= 13 && $user_id->role_id <= 19){
 
 
 
-            if ($req_token->device_token) {
-                    $taskTitle = $request->request_type."Request";
-                    $taskBody = $user_id->name. "Requested for " . $request->request_type;
+    //         $store_man = DB::table('users')->where('store_id',$user_id->store_id)->where('role_id',12)->first();
+    //                 $leave->request_to = $store_man->id ?? 2;
+    //                 $req_to = $store_man->id ?? 2;
+    //                 $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
+    //         }
+    //         else if(hasAccess($user_id->role_id,'leave')){
 
-                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+    //                 $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->get();
 
-                    Notification::create([
-                        'user_id' => $req_to,
-                        'noty_type' => 'leave',
-                        'type_id' => $leave->id
-                    ]);
-            } // notification end
+    //                 switch($dept->role_dept) {
+    //                     case 'Finance':
+    //                         $request_to = 7;
+    //                         break;
+    //                     case 'Maintenance':
+    //                         $arr = 30;
+    //                         break;
+    //                     case 'Warehouse':
+    //                         $arr = 37;
+    //                         break;
+    //                     case 'Purchase':
+    //                         $arr = 41;
+    //                         break;
+
+    //                 }
+
+    //                 dd($dept);
+
+    //                 $leave->request_to = $arr;
+
+    //         }else{
+
+
+    //             $leave->request_to = $request->request_to;
+    //             $req_to = $request->request_to;
+    //             $req_token  = DB::table('users')->where('id',$request->request_to)->first();
+    //         }
+
+    //         // $leave->save();
 
 
 
-        } else {
+    //         // if ($req_token->device_token) {
+    //         //         $taskTitle = $request->request_type."Request";
+    //         //         $taskBody = $user_id->name. "Requested for " . $request->request_type;
 
-            return response()->json(['error' => 'User role not found'], 404);
-        }
+    //         //         $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+    //         //         Notification::create([
+    //         //             'user_id' => $req_to,
+    //         //             'noty_type' => 'leave',
+    //         //             'type_id' => $leave->id
+    //         //         ]);
+    //         // } // notification end
 
 
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Leave Request Sent successfully'
-        ]);
-    }
+    //     } else {
+
+    //         return response()->json(['error' => 'User role not found'], 404);
+    //     }
+
+
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Leave Request Sent successfully'
+    //     ]);
+    // }
 
      public function reginationstore(Request $request)
     {

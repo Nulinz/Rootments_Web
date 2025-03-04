@@ -295,7 +295,11 @@ class SettingsController extends Controller
 
         $stores = DB::table('stores')->pluck('store_name','id');
 
-        // $asm = DB::table('users')->where('store_id',$user->store_id)->where('')->pluck('name','id');
+         $asm_assign = DB::table('asm_store as as')
+         ->leftJoin('users as us','us.id','=','as.emp_id')
+         ->leftJoin('stores as st','st.id','=','as.store_id')
+         ->select('us.name','st.store_name')
+         ->get();
 
 
 
@@ -305,7 +309,7 @@ class SettingsController extends Controller
 
         //  return view('settings.assing_asm', compact('stores'));
 
-         return view('settings.assing_asm',['stores'=>$stores]);
+         return view('settings.assing_asm',['stores'=>$stores,'asm_assigned'=>$asm_assign]);
 
         // return response()->json([
         //     'store' => $stores,

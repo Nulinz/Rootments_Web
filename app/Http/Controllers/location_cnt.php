@@ -98,8 +98,14 @@ class location_cnt extends Controller
 
                     $c_time = Carbon::now(); // Get the current time using Carbon
 
+                    if(!is_null(Auth::user()->store_id)){
                     // Assuming store_start_time is stored in $st_time->store_start_time as a Carbon instance
                     $start_time = Carbon::parse($st_time->store_start_time); // Convert store start time to a Carbon instance
+
+                    }
+                    else{
+                        $start_time = Carbon::parse('10:00:00'); // Co
+                    }
 
                     // Calculate the 5-minute range (+5 and -5 minutes)
                     $start_time_plus_5 = $start_time->copy()->addMinutes(5);
@@ -143,9 +149,17 @@ class location_cnt extends Controller
 
                 $c_time = now()->format('H:i:s');
 
-                    if ($c_time > $st_time->store_end_time) {
+                if(!is_null(Auth::user()->store_id)){
+
+                    $end_time = $st_time->store_end_time;
+
+                }else{
+                    $end_time = '17:00:00';
+                }
+
+                    if ($c_time > $end_time) {
                         // Define the two times
-                        $time1 = Carbon::createFromFormat('H:i:s', $st_time->store_end_time);
+                        $time1 = Carbon::createFromFormat('H:i:s', $end_time);
                         $time2 = Carbon::createFromFormat('H:i:s', $c_time);
 
                         // Calculate the difference
@@ -183,6 +197,7 @@ class location_cnt extends Controller
 
             // Return the district (or locality) as the response
             return response()->json([
+                'status'=>'Success',
                 'attd_status'=>'CheckIn Update Success',
                 'district' => $district ?? 'District not found'
             ]);
@@ -190,7 +205,7 @@ class location_cnt extends Controller
 
 
             // Handle errors (e.g., location not found)
-             return response()->json(['attd_status'=>'CheckOut Update Failed','error' => 'Location not found'], 404);
+             return response()->json(['status'=>'Failed','attd_status'=>'CheckOut Update Failed','error' => 'Location not found'], 404);
         }
     }
 }

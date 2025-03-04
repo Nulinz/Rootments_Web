@@ -48,11 +48,11 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->emp_code }}</td>
                             <td>{{ $item->name }}</td>
-                            @if($item->store_name)
-                                <td>{{ $item->store_name }}</td>
-                            @else
-                                <td> - </td>
-                            @endif
+                            {{-- @if($item->store_name) --}}
+                                <td>{{ $item->store_name ?? '-' }}</td>
+                            {{-- @else --}}
+                                {{-- <td> - </td>
+                            @endif --}}
                             <td>{{ $item->role_dept }}</td>
                             <td>{{ $item->role }}</td>
                             <td>{{ $item->email }}</td>

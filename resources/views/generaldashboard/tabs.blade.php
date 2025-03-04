@@ -3,15 +3,19 @@
         @php
         $user = auth()->user();
 
+        //  dd($user->role_id, session('role_id'), Auth::user());
+
+
         $asm_count = DB::table('asm_store')->where('store_id',$user->store_id)->where('emp_id',$user->id)->count();
 
         // Get user role details
-        $role_get = DB::table('roles')
-            ->join('users', 'users.role_id', '=', 'roles.id')
-            ->where('users.id', $user->id)
-            ->select('roles.id as role_id', 'roles.role', 'roles.role_dept')
-            ->first();
-        $r_id = $role_get->role_id;
+        // $role_get = DB::table('roles')
+        //     ->join('users', 'users.role_id', '=', 'roles.id')
+        //     ->where('users.id', $user->id)
+        //     ->select('roles.id as role_id', 'roles.role', 'roles.role_dept')
+        //     ->first();
+        $r_id = $user->role_id;
+
         // if ($r_id == 3 || $r_id == 4 || $r_id == 5) {
         //     $route = 'hr.dashboard';
         //     $over = 'HR';
@@ -35,6 +39,7 @@
                 4  => ['route' => 'hr.dashboard', 'over' => 'HR'],
                 5  => ['route' => 'hr.dashboard', 'over' => 'HR'],
                 12 => ['route' => 'dashboard', 'over' => 'Store'],
+                13 => ['route' => 'dashboard', 'over' => 'Store'],
                 11 => ['route' => 'cluster.dashboard', 'over' => 'Cluster'],
                 10 => ['route' => 'area.dashboard', 'over' => 'Area'],
                 7  => ['route' => 'fin.index', 'over' => 'Finance'],
@@ -49,7 +54,7 @@
 
     @endphp
 
-        @if(array_key_exists($r_id,$route) || ($asm_count>0))
+        @if(array_key_exists($r_id,$route) || (($asm_count>0)))
         <div class="my-2">
             <a href="{{ route($route[$r_id]['route']) }}"><button class="dashtabs">{{$route[$r_id]['over']}} Overview</button></a>
         </div>

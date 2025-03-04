@@ -72,14 +72,41 @@ class LeaveController extends Controller
                     $leave->request_to = $store_man->id ?? 2;
                     $req_to = $store_man->id ?? 2;
                     $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
-            }else{
-                $leave->request_to = $request->request_to;
-                $req_to = $request->request_to;
-                 $req_token  = DB::table('users')->where('id',$request->request_to)->first();
             }
+            else if(!hasAccess($user_id->role_id,'leave')){
+
+                $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->first();
+
+                switch($dept->role_dept) {
+                    case 'Finance':
+                        $arr = 7;
+                        break;
+                    case 'Maintenance':
+                        $arr = 30;
+                        break;
+                    case 'Warehouse':
+                        $arr = 37;
+                        break;
+                    case 'Purchase':
+                        $arr = 41;
+                        break;
+
+                }
+
+                // dd($dept);
+
+                $leave->request_to = $arr;
+                $req_token  = DB::table('users')->where('id',$request->request_to)->first();
+
+                }
+                else{
+                        $leave->request_to = $request->request_to;
+                        $req_to = $request->request_to;
+                        $req_token  = DB::table('users')->where('id',$request->request_to)->first();
+                    }
 
 
-             $leave->save();
+              $leave->save();
 
 
 

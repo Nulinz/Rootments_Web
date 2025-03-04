@@ -9,15 +9,19 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\trait\common;
 
 class EmployeeController extends Controller
 {
+    use common;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-      $user = Auth::user(); 
+      $user = Auth::user();
+
+    if($user->role_id == 12){
 
         $query = DB::table('users')
             ->leftJoin('stores', 'users.store_id', '=', 'stores.id')
@@ -32,15 +36,25 @@ class EmployeeController extends Controller
                 'roles.role',
                 'roles.role_dept'
             );
-        
-        if ($user->dept !== 'Admin' && $user->dept !== 'HR') {
-            $query->where('users.store_id', $user->store_id)
-                  ->where('users.id', '!=', 1);
-        }
-        
+
+            if ($user->dept !== 'Admin' && $user->dept !== 'HR') {
+                $query->where('users.store_id', $user->store_id)
+                    ->where('users.id', '!=', 1);
+            }
+
         $employees = $query->get();
 
-            
+    }else{
+
+         $dept = DB::table('roles')->where('id',$user->role_id)->select('role_dept')->first();
+
+        //  dd($dept);
+         $employees = $this->get_emp_dept($dept->role_dept);
+
+        //  dd($employees);
+    }
+
+
         return view('employee.list',['employees'=>$employees]);
     }
 
@@ -89,7 +103,7 @@ class EmployeeController extends Controller
         $name = date('y') . '-' . Str::upper(Str::random(8)) . '.' . $file->getClientOriginalExtension();
         $path = 'assets/images/Employee/';
         $file->move($path, $name);
-        
+
         $user->profile_image = $path . $name;
     }
         $user->save();
@@ -147,19 +161,19 @@ class EmployeeController extends Controller
                 $name = date('y') . '-' . Str::upper(Str::random(8)) . '.' . $file->getClientOriginalExtension();
                 $path = 'assets/images/Employee/';
                 $file->move($path, $name);
-                
+
                 $user->aadhar_img = $path . $name;
             }
-            
+
         if ($request->hasFile('agreement')) {
                 $file = $request->file('agreement');
                 $name = date('y') . '-' . Str::upper(Str::random(8)) . '.' . $file->getClientOriginalExtension();
                 $path = 'assets/images/Employee/';
                 $file->move($path, $name);
-                
+
                 $user->agreement = $path . $name;
             }
-      
+
         $user->dept = $request->dept;
         $user->role_id = $request->role_id;
         $user->store_id = $request->store_id;
@@ -307,7 +321,7 @@ class EmployeeController extends Controller
         $name = date('y') . '-' . Str::upper(Str::random(8)) . '.' . $file->getClientOriginalExtension();
         $path = 'assets/images/Employee/';
         $file->move($path, $name);
-        
+
         $user->profile_image = $path . $name;
     }
         $user->save();
@@ -332,20 +346,20 @@ class EmployeeController extends Controller
                 $name = date('y') . '-' . Str::upper(Str::random(8)) . '.' . $file->getClientOriginalExtension();
                 $path = 'assets/images/Employee/';
                 $file->move($path, $name);
-                
+
                 $user->aadhar_img = $path . $name;
             }
-            
+
         if ($request->hasFile('agreement')) {
                 $file = $request->file('agreement');
                 $name = date('y') . '-' . Str::upper(Str::random(8)) . '.' . $file->getClientOriginalExtension();
                 $path = 'assets/images/Employee/';
                 $file->move($path, $name);
-                
+
                 $user->agreement = $path . $name;
             }
-      
-       
+
+
         $user->dept = $request->dept;
         $user->role_id = $request->role_id;
         $user->store_id = $request->store_id;

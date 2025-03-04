@@ -19,7 +19,7 @@
                        </select>
                     </div>
                      <div class="col-sm-12 col-md-4 col-xl-4 mb-3 px-2 inputs">
-                        <label for="title">Assitant Manageer <span>*</span></label>
+                        <label for="title">Assitant Manager <span>*</span></label>
                         <select name="asm" id="asm" class="form-select">
                                 <option disabled>Select Assitant</option>
                         </select>
@@ -59,53 +59,28 @@
                 </div>
             </div>
 
-            {{-- <div class="table-wrapper">
+            <div class="table-wrapper">
                 <table class="table table-hover table-striped" id="table1">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Category</th>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>Store</th>
+                            <th>ASM</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($cat as $item)
+                        @foreach ($asm_assigned as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->category }}</td>
-                                <td>{{ $item->cat_tittle }}</td>
-                                <td>{{ $item->cat_des }}</td>
-                                <td>
-                                    @if ($item->status == 1)
-                                        Active
-                                    @elseif ($item->status == 2)
-                                        Inactive
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="d-flex gap-3">
-                                        @if ($item->status == 1)
-                                            <a href="javascript:void(0)" class="update-status"
-                                                data-id="{{ $item->id }}">
-                                                <i class="fas fa-circle-xmark text-danger"></i>
-                                            </a>
-                                        @elseif ($item->status == 2)
-                                            <a href="javascript:void(0)" class="update-status"
-                                                data-id="{{ $item->id }}">
-                                                <i class="fas fa-check-circle text-success"></i>
+                                <td>{{ $item->store_name }}</td>
+                                <td>{{ $item->name }}</td>
 
-                                            </a>
-                                        @endif
-                                    </div>
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-            </div> --}}
+            </div>
         </div>
     </div>
 

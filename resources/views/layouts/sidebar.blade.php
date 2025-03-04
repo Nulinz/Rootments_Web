@@ -10,7 +10,25 @@
             </a>
         </div>
         @php
+
+        // if(session('role_id')) {
+        //                     // Update the role_id of the authenticated user
+        //     $user = Auth::user();
+        //     $user->role_id = session('role_id');  // Update role_id from the session
+        //     Auth::setUser($user);  // Re-set the user to reflect the new role_id
+        //     // dd(Auth::user());
+
+
+        // }
+
             $user = auth()->user();
+
+        //  dd($user->role_id, session('role_id'), Auth::user());
+
+
+            // dd($user);
+
+            // echo $user->role_id ;
 
             // Get user role details
             $role_get = DB::table('roles')
@@ -18,16 +36,29 @@
                 ->where('users.id', $user->id)
                 ->select('roles.id as role_id', 'roles.role', 'roles.role_dept')
                 ->first();
-            $r_id = $role_get->role_id;
-            if ($r_id == 3 || $r_id == 4 || $r_id == 5) {
-                $route = 'hr.dashboard';
-            } elseif ($r_id == 12) {
-                $route = 'dashboard';
-            } elseif($r_id==11){
-                        $route = 'cluster.dashboard';
-            }else {
-                $route = 'mydash.dashboard';
-            }
+            $r_id = $user->role_id;
+            // if ($r_id == 3 || $r_id == 4 || $r_id == 5) {
+            //     $route = 'hr.dashboard';
+            // } elseif ($r_id == 12) {
+            //     $route = 'dashboard';
+            // } elseif($r_id==11){
+            //             $route = 'cluster.dashboard';
+            // }else {
+            //     $route = 'mydash.dashboard';
+            // }
+
+            $route = [
+                3  => ['route' => 'hr.dashboard', 'over' => 'HR'],
+                4  => ['route' => 'hr.dashboard', 'over' => 'HR'],
+                5  => ['route' => 'hr.dashboard', 'over' => 'HR'],
+                12 => ['route' => 'dashboard', 'over' => 'Store'],
+                11 => ['route' => 'cluster.dashboard', 'over' => 'Cluster'],
+                10 => ['route' => 'area.dashboard', 'over' => 'Area'],
+                7  => ['route' => 'fin.index', 'over' => 'Finance'],
+                30 => ['route' => 'maintain.index', 'over' => 'Maintain'],
+                37 => ['route' => 'warehouse.index', 'over' => 'Warehouse'],
+                41 => ['route' => 'purchase.index', 'over' => 'Purchase'],
+            ];
 
         @endphp
 
@@ -35,7 +66,7 @@
 
 
             <li class="mb-1">
-                <a href="{{ route($route) }}">
+                <a href="{{ route($route[$r_id]['route'] ?? 'mydash.dashboard') }}">
                     <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('dashboard.*') ? 'active' : '' }}" data-bs-toggle="collapse"
                         data-bs-target="#collapse1" aria-expanded="false">
                         <div class="btnname">
@@ -742,11 +773,12 @@
 
 
                     },
-                    // error: function(xhr, status, error) {
-                    //     // Handle errors here
-                    //     console.error('Error:', error);
-                    //     alert('Something went wrong.');
-                    // }
+                    error: function(xhr, status, error) {
+                        // Handle errors here
+                        window.location.reload();
+                        // console.error('Error:', error);
+                        // alert('Something went wrong.');
+                    }
                 });
             });
         }

@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Task;
 use App\Models\{User,Role};
 use Carbon\Carbon;
+use App\Http\Controllers\trait\common;
 
 class DashBoardController extends Controller
 {
+    use common;
     /**
      * Display a listing of the resource.
      */
@@ -443,68 +445,70 @@ class DashBoardController extends Controller
     ->count();
 
     // $r_id = 12;
-    switch($r_id) {
-        case 3:
-        case 4:
-        case 5:
-            $arr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-            break;
-        case 7:
-            $arr = [25];
-            break;
-        case 10:
-            $arr = [11, 12];
-            break;
-        case 11:
-            $arr = [12];
-            break;
-        case 12:
-            if($cluster_check==0){
-                $arr = [13, 14, 15, 16, 17, 18, 19];
-            }else{
-                $arr = [12 ,13, 14, 15, 16, 17, 18, 19];
-            }
+    // switch($r_id) {
+    //     case 3:
+    //     case 4:
+    //     case 5:
+    //         $arr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    //         break;
+    //     case 7:
+    //         $arr = [25];
+    //         break;
+    //     case 10:
+    //         $arr = [11, 12];
+    //         break;
+    //     case 11:
+    //         $arr = [12];
+    //         break;
+    //     case 12:
+    //         if($cluster_check==0){
+    //             $arr = [13, 14, 15, 16, 17, 18, 19];
+    //         }else{
+    //             $arr = [12 ,13, 14, 15, 16, 17, 18, 19];
+    //         }
 
-            break;
-        case 13:
-        case 14:
-        case 15:
-        case 16:
-        case 17:
-        case 18:
-        case 19:
-            $arr = range(12, 19);  // Array from 12 to 19
-            $arr = array_diff($arr, [$r_id]); // Exclude the current role ID
-            break;
-        case 25:
-            $arr = [7];
-            break;
-        case 30:
-            $arr = [31,35,36];
-            break;
-        case 31:
-        case 35:
-        case 36:
-            $arr = [30, 31, 35, 36];
-            $arr = array_diff($arr, [$r_id]); // Exclude $r_id
-            break;
-        case 37:
-            $arr = [32,38,39,40];
-            break;
-        case 38:
-        case 39:
-        case 40:
-            $arr = [37, 38, 39, 40];
-            $arr = array_diff($arr, [$r_id]); // Exclude $r_id
-            break;
-        case 41:
-            $arr = [42];
-            break;
-        case 42:
-            $arr = [41];
-            break;
-    }
+    //         break;
+    //     case 13:
+    //     case 14:
+    //     case 15:
+    //     case 16:
+    //     case 17:
+    //     case 18:
+    //     case 19:
+    //         $arr = range(12, 19);  // Array from 12 to 19
+    //         $arr = array_diff($arr, [$r_id]); // Exclude the current role ID
+    //         break;
+    //     case 25:
+    //         $arr = [7];
+    //         break;
+    //     case 30:
+    //         $arr = [31,35,36];
+    //         break;
+    //     case 31:
+    //     case 35:
+    //     case 36:
+    //         $arr = [30, 31, 35, 36];
+    //         $arr = array_diff($arr, [$r_id]); // Exclude $r_id
+    //         break;
+    //     case 37:
+    //         $arr = [32,38,39,40];
+    //         break;
+    //     case 38:
+    //     case 39:
+    //     case 40:
+    //         $arr = [37, 38, 39, 40];
+    //         $arr = array_diff($arr, [$r_id]); // Exclude $r_id
+    //         break;
+    //     case 41:
+    //         $arr = [42];
+    //         break;
+    //     case 42:
+    //         $arr = [41];
+    //         break;
+    // }
 
+
+    $arr = $this->role_arr();
 
 
 
@@ -546,6 +550,8 @@ class DashBoardController extends Controller
     }
 
     $list = $list->get();
+
+    // dd($list);
 
         return view('generaldashboard.mydashboard', ['tasks_todo' => $tasks_todo,'tasks_todo_count'=>$tasks_todo_count,'tasks_inprogress'=>$tasks_inprogress,'tasks_inprogress_count'=>$tasks_inprogress_count,'tasks_onhold'=>$tasks_onhold,'tasks_onhold_count'=>$tasks_onhold_count,'tasks_complete'=>$tasks_complete,'tasks_complete_count'=>$tasks_complete_count,'employees'=>$list,'role'=>$role]);
     }

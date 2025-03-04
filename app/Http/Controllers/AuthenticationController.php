@@ -56,34 +56,29 @@ class AuthenticationController extends Controller
 
                         $asm_route = ($asm_count > 0) ? 'dashboard' : 'mydash.dashboard';
 
-                        session(['role_id' => 12]);
-
-                        if (session('role_id')) {
-                            // Update the role_id of the authenticated user
-                            $user = Auth::user();
-                            $user->role_id = session('role_id');  // Update role_id from the session
-                            Auth::setUser($user);  // Re-set the user to reflect the new role_id
-                        }
-
+                    }
+                    else {
+                        $asm_route = null; // If role_id is not 13, set it to null to avoid overriding.
                     }
 
 
 
+                        $routes = [
+                            3 => 'hr.dashboard',
+                            4 => 'hr.dashboard',
+                            5 => 'hr.dashboard',
+                            7 => 'fin.index',
+                            10 => 'area.dashboard',
+                            11 => 'cluster.dashboard',
+                            12 => 'dashboard',
+                            30 => 'maintain.index',
+                            37 => 'warehouse.index',
+                            41 => 'purchase.index',
+                        ];
 
-                    $routes = [
-                        3 => 'hr.dashboard',
-                        4 => 'hr.dashboard',
-                        5 => 'hr.dashboard',
-                        7 => 'fin.index',
-                        10 => 'area.dashboard',
-                        11 => 'cluster.dashboard',
-                        12 => 'dashboard',
-                        30 => 'maintain.index',
-                        37 => 'warehouse.index',
-                        41 => 'purchase.index',
-                    ];
+                    $route = $asm_route ?? $routes[$user->role_id] ?? 'mydash.dashboard';
 
-                    $route = $routes[$user->role_id] ?? 'mydash.dashboard';
+
 
 
                 return redirect()->route($route)->with([
@@ -114,6 +109,8 @@ class AuthenticationController extends Controller
             //         'out_time' => now()->format('H:i:s'),
             //         'u_by'=>now()->format('Y-m-d')
             //     ]);
+
+            // session()->forget('role_updated');
 
             Auth::logout();
         }
