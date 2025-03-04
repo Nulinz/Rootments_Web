@@ -39,7 +39,6 @@
                 4  => ['route' => 'hr.dashboard', 'over' => 'HR'],
                 5  => ['route' => 'hr.dashboard', 'over' => 'HR'],
                 12 => ['route' => 'dashboard', 'over' => 'Store'],
-                13 => ['route' => 'dashboard', 'over' => 'Store'],
                 11 => ['route' => 'cluster.dashboard', 'over' => 'Cluster'],
                 10 => ['route' => 'area.dashboard', 'over' => 'Area'],
                 7  => ['route' => 'fin.index', 'over' => 'Finance'],
@@ -54,7 +53,7 @@
 
     @endphp
 
-        @if(array_key_exists($r_id,$route) || (($asm_count>0)))
+        @if(array_key_exists($r_id,$route))
         <div class="my-2">
             <a href="{{ route($route[$r_id]['route']) }}"><button class="dashtabs">{{$route[$r_id]['over']}} Overview</button></a>
         </div>
@@ -71,7 +70,7 @@
                     Dashboard</button></a>
         </div>
         @endif
-        @if(($r_id==12)||($asm_count>0))
+        @if(($r_id==12))
         <div class="my-2">
             <a href="{{ route('store.dashboard') }}"><button class="dashtabs ">Store
                     Dashboard</button></a>

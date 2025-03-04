@@ -84,7 +84,7 @@
                                                 <i class="fas fa-circle-xmark text-danger"></i>
                                             </a>
                                         @elseif ($item->status == 2)
-                                            <a href="javascript:void(0)" class="update-status"
+                                            <a href=javascript:void(0)"" class="update-status"
                                                 data-id="{{ $item->id }}">
                                                 <i class="fas fa-check-circle text-success"></i>
 
@@ -102,7 +102,89 @@
 
 </div>
 
-{{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<script>
+
+
+    $(document).ready(function() {
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        $(".update-status").on("click", function() {
+
+            var updateStatusUrl = "{{ route('update.status',':id') }}";
+
+        // var csrf = csrf_token();
+        // console.log(csrf);
+
+            const row = $(this).closest("tr");
+            const categoryId = $(this).data("id"); // Get the ID from the tr
+            const statusCell = row.find(".status-text");
+
+            // const cat_id = $(this).data("id");
+
+            // alert(cat_id);
+
+            const url = updateStatusUrl.replace(':id', categoryId);
+
+            console.log(categoryId);
+
+            $.ajax({
+                url: updateStatusUrl,
+                type: "POST",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id:categoryId
+                },
+                success: function(response) {
+                    if (response.status == 1) {
+                        statusCell.text("Active");
+                        statusCell.attr("data-status", 1);
+                    } else {
+                        statusCell.text("Inactive");
+                        statusCell.attr("data-status", 2);
+                    }
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer);
+                            toast.addEventListener('mouseleave', Swal.resumeTimer);
+                        },
+                        customClass: {
+                            title: 'toast-title'
+                        }
+                    });
+
+                    if (response.success) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.message
+                        });
+                        location.reload();
+                    } else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.message
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Something went wrong. Please try again later.'
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 
 <script>
     $(document).ready(function () {
@@ -144,81 +226,4 @@
     });
 </script>
 
- <script>
-    // var updateStatusUrl = "{{ route('update.status') }}";
-
-    // var csrf = csrf_token();
-    // console.log(csrf);
-
-    // $(document).ready(function() {
-        // const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-        $(".update-status").on("click", function() {
-            // const row = $(this).closest("tr");
-            // const categoryId = row.data("id"); // Get the ID from the tr
-            // const statusCell = row.find(".status-text");
-
-            const cat_id = $(this).data("id");
-
-            alert(cat_id);
-
-            // const url = updateStatusUrl.replace(':id', categoryId);
-
-            console.log(url);
-
-            // $.ajax({
-            //     url: updateStatusUrl,
-            //     type: "POST",
-            //     data: {
-            //         _token: '{{ csrf_token() }}',
-            //         id:categoryId
-            //     },
-            //     success: function(response) {
-            //         if (response.status == 1) {
-            //             statusCell.text("Active");
-            //             statusCell.attr("data-status", 1);
-            //         } else {
-            //             statusCell.text("Inactive");
-            //             statusCell.attr("data-status", 2);
-            //         }
-
-            //         const Toast = Swal.mixin({
-            //             toast: true,
-            //             position: 'top-end',
-            //             showConfirmButton: false,
-            //             timer: 3000,
-            //             timerProgressBar: true,
-            //             didOpen: (toast) => {
-            //                 toast.addEventListener('mouseenter', Swal.stopTimer);
-            //                 toast.addEventListener('mouseleave', Swal.resumeTimer);
-            //             },
-            //             customClass: {
-            //                 title: 'toast-title'
-            //             }
-            //         });
-
-            //         if (response.success) {
-            //             Toast.fire({
-            //                 icon: 'success',
-            //                 title: response.message
-            //             });
-            //             location.reload();
-            //         } else {
-            //             Toast.fire({
-            //                 icon: 'error',
-            //                 title: response.message
-            //             });
-            //         }
-            //     },
-            //     error: function(xhr, status, error) {
-            //         Swal.fire({
-            //             icon: 'error',
-            //             title: 'Error!',
-            //             text: 'Something went wrong. Please try again later.'
-            //         });
-            //     }
-            // });
-        });
-    // });
-</script>
 

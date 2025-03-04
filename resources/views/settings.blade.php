@@ -13,7 +13,7 @@
 
                 @if(hasAccess($role,'cat/sub'))
                 <li class="nav-item" role="presentation">
-                    <button class="profiletabs" data-url="{{ route('category') }}" type="button">Category</button>
+                    <button class="profiletabs active" data-url="{{ route('category') }}" type="button">Category</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('subcategory') }}" type="button">Sub Category</button>
@@ -29,9 +29,11 @@
                     <button class="profiletabs" data-url="{{ route('permission') }}" type="button">Roles &
                         Permissions</button>
                 </li> --}}
+                @if(hasAccess($role,'cat/sub'))
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('assign.assign_asm') }}" type="button">Assign ASM</button>
                 </li>
+                @endif
                 <!--<li class="nav-item" role="presentation">
                     <button class="profiletabs" data-url="{{ route('theme') }}" type="button">Themes</button>
                 </li>-->
@@ -58,7 +60,7 @@
                             $("#tabContentWrapper").html(data);
                         },
                         error: function () {
-                            $("#tabContentWrapper").html("<p>Error loading content</p>");
+                             $("#tabContentWrapper").html("<p>Error loading content</p>");
                         }
                     });
                 };

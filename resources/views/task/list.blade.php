@@ -6,9 +6,9 @@
             <h4 class="m-0">Task List</h4>
             <div class="d-flex justify-content-around">
 
-                @if(($r_id==12)&&($count>0))
+                {{-- @if(($r_id==12)&&($count>0)) --}}
                 {{-- <a href="{{ route('task.add.cluster') }}"><button class="listbtn">+ Cluster Task</button></a> --}}
-                @endif
+                {{-- @endif --}}
                <a href="{{ route('task.add') }}"><button class="listbtn">+ Add Task</button></a>
             </div>
         </div>

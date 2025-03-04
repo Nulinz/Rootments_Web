@@ -46,6 +46,7 @@ trait common
 
        $emp = DB::table('roles')->where('role_dept',$dept)
        ->leftJoin('users as us','us.role_id','=','roles.id')
+       ->whereNotNull('us.role_id')
             ->select(
             'us.id',
             'us.name',
