@@ -242,11 +242,12 @@
             },
             success: function(response) {
                 // alert(response.message);
-                location.reload(); // Reload the page on success
+                 location.reload(); // Reload the page on success
             },
             error: function(xhr, status, error) {
-                location.reload(); // Reload the page on success
+                 location.reload(); // Reload the page on success
                 // alert('An error occurred: ' + error); // Show an error message
+                console.log(error);
             }
         });
          });

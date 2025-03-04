@@ -100,9 +100,9 @@
         });
 
         // Global AJAX Error Handling
-        $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
-            Swal.fire('Error!', 'An error occurred: ' + thrownError, 'error');
-        });
+        // $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
+        //     Swal.fire('Error!', 'An error occurred: ' + thrownError, 'error');
+        // });
 
         // Display SweetAlert Toast if Laravel Session has 'status'
         @if (Session::has('status'))
