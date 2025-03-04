@@ -22,14 +22,43 @@ class location_cnt extends Controller
             // Google API Key
             $googleApiKey = env('GOOGLE_MAPS_API_KEY');
 
-            // Make the request to the Google Geocoding API
-            $response = Http::get("https://maps.googleapis.com/maps/api/geocode/json", [
-                'latlng' => "{$latitude},{$longitude}",
-                'key' => $googleApiKey
-            ]);
+            $geocodingUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng={$latitude},{$longitude}&key={$googleApiKey}";
 
-            // // Decode the response
-             $location = $response->json();
+            // // Make the request to the Google Geocoding API
+            // $response = Http::get("https://maps.googleapis.com/maps/api/geocode/json", [
+            //     'latlng' => "{$latitude},{$longitude}",
+            //     'key' => $googleApiKey
+            // ]);
+
+            // // // Decode the response
+            //  $location = $response->json();
+
+            // Initialize cURL session
+        $ch = curl_init();
+
+        // Set cURL options
+        curl_setopt($ch, CURLOPT_URL, $geocodingUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Optional: Disable SSL verification (if needed)
+
+        // Execute cURL request
+        $response = curl_exec($ch);
+
+        // Check for cURL errors
+        if ($response === false) {
+            $error = curl_error($ch);
+            curl_close($ch);
+            // Handle error (e.g., log it or return a response)
+            return response()->json(['error' => 'cURL error: ' . $error], 500);
+        }
+
+        // Close cURL session
+        curl_close($ch);
+
+        // Decode the response (Google API returns JSON)
+        $location = json_decode($response, true);
+
+        // dd($location);
 
             // Check if the response was successful
             // if ($location['status'] === 'OK') {

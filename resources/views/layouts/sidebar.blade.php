@@ -769,14 +769,14 @@
                         // Process and display the location data
                         // if (data.attd_status=='Success') {
                         //  alert('Status: ' + data.attd_status);
-                        window.location.reload();
+                        // window.location.reload();
 
 
                     },
                     error: function(xhr, status, error) {
                         // Handle errors here
-                        window.location.reload();
-                        // console.error('Error:', error);
+                        // window.location.reload();
+                         console.error('Error:', error);
                         // alert('Something went wrong.');
                     }
                 });
