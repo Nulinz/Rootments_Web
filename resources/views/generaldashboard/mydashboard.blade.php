@@ -263,12 +263,12 @@
                         </div>
 
                         <div class="cardmain column">
-                            <div class="row drag complete-list sortable-column" id="complete">
+                            <div class="row drag complete-list sortable-column" id="complete" >
 
                                 @foreach ($tasks_complete as $task)
                                     <div class="col-sm-12 col-md-11 col-xl-11 mb-2 d-block mx-auto draggablecard completedtask"
                                         data-id="{{ $task->id }}" data-patent_id="{{ $task->f_id }}"
-                                        data-cat="{{ $task->category_id }}" data-subcat="{{ $task->subcategory_id }}"
+                                        data-cat="{{ $task->category_id }}" data-status="{{ $task->task_status }}" data-subcat="{{ $task->subcategory_id }}"
                                         draggable="true">
                                         <div class="taskname mb-1">
                                             <div class="tasknameleft">
@@ -427,7 +427,7 @@
                 new Sortable(this, {
                     group: {
                         name: 'tasks',
-                        pull: true,
+                        pull: this.id === 'complete' ? false : true,
                         put: true
                     },
                     animation: 150,
@@ -437,6 +437,19 @@
                     onStart: function (evt) {
 
                         // var columnId = evt.from.id;
+                        // var taskStatus = $(evt.item).data('status').trim();
+                        // var st_originColumn = evt.from;
+
+                        //  console.log(taskStatus);
+
+                        // // if (taskStatus === 'Completed' && columnId !== 'complete') {
+                        // //             originColumn.appendChild(evt.item); // Move it back
+                        // //             evt.preventDefault();
+                        // //             alert("hello");
+                        // //             return;
+                        // //     }
+
+                        // console.log(taskStatus,columnId);
 
                         // if(columnId === 'complete'){
                         //     evt.preventDefault(); // Prevent the drag action entirely
@@ -480,6 +493,9 @@
                                 return;
                             }
                         }
+
+                         // If the task is in "Completed" status, prevent dropping it back into any other column
+
 
                         // if (columnId === 'complete') {
                         //     alert("You cannot move a completed task back.");

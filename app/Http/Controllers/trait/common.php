@@ -155,7 +155,7 @@ trait common
             $arr = [42];
             break;
         case 42:
-            $arr = [41];
+            $arr = [42,41];
             break;
         case 43:
         case 26:
