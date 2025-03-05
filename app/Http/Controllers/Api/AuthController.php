@@ -20,10 +20,11 @@ class AuthController extends Controller
     $request->validate([
         'emp_code' => 'required',
         'password' => 'required',
-        'device_token' => 'required',
+        // 'device_token' => 'required',
     ]);
 
-    $user = User::with('role')->where('emp_code', $request->emp_code)->first();
+    // $user = User::with('role')->where('emp_code', $request->emp_code)->first();
+    $user = User::where('emp_code', $request->emp_code)->first();
 
     if (!$user) {
         return response()->json(['error' => 'User not registered.'], 404);
@@ -37,18 +38,9 @@ class AuthController extends Controller
     $user->device_token = $request->device_token;
     $user->save();
 
-    //  $inserted = DB::table('attendence')->insert([
-    //         'user_id' => $user->id,
-    //         'attend_status' => 'Present',
-    //         'in_location' => 'Some Location',
-    //         'in_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
-    //         'c_on' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
-    //     ]);
-
-
     $token = $user->createToken('token')->plainTextToken;
 
-    $profileImageUrl = $user->profile_image && file_exists($user->profile_image) ? url($user->profile_image) : null;
+     $profileImageUrl = $user->profile_image && file_exists($user->profile_image) ? url($user->profile_image) : null;
 
    return response()->json([
     'status' => 'success',

@@ -80,6 +80,9 @@ class LeaveController extends Controller
                 $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->first();
 
                 switch($dept->role_dept) {
+                    case 'HR':
+                        $arr = 3;
+                        break;
                     case 'Finance':
                         $arr = 7;
                         break;
@@ -100,6 +103,7 @@ class LeaveController extends Controller
                 // dd($dept);
 
                 $leave->request_to = $arr1->id;
+                $req_to = $arr1->id;
                 $req_token  = DB::table('users')->where('id',$arr1->id)->first();
 
                 }
@@ -121,7 +125,7 @@ class LeaveController extends Controller
                     $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
                     Notification::create([
-                        'user_id' => $req_to,
+                        'user_id' => $req_to ?? 0,
                         'noty_type' => 'leave',
                         'type_id' => $leave->id
                     ]);

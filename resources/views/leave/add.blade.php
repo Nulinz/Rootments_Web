@@ -39,8 +39,10 @@
                         $user = auth()->user();
                         $role = $user->role_id;
 
+                        // echo $role;
+
                     @endphp
-                     @if(hasAccess($role, 'leave'))
+                     @if(hasAccess($role,'employee'))
                      {{-- ($role < 13 || $role > 19) --}}
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="reqtype">Request To <span>*</span></label>

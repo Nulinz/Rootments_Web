@@ -183,7 +183,7 @@ class location_cnt extends Controller
                     $end_time = $st_time->store_end_time;
 
                 }else{
-                    $end_time = '17:00:00';
+                    $end_time = '18:00:00';
                 }
 
                     if ($c_time > $end_time) {
