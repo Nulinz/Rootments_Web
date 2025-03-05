@@ -24,6 +24,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
 
 
+
+
     Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('/auth/logout', 'AuthController@logout')->name('auth.logout');
@@ -63,14 +65,14 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
        Route::get('attd_row', 'TaskController@attd_row')->name('attd_status');
 
-
-
-
        // Attendance Insert and update
 
        Route::post('attd_in', 'TaskController@attd_in')->name('attd_in');
        Route::post('attd_out', 'TaskController@attd_out')->name('attd_out');
 
+
+
+       Route::get('/assign_to', 'mobile_cnt@assign_to')->name('assign_to');
 
 
     });

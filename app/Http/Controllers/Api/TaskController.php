@@ -18,9 +18,11 @@ use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Http\Controllers\trait\common;
 
 class TaskController extends Controller
 {
+    use common;
     protected $firebaseService;
 
     public function __construct(FirebaseService $firebaseService)
@@ -386,107 +388,112 @@ public function completedtaskstore(Request $request)
         ]);
      }
 
-    //   public function leavestore(Request $request)
-    // {
+     //leave insert
 
+     public function leavestore(Request $request)
+     {
+           $user_id = auth()->user();
 
-    //       $user_id = auth()->user();
+           $role_get = DB::table('roles')
+             ->leftJoin('users', 'users.role_id', '=', 'roles.id')
+             ->select('roles.id', 'roles.role', 'roles.role_dept')
+             ->where('users.id', $user_id->id)
+             ->first();
 
-    //       $role_get = DB::table('roles')
-    //         ->leftJoin('users', 'users.role_id', '=', 'roles.id')
-    //         ->select('roles.id', 'roles.role', 'roles.role_dept')
-    //         ->where('users.id', $user_id->id)
-    //         ->first();
+         if ($role_get) {
+             $leave = new Leave();
+             if($request->request_type!='Permission'){
+                  $leave->start_date = $request->start_date;
+                  $leave->end_date = $request->end_date;
+             }else{
+                  $leave->start_date = $request->start_date;
+                  $leave->end_date = $request->start_date;
+             }
 
-    //     if ($role_get) {
-    //         $leave = new Leave();
-    //         if($request->request_type!='Permission'){
-    //              $leave->start_date = $request->start_date;
-    //              $leave->end_date = $request->end_date;
-    //         }else{
-    //              $leave->start_date = $request->start_date;
-    //              $leave->end_date = $request->start_date;
-    //         }
+             $leave->request_type = $request->request_type;
+             $leave->reason = $request->reason;
+             $leave->start_time = $request->start_time;
+             $leave->end_time = $request->end_time;
+             $leave->user_id = $user_id->id;
+             $leave->created_by = $user_id->id;
 
-    //         $leave->request_type = $request->request_type;
-    //         $leave->reason = $request->reason;
-    //         $leave->start_time = $request->start_time;
-    //         $leave->end_time = $request->end_time;
-    //         $leave->user_id = $user_id->id;
-    //         $leave->created_by = $user_id->id;
+             if($user_id->role_id >= 13 && $user_id->role_id <= 19){
 
-    //         if($user_id->role_id >= 13 && $user_id->role_id <= 19){
+             $store_man = DB::table('users')->where('store_id',$user_id->store_id)->where('role_id',12)->first();
+                     $leave->request_to = $store_man->id ?? 2;
+                     $req_to = $store_man->id ?? 2;
+                     $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
+             }
 
+             else if(!hasAccess($user_id->role_id,'leave')){
 
+                $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->first();
 
-    //         $store_man = DB::table('users')->where('store_id',$user_id->store_id)->where('role_id',12)->first();
-    //                 $leave->request_to = $store_man->id ?? 2;
-    //                 $req_to = $store_man->id ?? 2;
-    //                 $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
-    //         }
-    //         else if(hasAccess($user_id->role_id,'leave')){
+                switch($dept->role_dept) {
+                    case 'Finance':
+                        $arr = 7;
+                        break;
+                    case 'Maintenance':
+                        $arr = 30;
+                        break;
+                    case 'Warehouse':
+                        $arr = 37;
+                        break;
+                    case 'Purchase':
+                        $arr = 41;
+                        break;
 
-    //                 $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->get();
+                }
 
-    //                 switch($dept->role_dept) {
-    //                     case 'Finance':
-    //                         $request_to = 7;
-    //                         break;
-    //                     case 'Maintenance':
-    //                         $arr = 30;
-    //                         break;
-    //                     case 'Warehouse':
-    //                         $arr = 37;
-    //                         break;
-    //                     case 'Purchase':
-    //                         $arr = 41;
-    //                         break;
+                $arr1 = DB::table('users')->where('role_id',$arr)->select('id')->first();
 
-    //                 }
+                // dd($dept);
 
-    //                 dd($dept);
+                $leave->request_to = $arr1->id;
+                $req_token  = DB::table('users')->where('id',$arr1->id)->first();
 
-    //                 $leave->request_to = $arr;
-
-    //         }else{
-
-
-    //             $leave->request_to = $request->request_to;
-    //             $req_to = $request->request_to;
-    //             $req_token  = DB::table('users')->where('id',$request->request_to)->first();
-    //         }
-
-    //         // $leave->save();
+                }
 
 
 
-    //         // if ($req_token->device_token) {
-    //         //         $taskTitle = $request->request_type."Request";
-    //         //         $taskBody = $user_id->name. "Requested for " . $request->request_type;
+             else{
+                 $leave->request_to = $request->request_to;
+                 $req_to = $request->request_to;
+                 $req_token  = DB::table('users')->where('id',$request->request_to)->first();
+             }
 
-    //         //         $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
-
-    //         //         Notification::create([
-    //         //             'user_id' => $req_to,
-    //         //             'noty_type' => 'leave',
-    //         //             'type_id' => $leave->id
-    //         //         ]);
-    //         // } // notification end
+             $leave->save();
 
 
 
-    //     } else {
+             if (!is_null($req_token->device_token)) {
+                     $taskTitle = $request->request_type."Request";
+                     $taskBody = $user_id->name. "Requested for " . $request->request_type;
 
-    //         return response()->json(['error' => 'User role not found'], 404);
-    //     }
+                     $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                     Notification::create([
+                         'user_id' => $req_to,
+                         'noty_type' => 'leave',
+                         'type_id' => $leave->id
+                     ]);
+             } // notification end
 
 
 
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'Leave Request Sent successfully'
-    //     ]);
-    // }
+         } else {
+
+             return response()->json(['error' => 'User role not found'], 404);
+         }
+
+
+
+         return response()->json([
+             'success' => true,
+             'message' => 'Leave Request Sent successfully'
+         ]);
+     }
+
 
      public function reginationstore(Request $request)
     {
@@ -610,7 +617,7 @@ public function completedtaskstore(Request $request)
 public function notification_list(Request $request)
 {
 
-    $user = $request->input('user_id');
+    $user = $request->input('user_id') ?? 2;
 
 
     if (!$user) {
@@ -875,8 +882,14 @@ public function tasktimeline(Request $request)
 
             $c_time = Carbon::now(); // Get the current time using Carbon
 
+            if(!is_null(Auth::user()->store_id)){
+
             // Assuming store_start_time is stored in $st_time->store_start_time as a Carbon instance
             $start_time = Carbon::parse($st_time->store_start_time); // Convert store start time to a Carbon instance
+
+            }else{
+                $start_time = Carbon::parse('10:00:00'); // Co
+            }
 
             // Calculate the 5-minute range (+5 and -5 minutes)
             $start_time_plus_5 = $start_time->copy()->addMinutes(5);
@@ -993,9 +1006,15 @@ public function tasktimeline(Request $request)
 
                  $c_time = now()->format('H:i:s');
 
-                    if ($c_time > $st_time->store_end_time) {
+                 if(!is_null(Auth::user()->store_id)){
+                    $end_time = $st_time->store_end_time;
+                 }else{
+                    $end_time = '17:00:00';
+                 }
+
+                    if ($c_time > $end_time) {
                         // Define the two times
-                        $time1 = Carbon::createFromFormat('H:i:s', $st_time->store_end_time);
+                        $time1 = Carbon::createFromFormat('H:i:s', $end_time);
                         $time2 = Carbon::createFromFormat('H:i:s', $c_time);
 
                         // Calculate the difference
@@ -1053,10 +1072,7 @@ public function tasktimeline(Request $request)
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.

@@ -78,7 +78,7 @@ trait common
         case 3:
         case 4:
         case 5:
-            $arr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            $arr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
             break;
         case 7:
             $arr = [25];
@@ -133,6 +133,12 @@ trait common
             break;
         case 42:
             $arr = [41];
+            break;
+        case 43:
+        case 26:
+        case 27:
+            $arr = [3,4,5,26,27,43];
+            $arr = array_diff($arr, [$r_id]); // Exclude $r_id
             break;
     }
 
