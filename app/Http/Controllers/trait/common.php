@@ -44,18 +44,39 @@ trait common
        // \Log::info($message);
        $user = Auth::user();
 
-       $emp = DB::table('roles')->where('role_dept',$dept)
-       ->leftJoin('users as us','us.role_id','=','roles.id')
-       ->whereNotNull('us.role_id')
-            ->select(
-            'us.id',
-            'us.name',
-            'us.emp_code',
-            'us.email',
-            'us.contact_no',
-            'roles.role',
-            'roles.role_dept')
-            ->get();
+       if($dept=='HR'){
+
+        $emp = DB::table('users as us')->where('us.status','=',1)
+        ->whereNotNull('us.role_id')
+        ->leftJoin('roles','roles.id','=','us.role_id')
+             ->select(
+             'us.id',
+             'us.name',
+             'us.emp_code',
+             'us.email',
+             'us.contact_no',
+             'roles.role',
+             'roles.role_dept')
+             ->get();
+
+       }else{
+
+        $emp = DB::table('roles')->where('role_dept',$dept)
+        ->leftJoin('users as us','us.role_id','=','roles.id')
+        ->whereNotNull('us.role_id')
+             ->select(
+             'us.id',
+             'us.name',
+             'us.emp_code',
+             'us.email',
+             'us.contact_no',
+             'roles.role',
+             'roles.role_dept')
+             ->get();
+
+       }
+
+
 
             return $emp;
     }
@@ -81,7 +102,7 @@ trait common
             $arr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
             break;
         case 7:
-            $arr = [25];
+            $arr = [25,44];
             break;
         case 10:
             $arr = [11, 12];
@@ -108,7 +129,7 @@ trait common
             $arr = array_diff($arr, [$r_id]); // Exclude the current role ID
             break;
         case 25:
-            $arr = [7];
+            $arr = [7,44];
             break;
         case 30:
             $arr = [31,35,36];
@@ -139,6 +160,9 @@ trait common
         case 27:
             $arr = [3,4,5,26,27,43];
             $arr = array_diff($arr, [$r_id]); // Exclude $r_id
+            break;
+        case 44:
+            $arr = [7,25];
             break;
     }
 
