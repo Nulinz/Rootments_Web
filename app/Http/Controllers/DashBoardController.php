@@ -508,7 +508,6 @@ class DashBoardController extends Controller
     // }
 
 
-    $arr = $this->role_arr();
 
 
 
@@ -541,11 +540,20 @@ class DashBoardController extends Controller
     }
 
     else{
+
+
+        $arr = $this->role_arr();
+
+
+
         $list->leftJoin('stores', 'stores.id', '=', 'users.store_id')
+        ->where('users.id', '!=', $user->id)
         ->select('users.name', 'roles.role', 'roles.role_dept', 'users.id', 'users.store_id', 'stores.store_name', 'stores.store_code') // Adjust store fields as needed
-        ->whereIn('users.role_id', $arr)
-        ->where('users.id', '!=', $user->id);
+        ->whereIn('users.role_id', $arr);
+
         $list->orderBy('users.role_id');
+
+        // dd($list);
 
     }
 

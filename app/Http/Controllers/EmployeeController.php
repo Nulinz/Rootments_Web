@@ -54,6 +54,7 @@ class EmployeeController extends Controller
         //   dd($employees);
     }
 
+    // /return $employees;
 
          return view('employee.list',['employees'=>$employees]);
     }

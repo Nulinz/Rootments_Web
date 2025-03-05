@@ -23,9 +23,6 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
     Route::post('/auth/login', 'AuthController@login')->name('auth.login');
 
 
-
-
-
     Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('/auth/logout', 'AuthController@logout')->name('auth.logout');

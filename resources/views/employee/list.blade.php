@@ -56,7 +56,7 @@
                             <td>{{ $item->role_dept }}</td>
                             <td>{{ $item->role }}</td>
                             <td>{{ $item->email }}</td>
-                            <td>{{ $item->id }}</td>
+                            <td>{{ $item->contact_no }}</td>
                             <td>
                                 <div class="d-flex gap-3">
                                     <a href="{{ route('employee.view', ['id' => $item->id ?? 0]) }}" data-bs-toggle="tooltip"

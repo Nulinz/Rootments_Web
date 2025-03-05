@@ -435,6 +435,14 @@
                     forceFallback: true,
 
                     onStart: function (evt) {
+
+                        // var columnId = evt.from.id;
+
+                        // if(columnId === 'complete'){
+                        //     evt.preventDefault(); // Prevent the drag action entirely
+                        //     return;
+                        // }
+
                         console.log('Dragging Task ID:', $(evt.item).data('id'), 'from:', evt
                             .from.id);
                     },

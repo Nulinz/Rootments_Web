@@ -38,7 +38,7 @@ class mobile_cnt extends Controller
     public function assign_to()
     {
 
-        $user = auth()->user();
+    $user = auth()->user();
     $r_id = $user->role_id;
 
     $cluster_check = DB::table('m_cluster as mc')
