@@ -414,7 +414,7 @@ class DashBoardController extends Controller
             ->leftJoin('roles as assigned_by_role', 'tasks.assign_by', '=', 'assigned_by_role.id')
             ->leftJoin('users as assigned_by_user', 'tasks.assign_by', '=', 'assigned_by_user.id')
             ->where('tasks.assign_to', $authId)
-            ->where('tasks.task_status', 'Completed')
+            ->whereIn('tasks.task_status',['Completed','Close','Assigned'])
             // ->whereIn('tasks.fid', function($query) use ($authId) {
             //     // Subquery: Get the list of f_id values based on tasks assigned to authId
             //     $query->select('tasks.fid')
@@ -490,7 +490,7 @@ class DashBoardController extends Controller
 
             $tasks_complete_count = DB::table('tasks')
             ->where('assign_to', $authId)
-            ->where('task_status', 'Completed')
+            ->whereIn('task_status',['Completed','Close','Assigned'])
             ->count();
 
             // assign to employees list
@@ -578,7 +578,7 @@ class DashBoardController extends Controller
             if ($first) {
                 // Update both the current task and the first task with the new status
                 DB::table('tasks')
-                    ->whereIn('id', [$first->id]) // Updating both tasks
+                    ->whereIn('id', [$taskId,$first->id]) // Updating both tasks
                     ->update(['task_status' => $request->status]);
             }
 

@@ -300,12 +300,22 @@
                                             <div class="taskdescpdiv">
                                                 <h5 class="mb-0">{{ $task->assigned_by }}</h5>
                                                 <div>
+                                                    {{-- @dd($task->task_status); --}}
+                                                    @if($task->task_status=='Completed')
                                                     <a class="mb-0" data-bs-toggle="modal" data-bs-target="#completedModal"
                                                         id="assign"><button class="taskassignbtn">Assign</button></a>
-{{--
-                                                        @if($close[$index]!=0) --}}
-                                                            <a class="mb-0" id="close"><button data-close="{{ $task->id }}" class="taskclosebtn">Close</button></a>
-                                                        {{-- @endif --}}
+
+                                                    <a class="mb-0" id="close"><button data-close="{{ $task->id }}" class="taskclosebtn">Close</button></a>
+                                                    @else
+                                                        @if($task->task_status=='Assigned')
+                                                        <h5 class="mb-0 text-success">Assigned</h5>
+                                                        @else
+                                                        <h5 class="mb-0 text-danger ">Closed</h5>
+                                                        @endif
+                                                    @endif
+
+
+
 
                                                 </div>
                                             </div>
@@ -354,6 +364,7 @@
                 <div class="modal-body">
                     <form class="row" id="taskForm" enctype="multipart/form-data">
                         <input type="hidden" name="f_id" id="f_id" value="">
+                        <input type="" name="task_id" id="task_id" value="">
                         <input type="hidden" name="category_id" id="cat_id" value="">
                         <input type="hidden" name="subcategory_id" id="subcat_id" value="">
 
@@ -599,6 +610,8 @@
                     document.getElementById("cat_id").value = catId;
 
                     document.getElementById("subcat_id").value = subcatId;
+
+                    document.getElementById("task_id").value = this.getAttribute("data-id");;
                 });
             });
         });

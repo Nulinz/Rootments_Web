@@ -476,9 +476,14 @@ public function store(Request $request)
 
 public function completedtaskstore(Request $request)
 {
+
     $request->validate([
         'task_file' => 'nullable|file|max:5120|mimes:pdf,xlsx,xls,csv,jpg,jpeg,png,gif,doc,docx,txt'
     ]);
+
+    //updating the old task
+
+
 
     $user_id = auth()->user()->id;
     $assignTo = $request->assign_to;
@@ -496,6 +501,11 @@ public function completedtaskstore(Request $request)
     $task->end_time = $request->end_time;
     $task->priority = $request->priority;
     $task->assign_by = $user_id;
+
+
+     $old_task = Task::find($request->task_id);
+     $old_task->task_status = 'Assigned';
+     $old_task->save();
 
     // Handle file upload
     if ($request->hasFile('task_file')) {
@@ -626,6 +636,42 @@ public function completedtaskstore(Request $request)
 
         return view('task.completed_list',['task'=>$task_cby]);
     }
+
+
+     public function updateTaskStatus(Request $request)
+    {
+
+
+        $request->validate([
+            'id' => 'required|integer|exists:tasks,id',
+            'status' => 'required|string',
+        ]);
+
+        $task = Task::findOrFail($request->id);
+
+        if($request->status=='Close'){
+
+            $first  = DB::table('tasks')->where('f_id',$task->f_id)->orderBy('id','asc')->first();
+
+            if ($first) {
+                // Update both the current task and the first task with the new status
+                DB::table('tasks')
+                    ->whereIn('id', [$task->id, $first->id]) // Updating both tasks
+                    ->update(['task_status' => $request->status]);
+            }
+
+        }else{
+             $task->update(['task_status' => $request->status]);
+        }
+
+
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Task status updated successfully'
+        ]);
+    }
+
 
     /**
      * Update the specified resource in storage.

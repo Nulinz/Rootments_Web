@@ -311,6 +311,7 @@ public function completedtaskstore(Request $request)
   public function updateTaskStatus(Request $request)
     {
 
+      
         $request->validate([
             'id' => 'required|integer|exists:tasks,id',
             'status' => 'required|string',
