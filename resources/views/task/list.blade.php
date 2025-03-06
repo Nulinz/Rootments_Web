@@ -43,6 +43,7 @@
                             <th>Priority</th>
                             <th>Start Date</th>
                             <th>End Date</th>
+                            <th>Status</th>
 
                             <th>Action</th>
                         </tr>
@@ -57,6 +58,7 @@
                                 <td>{{ $data->priority }}</td>
                                 <td>{{ date("d-m-Y",strtotime($data->start_date)) }}</td>
                                 <td>{{ date("d-m-Y",strtotime($data->end_date)) }}</td>
+                                <td>{{ $data->task_status }}</td>
 
                                 <td>
                                     <div class="d-flex gap-3">

@@ -126,6 +126,7 @@ $user = Auth::user();
             'tasks.priority',
             'tasks.start_date',
             'tasks.end_date',
+            'tasks.task_status',
              )
         ->get();
 
@@ -615,7 +616,7 @@ public function completedtaskstore(Request $request)
     {
         $user = Auth::user();
 
-        $task_cby = DB::table('tasks')->where('assign_by',$user->id)
+        $task_cby = DB::table('tasks')->where('assign_to',$user->id)
         ->whereIn('task_status',['Close','Assigned'])
         ->whereRaw('DATE_ADD(end_date, INTERVAL 15 DAY) >= ?', [now()])
         ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')

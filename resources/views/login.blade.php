@@ -148,6 +148,7 @@
         });
     @endif
 </script>
+{{-- <script src="./public/firebase-messaging-sw.js"></script> --}}
 {{--
 <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-messaging-compat.js"></script>

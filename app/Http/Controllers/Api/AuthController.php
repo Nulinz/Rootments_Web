@@ -20,7 +20,7 @@ class AuthController extends Controller
     $request->validate([
         'emp_code' => 'required',
         'password' => 'required',
-        // 'device_token' => 'required',
+         'device_token' => 'required',
     ]);
 
     // $user = User::with('role')->where('emp_code', $request->emp_code)->first();
@@ -37,6 +37,8 @@ class AuthController extends Controller
 
     $user->device_token = $request->device_token;
     $user->save();
+
+    // $role = DB::table('roles')->where('')
 
     $token = $user->createToken('token')->plainTextToken;
 
