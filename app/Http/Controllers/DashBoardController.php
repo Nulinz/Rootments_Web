@@ -415,6 +415,7 @@ class DashBoardController extends Controller
             ->leftJoin('users as assigned_by_user', 'tasks.assign_by', '=', 'assigned_by_user.id')
             ->where('tasks.assign_to', $authId)
             ->whereIn('tasks.task_status',['Completed','Close','Assigned'])
+           
             // ->whereIn('tasks.fid', function($query) use ($authId) {
             //     // Subquery: Get the list of f_id values based on tasks assigned to authId
             //     $query->select('tasks.fid')

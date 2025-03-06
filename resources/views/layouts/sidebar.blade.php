@@ -173,16 +173,19 @@
                         <i class="fa-solid fa-angle-down toggle-icon"></i>
                     </div>
                 </button>
-                <div class="collapse" id="collapse4">
+                <div class="collapse mt-3" id="collapse4">
                     <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                        @if(hasAccess($r_id, 'all_task'))
                         <li><a href="{{ route('task.index') }}"
-                                class="d-inline-flex text-decoration-none rounded mt-3">Task
+                                class="d-inline-flex text-decoration-none rounded">Task
                                 List</a>
                         </li>
+                        @endif
                         <li><a href="{{ route('task.completed-task') }}"
                                 class="d-inline-flex text-decoration-none rounded">Completed Task
                                 List</a>
                         </li>
+
                     </ul>
                 </div>
             </li>

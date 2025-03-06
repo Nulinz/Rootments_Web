@@ -8,10 +8,14 @@ use Illuminate\Support\Facades\DB;
 Route::view('/', 'login')->name('login');
 
 
+
+
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
     Route::post('login', 'AuthenticationController@login')->name('login.submit');
     Route::get('logout', 'AuthenticationController@logout')->name('logout');
+
+    Route::post('send_not', 'LeaveController@send_not')->name('send_not');
 
 
     Route::middleware(['auth','asm'])->group(function () {
@@ -281,6 +285,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
          Route::get('warehouse_index', 'warehouse_cnt@index')->name('warehouse.index');
          // Purchase
          Route::get('purchase_index', 'purchase_cnt@index')->name('purchase.index');
+
+
 
     });
 

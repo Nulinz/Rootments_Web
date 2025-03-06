@@ -148,5 +148,81 @@
         });
     @endif
 </script>
+{{--
+<script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-messaging-compat.js"></script>
+<body>
+    <script>
+            const firebaseConfig = {
+                apiKey: "AIzaSyDVdH_PbNRhl2YGMPronbaklLPbZCPyT4w",
+                authDomain: "rootments-app.firebaseapp.com",
+                projectId: "rootments-app",
+                storageBucket: "rootments-app.firebasestorage.app",
+                messagingSenderId: "406832035732",
+                appId: "1:406832035732:web:0564580a464ee6f336c181"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const messaging = firebase.messaging();
 
+            // console.log(firebaseConfig);
+
+        messaging.getToken({ vapidKey: 'BODDBuf7vDtJyFsKeBLA4gNKtCF_U8AxM4F3-OHP-80fZtMGQWvWLHvLdR5VxKvq0PFQ7SFdNTBgPSwTY3NRlFE' }).then((currentToken) => {
+            if (currentToken) {
+                // Send the token to your server and update the UI if necessary
+                // console.log('FCM registration token:', currentToken);
+                //send token to server.
+                sendTokenToServer(currentToken);
+            } else {
+                // Show permission request UI
+                console.log('No registration token available. Request permission to generate one.');
+                requestPermission();
+            }
+        }).catch((err) => {
+            console.log('An error occurred while retrieving token. ', err);
+        });
+
+        // function requestPermission() {
+        //     console.log('Requesting permission...');
+        //     Notification.requestPermission().then((permission) => {
+        //         if (permission === 'granted') {
+        //             console.log('Notification permission granted.');
+        //             messaging.getToken({ vapidKey: 'YOUR_VAPID_KEY' }).then((currentToken) => {
+        //                 if (currentToken) {
+        //                     console.log('FCM registration token:', currentToken);
+        //                      sendTokenToServer(currentToken);
+        //                 }
+        //             });
+        //         } else {
+        //             console.log('Unable to get permission to notify.');
+        //         }
+        //     });
+        // }
+
+        function sendTokenToServer(currentToken) {
+            $.ajax({
+                url: '{{ route('send_not') }}', // Laravel route for the POST request
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}', // CSRF token for security
+                    not_token: currentToken, // Send the selected store ID
+                },
+
+                success: function (response) {
+                    // console.log(response);
+                },
+                error: function (xhr, status, error) {
+
+                    alert('An error occurred: ' + error);
+                }
+            });
+
+        }
+
+        // navigator.serviceWorker.register('/firebase-messaging-sw.js')
+        //     .then((registration) => {
+        //         messaging.useServiceWorker(registration);
+        //         console.log('Service worker registered.', registration);
+        //     }); --}}
+    </script>
+</body>
 </html>

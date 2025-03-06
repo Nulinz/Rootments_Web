@@ -364,7 +364,7 @@
                 <div class="modal-body">
                     <form class="row" id="taskForm" enctype="multipart/form-data">
                         <input type="hidden" name="f_id" id="f_id" value="">
-                        <input type="" name="task_id" id="task_id" value="">
+                        <input type="hidden" name="task_id" id="task_id" value="">
                         <input type="hidden" name="category_id" id="cat_id" value="">
                         <input type="hidden" name="subcategory_id" id="subcat_id" value="">
 

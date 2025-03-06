@@ -248,6 +248,10 @@ public function completedtaskstore(Request $request)
             $task->end_time = $request->end_time;
             $task->priority = $request->priority;
 
+            $old_task = Task::find($request->task_id);
+            $old_task->task_status = 'Assigned';
+            $old_task->save();
+
             if ($request->hasFile('task_file')) {
                 $file = $request->file('task_file');
                 $name = date('y') . '-' . Str::upper(Str::random(8)) . '.' . $file->getClientOriginalExtension();
@@ -311,7 +315,7 @@ public function completedtaskstore(Request $request)
   public function updateTaskStatus(Request $request)
     {
 
-      
+
         $request->validate([
             'id' => 'required|integer|exists:tasks,id',
             'status' => 'required|string',
