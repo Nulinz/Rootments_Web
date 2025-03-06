@@ -179,6 +179,10 @@
                                 class="d-inline-flex text-decoration-none rounded mt-3">Task
                                 List</a>
                         </li>
+                        <li><a href="{{ route('task.completed-task') }}"
+                                class="d-inline-flex text-decoration-none rounded">Completed Task
+                                List</a>
+                        </li>
                     </ul>
                 </div>
             </li>

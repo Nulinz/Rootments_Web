@@ -415,16 +415,77 @@ class DashBoardController extends Controller
             ->leftJoin('users as assigned_by_user', 'tasks.assign_by', '=', 'assigned_by_user.id')
             ->where('tasks.assign_to', $authId)
             ->where('tasks.task_status', 'Completed')
+            // ->whereIn('tasks.fid', function($query) use ($authId) {
+            //     // Subquery: Get the list of f_id values based on tasks assigned to authId
+            //     $query->select('tasks.fid')
+            //         ->from('tasks')
+            //         ->where('tasks.assign_to', $authId);
+
+            // })
+            // ->selectRaw('CASE WHEN tasks.assign_by = '.$authId.' THEN 1 ELSE 0 END as cr_by')
             ->select(
                 'tasks.*',
                 'categories.category',
                 'sub_categories.subcategory',
                 'assigned_role.role as assigned_role',
                 'assigned_by_role.role as task_assigned',
-                'assigned_by_user.name as assigned_by'
+                'assigned_by_user.name as assigned_by',
+
+
             )
+            //  ->whereIn('tasks.f_id', function($query) use ($authId) {
+            //     // Subquery: Get the list of f_id values based on tasks assigned to authId
+            //     // $query->select('tasks.assign_by')->from('tasks')->first()->where('tasks.assign_to', $authId);
+            //     $query->select('tasks.f_id')
+            // ->from('tasks')
+            // ->groupBy('tasks.f_id') // Group by f_id to get the unique f_id values
+            // ->havingRaw('MIN(tasks.id) = tasks.id') // Get the first task for each f_id group
+            // ->selectraw('CASE WHEN tasks.assign_by = '.$authId.' THEN 1 ELSE 0 END as cr_by');
+
+            // })
+
+
             ->orderBy('tasks.id', 'DESC')
             ->get();
+
+
+
+
+        //  Step 1: Extract f_id values from the tasks_complete array
+                // $f_id = [];
+
+                $f_id = []; // Initialize an array to store f_id values
+
+                foreach ($tasks_complete as $tc) {
+                    // Query to fetch the task with the same f_id, ordered by the smallest id
+                    $tasks_with_assigned_check = DB::table('tasks')
+                        ->where('tasks.f_id', $tc->f_id) // Use the f_id from the current task
+                        ->orderBy('tasks.id', 'asc') // Order by id in ascending order to get the task with the smallest id
+                        ->select(
+                            'tasks.id',
+                            'tasks.f_id',
+                            DB::raw('CASE WHEN tasks.assign_by = '.$authId.' THEN 1 ELSE 0 END as cr_by') // Check if assign_by matches authId
+                        )
+                        ->first(); // Get only the first (smallest id) task
+
+                    // If the query returns a task, process it
+                    if ($tasks_with_assigned_check) {
+                        // Add the f_id of the task to the array (or perform other processing)
+                        $f_id[] = $tasks_with_assigned_check->cr_by;
+
+                        // If you need to access other values, you can do so here
+                        // Example: echo $tasks_with_assigned_check->cr_by; // For debugging
+                    }
+                }
+
+
+                // dd($f_id);
+
+
+
+
+                //  dd($tasks_with_assigned_check);
+
 
 
             $tasks_complete_count = DB::table('tasks')
@@ -443,71 +504,6 @@ class DashBoardController extends Controller
     ->where('mc.cl_name','=',$user->id)
     ->where('users.role_id',12)
     ->count();
-
-    // $r_id = 12;
-    // switch($r_id) {
-    //     case 3:
-    //     case 4:
-    //     case 5:
-    //         $arr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    //         break;
-    //     case 7:
-    //         $arr = [25];
-    //         break;
-    //     case 10:
-    //         $arr = [11, 12];
-    //         break;
-    //     case 11:
-    //         $arr = [12];
-    //         break;
-    //     case 12:
-    //         if($cluster_check==0){
-    //             $arr = [13, 14, 15, 16, 17, 18, 19];
-    //         }else{
-    //             $arr = [12 ,13, 14, 15, 16, 17, 18, 19];
-    //         }
-
-    //         break;
-    //     case 13:
-    //     case 14:
-    //     case 15:
-    //     case 16:
-    //     case 17:
-    //     case 18:
-    //     case 19:
-    //         $arr = range(12, 19);  // Array from 12 to 19
-    //         $arr = array_diff($arr, [$r_id]); // Exclude the current role ID
-    //         break;
-    //     case 25:
-    //         $arr = [7];
-    //         break;
-    //     case 30:
-    //         $arr = [31,35,36];
-    //         break;
-    //     case 31:
-    //     case 35:
-    //     case 36:
-    //         $arr = [30, 31, 35, 36];
-    //         $arr = array_diff($arr, [$r_id]); // Exclude $r_id
-    //         break;
-    //     case 37:
-    //         $arr = [32,38,39,40];
-    //         break;
-    //     case 38:
-    //     case 39:
-    //     case 40:
-    //         $arr = [37, 38, 39, 40];
-    //         $arr = array_diff($arr, [$r_id]); // Exclude $r_id
-    //         break;
-    //     case 41:
-    //         $arr = [42];
-    //         break;
-    //     case 42:
-    //         $arr = [41];
-    //         break;
-    // }
-
-
 
 
 
@@ -561,7 +557,7 @@ class DashBoardController extends Controller
 
     // dd($list);
 
-        return view('generaldashboard.mydashboard', ['tasks_todo' => $tasks_todo,'tasks_todo_count'=>$tasks_todo_count,'tasks_inprogress'=>$tasks_inprogress,'tasks_inprogress_count'=>$tasks_inprogress_count,'tasks_onhold'=>$tasks_onhold,'tasks_onhold_count'=>$tasks_onhold_count,'tasks_complete'=>$tasks_complete,'tasks_complete_count'=>$tasks_complete_count,'employees'=>$list,'role'=>$role]);
+        return view('generaldashboard.mydashboard', ['tasks_todo' => $tasks_todo,'tasks_todo_count'=>$tasks_todo_count,'tasks_inprogress'=>$tasks_inprogress,'tasks_inprogress_count'=>$tasks_inprogress_count,'tasks_onhold'=>$tasks_onhold,'tasks_onhold_count'=>$tasks_onhold_count,'tasks_complete'=>$tasks_complete,'tasks_complete_count'=>$tasks_complete_count,'employees'=>$list,'role'=>$role,'close'=>$f_id]);
     }
 
 
@@ -574,9 +570,26 @@ class DashBoardController extends Controller
         $authId = Auth::user()->id;
 
         $task = Task::find($taskId);
-        if ($task) {
-            $task->task_status = $newStatus;
-            $task->save();
+
+        if($request->status=='Close'){
+
+            $first  = DB::table('tasks')->where('f_id',$task->f_id)->orderBy('id','asc')->first();
+
+            if ($first) {
+                // Update both the current task and the first task with the new status
+                DB::table('tasks')
+                    ->whereIn('id', [$first->id]) // Updating both tasks
+                    ->update(['task_status' => $request->status]);
+            }
+
+        }else{
+
+            if ($task) {
+                $task->task_status = $newStatus;
+                $task->save();
+
+                }
+        }
 
               $tasks_todo_count = DB::table('tasks')
             ->where('assign_to', $authId)
@@ -606,9 +619,9 @@ class DashBoardController extends Controller
                 'inprogress' => $tasks_inprogress_count,
                 'onhold' => $tasks_onhold_count,
                 'complete' => $tasks_complete_count
-            ]
-        ]);
-    }
+                ]
+            ]);
+
 
     return response()->json(['success' => false, 'message' => 'Task not found']);
     }

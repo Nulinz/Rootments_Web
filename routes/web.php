@@ -88,6 +88,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         // Task
         Route::get('task-list', 'TaskController@index')->name('task.index');
+        Route::get('completed-task-list', 'TaskController@completed_list')->name('task.completed-task');
         Route::get('task-add', 'TaskController@create_task')->name('task.add');
         // Route::get('task-add/hr', 'TaskController@create_task')->name('task.hr');
         Route::get('task-add/cluster', 'TaskController@create')->name('task.add.cluster');

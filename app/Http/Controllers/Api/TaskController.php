@@ -318,7 +318,22 @@ public function completedtaskstore(Request $request)
 
         $task = Task::findOrFail($request->id);
 
-        $task->update(['task_status' => $request->status]);
+        if($request->status=='Close'){
+
+            $first  = DB::table('tasks')->where('f_id',$task->f_id)->orderBy('id','asc')->first();
+
+            if ($first) {
+                // Update both the current task and the first task with the new status
+                DB::table('tasks')
+                    ->whereIn('id', [$task->id, $first->id]) // Updating both tasks
+                    ->update(['task_status' => $request->status]);
+            }
+
+        }else{
+             $task->update(['task_status' => $request->status]);
+        }
+
+
 
         return response()->json([
             'success' => true,

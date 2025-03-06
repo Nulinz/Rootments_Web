@@ -265,7 +265,7 @@
                         <div class="cardmain column">
                             <div class="row drag complete-list sortable-column" id="complete" >
 
-                                @foreach ($tasks_complete as $task)
+                                @foreach ($tasks_complete as $index => $task)
                                     <div class="col-sm-12 col-md-11 col-xl-11 mb-2 d-block mx-auto draggablecard completedtask"
                                         data-id="{{ $task->id }}" data-patent_id="{{ $task->f_id }}"
                                         data-cat="{{ $task->category_id }}" data-status="{{ $task->task_status }}" data-subcat="{{ $task->subcategory_id }}"
@@ -299,8 +299,15 @@
                                             <h6 class="mb-0">{{ $task->task_description }}</h6>
                                             <div class="taskdescpdiv">
                                                 <h5 class="mb-0">{{ $task->assigned_by }}</h5>
-                                                <a class="mb-0" data-bs-toggle="modal" data-bs-target="#completedModal"
-                                                    id="assign"><i class="fa-solid fa-circle-check"></i></a>
+                                                <div>
+                                                    <a class="mb-0" data-bs-toggle="modal" data-bs-target="#completedModal"
+                                                        id="assign"><button class="taskassignbtn">Assign</button></a>
+{{--
+                                                        @if($close[$index]!=0) --}}
+                                                            <a class="mb-0" id="close"><button data-close="{{ $task->id }}" class="taskclosebtn">Close</button></a>
+                                                        {{-- @endif --}}
+
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="taskdate mb-2">
@@ -422,6 +429,32 @@
 
     <script>
         $(document).ready(function () {
+            $('.taskclosebtn').on('click', function(){
+
+                var close = confirm("Are you sure you want to close the task flow ?");
+
+                 if(close){
+                    var close_id = $(this).data('close');
+                    // alert(close_id);
+
+                    $.ajax({
+                        url: "{{ route('update.task') }}",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            id: close_id,
+                            status: 'Close',
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                location.reload();
+                            }
+                        }
+                    });
+                 } // if closing
+
+            })
 
             $('.sortable-column').each(function () {
                 new Sortable(this, {
@@ -435,6 +468,23 @@
                     forceFallback: true,
 
                     onStart: function (evt) {
+
+
+                       // Create a new label to display the column name dynamically near the item being dragged
+            // var columnName = evt.from.id; // The ID of the column being hovered over
+            // var $columnNameLabel = $('<div class="drag-column-name">Hovering over: ' + columnName + '</div>');
+            // $columnNameLabel.appendTo('body'); // Append it to the body (or to a specific container)
+            // $columnNameLabel.css({
+            //     position: 'absolute',
+            //     top: evt.clientY + 10 + 'px',
+            //     left: evt.clientX + 10 + 'px',
+            //     backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            //     color: 'white',
+            //     padding: '5px',
+            //     borderRadius: '5px',
+            //     fontSize: '12px',
+            //     zIndex: 9999
+            // });
 
                         // var columnId = evt.from.id;
                         // var taskStatus = $(evt.item).data('status').trim();

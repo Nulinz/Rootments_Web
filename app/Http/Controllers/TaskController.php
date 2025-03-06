@@ -601,6 +601,32 @@ public function completedtaskstore(Request $request)
 
     }
 
+    public function completed_list(Request $req)
+    {
+        $user = Auth::user();
+
+        $task_cby = DB::table('tasks')->where('assign_by',$user->id)
+        ->where('task_status','Close')
+        ->whereRaw('DATE_ADD(end_date, INTERVAL 15 DAY) >= ?', [now()])
+        ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
+        ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
+        ->orderBy('id','DESC')
+        ->select(
+            'tasks.id',
+            'tasks.task_title',
+            'categories.category',
+            'sub_categories.subcategory',
+            'tasks.priority',
+            'tasks.start_date',
+            'tasks.end_date',
+             )
+        ->get();
+
+        //   dd($task_cby);
+
+        return view('task.completed_list',['task'=>$task_cby]);
+    }
+
     /**
      * Update the specified resource in storage.
      */
