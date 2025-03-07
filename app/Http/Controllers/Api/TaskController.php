@@ -50,7 +50,22 @@ class TaskController extends Controller
                 ->leftJoin('users as assigned_by_user', 'tasks.assign_by', '=', 'assigned_by_user.id')
                 ->leftJoin('users as assigned_to_user', 'tasks.assign_to', '=', 'assigned_to_user.role_id')
                 ->where('tasks.assign_to', $assignTo)
-                ->where('tasks.task_status', $status)
+                // ->where('tasks.task_status', $status)
+                // Conditionally add status filters
+                    ->when($status === 'Completed', function ($query) {
+                        return $query->whereIn('tasks.task_status', ['Completed', 'Close', 'Assigned'])
+                            ->where(function ($query) {
+                                $query->where('tasks.task_status', 'Completed') // Keep Completed tasks
+                                    // Exclude Assigned and Close tasks where end_date + 15 days is greater than the current date
+                                    ->orWhere(function ($subQuery) {
+                                        $subQuery->whereIn('tasks.task_status', ['Assigned', 'Close'])
+                                                ->whereRaw('DATE_ADD(tasks.end_date, INTERVAL 15 DAY) >= ?', [Carbon::now()]);
+                                    });
+                            });
+                    })
+                    ->when($status !== 'Completed', function ($query) use ($status) {
+                        return $query->where('tasks.task_status', $status);
+                    })
                 ->select(
                     'tasks.*',
                     'categories.category',
@@ -64,7 +79,7 @@ class TaskController extends Controller
                 ->get();
 
             foreach ($tasks[$status] as $task) {
-                $task->task_fileUrl = $task->task_file ? url('asset/images/Task/' . $task->task_file) : null;
+                $task->task_fileUrl = $task->task_file ? url($task->task_file) : null;
             }
 
 
@@ -150,6 +165,8 @@ class TaskController extends Controller
      */
       public function store(Request $request)
     {
+
+
          $assignToArray = is_array($request->assign_to) ? $request->assign_to : [$request->assign_to];
 
         foreach ($assignToArray as $assignTo) {
@@ -167,11 +184,17 @@ class TaskController extends Controller
 
             if ($request->hasFile('task_file')) {
                 $file = $request->file('task_file');
-                $name = date('y') . '-' . Str::upper(Str::random(8)) . '.' . $file->getClientOriginalExtension();
-                $path = 'assets/images/Task/';
-                $file->move($path, $name);
+                // $name = date('y') . '-' . Str::upper(Str::random(8)) . '.' . $file->getClientOriginalExtension();
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = uniqid('task_file_') . '.' . $extension; // Generate a unique filename
+            // $path = $file->storeAs('task_files', $filename, 'public'); // Store in 'storage/app/public/task_files'
+            // $url = Storage::url($path); // Get the public URL of the file
 
-                $task->task_file = $path . $name;
+
+                $path = 'assets/images/Task/';
+                $file->move($path, $filename);
+
+                $task->task_file = $path . $filename;
             }
 
             $task->assign_by = $request->assign_by;
@@ -233,6 +256,10 @@ public function completedtaskstore(Request $request)
 
         $assignToArray = is_array($request->assign_to) ? $request->assign_to : [$request->assign_to];
 
+        $old_task = Task::find($request->task_id);
+        $old_task->task_status = 'Assigned';
+        $old_task->save();
+
         foreach ($assignToArray as $assignTo) {
             $task = new Task();
             $task->f_id = $request->f_id;
@@ -248,9 +275,7 @@ public function completedtaskstore(Request $request)
             $task->end_time = $request->end_time;
             $task->priority = $request->priority;
 
-            $old_task = Task::find($request->task_id);
-            $old_task->task_status = 'Assigned';
-            $old_task->save();
+
 
             if ($request->hasFile('task_file')) {
                 $file = $request->file('task_file');
@@ -317,7 +342,7 @@ public function completedtaskstore(Request $request)
 
 
         $request->validate([
-            'id' => 'required|integer|exists:tasks,id',
+            'id' => 'required',
             'status' => 'required|string',
         ]);
 
@@ -343,6 +368,7 @@ public function completedtaskstore(Request $request)
         return response()->json([
             'success' => true,
             'message' => 'Task status updated successfully'
+
         ]);
     }
 

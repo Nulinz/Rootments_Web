@@ -443,16 +443,6 @@ class DashBoardController extends Controller
 
 
             )
-            //  ->whereIn('tasks.f_id', function($query) use ($authId) {
-            //     // Subquery: Get the list of f_id values based on tasks assigned to authId
-            //     // $query->select('tasks.assign_by')->from('tasks')->first()->where('tasks.assign_to', $authId);
-            //     $query->select('tasks.f_id')
-            // ->from('tasks')
-            // ->groupBy('tasks.f_id') // Group by f_id to get the unique f_id values
-            // ->havingRaw('MIN(tasks.id) = tasks.id') // Get the first task for each f_id group
-            // ->selectraw('CASE WHEN tasks.assign_by = '.$authId.' THEN 1 ELSE 0 END as cr_by');
-
-            // })
 
 
             ->orderBy('tasks.id', 'DESC')

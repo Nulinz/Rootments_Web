@@ -11,15 +11,43 @@ const firebaseConfig = {
   };
 
 firebase.initializeApp(firebaseConfig);
+
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage(function(payload) {
+messaging.onBackgroundMessage((payload) => {
     console.log('[firebase-messaging-sw.js] Received background message ', payload);
+
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
         body: payload.notification.body,
         icon: payload.notification.icon,
     };
 
-    return self.registration.showNotification(notificationTitle, notificationOptions);
+   return self.registration.showNotification(notificationTitle, notificationOptions);
 });
+
+
+// if ('serviceWorker' in navigator) {
+//     navigator.serviceWorker.register('/firebase-messaging-sw.js')
+//         .then((registration) => {
+//             console.log('Service Worker registered with scope:', registration.scope);
+
+//             //FCM logic here.
+
+//         }).catch((error) => {
+//             console.error('Service Worker registration failed:', error);
+//         });
+// }
+
+// messaging.onBackgroundMessage(function(payload) {
+//     console.log('[firebase-messaging-sw.js] Received background message ', payload);
+//     const notificationTitle = payload.notification.title;
+//     const notificationOptions = {
+//         body: payload.notification.body,
+//         icon: payload.notification.icon,
+//     };
+
+//      return self.registration.showNotification(notificationTitle, notificationOptions);
+
+//     // return messaging;
+// });

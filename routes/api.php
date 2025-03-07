@@ -81,7 +81,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
        // task create show API
 
-       Route::post('/tasks_show', 'mobile_cnt@create_task_show')->name('task_show');
+       Route::post('/tasks_show', 'mobile_cnt@create_task_show')->name('tasks_show');
 
 
     });

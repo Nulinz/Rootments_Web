@@ -32,7 +32,7 @@ class mobile_cnt extends Controller
 
         $arr = hasAccess($user,'mob_task');
 
-        return response()->json($arr,200);
+        return response()->json(["data"=>$arr],200);
     }
 
     public function assign_to()

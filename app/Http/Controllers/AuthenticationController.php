@@ -92,8 +92,6 @@ class AuthenticationController extends Controller
         }
 
 
-
-
         return redirect()->route('login')->with(['status' => 'error', 'message' => 'Invalid Emp Code']);
     }
 

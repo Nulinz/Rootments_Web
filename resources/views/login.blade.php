@@ -27,6 +27,13 @@
     <!-- SwalFire -->
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
 
+    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
+
+    {{-- <script src="{{ asset('firebase-messaging-sw.js') }}"></script> --}}
+
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-messaging-compat.js"></script>
+
 </head>
 
 <body>
@@ -148,6 +155,86 @@
         });
     @endif
 </script>
+
+
+<script>
+// if ('serviceWorker' in navigator) {
+//     navigator.serviceWorker.register('/firebase-messaging-sw.js')
+//         .then((registration) => {
+//             console.log('Service Worker registered with scope:', registration.scope);
+
+//             // Get firebaseConfig from backend.
+//             fetch('/api/firebase-config')
+//                 .then(response => response.json())
+//                 .then(firebaseConfig => {
+
+//                     console.log(firebaseConfig);
+//                     // Rename keys to match Firebase SDK expectations
+//                     const config = {
+//                         apiKey: firebaseConfig.apiKey,
+//                         authDomain: firebaseConfig.authDomain,
+//                         projectId: firebaseConfig.projectId,
+//                         storageBucket: firebaseConfig.storageBucket,
+//                         messagingSenderId: firebaseConfig.messagingSenderId,
+//                         appId: firebaseConfig.appId,
+//                     };
+
+//                     // console.log(config);
+
+
+//                     firebase.initializeApp(config);
+
+//                     const messaging = firebase.messaging();
+
+//                     console.log(messaging);
+//                     // messaging.useServiceWorker(registration);
+
+//                     messaging.getToken().then((token) => {
+//                         console.log('FCM Token:', token);
+//                         sendTokenToServer(token);
+//                         // ... send token to server ...
+//                     }).catch((error) => {
+//                         console.error('Error retrieving FCM token:', error);
+//                     });
+
+//                     messaging.onMessage((payload) => {
+//                         console.log('Message received. ', payload);
+//                         const notificationTitle = payload.notification.title;
+//                         const notificationOptions = {
+//                             body: payload.notification.body,
+//                         };
+//                         new Notification(notificationTitle, notificationOptions);
+//                     });
+//                 })
+//                 .catch(error => {
+//                     console.error('Error fetching Firebase config:', error);
+//                 });
+
+//         }).catch((error) => {
+//             console.error('Service Worker registration failed:', error);
+//         });
+// }
+
+// function sendTokenToServer(token) {
+//     $.ajax({
+//         url: '{{ route('send_not') }}',
+//         type: 'POST',
+//         data: {
+//             _token: '{{ csrf_token() }}',
+//             not_token: token,
+//         },
+//         success: function (response) {
+//         },
+//         error: function (xhr, status, error) {
+//             alert('An error occurred: ' + error);
+//         }
+//     });
+// }
+
+</script>
+
+
+
 {{-- <script src="./public/firebase-messaging-sw.js"></script> --}}
 {{--
 <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app-compat.js"></script>
