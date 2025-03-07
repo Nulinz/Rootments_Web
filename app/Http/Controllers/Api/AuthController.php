@@ -20,10 +20,11 @@ class AuthController extends Controller
     $request->validate([
         'emp_code' => 'required',
         'password' => 'required',
-         'device_token' => 'required',
+        // 'device_token' => 'required',
     ]);
 
-    // $user = User::with('role')->where('emp_code', $request->emp_code)->first();
+    //  $user = User::with('role')->where('emp_code', $request->emp_code)->first();
+
     $user = User::where('emp_code', $request->emp_code)->first();
 
     if (!$user) {
@@ -38,7 +39,7 @@ class AuthController extends Controller
     $user->device_token = $request->device_token;
     $user->save();
 
-    // $role = DB::table('roles')->where('')
+     $role = DB::table('roles')->where('id',$user->role_id)->select('role')->first();
 
     $token = $user->createToken('token')->plainTextToken;
 
@@ -50,13 +51,14 @@ class AuthController extends Controller
         'id' => $user->id,
         'name' => $user->name,
         'emp_code' => $user->emp_code,
-        'role' => $user->role ? $user->role->role : null,
-        'role_id' => $user->role ? $user->role->id : null,
-        'store_id' => $user->store_id,
+        'role' => $role->role ?? null,
+        'role_id' => $user->role_id ?? null,
+        'store_id' => $user->store_id ?? null,
         'profile_image_url' => $profileImageUrl,
         'token' => $token,
-    ],
-]);
+        ],
+    ]);
+
 
 }
 
@@ -117,6 +119,13 @@ class AuthController extends Controller
         }
 
         return response()->json(['status' => 'success', 'message' => 'Password Updated Successfully'], 200);
+    }
+
+
+    public function popup(Request $request)
+    {
+
+        return response()->json(['version' => '1.0.0'], 200);
     }
 
 }

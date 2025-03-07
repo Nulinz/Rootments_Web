@@ -266,6 +266,23 @@
                             <div class="row drag complete-list sortable-column" id="complete" >
 
                                 @foreach ($tasks_complete as $index => $task)
+
+                                @if(($task->task_status=='Assigned')||($task->task_status=='close'))
+
+                                <?php
+                                // Add 15 days to the task's end date using Carbon
+                                $end_find = date("Y-m-d",strtotime($task->end_date."+15 days"));
+
+                                // Get the current date
+                                 $current_date = date("Y-m-d");
+
+                                // Compare the end_find date with the current date
+                                // if ($end_find > $current_date) {
+                                //     continue;
+                                // }
+                                 ?>
+
+                                @endif
                                     <div class="col-sm-12 col-md-11 col-xl-11 mb-2 d-block mx-auto draggablecard completedtask"
                                         data-id="{{ $task->id }}" data-patent_id="{{ $task->f_id }}"
                                         data-cat="{{ $task->category_id }}" data-status="{{ $task->task_status }}" data-subcat="{{ $task->subcategory_id }}"

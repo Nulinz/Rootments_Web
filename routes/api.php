@@ -18,9 +18,17 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+
+
 Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
-    Route::post('/auth/login', 'AuthController@login')->name('auth.login');
+     Route::post('/auth/login', 'AuthController@login')->name('auth.login');
+
+     Route::post('/update_popup', 'AuthController@popup')->name('app.version');
+
+    // Route::post('/auth/login', function(){
+    //     return ("hello");
+    // })->name('auth.login');
 
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -73,7 +81,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
        // task create show API
 
-       Route::post('/tasks_how', 'mobile_cnt@create_task_show')->name('task_show');
+       Route::post('/tasks_show', 'mobile_cnt@create_task_show')->name('task_show');
 
 
     });

@@ -415,7 +415,15 @@ class DashBoardController extends Controller
             ->leftJoin('users as assigned_by_user', 'tasks.assign_by', '=', 'assigned_by_user.id')
             ->where('tasks.assign_to', $authId)
             ->whereIn('tasks.task_status',['Completed','Close','Assigned'])
-           
+            ->where(function($query) {
+                $query->where('tasks.task_status', 'Completed') // Keep Completed tasks
+                      // Exclude Assigned and Close tasks with end_date + 15 days > current date
+                      ->orWhere(function($subQuery) {
+                          $subQuery->whereIn('tasks.task_status', ['Assigned', 'Close'])
+                                   ->whereRaw('DATE_ADD(tasks.end_date, INTERVAL 15 DAY) >= ?', [Carbon::now()]);
+                      });
+            })
+
             // ->whereIn('tasks.fid', function($query) use ($authId) {
             //     // Subquery: Get the list of f_id values based on tasks assigned to authId
             //     $query->select('tasks.fid')
@@ -431,6 +439,7 @@ class DashBoardController extends Controller
                 'assigned_role.role as assigned_role',
                 'assigned_by_role.role as task_assigned',
                 'assigned_by_user.name as assigned_by',
+                'tasks.end_date',
 
 
             )
@@ -455,29 +464,29 @@ class DashBoardController extends Controller
         //  Step 1: Extract f_id values from the tasks_complete array
                 // $f_id = [];
 
-                $f_id = []; // Initialize an array to store f_id values
+                // $f_id = []; // Initialize an array to store f_id values
 
-                foreach ($tasks_complete as $tc) {
-                    // Query to fetch the task with the same f_id, ordered by the smallest id
-                    $tasks_with_assigned_check = DB::table('tasks')
-                        ->where('tasks.f_id', $tc->f_id) // Use the f_id from the current task
-                        ->orderBy('tasks.id', 'asc') // Order by id in ascending order to get the task with the smallest id
-                        ->select(
-                            'tasks.id',
-                            'tasks.f_id',
-                            DB::raw('CASE WHEN tasks.assign_by = '.$authId.' THEN 1 ELSE 0 END as cr_by') // Check if assign_by matches authId
-                        )
-                        ->first(); // Get only the first (smallest id) task
+                // foreach ($tasks_complete as $tc) {
+                //     // Query to fetch the task with the same f_id, ordered by the smallest id
+                //     $tasks_with_assigned_check = DB::table('tasks')
+                //         ->where('tasks.f_id', $tc->f_id) // Use the f_id from the current task
+                //         ->orderBy('tasks.id', 'asc') // Order by id in ascending order to get the task with the smallest id
+                //         ->select(
+                //             'tasks.id',
+                //             'tasks.f_id',
+                //             DB::raw('CASE WHEN tasks.assign_by = '.$authId.' THEN 1 ELSE 0 END as cr_by') // Check if assign_by matches authId
+                //         )
+                //         ->first(); // Get only the first (smallest id) task
 
-                    // If the query returns a task, process it
-                    if ($tasks_with_assigned_check) {
-                        // Add the f_id of the task to the array (or perform other processing)
-                        $f_id[] = $tasks_with_assigned_check->cr_by;
+                //     // If the query returns a task, process it
+                //     if ($tasks_with_assigned_check) {
+                //         // Add the f_id of the task to the array (or perform other processing)
+                //         $f_id[] = $tasks_with_assigned_check->cr_by;
 
-                        // If you need to access other values, you can do so here
-                        // Example: echo $tasks_with_assigned_check->cr_by; // For debugging
-                    }
-                }
+                //         // If you need to access other values, you can do so here
+                //         // Example: echo $tasks_with_assigned_check->cr_by; // For debugging
+                //     }
+                // }
 
 
                 // dd($f_id);
@@ -489,12 +498,23 @@ class DashBoardController extends Controller
 
 
 
-            $tasks_complete_count = DB::table('tasks')
-            ->where('assign_to', $authId)
-            ->whereIn('task_status',['Completed','Close','Assigned'])
-            ->count();
+                $tasks_complete_count = DB::table('tasks')
+                ->where('assign_to', $authId)
+                ->whereIn('task_status', ['Completed', 'Close', 'Assigned'])
+                // Apply the same condition as in the main query
+                ->where(function($query) {
+                    $query->where('tasks.task_status', 'Completed') // Keep Completed tasks
+                          // Only include Assigned and Close tasks where end_date + 15 days <= current date
+                          ->orWhere(function($subQuery) {
+                              $subQuery->whereIn('tasks.task_status', ['Assigned', 'Close'])
+                                       ->whereRaw('DATE_ADD(tasks.end_date, INTERVAL 15 DAY) >= ?', [Carbon::now()]);
+                          });
+                })
+                ->count();  // Get the count of tasks
 
             // assign to employees list
+
+            // dd($tasks_complete_count);
 
 
     // $user = auth()->user();
@@ -558,7 +578,7 @@ class DashBoardController extends Controller
 
     // dd($list);
 
-        return view('generaldashboard.mydashboard', ['tasks_todo' => $tasks_todo,'tasks_todo_count'=>$tasks_todo_count,'tasks_inprogress'=>$tasks_inprogress,'tasks_inprogress_count'=>$tasks_inprogress_count,'tasks_onhold'=>$tasks_onhold,'tasks_onhold_count'=>$tasks_onhold_count,'tasks_complete'=>$tasks_complete,'tasks_complete_count'=>$tasks_complete_count,'employees'=>$list,'role'=>$role,'close'=>$f_id]);
+        return view('generaldashboard.mydashboard', ['tasks_todo' => $tasks_todo,'tasks_todo_count'=>$tasks_todo_count,'tasks_inprogress'=>$tasks_inprogress,'tasks_inprogress_count'=>$tasks_inprogress_count,'tasks_onhold'=>$tasks_onhold,'tasks_onhold_count'=>$tasks_onhold_count,'tasks_complete'=>$tasks_complete,'tasks_complete_count'=>$tasks_complete_count,'employees'=>$list,'role'=>$role]);
     }
 
 

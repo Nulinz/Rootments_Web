@@ -7,7 +7,7 @@ if (!function_exists('hasAccess')) {
      * @param string $role
      * @param string $menuItem
      * @return bool
-     */
+    */
     function hasAccess($role, $menuItem)
     {
            $menuItems = [
