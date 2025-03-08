@@ -152,7 +152,7 @@
                                             <td>
                                                 <div class="d-flex align-items-center justify-content-start gap-2">
                                                     {{-- @if ($hr->profile_image) --}}
-                                                        <img src="{{ asset($data->profile_image ?? 'assets/images/avatar.png') }}" alt="">
+                                                        <img src="{{ asset($hr->profile_image ?? 'assets/images/avatar.png') }}" alt="">
                                                     {{-- @endif --}}
                                                     <div>
                                                         <h5 class="mb-0">{{ $hr->name }}</h5>

@@ -27,7 +27,7 @@ trait common
         'us.name',
         'us.profile_image',
         'attendance.in_time',
-        'attendance.user_id',
+        'attendance.c_on',
         'attendance.attend_status',
         'attendance.out_time',
         'attendance.status',

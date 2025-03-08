@@ -125,7 +125,7 @@ class AuthController extends Controller
     public function popup(Request $request)
     {
 
-        return response()->json(['version' => '1.0.0'], 200);
+        return response()->json(['version' => '1.0.1'], 200);
     }
 
 }
