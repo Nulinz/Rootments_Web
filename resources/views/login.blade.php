@@ -48,7 +48,7 @@
             @csrf
             <div class="login slide-up">
                 <div class="center">
-                    <h2 class="form-title" id="login">Log In</h2>
+                    <h2 class="form-title" id="login">Log In ERROR</h2>
                     <div class="form-holder row">
                         <div class="col-10 mx-auto mb-2">
                             <input type="text" class="form-control" id="empcode" name="emp_code"
