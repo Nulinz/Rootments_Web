@@ -68,20 +68,14 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $user = Auth::user();
+        $user = User::find(Auth::id()); // Find the authenticated user by ID
+
+    //   /  dd($user);
 
         if ($user) {
+            $user->device_token = null; // Set device_token to null
+            $user->save(); // Save the updated user
 
-            $user->device_token = null;
-            // $user->save();
-
-            //  $out=DB::table('attendence')
-            // ->where('user_id', $user->id)
-            // ->whereDate('c_on', now()->setTimezone('Asia/Kolkata')->format('Y-m-d'))
-            // ->update([
-            //     'out_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
-            //     'u_by' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
-            // ]);
 
             $request->user()->currentAccessToken()->delete();
 

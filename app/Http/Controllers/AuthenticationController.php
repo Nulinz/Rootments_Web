@@ -100,16 +100,6 @@ class AuthenticationController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
 
-            // DB::table('attendance')
-            //     ->where('user_id', $user->id)
-            //     ->whereDate('in_time', now()->toDateString())
-            //     ->update([
-            //         'out_time' => now()->format('H:i:s'),
-            //         'u_by'=>now()->format('Y-m-d')
-            //     ]);
-
-            // session()->forget('role_updated');
-
             Auth::logout();
         }
 

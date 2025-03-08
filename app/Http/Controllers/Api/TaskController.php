@@ -165,9 +165,14 @@ class TaskController extends Controller
      */
       public function store(Request $request)
     {
+        $firstTask = null;
 
+        $assignToString = $request->assign_to;  // This is your string '[1,2,3]'
 
-         $assignToArray = is_array($request->assign_to) ? $request->assign_to : [$request->assign_to];
+        // Convert the string to an array using json_decode
+        $assignToArray = json_decode($assignToString, true);
+
+        //  $assignToArray = is_array($request->assign_to) ? $request->assign_to : [$request->assign_to];
 
         foreach ($assignToArray as $assignTo) {
             $task = new Task();
@@ -200,21 +205,30 @@ class TaskController extends Controller
             $task->assign_by = $request->assign_by;
             $task->save();
 
-            $task->f_id = $task->id;
-            $task->save();
+             // If it's the first task, store its ID for later use
+            if (!$firstTask) {
+                $firstTask = $task;
+            }
+
+            // Update f_id for all tasks
+            $task->f_id = $firstTask->id;
+            $task->save(); // Update task with f_id
+
+            // $task->f_id = $task->id;
+            // $task->save();
 
        $notifications = [];
 
         foreach ($assignToArray as $assignTo) {
             try {
-                $user = User::findOrFail($assignTo);
+                $user_assign = User::findOrFail($assignTo);
 
-                if ($user->device_token) {
+                if ($user_assign->device_token) {
                     $taskTitle = $request->task_title;
                     $taskBody = "You have been assigned a new task: " . $taskTitle;
 
                     $response = app(FirebaseService::class)->sendNotification(
-                        $user->device_token,
+                        $user_assign->device_token,
                         $taskTitle,
                         $taskBody
                     );
@@ -226,7 +240,7 @@ class TaskController extends Controller
 
                     $notifications[] = [
                         'user_id' => $assignTo,
-                        'device_token' => $user->device_token,
+                        'device_token' => $user_assign->device_token,
                         'title' => $taskTitle,
                         'body' => $taskBody,
                         'response' => $response
@@ -246,7 +260,8 @@ class TaskController extends Controller
 
     return response()->json([
         'success' => true,
-        'message' => 'Task Added successfully'
+        'message' => 'Task Added successfully',
+        'error'=>$notifications
     ]);
 }
 
@@ -571,6 +586,7 @@ public function notification_list(Request $request)
         ->select('id', 'user_id', 'noty_type', 'type_id', 'created_at')
         ->where('user_id', $user)
         ->where('noty_type','task')
+        ->OrderBy('id','DESC')
         ->get();
 
     if ($notifications->isEmpty()) {
@@ -593,6 +609,7 @@ public function notification_list(Request $request)
                     ->leftJoin('roles as assigned_to_role', 'assigned_to_user.role_id', '=', 'assigned_to_role.id')
                     ->leftJoin('roles as assigned_by_role', 'assigned_by_user.role_id', '=', 'assigned_by_role.id')
                     ->where('tasks.id', $notification->type_id)
+                     ->where('tasks.assign_to', $notification->user_id)
                     ->select(
                         'tasks.id',
                         'tasks.task_title',
