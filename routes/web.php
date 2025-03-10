@@ -14,7 +14,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::get('logout', 'AuthenticationController@logout')->name('logout');
 
 
-    Route::middleware(['auth','asm'])->group(function () {
+    Route::middleware(['auth', 'asm'])->group(function () {
 
         // Store Dashboard
         Route::get('dashboard', 'DashBoardController@index')->name('dashboard');
@@ -63,8 +63,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('store-strength/{id}', 'StoreController@strlist')->name('store.strength');
         Route::get('store-details/{id}', 'StoreController@detailslist')->name('store.details');
         Route::get('store-viewemp/{id}', 'StoreController@empview')->name('store.viewemp');
-
-
 
         // Employee
         Route::get('employee-list', 'EmployeeController@index')->name('employee.index');
@@ -183,6 +181,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('recruit-list', 'RecruitController@list')->name('recruit.list');
         Route::get('recruit-add', 'RecruitController@create')->name('recruit.add');
         Route::get('recruit-edit', 'RecruitController@edit')->name('recruit.edit');
+        Route::get('recruit-profile', 'RecruitController@profile')->name('recruit.profile');
+        Route::get('recruit-candidate', 'RecruitController@candidate_profile')->name('recruit.candidate_profile');
+        Route::get('recruit-add-interview', 'RecruitController@add_interview')->name('recruit.add_interview');
+        Route::get('recruit-edit-interview', 'RecruitController@edit_interview')->name('recruit.edit_interview');
 
         // Area
         Route::get('area-list', 'AreaController@list')->name('area.list');
@@ -272,14 +274,14 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         //                   return response()->json($role);
         // });
 
-         // Finance
-         Route::get('finance_index', 'fin_cnt@index')->name('fin.index');
-         // Maintainence
-         Route::get('maintain_index', 'maintain_cnt@index')->name('maintain.index');
-         // Warehouse
-         Route::get('warehouse_index', 'warehouse_cnt@index')->name('warehouse.index');
-         // Purchase
-         Route::get('purchase_index', 'purchase_cnt@index')->name('purchase.index');
+        // Finance
+        Route::get('finance_index', 'fin_cnt@index')->name('fin.index');
+        // Maintainence
+        Route::get('maintain_index', 'maintain_cnt@index')->name('maintain.index');
+        // Warehouse
+        Route::get('warehouse_index', 'warehouse_cnt@index')->name('warehouse.index');
+        // Purchase
+        Route::get('purchase_index', 'purchase_cnt@index')->name('purchase.index');
 
     });
 

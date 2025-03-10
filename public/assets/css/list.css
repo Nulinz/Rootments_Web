@@ -2,16 +2,15 @@
     display: none !important;
 }
 
-.table>:not(caption)>*>* {
+.table > :not(caption) > * > * {
     background-color: transparent !important;
 }
 
 @media screen and (min-width: 1140px) {
-
     /* List */
     .listtable {
         padding: 20px 10px !important;
-        border-radius: .25rem;
+        border-radius: 0.25rem;
         background-color: var(--secondary);
         box-shadow: var(--box-shadow);
     }
@@ -85,12 +84,12 @@
     }
 
     .table tbody tr .active {
-        color: #55A330;
+        color: #55a330;
         text-decoration: none;
     }
 
     .table tbody tr .inactive {
-        color: #FF0000;
+        color: #ff0000;
         text-decoration: none;
     }
 
@@ -105,7 +104,7 @@
         color: var(--primary);
     }
 
-    .active>.page-link,
+    .active > .page-link,
     .page-link.active {
         background-color: var(--main);
         border-color: var(--main);
@@ -127,11 +126,9 @@
         font-size: 13px;
         padding: 5px;
     }
-
 }
 
 @media screen and (min-width: 768px) and (max-width: 1140px) {
-
     /* List */
     .listtable {
         padding: 20px 10px !important;
@@ -208,12 +205,12 @@
     }
 
     .table tbody tr .active {
-        color: #55A330;
+        color: #55a330;
         text-decoration: none;
     }
 
     .table tbody tr .inactive {
-        color: #FF0000;
+        color: #ff0000;
         text-decoration: none;
     }
 
@@ -228,7 +225,7 @@
         color: var(--primary);
     }
 
-    .active>.page-link,
+    .active > .page-link,
     .page-link.active {
         background-color: var(--main);
         border-color: var(--main);
@@ -244,11 +241,9 @@
         justify-content: start;
         align-items: center;
     }
-
 }
 
 @media screen and (max-width: 768px) {
-
     /* List */
     .listtable {
         width: 100%;
@@ -323,12 +318,12 @@
     }
 
     .table tbody tr .active {
-        color: #55A330;
+        color: #55a330;
         text-decoration: none;
     }
 
     .table tbody tr .inactive {
-        color: #FF0000;
+        color: #ff0000;
         text-decoration: none;
     }
 
@@ -343,7 +338,7 @@
         color: var(--primary);
     }
 
-    .active>.page-link,
+    .active > .page-link,
     .page-link.active {
         background-color: var(--main);
         border-color: var(--main);
@@ -359,5 +354,4 @@
         justify-content: start;
         align-items: center;
     }
-
 }

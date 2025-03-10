@@ -15,15 +15,6 @@
                     </select>
                     <input type="text" id="customSearch" class="form-control filterInput" placeholder=" Search">
                 </div>
-
-                <div class="select1 col-sm-12 col-md-4 mx-auto">
-                    <!--<div class="d-flex gap-3">-->
-                    <!--    <a href="" id="pdfLink"><img src="{{ asset('assets/images/printer.png') }}" id="print"-->
-                    <!--            alt="" height="28px" data-bs-toggle="tooltip" data-bs-title="Print"></a>-->
-                    <!--    <a href="" id="excelLink"><img src="{{ asset('assets/images/excel.png') }}" id="excel"-->
-                    <!--            alt="" height="30px" data-bs-toggle="tooltip" data-bs-title="Excel"></a>-->
-                    <!--</div>-->
-                </div>
             </div>
 
             <div class="table-wrapper">
@@ -31,34 +22,48 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Store Code</th>
-                            <th>Store Name</th>
-                            <th>Role </th>
+                            <th>Recruit ID</th>
+                            <th>Department</th>
+                            <th>Role</th>
                             <th>Vacant Count</th>
                             <th>Recruit Date</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($rec as $data)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->store_code }}</td>
-                                <td>{{ $data->store_name }}</td>
-                                <td>{!! nl2br(str_replace(',', '<br>', $data->roles)) !!}</td>
-                                <td>{!! nl2br(str_replace(',', '<br>', $data->vat_counts)) !!}</td>
-                                <td>{{ $data->res_date }}</td>
-                                <td>
-                                    @if($data->status == 'Approved')
-                                    <span class="text-success">Approved</span>
-                                    @elseif($data->status == 'Rejected')
-                                    <span class="text-danger">Rejected</span>
-                                    @else
-                                    <span class="text-warning">Pending</span>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
+                        <tr>
+                            <td>1</td>
+                            <td>REC01</td>
+                            <td>HR</td>
+                            <td>Manager</td>
+                            <td>2</td>
+                            <td>14-02-2025</td>
+                            <td>
+                                <span class="text-success">Approved</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>REC02</td>
+                            <td>Store</td>
+                            <td>Assistant Store Manager</td>
+                            <td>1</td>
+                            <td>16-03-2025</td>
+                            <td>
+                                <span class="text-warning">Pending</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>REC03</td>
+                            <td>Warehouse</td>
+                            <td>Manager</td>
+                            <td>1</td>
+                            <td>20-02-2025</td>
+                            <td>
+                                <span class="text-danger">Rejected</span>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

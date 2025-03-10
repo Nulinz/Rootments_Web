@@ -1,0 +1,130 @@
+@extends('layouts.app')
+
+<link rel="stylesheet" href="{{ asset('assets/css/profile.css') }}">
+
+@section('content')
+    <div class="sidebodydiv px-5 mb-4">
+        <div class="sidebodyback my-3" onclick="goBack()">
+            <div class="backhead">
+                <h5 class="m-0"><i class="fas fa-arrow-left"></i></h5>
+                <h6 class="m-0">Job Posting Profile</h6>
+            </div>
+        </div>
+
+        <div class="mainbdy">
+            <!-- Left Content -->
+            <div class="contentleft">
+                <div class="cards mt-2">
+
+                    <div class="basicdetails mb-2">
+                        <div class="maincard row">
+                            <div class="cardshead">
+                                <div class="col-12 cardsh5">
+                                    <h5 class="mb-0">Job Posting Details</h5>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Recruit ID</h6>
+                                    <h5 class="mb-0">REC01</h5>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Job ID</h6>
+                                    <h5 class="mb-0">JOB01</h5>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Job Title</h6>
+                                    <h5 class="mb-0">Management</h5>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Department</h6>
+                                    <h5 class="mb-0">HR</h5>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Role</h6>
+                                    <h5 class="mb-0">Manager</h5>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Responsibilties</h6>
+                                    <h5 class="mb-0">Nil</h5>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Location</h6>
+                                    <h5 class="mb-0">Salem</h5>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Job Type</h6>
+                                    <h5 class="mb-0">Full-Time</h5>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Job Description</h6>
+                                    <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat,
+                                        quaerat.</h5>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Experience</h6>
+                                    <h5 class="mb-0">2 years</h5>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Working Hours</h6>
+                                    <h5 class="mb-0">10 hrs</h5>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Salary Range</h6>
+                                    <h5 class="mb-0">15,000</h5>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Benefits</h6>
+                                    <h5 class="mb-0">Nil</h5>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
+                                    <h6 class="mb-1">Posting Date</h6>
+                                    <h5 class="mb-0">12-02-2025</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Content -->
+            <div class="contentright ps-2">
+                <div class="proftabs">
+                    <ul class="nav nav-tabs d-flex justify-content-start align-items-center gap-md-3 gap-xl-3 border-0"
+                        id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="profiletabs active" id="details-tab" role="tab" data-bs-toggle="tab"
+                                type="button" data-bs-target="#details" aria-controls="details" aria-selected="true">Applied
+                                / Screening</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="profiletabs" id="interview-tab" role="tab" data-bs-toggle="tab" type="button"
+                                data-bs-target="#interview" aria-controls="interview"
+                                aria-selected="false">Interview</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="profiletabs" id="shortlist-tab" role="tab" data-bs-toggle="tab" type="button"
+                                data-bs-target="#shortlist" aria-controls="shortlist"
+                                aria-selected="false">Shortlisted</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tab-content" id="tabContentWrapper">
+                    <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                        @include('recruit.applied')
+                    </div>
+                    <div class="tab-pane fade" id="interview" role="tabpanel" aria-labelledby="interview-tab">
+                        @include('recruit.interview')
+                    </div>
+                    <div class="tab-pane fade" id="shortlist" role="tabpanel" aria-labelledby="shortlist-tab">
+                        @include('recruit.shortlist')
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+@endsection

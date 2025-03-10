@@ -26,79 +26,28 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Store Code</th>
-                    <th>Store Name</th>
+                    <th>Recruit ID</th>
+                    <th>Department</th>
                     <th>Role</th>
                     <th>Vacant Count</th>
                     <th>Recruit Date</th>
                     <th>Status</th>
-                     @php
-                        $user_id = Auth::user()->id;
-                    
-                        $user = DB::table('users')
-                            ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
-                            ->where('users.id', $user_id)
-                            ->select('users.name', 'users.emp_code', 'roles.role', 'roles.role_dept', 'users.role_id')
-                            ->first();
-                    @endphp
-                    
-                    @if(optional($user)->role_id != 3)
-                        <th>OverAll Status</th>
-                    @endif
                 </tr>
             </thead>
             <tbody>
-                @foreach ($rec as $data)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $data->store_code }}</td>
-                        <td>{{ $data->store_name }}</td>
-                        <td>{!! nl2br(str_replace(',', '<br>', $data->roles)) !!}</td>
-                        <td>{!! nl2br(str_replace(',', '<br>', $data->vat_counts)) !!}</td>
-                        <td>{{ $data->res_date }}</td>
-                        <td>
-                             @php
-                                $user = auth()->user();
-                            @endphp
-
-                            @if ($user->role_id == 12)
-                                @if ($data->request_status == 'Approved')
-                                    <span class="text-success">Approved</span>
-                                   
-                                @elseif ($data->request_status == 'Rejected')
-                                    <span class="text-danger">Rejected</span>
-                                @elseif ($data->request_status == 'Pending')
-                                    <span class="text-warning">Pending</span>
-                                @endif
-                            @elseif ($user->role_id == 3)
-                                @if ($data->esculate_status == 'Approved')
-                                    <span class="text-success">Approved</span>
-                                @elseif ($data->esculate_status == 'Rejected')
-                                    <span class="text-danger">Rejected</span>
-                                @else
-                                    <button class="listtdbtn" data-id="{{ $data->id }}" data-role='3'
-                                        data-bs-toggle="modal" data-bs-target="#updateRecruitApproval">
-                                        Update
-                                    </button>
-                                @endif
-                            @endif
-                        </td>
-                        @if(optional($user)->role_id != 3)
-                         <td>
-                             
-                                 @if($data->request_status == 'Rejected')
-                               <span class="text-danger">Rejected</span>
-                               @elseif($data->status == 'Rejected')
-                                <span class="text-danger">Rejected</span>
-                                @else
-                               <span class="text-success"> {{$data->status}}</span>
-                                
-                               @endif
-                         
-                        </td>
-                         @endif
-                    </tr>
-                @endforeach
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button class="listtdbtn" data-bs-toggle="modal" data-bs-target="#updateRecruitApproval">
+                            Update
+                        </button>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

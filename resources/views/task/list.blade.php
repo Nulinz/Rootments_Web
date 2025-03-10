@@ -41,9 +41,8 @@
                             <th>Category</th>
                             <th>Sub-Category</th>
                             <th>Priority</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-
+                            <th style="width: 150px">Start Date</th>
+                            <th style="width: 150px">End Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>

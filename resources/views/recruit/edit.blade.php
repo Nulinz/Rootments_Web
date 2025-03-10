@@ -16,31 +16,37 @@
             <div class="container-fluid maindiv">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                        <label for="recruitid">Recruit ID <span>*</span></label>
+                        <input type="text" class="form-control" name="recruitid" id="recruitid"
+                            placeholder="Enter Recruit ID" autofocus required>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="jobid">Job ID <span>*</span></label>
-                        <input type="number" class="form-control" name="jobid" id="jobid" placeholder="Enter Job ID"
-                            readonly>
+                        <input type="text" class="form-control" name="jobid" id="jobid" placeholder="Enter Job ID" required>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="jobtitle">Job Title <span>*</span></label>
                         <input type="text" class="form-control" name="jobtitle" id="jobtitle" placeholder="Enter Job Title"
-                            autofocus required>
+                            required>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="department">Department <span>*</span></label>
-                        <select name="department" id="department" class="form-select" required>
-                            <option value="" selected disabled>Select Options</option>
-                            <option value="HR">HR</option>
-                            <option value="IT">IT</option>
-                            <option value="Marketing">Marketing</option>
-                            <option value="Sales">Sales</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Etc">Etc</option>
-                        </select>
+                        <input type="text" class="form-control" name="department" id="department"
+                            placeholder="Enter Department" required>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                        <label for="role">Role <span>*</span></label>
+                        <input type="text" class="form-control" name="role" id="role" placeholder="Enter Role" required>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                        <label for="resp">Responsibilities <span>*</span></label>
+                        <textarea rows="1" class="form-control" name="resp" id="resp" placeholder="Enter Responsibilities"
+                            required></textarea>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="joblocation">Job Location <span>*</span></label>
                         <input type="text" class="form-control" name="joblocation" id="joblocation"
-                            placeholder="Enter Job Location">
+                            placeholder="Enter Job Location" required>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="jobtype">Job Type <span>*</span></label>
@@ -57,14 +63,24 @@
                             placeholder="Enter Job Description" required></textarea>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
-                        <label for="expreq">Experience Required (In Years) <span>*</span></label>
+                        <label for="expreq">Experience (In Years) <span>*</span></label>
                         <input type="number" class="form-control" name="expreq" id="expreq" min="0"
-                            placeholder="Enter Experience Required" required>
+                            placeholder="Enter Experience" required>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
-                        <label for="slryrange">Salary Range</label>
+                        <label for="workhours">Working Hours <span>*</span></label>
+                        <input type="text" class="form-control" name="workhours" id="workhours" min="0"
+                            placeholder="Enter Working Hours" required>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                        <label for="slryrange">Salary Range <span>*</span></label>
                         <input type="number" class="form-control" name="slryrange" id="slryrange" min="0"
-                            placeholder="Enter Salary Range">
+                            placeholder="Enter Salary Range" required>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                        <label for="benefits">Benefits <span>*</span></label>
+                        <textarea class="form-control" rows="1" name="benefits" id="benefits" placeholder="Enter Benefits"
+                            required></textarea>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="postdate">Posting Date <span>*</span></label>

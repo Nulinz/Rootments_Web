@@ -11,19 +11,19 @@
         </div>
         @php
 
-        // if(session('role_id')) {
-        //                     // Update the role_id of the authenticated user
-        //     $user = Auth::user();
-        //     $user->role_id = session('role_id');  // Update role_id from the session
-        //     Auth::setUser($user);  // Re-set the user to reflect the new role_id
-        //     // dd(Auth::user());
+            // if(session('role_id')) {
+            //                     // Update the role_id of the authenticated user
+            //     $user = Auth::user();
+            //     $user->role_id = session('role_id');  // Update role_id from the session
+            //     Auth::setUser($user);  // Re-set the user to reflect the new role_id
+            //     // dd(Auth::user());
 
 
-        // }
+            // }
 
             $user = auth()->user();
 
-        //  dd($user->role_id, session('role_id'), Auth::user());
+            //  dd($user->role_id, session('role_id'), Auth::user());
 
 
             // dd($user);
@@ -48,13 +48,13 @@
             // }
 
             $route = [
-                3  => ['route' => 'hr.dashboard', 'over' => 'HR'],
-                4  => ['route' => 'hr.dashboard', 'over' => 'HR'],
-                5  => ['route' => 'hr.dashboard', 'over' => 'HR'],
+                3 => ['route' => 'hr.dashboard', 'over' => 'HR'],
+                4 => ['route' => 'hr.dashboard', 'over' => 'HR'],
+                5 => ['route' => 'hr.dashboard', 'over' => 'HR'],
                 12 => ['route' => 'dashboard', 'over' => 'Store'],
                 11 => ['route' => 'cluster.dashboard', 'over' => 'Cluster'],
                 10 => ['route' => 'area.dashboard', 'over' => 'Area'],
-                7  => ['route' => 'fin.index', 'over' => 'Finance'],
+                7 => ['route' => 'fin.index', 'over' => 'Finance'],
                 30 => ['route' => 'maintain.index', 'over' => 'Maintain'],
                 37 => ['route' => 'warehouse.index', 'over' => 'Warehouse'],
                 41 => ['route' => 'purchase.index', 'over' => 'Purchase'],
@@ -67,8 +67,9 @@
 
             <li class="mb-1">
                 <a href="{{ route($route[$r_id]['route'] ?? 'mydash.dashboard') }}">
-                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('dashboard.*') ? 'active' : '' }}" data-bs-toggle="collapse"
-                        data-bs-target="#collapse1" aria-expanded="false">
+                    <button
+                        class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('dashboard.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false">
                         <div class="btnname">
                             <i class="bx bxs-dashboard"></i> &nbsp;Dashboard
                         </div>
@@ -80,303 +81,305 @@
             </li>
             @if(hasAccess($r_id, 'store'))
 
-            <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('store.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse3"
-                    aria-expanded="false">
-                    <div class="btnname">
-                        <i class="fa-solid fa-shop"></i> &nbsp;Store
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('store.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-shop"></i> &nbsp;Store
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" id="collapse3">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            <li><a href="{{ route('store.index') }}"
+                                    class="d-inline-flex text-decoration-none rounded mt-3">Store
+                                    List</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="righticon d-flex mx-auto">
-                        <i class="fa-solid fa-angle-down toggle-icon"></i>
-                    </div>
-                </button>
-                <div class="collapse" id="collapse3">
-                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                        <li><a href="{{ route('store.index') }}"
-                                class="d-inline-flex text-decoration-none rounded mt-3">Store
-                                List</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
             @endif
             @if(hasAccess($r_id, 'employee'))
 
-            <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('employee.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse2"
-                    aria-expanded="false">
-                    <div class="btnname">
-                        <i class="fa-solid fa-user"></i> &nbsp;Employee
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('employee.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-user"></i> &nbsp;Employee
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" id="collapse2">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            <li><a href="{{ route('employee.index') }}"
+                                    class="d-inline-flex text-decoration-none rounded mt-3">Employee List</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="righticon d-flex mx-auto">
-                        <i class="fa-solid fa-angle-down toggle-icon"></i>
-                    </div>
-                </button>
-                <div class="collapse" id="collapse2">
-                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                        <li><a href="{{ route('employee.index') }}"
-                                class="d-inline-flex text-decoration-none rounded mt-3">Employee List</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
             @endif
             @if(hasAccess($r_id, 'cluster'))
-            <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('cluster.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse10"
-                    aria-expanded="false">
-                    <div class="btnname">
-                        <i class="fas fa-users-gear"></i> &nbsp;Cluster
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('cluster.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse10" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fas fa-users-gear"></i> &nbsp;Cluster
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" id="collapse10">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            <li><a href="{{ route('cluster.index') }}"
+                                    class="d-inline-flex text-decoration-none rounded mt-3">Cluster List</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="righticon d-flex mx-auto">
-                        <i class="fa-solid fa-angle-down toggle-icon"></i>
-                    </div>
-                </button>
-                <div class="collapse" id="collapse10">
-                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                        <li><a href="{{ route('cluster.index') }}"
-                                class="d-inline-flex text-decoration-none rounded mt-3">Cluster List</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
             @endif
             @if(hasAccess($r_id, 'area'))
-            <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('area.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse11"
-                    aria-expanded="false">
-                    <div class="btnname">
-                        <i class="fa-solid fa-chart-area"></i> &nbsp;Area
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('area.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse11" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-chart-area"></i> &nbsp;Area
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" id="collapse11">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            <li><a href="{{ route('area.list') }}"
+                                    class="d-inline-flex text-decoration-none rounded mt-3">Area
+                                    List</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="righticon d-flex mx-auto">
-                        <i class="fa-solid fa-angle-down toggle-icon"></i>
-                    </div>
-                </button>
-                <div class="collapse" id="collapse11">
-                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                        <li><a href="{{ route('area.list') }}"
-                                class="d-inline-flex text-decoration-none rounded mt-3">Area
-                                List</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
             @endif
             @if(hasAccess($r_id, 'task'))
-            <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('task.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse4"
-                    aria-expanded="false">
-                    <div class="btnname">
-                        <i class="fa-solid fa-list-check"></i> &nbsp;Task
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('task.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-list-check"></i> &nbsp;Task
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" id="collapse4">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            <li><a href="{{ route('task.index') }}"
+                                    class="d-inline-flex text-decoration-none rounded mt-3">Task
+                                    List</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="righticon d-flex mx-auto">
-                        <i class="fa-solid fa-angle-down toggle-icon"></i>
-                    </div>
-                </button>
-                <div class="collapse" id="collapse4">
-                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                        <li><a href="{{ route('task.index') }}"
-                                class="d-inline-flex text-decoration-none rounded mt-3">Task
-                                List</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
             @endif
             @if(hasAccess($r_id, 'recruitment'))
-            {{-- <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('recruit.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse8"
-                    aria-expanded="false">
-                    <div class="btnname">
-                        <i class="fa-solid fa-user-plus"></i> &nbsp;Recruitment
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('recruit.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse8" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-user-plus"></i> &nbsp;Recruitment
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" id="collapse8">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            <li><a href="{{ route('recruit.list') }}"
+                                    class="d-inline-flex text-decoration-none rounded mt-3">Job
+                                    Posting</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="righticon d-flex mx-auto">
-                        <i class="fa-solid fa-angle-down toggle-icon"></i>
-                    </div>
-                </button>
-                <div class="collapse" id="collapse8">
-                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                        <li><a href="{{ route('recruit.list') }}"
-                                class="d-inline-flex text-decoration-none rounded mt-3">Job
-                                Posting</a>
-                        </li>
-                    </ul>
-                </div>
-            </li> --}}
+                </li>
             @endif
             @if(hasAccess($r_id, 'payroll'))
-            <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('payroll.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse9"
-                    aria-expanded="false">
-                    <div class="btnname">
-                        <i class="fa-solid fa-credit-card"></i> &nbsp;Payroll
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('payroll.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse9" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-credit-card"></i> &nbsp;Payroll
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" id="collapse9">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            <li><a href="{{ route('payroll.index') }}"
+                                    class="d-inline-flex text-decoration-none rounded mt-3">Salary Generation
+                                    List</a>
+                            </li>
+                            <li><a href="{{ route('payroll.payroll_list') }}"
+                                    class="d-inline-flex text-decoration-none rounded">View Salary
+                                    List</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="righticon d-flex mx-auto">
-                        <i class="fa-solid fa-angle-down toggle-icon"></i>
-                    </div>
-                </button>
-                <div class="collapse" id="collapse9">
-                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                        <li><a href="{{ route('payroll.index') }}"
-                                class="d-inline-flex text-decoration-none rounded mt-3">Salary Generation
-                                List</a>
-                        </li>
-                        <li><a href="{{ route('payroll.payroll_list') }}"
-                                class="d-inline-flex text-decoration-none rounded">View Salary
-                                List</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
             @endif
             @if(hasAccess($r_id, 'attendance'))
-            <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('attendance.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse5"
-                    aria-expanded="false">
-                    <div class="btnname">
-                        <i class="fa-solid fa-clipboard-user"></i> &nbsp;Attendance
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('attendance.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-clipboard-user"></i> &nbsp;Attendance
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" id="collapse5">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            <li><a href="{{ route('attendance.daily') }}"
+                                    class="d-inline-flex text-decoration-none rounded mt-3">Daily</a>
+                            </li>
+                            <li><a href="{{ route('attendance.monthly') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Monthly</a>
+                            </li>
+                            <li><a href="{{ route('attendance.individual') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Individual</a>
+                            </li>
+                            <li><a href="{{ route('attendance.overtime') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Overtime / Late</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="righticon d-flex mx-auto">
-                        <i class="fa-solid fa-angle-down toggle-icon"></i>
-                    </div>
-                </button>
-                <div class="collapse" id="collapse5">
-                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                        <li><a href="{{ route('attendance.daily') }}"
-                                class="d-inline-flex text-decoration-none rounded mt-3">Daily</a>
-                        </li>
-                        <li><a href="{{ route('attendance.monthly') }}"
-                                class="d-inline-flex text-decoration-none rounded">Monthly</a>
-                        </li>
-                        <li><a href="{{ route('attendance.individual') }}"
-                                class="d-inline-flex text-decoration-none rounded">Individual</a>
-                        </li>
-                        <li><a href="{{ route('attendance.overtime') }}"
-                                class="d-inline-flex text-decoration-none rounded">Overtime / Late</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
             @endif
             @if(hasAccess($r_id, 'request'))
-            <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('leave.*', 'repair.*', 'transfer.*', 'resignation.*', 'recruitment.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse6"
-                    aria-expanded="false">
-                    <div class="btnname">
-                        <i class="fa-solid fa-comment-dots"></i> &nbsp;Request
+                <li class="mb-1">
+                    <button
+                        class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('leave.*', 'repair.*', 'transfer.*', 'resignation.*', 'recruitment.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-comment-dots"></i> &nbsp;Request
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" id="collapse6">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            <li><a href="{{ route('leave.index') }}"
+                                    class="d-inline-flex text-decoration-none rounded mt-3">Leave
+                                    Request</a>
+                            </li>
+                            {{-- <li><a href="{{ route('repair.index') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Repair
+                                    Request</a>
+                            </li> --}}
+                            {{-- <li><a href="{{ route('transfer.index') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Transfer
+                                    Request</a>
+                            </li> --}}
+                            <li><a href="{{ route('resignation.index') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Resignation
+                                    Request</a>
+                            </li>
+                            @if(hasAccess($r_id, 'recruit_req'))
+                                <li><a href="{{ route('recruitment.index') }}"
+                                        class="d-inline-flex text-decoration-none rounded">Recruitment
+                                        Request</a>
+                            @endif
+                            </li>
+                        </ul>
                     </div>
-                    <div class="righticon d-flex mx-auto">
-                        <i class="fa-solid fa-angle-down toggle-icon"></i>
-                    </div>
-                </button>
-                <div class="collapse" id="collapse6">
-                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                        <li><a href="{{ route('leave.index') }}"
-                                class="d-inline-flex text-decoration-none rounded mt-3">Leave
-                                Request</a>
-                        </li>
-                        {{-- <li><a href="{{ route('repair.index') }}"
-                                class="d-inline-flex text-decoration-none rounded">Repair
-                                Request</a>
-                        </li> --}}
-                        {{-- <li><a href="{{ route('transfer.index') }}"
-                                class="d-inline-flex text-decoration-none rounded">Transfer
-                                Request</a>
-                        </li> --}}
-                        <li><a href="{{ route('resignation.index') }}"
-                                class="d-inline-flex text-decoration-none rounded">Resignation
-                                Request</a>
-                        </li>
-                        @if(hasAccess($r_id, 'recruit_req'))
-                        {{-- <li><a href="{{ route('recruitment.index') }}"
-                                class="d-inline-flex text-decoration-none rounded">Recruitment
-                                Request</a> --}}
-                        @endif
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
             @endif
             @if(hasAccess($r_id, 'approval'))
-            <li class="mb-1">
-                <a href="{{ route('approve.index') }}">
-                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('approve.*') ? 'active' : '' }}" data-bs-toggle="collapse"
-                        data-bs-target="#collapse7" aria-expanded="false">
-                        <div class="btnname">
-                            <i class="fa-solid fa-clipboard-check"></i> &nbsp;Approval List
-                        </div>
-                        @php
+                        <li class="mb-1">
+                            <a href="{{ route('approve.index') }}">
+                                <button
+                                    class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('approve.*') ? 'active' : '' }}"
+                                    data-bs-toggle="collapse" data-bs-target="#collapse7" aria-expanded="false">
+                                    <div class="btnname">
+                                        <i class="fa-solid fa-clipboard-check"></i> &nbsp;Approval List
+                                    </div>
+                                    @php
 
-                            // Initialize total count
-                            $total_count = 0;
+                                        // Initialize total count
+                                        $total_count = 0;
 
-                            if ($role_get) {
-                                if ($role_get->role_id == 12) {
-                                    // Count requests where request_status = 'Pending' and created_by = user
-                                    $leave_count = DB::table('leaves')
-                                        ->where('request_status', 'Pending')
-                                        ->where('created_by', $user->id)
-                                        ->count();
+                                        if ($role_get) {
+                                            if ($role_get->role_id == 12) {
+                                                // Count requests where request_status = 'Pending' and created_by = user
+                                                $leave_count = DB::table('leaves')
+                                                    ->where('request_status', 'Pending')
+                                                    ->where('created_by', $user->id)
+                                                    ->count();
 
-                                    $transfer_count = DB::table('transfers')
-                                        ->where('request_status', 'Pending')
-                                        ->where('created_by', $user->id)
-                                        ->count();
+                                                $transfer_count = DB::table('transfers')
+                                                    ->where('request_status', 'Pending')
+                                                    ->where('created_by', $user->id)
+                                                    ->count();
 
-                                    $resign_count = DB::table('resignations')
-                                        ->where('request_status', 'Pending')
-                                        ->where('created_by', $user->id)
-                                        ->count();
+                                                $resign_count = DB::table('resignations')
+                                                    ->where('request_status', 'Pending')
+                                                    ->where('created_by', $user->id)
+                                                    ->count();
 
-                                    $recruit_count = DB::table('recruitments')
-                                        ->where('request_status', 'Pending')
-                                        ->where('created_by', $user->id)
-                                        ->count();
+                                                $recruit_count = DB::table('recruitments')
+                                                    ->where('request_status', 'Pending')
+                                                    ->where('created_by', $user->id)
+                                                    ->count();
 
-                                    // Ensure $repair_count is defined
-                                    $repair_count = 0; // You might need to fetch this from a table
+                                                // Ensure $repair_count is defined
+                                                $repair_count = 0; // You might need to fetch this from a table
 
-                                    // Calculate total count
-                                    $total_count =
-                                        $leave_count + $repair_count + $transfer_count + $resign_count + $recruit_count;
-                                } elseif ($role_get->role_id == 3) {
-                                    // Count requests where escalate_status = 'Pending' and created_by = user
-                                    $leave_count = DB::table('leaves')
-                                        ->where('esculate_status', 'Pending')
-                                        ->where('created_by', $user->id)
-                                        ->count();
+                                                // Calculate total count
+                                                $total_count =
+                                                    $leave_count + $repair_count + $transfer_count + $resign_count + $recruit_count;
+                                            } elseif ($role_get->role_id == 3) {
+                                                // Count requests where escalate_status = 'Pending' and created_by = user
+                                                $leave_count = DB::table('leaves')
+                                                    ->where('esculate_status', 'Pending')
+                                                    ->where('created_by', $user->id)
+                                                    ->count();
 
-                                    $transfer_count = DB::table('transfers')
-                                        ->where('esculate_status', 'Pending')
-                                        ->where('created_by', $user->id)
-                                        ->count();
+                                                $transfer_count = DB::table('transfers')
+                                                    ->where('esculate_status', 'Pending')
+                                                    ->where('created_by', $user->id)
+                                                    ->count();
 
-                                    $resign_count = DB::table('resignations')
-                                        ->where('esculate_status', 'Pending')
-                                        ->where('created_by', $user->id)
-                                        ->count();
+                                                $resign_count = DB::table('resignations')
+                                                    ->where('esculate_status', 'Pending')
+                                                    ->where('created_by', $user->id)
+                                                    ->count();
 
-                                    $recruit_count = DB::table('recruitments')
-                                        ->where('esculate_status', 'Pending')
-                                        ->where('created_by', $user->id)
-                                        ->count();
+                                                $recruit_count = DB::table('recruitments')
+                                                    ->where('esculate_status', 'Pending')
+                                                    ->where('created_by', $user->id)
+                                                    ->count();
 
-                                    // Calculate total count
-                                    $total_count = $leave_count + $transfer_count + $resign_count + $recruit_count;
-                                }
-                            }
-                        @endphp
-
-
+                                                // Calculate total count
+                                                $total_count = $leave_count + $transfer_count + $resign_count + $recruit_count;
+                                            }
+                                        }
+                                    @endphp
 
 
-                        <!--<div class="righticon d-flex mx-auto approvalno">-->
-                        <!--    <h6 class="mb-0">{{ $total_count }}</h6>-->
-                        <!--</div>-->
 
-                    </button>
-                </a>
-            </li>
+
+                                    <!--<div class="righticon d-flex mx-auto approvalno">-->
+                                    <!--    <h6 class="mb-0">{{ $total_count }}</h6>-->
+                                    <!--</div>-->
+
+                                </button>
+                            </a>
+                        </li>
             @endif
             <li class="mb-3">
                 @php
@@ -773,7 +776,7 @@
 
 
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         // Handle errors here
                         window.location.reload();
                         // console.error('Error:', error);

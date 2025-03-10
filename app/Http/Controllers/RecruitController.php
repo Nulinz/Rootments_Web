@@ -11,7 +11,7 @@ class RecruitController extends Controller
      */
     public function list(Request $request)
     {
-        return view ('recruit.list');
+        return view('recruit.list');
     }
 
     /**
@@ -19,7 +19,22 @@ class RecruitController extends Controller
      */
     public function create(Request $request)
     {
-        return view ('recruit.create');
+        return view('recruit.create');
+    }
+    
+    public function candidate_profile(Request $request)
+    {
+        return view('recruit.candidate_profile');
+    }
+
+    public function add_interview(Request $request)
+    {
+        return view('recruit.add_interview');
+    }
+
+    public function edit_interview(Request $request)
+    {
+        return view('recruit.edit_interview');
     }
 
     /**
@@ -33,9 +48,9 @@ class RecruitController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function profile(Request $request)
     {
-        //
+        return view('recruit.profile');
     }
 
     /**
@@ -43,7 +58,7 @@ class RecruitController extends Controller
      */
     public function edit(Request $request)
     {
-        return view ('recruit.edit');
+        return view('recruit.edit');
     }
 
     /**

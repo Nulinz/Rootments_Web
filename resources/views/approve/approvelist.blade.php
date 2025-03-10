@@ -42,14 +42,14 @@
                         <!--data-bs-toggle="tab" type="button" data-bs-target="#resign" aria-controls="resign"-->
                         <!--aria-selected="false">Resign &nbsp;<span class="aprvlcnt">{{ $resign_count }}</span></button>-->
                 </li>
-                {{-- <li class="nav-item" role="presentation">
+                <li class="nav-item" role="presentation">
                     <button class="profiletabs" id="recruit-tab" data-url="{{ route('approverecruit.index') }}"
                         role="tab" data-bs-toggle="tab" type="button" data-bs-target="#recruit" aria-controls="recruit"
                         aria-selected="false">Recruit &nbsp;</button>
                         <!--<button class="profiletabs" id="recruit-tab" data-url="{{ route('approverecruit.index') }}"-->
                         <!--role="tab" data-bs-toggle="tab" type="button" data-bs-target="#recruit" aria-controls="recruit"-->
                         <!--aria-selected="false">Recruit &nbsp;<span class="aprvlcnt">{{ $recruit_count }}</span></button>-->
-                </li> --}}
+                </li>
             </ul>
         </div>
 
