@@ -151,11 +151,9 @@
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center justify-content-start gap-2">
-                                                    @if ($hr->profile_image)
-                                                        <img src="{{ asset($data->profile_image) }}" alt="">
-                                                    @else
-                                                        <img src="{{ asset('assets/images/avatar.png') }}" alt="">
-                                                    @endif
+                                                    {{-- @if ($hr->profile_image) --}}
+                                                        <img src="{{ asset($hr->profile_image ?? 'assets/images/avatar.png') }}" alt="">
+                                                    {{-- @endif --}}
                                                     <div>
                                                         <h5 class="mb-0">{{ $hr->name }}</h5>
                                                         <h6 class="mb-0">{{ $data->in_location ?? 'No location' }}</h6>

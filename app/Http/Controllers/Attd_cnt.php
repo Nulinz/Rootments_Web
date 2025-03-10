@@ -151,69 +151,69 @@ class Attd_cnt extends Controller
         return response()->json($emp_list,200);
     }
 
-    public function attd_row()
-    {
+    // public function attd_row()
+    // {
 
-        $user_check = Auth::user()->id;
+    //     $user_check = Auth::user()->id;
 
-        $attd = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->count();
+    //     $attd = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->count();
 
-        if($attd==0){
-            $val = 'attd_in';
-        }else{
-             $attd_ch = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
-             if(is_null($attd_ch->out_time)){
-                  $val = 'attd_out';
-             }else{
-                  $val = 'attd_mark';
-             }
+    //     if($attd==0){
+    //         $val = 'attd_in';
+    //     }else{
+    //          $attd_ch = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
+    //          if(is_null($attd_ch->out_time)){
+    //               $val = 'attd_out';
+    //          }else{
+    //               $val = 'attd_mark';
+    //          }
 
-        }
+    //     }
 
-        return with([
-            'attd_data' => [$attd_ch->in_time ?? null,$attd_ch->out_time ?? null,$val],
-        ]);
-    }
+    //     return with([
+    //         'attd_data' => [$attd_ch->in_time ?? null,$attd_ch->out_time ?? null,$val],
+    //     ]);
+    // }
 
-     public function attd_in(Request $req)
-    {
-         $user_check = Auth::user()->id;
+    //  public function attd_in(Request $req)
+    // {
+    //      $user_check = Auth::user()->id;
 
-         $inserted = DB::table('attendance')->insert([
-        'user_id' => $user_check,
-        'attend_status' => 'Present',
-        'in_location' => $req->loc,
-        'in_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
-        'c_on' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
-       ]);
+    //      $inserted = DB::table('attendance')->insert([
+    //     'user_id' => $user_check,
+    //     'attend_status' => 'Present',
+    //     'in_location' => $req->loc,
+    //     'in_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
+    //     'c_on' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
+    //    ]);
 
-        return response()->json([
-            'status'=>'Success',
+    //     return response()->json([
+    //         'status'=>'Success',
 
-        ]);
-    }
+    //     ]);
+    // }
 
-     public function attd_out(Request $req)
-    {
+    //  public function attd_out(Request $req)
+    // {
 
-        $user_check = Auth::user()->id;
+    //     $user_check = Auth::user()->id;
 
-        $attd = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
+    //     $attd = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
 
 
-        DB::table('attendance')
-            ->where('id', $attd->id)
-            ->update([
-            'out_location'=>$req->loc,
-            'out_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
-            'u_by' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
-             ]);
+    //     DB::table('attendance')
+    //         ->where('id', $attd->id)
+    //         ->update([
+    //         'out_location'=>$req->loc,
+    //         'out_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
+    //         'u_by' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
+    //          ]);
 
-        return response()->json([
-            'status'=>'Success',
+    //     return response()->json([
+    //         'status'=>'Success',
 
-        ]);
-    }
+    //     ]);
+    // }
 
 
 

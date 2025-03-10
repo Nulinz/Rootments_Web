@@ -51,11 +51,12 @@ class EmployeeController extends Controller
         //  dd($dept);
          $employees = $this->get_emp_dept($dept->role_dept);
 
-        //  dd($employees);
+        //   dd($employees);
     }
 
+    // /return $employees;
 
-        return view('employee.list',['employees'=>$employees]);
+         return view('employee.list',['employees'=>$employees]);
     }
 
     /**

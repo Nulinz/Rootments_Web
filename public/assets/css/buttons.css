@@ -112,6 +112,12 @@ a .headbtn:hover {
     color: var(--secondary);
 }
 
+.taskassignbtn:hover,
+.taskclosebtn:hover {
+    background-color: var(--secondary);
+    color: var(--primary);
+}
+
 @media screen and (min-width: 1140px) {
 
     /* Form Button */
@@ -235,6 +241,31 @@ a .headbtn:hover {
         height: 35px;
         border-radius: 5px;
         width: 150px;
+        transition: var(--transition);
+    }
+
+    /* Task Stages Button */
+    /* Assign Button */
+    .taskassignbtn {
+        background-color: var(--green);
+        color: var(--secondary);
+        font-size: 9px;
+        font-weight: 450;
+        border: 1px solid var(--green);
+        padding: 2px 5px;
+        border-radius: 2px;
+        transition: var(--transition);
+    }
+
+    /* Close Button */
+    .taskclosebtn {
+        background-color: var(--red);
+        color: var(--secondary);
+        font-size: 9px;
+        font-weight: 450;
+        border: 1px solid var(--red);
+        padding: 2px 5px;
+        border-radius: 2px;
         transition: var(--transition);
     }
 
@@ -366,6 +397,31 @@ a .headbtn:hover {
         transition: var(--transition);
     }
 
+    /* Task Stages Button */
+    /* Assign Button */
+    .taskassignbtn {
+        background-color: var(--green);
+        color: var(--secondary);
+        font-size: 9px;
+        font-weight: 450;
+        border: 1px solid var(--green);
+        padding: 2px 5px;
+        border-radius: 2px;
+        transition: var(--transition);
+    }
+
+    /* Close Button */
+    .taskclosebtn {
+        background-color: var(--red);
+        color: var(--secondary);
+        font-size: 9px;
+        font-weight: 450;
+        border: 1px solid var(--red);
+        padding: 2px 5px;
+        border-radius: 2px;
+        transition: var(--transition);
+    }
+
 }
 
 @media screen and (max-width: 768px) {
@@ -492,6 +548,31 @@ a .headbtn:hover {
         height: 30px;
         border-radius: 5px;
         width: 125px;
+        transition: var(--transition);
+    }
+
+    /* Task Stages Button */
+    /* Assign Button */
+    .taskassignbtn {
+        background-color: var(--green);
+        color: var(--secondary);
+        font-size: 9px;
+        font-weight: 450;
+        border: 1px solid var(--green);
+        padding: 2px 5px;
+        border-radius: 2px;
+        transition: var(--transition);
+    }
+
+    /* Close Button */
+    .taskclosebtn {
+        background-color: var(--red);
+        color: var(--secondary);
+        font-size: 9px;
+        font-weight: 450;
+        border: 1px solid var(--red);
+        padding: 2px 5px;
+        border-radius: 2px;
         transition: var(--transition);
     }
 

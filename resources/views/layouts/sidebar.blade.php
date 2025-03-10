@@ -164,25 +164,32 @@
                 </li>
             @endif
             @if(hasAccess($r_id, 'task'))
-                <li class="mb-1">
-                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('task.*') ? 'active' : '' }}"
-                        data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false">
-                        <div class="btnname">
-                            <i class="fa-solid fa-list-check"></i> &nbsp;Task
-                        </div>
-                        <div class="righticon d-flex mx-auto">
-                            <i class="fa-solid fa-angle-down toggle-icon"></i>
-                        </div>
-                    </button>
-                    <div class="collapse" id="collapse4">
-                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                            <li><a href="{{ route('task.index') }}"
-                                    class="d-inline-flex text-decoration-none rounded mt-3">Task
-                                    List</a>
-                            </li>
-                        </ul>
+            <li class="mb-1">
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('task.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse4"
+                    aria-expanded="false">
+                    <div class="btnname">
+                        <i class="fa-solid fa-list-check"></i> &nbsp;Task
                     </div>
-                </li>
+                    <div class="righticon d-flex mx-auto">
+                        <i class="fa-solid fa-angle-down toggle-icon"></i>
+                    </div>
+                </button>
+                <div class="collapse mt-3" id="collapse4">
+                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                        @if(hasAccess($r_id, 'all_task'))
+                        <li><a href="{{ route('task.index') }}"
+                                class="d-inline-flex text-decoration-none rounded">Task
+                                List</a>
+                        </li>
+                        @endif
+                        <li><a href="{{ route('task.completed-task') }}"
+                                class="d-inline-flex text-decoration-none rounded">Completed Task
+                                List</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </li>
             @endif
             @if(hasAccess($r_id, 'recruitment'))
                 <li class="mb-1">

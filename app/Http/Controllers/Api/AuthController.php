@@ -20,10 +20,12 @@ class AuthController extends Controller
     $request->validate([
         'emp_code' => 'required',
         'password' => 'required',
-        'device_token' => 'required',
+        // 'device_token' => 'required',
     ]);
 
-    $user = User::with('role')->where('emp_code', $request->emp_code)->first();
+    //  $user = User::with('role')->where('emp_code', $request->emp_code)->first();
+
+    $user = User::where('emp_code', $request->emp_code)->first();
 
     if (!$user) {
         return response()->json(['error' => 'User not registered.'], 404);
@@ -37,18 +39,11 @@ class AuthController extends Controller
     $user->device_token = $request->device_token;
     $user->save();
 
-    //  $inserted = DB::table('attendence')->insert([
-    //         'user_id' => $user->id,
-    //         'attend_status' => 'Present',
-    //         'in_location' => 'Some Location',
-    //         'in_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
-    //         'c_on' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
-    //     ]);
-
+     $role = DB::table('roles')->where('id',$user->role_id)->select('role')->first();
 
     $token = $user->createToken('token')->plainTextToken;
 
-    $profileImageUrl = $user->profile_image && file_exists($user->profile_image) ? url($user->profile_image) : null;
+     $profileImageUrl = $user->profile_image && file_exists($user->profile_image) ? url($user->profile_image) : null;
 
    return response()->json([
     'status' => 'success',
@@ -56,13 +51,14 @@ class AuthController extends Controller
         'id' => $user->id,
         'name' => $user->name,
         'emp_code' => $user->emp_code,
-        'role' => $user->role ? $user->role->role : null,
-        'role_id' => $user->role ? $user->role->id : null,
-        'store_id' => $user->store_id,
+        'role' => $role->role ?? null,
+        'role_id' => $user->role_id ?? null,
+        'store_id' => $user->store_id ?? null,
         'profile_image_url' => $profileImageUrl,
         'token' => $token,
-    ],
-]);
+        ],
+    ]);
+
 
 }
 
@@ -72,20 +68,14 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $user = Auth::user();
+        $user = User::find(Auth::id()); // Find the authenticated user by ID
+
+    //   /  dd($user);
 
         if ($user) {
+            $user->device_token = null; // Set device_token to null
+            $user->save(); // Save the updated user
 
-            $user->device_token = null;
-            // $user->save();
-
-            //  $out=DB::table('attendence')
-            // ->where('user_id', $user->id)
-            // ->whereDate('c_on', now()->setTimezone('Asia/Kolkata')->format('Y-m-d'))
-            // ->update([
-            //     'out_time' => now()->setTimezone('Asia/Kolkata')->format('H:i:s'),
-            //     'u_by' => now()->setTimezone('Asia/Kolkata')->format('Y-m-d')
-            // ]);
 
             $request->user()->currentAccessToken()->delete();
 
@@ -123,6 +113,13 @@ class AuthController extends Controller
         }
 
         return response()->json(['status' => 'success', 'message' => 'Password Updated Successfully'], 200);
+    }
+
+
+    public function popup(Request $request)
+    {
+
+        return response()->json(['version' => '1.0.1'], 200);
     }
 
 }

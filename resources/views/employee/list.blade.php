@@ -59,7 +59,7 @@
                             <td>{{ $item->contact_no }}</td>
                             <td>
                                 <div class="d-flex gap-3">
-                                    <a href="{{ route('employee.view', ['id' => $item->id]) }}" data-bs-toggle="tooltip"
+                                    <a href="{{ route('employee.view', ['id' => $item->id ?? 0]) }}" data-bs-toggle="tooltip"
                                         data-bs-title="View Profile"><i class="fas fa-eye"></i></a>
                                 </div>
                             </td>

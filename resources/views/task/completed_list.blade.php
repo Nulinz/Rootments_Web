@@ -3,13 +3,8 @@
 @section('content')
     <div class="sidebodydiv px-5 py-3">
         <div class="sidebodyhead">
-            <h4 class="m-0">Task List</h4>
+            <h4 class="m-0">Completed Task List</h4>
             <div class="d-flex justify-content-around">
-
-                {{-- @if(($r_id==12)&&($count>0)) --}}
-                {{-- <a href="{{ route('task.add.cluster') }}"><button class="listbtn">+ Cluster Task</button></a> --}}
-                {{-- @endif --}}
-               <a href="{{ route('task.add') }}"><button class="listbtn">+ Add Task</button></a>
             </div>
         </div>
 
@@ -43,8 +38,6 @@
                             <th>Priority</th>
                             <th>Start Date</th>
                             <th>End Date</th>
-                            <th>Status</th>
-
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -58,7 +51,6 @@
                                 <td>{{ $data->priority }}</td>
                                 <td>{{ date("d-m-Y",strtotime($data->start_date)) }}</td>
                                 <td>{{ date("d-m-Y",strtotime($data->end_date)) }}</td>
-                                <td>{{ $data->task_status }}</td>
 
                                 <td>
                                     <div class="d-flex gap-3">
@@ -76,63 +68,77 @@
     </div>
 
     <script>
-        document.getElementById("print").addEventListener("click", function(e) {
-            e.preventDefault();
+        // document.getElementById("print").addEventListener("click", function(e) {
+        //     e.preventDefault();
 
-            var table = document.querySelector(".example");
-            var clonedTable = table.cloneNode(true);
+        //     var table = document.querySelector(".example");
+        //     var clonedTable = table.cloneNode(true);
 
-            clonedTable.querySelectorAll("tr").forEach(row => {
-                if (row.lastElementChild) {
-                    row.removeChild(row.lastElementChild);
-                }
-            });
+        //     clonedTable.querySelectorAll("tr").forEach(row => {
+        //         if (row.lastElementChild) {
+        //             row.removeChild(row.lastElementChild);
+        //         }
+        //     });
 
-            var printWindow = window.open('', '', 'height=600,width=800');
-            printWindow.document.write(`
-            <html>
-                <head>
-                    <title>Task Lists</title>
-                    <style>
-                        table { width: 100%; border-collapse: collapse; }
-                        table, th, td { border: 1px solid black; }
-                        th, td { padding: 8px; text-align: left; }
-                    </style>
-                </head>
-                <body>${clonedTable.outerHTML}</body>
-            </html>
-        `);
-            printWindow.document.close();
-            printWindow.focus();
-            printWindow.print();
-            printWindow.close();
-        });
+        //     var printWindow = window.open('', '', 'height=600,width=800');
+        //     printWindow.document.write(`
+        //     <html>
+        //         <head>
+        //             <title>Task Lists</title>
+        //             <style>
+        //                 table { width: 100%; border-collapse: collapse; }
+        //                 table, th, td { border: 1px solid black; }
+        //                 th, td { padding: 8px; text-align: left; }
+        //             </style>
+        //         </head>
+        //         <body>${clonedTable.outerHTML}</body>
+        //     </html>
+        // `);
+        //     printWindow.document.close();
+        //     printWindow.focus();
+        //     printWindow.print();
+        //     printWindow.close();
+        // });
 
-        document.getElementById("excel").addEventListener("click", function(e) {
-            e.preventDefault();
+        // document.getElementById("excel").addEventListener("click", function(e) {
+        //     e.preventDefault();
 
-            var table = document.querySelector(".example");
-            var csv = [];
-            var rows = table.querySelectorAll("tr");
+        //     var table = document.querySelector(".example");
+        //     var csv = [];
+        //     var rows = table.querySelectorAll("tr");
 
-            rows.forEach(row => {
-                var rowData = [];
-                var cells = Array.from(row.children);
-                cells.slice(0, -1).forEach(cell => {
-                    rowData.push('"' + cell.textContent.trim() + '"');
-                });
-                csv.push(rowData.join(","));
-            });
+        //     rows.forEach(row => {
+        //         var rowData = [];
+        //         var cells = Array.from(row.children);
+        //         cells.slice(0, -1).forEach(cell => {
+        //             rowData.push('"' + cell.textContent.trim() + '"');
+        //         });
+        //         csv.push(rowData.join(","));
+        //     });
 
-            var csvBlob = new Blob([csv.join("\n")], {
-                type: "text/csv"
-            });
-            var link = document.createElement("a");
-            link.href = URL.createObjectURL(csvBlob);
-            link.download = "Task-List.csv";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+        //     var csvBlob = new Blob([csv.join("\n")], {
+        //         type: "text/csv"
+        //     });
+        //     var link = document.createElement("a");
+        //     link.href = URL.createObjectURL(csvBlob);
+        //     link.download = "Task-List.csv";
+        //     document.body.appendChild(link);
+        //     link.click();
+        //     document.body.removeChild(link);
+        // });
+    </script>
+    <script>
+                messaging.requestPermission()
+        .then(() => {
+            return messaging.getToken({ vapidKey: 'YOUR_VAPID_PUBLIC_KEY' }); // Get token for the device
+        })
+        .then((token) => {
+            console.log('FCM Token:', token);
+            // Send this token to your backend for storing and sending notifications
+            saveTokenToServer(token);
+        })
+        .catch((err) => {
+            console.log('Permission denied or error occurred:', err);
         });
     </script>
 @endsection

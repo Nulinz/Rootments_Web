@@ -263,12 +263,29 @@
                         </div>
 
                         <div class="cardmain column">
-                            <div class="row drag complete-list sortable-column" id="complete">
+                            <div class="row drag complete-list sortable-column" id="complete" >
 
-                                @foreach ($tasks_complete as $task)
+                                @foreach ($tasks_complete as $index => $task)
+
+                                @if(($task->task_status=='Assigned')||($task->task_status=='close'))
+
+                                <?php
+                                // Add 15 days to the task's end date using Carbon
+                                $end_find = date("Y-m-d",strtotime($task->end_date."+15 days"));
+
+                                // Get the current date
+                                 $current_date = date("Y-m-d");
+
+                                // Compare the end_find date with the current date
+                                // if ($end_find > $current_date) {
+                                //     continue;
+                                // }
+                                 ?>
+
+                                @endif
                                     <div class="col-sm-12 col-md-11 col-xl-11 mb-2 d-block mx-auto draggablecard completedtask"
                                         data-id="{{ $task->id }}" data-patent_id="{{ $task->f_id }}"
-                                        data-cat="{{ $task->category_id }}" data-subcat="{{ $task->subcategory_id }}"
+                                        data-cat="{{ $task->category_id }}" data-status="{{ $task->task_status }}" data-subcat="{{ $task->subcategory_id }}"
                                         draggable="true">
                                         <div class="taskname mb-1">
                                             <div class="tasknameleft">
@@ -299,8 +316,25 @@
                                             <h6 class="mb-0">{{ $task->task_description }}</h6>
                                             <div class="taskdescpdiv">
                                                 <h5 class="mb-0">{{ $task->assigned_by }}</h5>
-                                                <a class="mb-0" data-bs-toggle="modal" data-bs-target="#completedModal"
-                                                    id="assign"><i class="fa-solid fa-circle-check"></i></a>
+                                                <div>
+                                                    {{-- @dd($task->task_status); --}}
+                                                    @if($task->task_status=='Completed')
+                                                    <a class="mb-0" data-bs-toggle="modal" data-bs-target="#completedModal"
+                                                        id="assign"><button class="taskassignbtn">Assign</button></a>
+
+                                                    <a class="mb-0" id="close"><button data-close="{{ $task->id }}" class="taskclosebtn">Close</button></a>
+                                                    @else
+                                                        @if($task->task_status=='Assigned')
+                                                        <h5 class="mb-0 text-success">Assigned</h5>
+                                                        @else
+                                                        <h5 class="mb-0 text-danger ">Closed</h5>
+                                                        @endif
+                                                    @endif
+
+
+
+
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="taskdate mb-2">
@@ -347,6 +381,7 @@
                 <div class="modal-body">
                     <form class="row" id="taskForm" enctype="multipart/form-data">
                         <input type="hidden" name="f_id" id="f_id" value="">
+                        <input type="hidden" name="task_id" id="task_id" value="">
                         <input type="hidden" name="category_id" id="cat_id" value="">
                         <input type="hidden" name="subcategory_id" id="subcat_id" value="">
 
@@ -422,12 +457,38 @@
 
     <script>
         $(document).ready(function () {
+            $('.taskclosebtn').on('click', function(){
+
+                var close = confirm("Are you sure you want to close the task flow ?");
+
+                 if(close){
+                    var close_id = $(this).data('close');
+                    // alert(close_id);
+
+                    $.ajax({
+                        url: "{{ route('update.task') }}",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            id: close_id,
+                            status: 'Close',
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                location.reload();
+                            }
+                        }
+                    });
+                 } // if closing
+
+            })
 
             $('.sortable-column').each(function () {
                 new Sortable(this, {
                     group: {
                         name: 'tasks',
-                        pull: true,
+                        pull: this.id === 'complete' ? false : true,
                         put: true
                     },
                     animation: 150,
@@ -435,6 +496,44 @@
                     forceFallback: true,
 
                     onStart: function (evt) {
+
+
+                       // Create a new label to display the column name dynamically near the item being dragged
+            // var columnName = evt.from.id; // The ID of the column being hovered over
+            // var $columnNameLabel = $('<div class="drag-column-name">Hovering over: ' + columnName + '</div>');
+            // $columnNameLabel.appendTo('body'); // Append it to the body (or to a specific container)
+            // $columnNameLabel.css({
+            //     position: 'absolute',
+            //     top: evt.clientY + 10 + 'px',
+            //     left: evt.clientX + 10 + 'px',
+            //     backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            //     color: 'white',
+            //     padding: '5px',
+            //     borderRadius: '5px',
+            //     fontSize: '12px',
+            //     zIndex: 9999
+            // });
+
+                        // var columnId = evt.from.id;
+                        // var taskStatus = $(evt.item).data('status').trim();
+                        // var st_originColumn = evt.from;
+
+                        //  console.log(taskStatus);
+
+                        // // if (taskStatus === 'Completed' && columnId !== 'complete') {
+                        // //             originColumn.appendChild(evt.item); // Move it back
+                        // //             evt.preventDefault();
+                        // //             alert("hello");
+                        // //             return;
+                        // //     }
+
+                        // console.log(taskStatus,columnId);
+
+                        // if(columnId === 'complete'){
+                        //     evt.preventDefault(); // Prevent the drag action entirely
+                        //     return;
+                        // }
+
                         console.log('Dragging Task ID:', $(evt.item).data('id'), 'from:', evt
                             .from.id);
                     },
@@ -472,6 +571,9 @@
                                 return;
                             }
                         }
+
+                         // If the task is in "Completed" status, prevent dropping it back into any other column
+
 
                         // if (columnId === 'complete') {
                         //     alert("You cannot move a completed task back.");
@@ -525,6 +627,8 @@
                     document.getElementById("cat_id").value = catId;
 
                     document.getElementById("subcat_id").value = subcatId;
+
+                    document.getElementById("task_id").value = this.getAttribute("data-id");;
                 });
             });
         });

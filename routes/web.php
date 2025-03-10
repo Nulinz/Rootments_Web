@@ -8,10 +8,25 @@ use Illuminate\Support\Facades\DB;
 Route::view('/', 'login')->name('login');
 
 
+
+
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
     Route::post('login', 'AuthenticationController@login')->name('login.submit');
     Route::get('logout', 'AuthenticationController@logout')->name('logout');
+
+    // Route::get('/api/firebase-config', function () {
+    //     return response()->json([
+    //         'apiKey' => 'AIzaSyDVdH_PbNRhl2YGMPronbaklLPbZCPyT4w',
+    //         'authDomain' => 'rootments-app.firebaseapp.com',
+    //         'projectId' => 'rootments-ap',
+    //         'storageBucket' => 'rootments-app.firebasestorage.app',
+    //         'messagingSenderId' => '406832035732',
+    //         'appId' => '1:406832035732:web:0564580a464ee6f336c181',
+    //     ]);
+    // });
+
+    Route::post('send_not', 'LeaveController@send_not')->name('send_not');
 
 
     Route::middleware(['auth', 'asm'])->group(function () {
@@ -86,6 +101,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         // Task
         Route::get('task-list', 'TaskController@index')->name('task.index');
+        Route::get('completed-task-list', 'TaskController@completed_list')->name('task.completed-task');
         Route::get('task-add', 'TaskController@create_task')->name('task.add');
         // Route::get('task-add/hr', 'TaskController@create_task')->name('task.hr');
         Route::get('task-add/cluster', 'TaskController@create')->name('task.add.cluster');
@@ -282,6 +298,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('warehouse_index', 'warehouse_cnt@index')->name('warehouse.index');
         // Purchase
         Route::get('purchase_index', 'purchase_cnt@index')->name('purchase.index');
+
+
 
     });
 

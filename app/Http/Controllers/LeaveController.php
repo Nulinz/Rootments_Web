@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Services\FirebaseService;
 use Illuminate\Support\Facades\Log;
 
+use Google\Client;
+use Google\Service\FirebaseCloudMessaging;
+use Google\Service\FirebaseCloudMessaging\Message;
+use Google\Service\FirebaseCloudMessaging\Notification as FcmNotification;
+use Google\Service\FirebaseCloudMessaging\SendMessageRequest;
+
 
 
 class LeaveController extends Controller
@@ -80,6 +86,9 @@ class LeaveController extends Controller
                 $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->first();
 
                 switch($dept->role_dept) {
+                    case 'HR':
+                        $arr = 3;
+                        break;
                     case 'Finance':
                         $arr = 7;
                         break;
@@ -100,6 +109,7 @@ class LeaveController extends Controller
                 // dd($dept);
 
                 $leave->request_to = $arr1->id;
+                $req_to = $arr1->id;
                 $req_token  = DB::table('users')->where('id',$arr1->id)->first();
 
                 }
@@ -114,14 +124,14 @@ class LeaveController extends Controller
 
 
 
-              if ($req_token->device_token) {
+              if (!is_null($req_token->device_token)) {
                     $taskTitle = $request->request_type."Request";
                     $taskBody = $user_id->name. "Requested for " . $request->request_type;
 
                     $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
                     Notification::create([
-                        'user_id' => $req_to,
+                        'user_id' => $req_to ?? 0,
                         'noty_type' => 'leave',
                         'type_id' => $leave->id
                     ]);
@@ -129,7 +139,7 @@ class LeaveController extends Controller
             else {
                 // Optionally handle the case where the device token is empty
                 // For example, log it or send a different type of notification
-                Log::warning('Device token missing for user: ' . $req_to);
+                // Log::warning('Device token missing for user: ' . $req_to);
             }
 
             //  Notification::create([
@@ -154,6 +164,42 @@ class LeaveController extends Controller
             ->update(['esculate_to' => 3, 'updated_at' => now()]);
 
         return response()->json(['message' => 'Escalated successfully!']);
+    }
+
+    public function send_not(Request $req)
+    {
+
+        // try {
+        //     // Setup Google Client
+        //     $client = new Client();
+        //     $client->setAuthConfig(storage_path('app/firebase.json')); // Replace with your service account file path
+        //     $client->addScope(FirebaseCloudMessaging::CLOUD_PLATFORM);
+
+        //     $fcm = new FirebaseCloudMessaging($client);
+
+        //     // Create Notification
+        //     $notification = new FcmNotification();
+        //     $notification->setTitle('Test Notification');
+        //     $notification->setBody('This is a test notification from your Laravel app.');
+
+        //     // Create Message
+        //     $message = new Message();
+        //     $message->setToken($req->not_token);
+        //     $message->setNotification($notification);
+
+        //     // Create Send Message Request
+        //     $sendMessageRequest = new SendMessageRequest();
+        //     $sendMessageRequest->setMessage($message);
+
+        //     // Send Message
+        //    $res =  $fcm->projects_messages->send('projects/rootments-app', $sendMessageRequest); // Replace with your project ID
+
+        //     return response()->json(['success' => true,'res'=>$res]);
+        // } catch (\Exception $e) {
+        //     return response()->json(['success' => false, 'error' => $e->getMessage()]);
+        // }
+
+
     }
 
     /**

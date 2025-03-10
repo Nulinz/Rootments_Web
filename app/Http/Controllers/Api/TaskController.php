@@ -18,9 +18,11 @@ use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Http\Controllers\trait\common;
 
 class TaskController extends Controller
 {
+    use common;
     protected $firebaseService;
 
     public function __construct(FirebaseService $firebaseService)
@@ -48,7 +50,22 @@ class TaskController extends Controller
                 ->leftJoin('users as assigned_by_user', 'tasks.assign_by', '=', 'assigned_by_user.id')
                 ->leftJoin('users as assigned_to_user', 'tasks.assign_to', '=', 'assigned_to_user.role_id')
                 ->where('tasks.assign_to', $assignTo)
-                ->where('tasks.task_status', $status)
+                // ->where('tasks.task_status', $status)
+                // Conditionally add status filters
+                    ->when($status === 'Completed', function ($query) {
+                        return $query->whereIn('tasks.task_status', ['Completed', 'Close', 'Assigned'])
+                            ->where(function ($query) {
+                                $query->where('tasks.task_status', 'Completed') // Keep Completed tasks
+                                    // Exclude Assigned and Close tasks where end_date + 15 days is greater than the current date
+                                    ->orWhere(function ($subQuery) {
+                                        $subQuery->whereIn('tasks.task_status', ['Assigned', 'Close'])
+                                                ->whereRaw('DATE_ADD(tasks.end_date, INTERVAL 15 DAY) >= ?', [Carbon::now()]);
+                                    });
+                            });
+                    })
+                    ->when($status !== 'Completed', function ($query) use ($status) {
+                        return $query->where('tasks.task_status', $status);
+                    })
                 ->select(
                     'tasks.*',
                     'categories.category',
@@ -62,7 +79,7 @@ class TaskController extends Controller
                 ->get();
 
             foreach ($tasks[$status] as $task) {
-                $task->task_fileUrl = $task->task_file ? url('asset/images/Task/' . $task->task_file) : null;
+                $task->task_fileUrl = $task->task_file ? url($task->task_file) : null;
             }
 
 
@@ -148,7 +165,14 @@ class TaskController extends Controller
      */
       public function store(Request $request)
     {
-         $assignToArray = is_array($request->assign_to) ? $request->assign_to : [$request->assign_to];
+        $firstTask = null;
+
+        $assignToString = $request->assign_to;  // This is your string '[1,2,3]'
+
+        // Convert the string to an array using json_decode
+        $assignToArray = json_decode($assignToString, true);
+
+        //  $assignToArray = is_array($request->assign_to) ? $request->assign_to : [$request->assign_to];
 
         foreach ($assignToArray as $assignTo) {
             $task = new Task();
@@ -165,31 +189,46 @@ class TaskController extends Controller
 
             if ($request->hasFile('task_file')) {
                 $file = $request->file('task_file');
-                $name = date('y') . '-' . Str::upper(Str::random(8)) . '.' . $file->getClientOriginalExtension();
-                $path = 'assets/images/Task/';
-                $file->move($path, $name);
+                // $name = date('y') . '-' . Str::upper(Str::random(8)) . '.' . $file->getClientOriginalExtension();
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = uniqid('task_file_') . '.' . $extension; // Generate a unique filename
+            // $path = $file->storeAs('task_files', $filename, 'public'); // Store in 'storage/app/public/task_files'
+            // $url = Storage::url($path); // Get the public URL of the file
 
-                $task->task_file = $path . $name;
+
+                $path = 'assets/images/Task/';
+                $file->move($path, $filename);
+
+                $task->task_file = $path . $filename;
             }
 
             $task->assign_by = $request->assign_by;
             $task->save();
 
-            $task->f_id = $task->id;
-            $task->save();
+             // If it's the first task, store its ID for later use
+            if (!$firstTask) {
+                $firstTask = $task;
+            }
+
+            // Update f_id for all tasks
+            $task->f_id = $firstTask->id;
+            $task->save(); // Update task with f_id
+
+            // $task->f_id = $task->id;
+            // $task->save();
 
        $notifications = [];
 
         foreach ($assignToArray as $assignTo) {
             try {
-                $user = User::findOrFail($assignTo);
+                $user_assign = User::findOrFail($assignTo);
 
-                if ($user->device_token) {
+                if ($user_assign->device_token) {
                     $taskTitle = $request->task_title;
                     $taskBody = "You have been assigned a new task: " . $taskTitle;
 
                     $response = app(FirebaseService::class)->sendNotification(
-                        $user->device_token,
+                        $user_assign->device_token,
                         $taskTitle,
                         $taskBody
                     );
@@ -201,7 +240,7 @@ class TaskController extends Controller
 
                     $notifications[] = [
                         'user_id' => $assignTo,
-                        'device_token' => $user->device_token,
+                        'device_token' => $user_assign->device_token,
                         'title' => $taskTitle,
                         'body' => $taskBody,
                         'response' => $response
@@ -221,7 +260,8 @@ class TaskController extends Controller
 
     return response()->json([
         'success' => true,
-        'message' => 'Task Added successfully'
+        'message' => 'Task Added successfully',
+        'error'=>$notifications
     ]);
 }
 
@@ -230,6 +270,10 @@ public function completedtaskstore(Request $request)
         $user_id = auth()->user()->id;
 
         $assignToArray = is_array($request->assign_to) ? $request->assign_to : [$request->assign_to];
+
+        $old_task = Task::find($request->task_id);
+        $old_task->task_status = 'Assigned';
+        $old_task->save();
 
         foreach ($assignToArray as $assignTo) {
             $task = new Task();
@@ -245,6 +289,8 @@ public function completedtaskstore(Request $request)
             $task->end_date = $request->end_date;
             $task->end_time = $request->end_time;
             $task->priority = $request->priority;
+
+
 
             if ($request->hasFile('task_file')) {
                 $file = $request->file('task_file');
@@ -309,18 +355,35 @@ public function completedtaskstore(Request $request)
   public function updateTaskStatus(Request $request)
     {
 
+
         $request->validate([
-            'id' => 'required|integer|exists:tasks,id',
+            'id' => 'required',
             'status' => 'required|string',
         ]);
 
         $task = Task::findOrFail($request->id);
 
-        $task->update(['task_status' => $request->status]);
+        if($request->status=='Close'){
+
+            $first  = DB::table('tasks')->where('f_id',$task->f_id)->orderBy('id','asc')->first();
+
+            if ($first) {
+                // Update both the current task and the first task with the new status
+                DB::table('tasks')
+                    ->whereIn('id', [$task->id, $first->id]) // Updating both tasks
+                    ->update(['task_status' => $request->status]);
+            }
+
+        }else{
+             $task->update(['task_status' => $request->status]);
+        }
+
+
 
         return response()->json([
             'success' => true,
             'message' => 'Task status updated successfully'
+
         ]);
     }
 
@@ -386,107 +449,7 @@ public function completedtaskstore(Request $request)
         ]);
      }
 
-    //   public function leavestore(Request $request)
-    // {
 
-
-    //       $user_id = auth()->user();
-
-    //       $role_get = DB::table('roles')
-    //         ->leftJoin('users', 'users.role_id', '=', 'roles.id')
-    //         ->select('roles.id', 'roles.role', 'roles.role_dept')
-    //         ->where('users.id', $user_id->id)
-    //         ->first();
-
-    //     if ($role_get) {
-    //         $leave = new Leave();
-    //         if($request->request_type!='Permission'){
-    //              $leave->start_date = $request->start_date;
-    //              $leave->end_date = $request->end_date;
-    //         }else{
-    //              $leave->start_date = $request->start_date;
-    //              $leave->end_date = $request->start_date;
-    //         }
-
-    //         $leave->request_type = $request->request_type;
-    //         $leave->reason = $request->reason;
-    //         $leave->start_time = $request->start_time;
-    //         $leave->end_time = $request->end_time;
-    //         $leave->user_id = $user_id->id;
-    //         $leave->created_by = $user_id->id;
-
-    //         if($user_id->role_id >= 13 && $user_id->role_id <= 19){
-
-
-
-    //         $store_man = DB::table('users')->where('store_id',$user_id->store_id)->where('role_id',12)->first();
-    //                 $leave->request_to = $store_man->id ?? 2;
-    //                 $req_to = $store_man->id ?? 2;
-    //                 $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
-    //         }
-    //         else if(hasAccess($user_id->role_id,'leave')){
-
-    //                 $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->get();
-
-    //                 switch($dept->role_dept) {
-    //                     case 'Finance':
-    //                         $request_to = 7;
-    //                         break;
-    //                     case 'Maintenance':
-    //                         $arr = 30;
-    //                         break;
-    //                     case 'Warehouse':
-    //                         $arr = 37;
-    //                         break;
-    //                     case 'Purchase':
-    //                         $arr = 41;
-    //                         break;
-
-    //                 }
-
-    //                 dd($dept);
-
-    //                 $leave->request_to = $arr;
-
-    //         }else{
-
-
-    //             $leave->request_to = $request->request_to;
-    //             $req_to = $request->request_to;
-    //             $req_token  = DB::table('users')->where('id',$request->request_to)->first();
-    //         }
-
-    //         // $leave->save();
-
-
-
-    //         // if ($req_token->device_token) {
-    //         //         $taskTitle = $request->request_type."Request";
-    //         //         $taskBody = $user_id->name. "Requested for " . $request->request_type;
-
-    //         //         $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
-
-    //         //         Notification::create([
-    //         //             'user_id' => $req_to,
-    //         //             'noty_type' => 'leave',
-    //         //             'type_id' => $leave->id
-    //         //         ]);
-    //         // } // notification end
-
-
-
-    //     } else {
-
-    //         return response()->json(['error' => 'User role not found'], 404);
-    //     }
-
-
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'Leave Request Sent successfully'
-    //     ]);
-    // }
 
      public function reginationstore(Request $request)
     {
@@ -610,7 +573,7 @@ public function completedtaskstore(Request $request)
 public function notification_list(Request $request)
 {
 
-    $user = $request->input('user_id');
+    $user = $request->input('user_id') ?? 2;
 
 
     if (!$user) {
@@ -623,6 +586,7 @@ public function notification_list(Request $request)
         ->select('id', 'user_id', 'noty_type', 'type_id', 'created_at')
         ->where('user_id', $user)
         ->where('noty_type','task')
+        ->OrderBy('id','DESC')
         ->get();
 
     if ($notifications->isEmpty()) {
@@ -645,6 +609,7 @@ public function notification_list(Request $request)
                     ->leftJoin('roles as assigned_to_role', 'assigned_to_user.role_id', '=', 'assigned_to_role.id')
                     ->leftJoin('roles as assigned_by_role', 'assigned_by_user.role_id', '=', 'assigned_by_role.id')
                     ->where('tasks.id', $notification->type_id)
+                     ->where('tasks.assign_to', $notification->user_id)
                     ->select(
                         'tasks.id',
                         'tasks.task_title',
@@ -780,253 +745,8 @@ public function tasktimeline(Request $request)
 }
 
 
-     public function attd_row()
-        {
 
-            $user_check = Auth::user()->id;
 
-             $attd = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->count();
-
-            if($attd==0){
-                $val = 'attd_in';
-            }else{
-                 $attd_ch = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
-                 if(is_null($attd_ch->out_time)){
-                      $val = 'attd_out';
-                 }else{
-                      $val = 'attd_mark';
-                 }
-
-            }
-
-            return response()->json([
-                'status'=>'Success',
-                'data' => [$attd_ch->in_time ?? null,$attd_ch->out_time ?? null,$val],
-            ]);
-        }
-
-         public function attd_in(Request $req)
-        {
-
-            //  $user_check = $req->id;
-              $user_check = Auth::user()->id;
-
-
-
-            $input = explode(',',$req->loc);
-
-             // Get latitude and longitude from the request
-            $latitude =  $input[0];
-            $longitude = $input[1];
-
-            // Google API Key
-            $googleApiKey = env('GOOGLE_MAPS_API_KEY');
-
-            // Make the request to the Google Geocoding API
-            $response = Http::get("https://maps.googleapis.com/maps/api/geocode/json", [
-                'latlng' => "{$latitude},{$longitude}",
-                'key' => $googleApiKey
-            ]);
-
-            // // Decode the response
-             $location = $response->json();
-
-
-            // Check if the response was successful
-        if ($location['status'] === 'OK') {
-                $district = null;
-
-                $result = $location['results'][0];
-                $formattedAddress = $result['formatted_address'];
-
-            foreach ($location['results'][0]['address_components'] as $component) {
-                    // Look for the district (usually administrative_area_level_2) or locality (city)
-                if (in_array('administrative_area_level_2', $component['types'])) {
-                    $district = $component['long_name'];  // District
-                    break;
-                }
-
-                // If no district is found, you can try to use locality as a fallback
-                if (in_array('locality', $component['types'])) {
-                    $district = $component['long_name'];  // Locality (City or Town)
-                    break;
-                }
-            } // end foreach
-        }
-
-            $inserted  = DB::table('attendance')->insertGetId([
-                        'user_id' => $user_check,
-                        'attend_status' => 'Present',
-                        'in_location' => $district ?? 0,
-                        'in_add' => $formattedAddress ?? 0,
-                        'in_time' => now()->format('H:i:s'),
-                        'c_on' => now()->format('Y-m-d'),
-                        'status' => 'Active'
-                    ]);
-
-
-         if(!is_null(Auth::user()->store_id)){
-
-            $st_time = DB::table('stores')->where('id',Auth::user()->store_id)->select('stores.store_start_time','stores.store_end_time')->first();
-
-            // dd($st_time);
-
-
-
-            $c_time = Carbon::now(); // Get the current time using Carbon
-
-            // Assuming store_start_time is stored in $st_time->store_start_time as a Carbon instance
-            $start_time = Carbon::parse($st_time->store_start_time); // Convert store start time to a Carbon instance
-
-            // Calculate the 5-minute range (+5 and -5 minutes)
-            $start_time_plus_5 = $start_time->copy()->addMinutes(5);
-            $start_time_minus_5 = $start_time->copy()->subMinutes(5);
-
-            if (!($c_time >= $start_time_minus_5 && $c_time <= $start_time_plus_5)) {
-
-
-                      // Calculate the difference in hours, minutes, and seconds
-                        $diff = $start_time->diff($c_time);
-
-                        // Format the difference in hours, minutes, and seconds
-                        $late = $diff->format('%H:%I');  // Example output: 02:30:00
-
-                        // Output the result
-                        // dd($formattedDiff);
-
-
-                        DB::table('attd_ot')->insert([
-                            'attd_id' => $inserted,
-                            'cat' => 'late',
-                            'time' => $late,
-                            'status' => 'pending',
-                            'created_at' => now(),
-                            'updated_at' => now()
-                        ]);
-                    }
-
-         }
-
-
-            if($inserted){
-            return response()->json([
-                'status'=>'Success',
-
-
-            ],200);
-            }else{
-                return response()->json([
-                    'status'=>'Failure'
-                     ],500);
-            }
-        }
-
-         public function attd_out(Request $req)
-        {
-
-            $user_check = Auth::user()->id;
-
-            $attd = DB::table('attendance')->where('user_id',$user_check)->whereDate('c_on', date('Y-m-d'))->orderBy('id', 'desc')->first();
-
-
-
-            $input = explode(',',$req->loc);
-
-             // Get latitude and longitude from the request
-            $latitude =  $input[0];
-            $longitude = $input[1];
-
-            // Google API Key
-            $googleApiKey = env('GOOGLE_MAPS_API_KEY');
-
-            // Make the request to the Google Geocoding API
-            $response = Http::get("https://maps.googleapis.com/maps/api/geocode/json", [
-                'latlng' => "{$latitude},{$longitude}",
-                'key' => $googleApiKey
-            ]);
-
-            // // Decode the response
-             $location = $response->json();
-
-
-            // Check if the response was successful
-        if ($location['status'] === 'OK') {
-                $district = null;
-
-                $result = $location['results'][0];
-                $formattedAddress = $result['formatted_address'];
-
-            foreach ($location['results'][0]['address_components'] as $component) {
-                // Look for the district (usually administrative_area_level_2) or locality (city)
-                if (in_array('administrative_area_level_2', $component['types'])) {
-                    $district = $component['long_name'];  // District
-                    break;
-                }
-
-                // If no district is found, you can try to use locality as a fallback
-                if (in_array('locality', $component['types'])) {
-                    $district = $component['long_name'];  // Locality (City or Town)
-                    break;
-                }
-            }
-        }
-
-
-
-           $check_out =  DB::table('attendance')
-                ->where('id', $attd->id)
-                ->update([
-                'out_time' => now()->format('H:i:s'),
-                'out_location' => $district,
-                'out_add' => $formattedAddress,
-                'u_by'=>now()->format('Y-m-d')
-                 ]);
-
-
-         if(!is_null(Auth::user()->store_id)){
-
-            $st_time = DB::table('stores')->where('id',Auth::user()->store_id)->select('stores.store_start_time','stores.store_end_time')->first();
-
-            // dd($st_time);
-
-
-
-                 $c_time = now()->format('H:i:s');
-
-                    if ($c_time > $st_time->store_end_time) {
-                        // Define the two times
-                        $time1 = Carbon::createFromFormat('H:i:s', $st_time->store_end_time);
-                        $time2 = Carbon::createFromFormat('H:i:s', $c_time);
-
-                        // Calculate the difference
-                        $diff = $time1->diff($time2);
-
-                        $ot = $diff->format('%H:%I');
-
-                        DB::table('attd_ot')->insert([
-                            'attd_id' => $attd->id,
-                            'cat' => 'ot',
-                            'time' => $ot,
-                            'status' => 'pending',
-                            'created_at' => now(),
-                            'updated_at' => now()
-                        ]);
-                    }
-
-         }
-
-            if($check_out){
-                  return response()->json([
-                    'status'=>'Success'
-
-                ],200);
-            }else{
-                return response()->json([
-                    'status'=>'Failure'
-                     ],500);
-            }
-
-        }
 
 
     public function hr_list()
@@ -1053,10 +773,7 @@ public function tasktimeline(Request $request)
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.

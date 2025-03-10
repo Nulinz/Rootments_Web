@@ -23,31 +23,44 @@ class FirebaseService
         $this->messaging = new FirebaseCloudMessaging($this->client);
     }
 
-    public function sendNotification($token, $title, $body)
-    {
-        $message = new Message([
-            'token' => $token,
-            'notification' => new Notification([
-                'title' => $title,
-                'body' => $body,
-            ]),
-            'android' => new AndroidConfig([
-                'priority' => 'high',
-            ]),
-        ]);
+   public function sendNotification($token, $title, $body)
+{
+    $message = new Message([
+        'token' => $token,
+        'notification' => new Notification([
+            'title' => $title,
+            'body' => $body,
+        ]),
+        'android' => new AndroidConfig([
+            'priority' => 'high',
+        ]),
+        'apns' => [
+            'payload' => [
+                'aps' => [
+                    'alert' => [
+                        'title' => $title,
+                        'body' => $body,
+                    ],
+                    'sound' => 'sound.wav',
+                    'content-available' => 1,
+                ],
+            ],
+        ],
+    ]);
 
-        $sendRequest = new SendMessageRequest([
-            'message' => $message
-        ]);
+    $sendRequest = new SendMessageRequest([
+        'message' => $message
+    ]);
 
-        try {
-            $response = $this->messaging->projects_messages->send(
-                "projects/" . config('firebase.project_id'),
-                $sendRequest
-            );
-            return $response;
-        } catch (\Exception $e) {
-            return ['error' => $e->getMessage()];
-        }
+    try {
+        $response = $this->messaging->projects_messages->send(
+            "projects/" . config('firebase.project_id'),
+            $sendRequest
+        );
+        return $response;
+    } catch (\Exception $e) {
+        return ['error' => $e->getMessage()];
     }
+}
+
 }

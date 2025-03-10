@@ -65,56 +65,74 @@ class TaskController extends Controller
 // $task = $query->get();
 
 $user = Auth::user();
-$role = Role::find($user->role_id);
-$store = DB::table('stores')->where('id', $user->store_id)->first();
+// $role = Role::find($user->role_id);
+// $store = DB::table('stores')->where('id', $user->store_id)->first();
 
-// Get the first task IDs per f_id
-$firstTaskIds = DB::table('tasks as t1')
-    ->selectRaw('MIN(id) as id')
-    ->groupBy('f_id')
-    ->pluck('id');
+// // Get the first task IDs per f_id
+// $firstTaskIds = DB::table('tasks as t1')
+//     ->selectRaw('MIN(id) as id')
+//     ->groupBy('f_id')
+//     ->pluck('id');
 
-$query = DB::table('tasks')
-    ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
-    ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
-    ->leftJoin('users as assigner', 'tasks.assign_by', '=', 'assigner.id') // Join users table for assign_by
-    ->leftJoin('users as assignee', 'tasks.assign_to', '=', 'assignee.id') // Join users table for assign_to
-    ->leftJoin('roles', 'assigner.role_id', '=', 'roles.id')
-    ->select(
-        'tasks.id',
-        'tasks.f_id',
-        'tasks.task_title',
-        'tasks.task_description',
-        'tasks.status',
-        'tasks.priority',
-        'tasks.start_date',
-        'tasks.end_date',
-        'categories.category',
-        'sub_categories.subcategory',
-        'assigner.name as assigner_name',
-        'assignee.name as assignee_name',
-        'roles.role_dept',
-        'roles.role'
-    );
+// $query = DB::table('tasks')
+//     ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
+//     ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
+//     ->leftJoin('users as assigner', 'tasks.assign_by', '=', 'assigner.id') // Join users table for assign_by
+//     ->leftJoin('users as assignee', 'tasks.assign_to', '=', 'assignee.id') // Join users table for assign_to
+//     ->leftJoin('roles', 'assigner.role_id', '=', 'roles.id')
+//     ->select(
+//         'tasks.id',
+//         'tasks.f_id',
+//         'tasks.task_title',
+//         'tasks.task_description',
+//         'tasks.status',
+//         'tasks.priority',
+//         'tasks.start_date',
+//         'tasks.end_date',
+//         'categories.category',
+//         'sub_categories.subcategory',
+//         'assigner.name as assigner_name',
+//         'assignee.name as assignee_name',
+//         'roles.role_dept',
+//         'roles.role'
+//     );
 
-// Apply store-based filtering for non-Admin, non-HR users
-if (!in_array($user->dept, ['Admin', 'HR']) && $store) {
-    $query->whereIn('tasks.id', $firstTaskIds)
-          ->where('assignee.store_id', $store->id); // Filtering tasks by the assigned user's store
-}
+// // Apply store-based filtering for non-Admin, non-HR users
+// if (!in_array($user->dept, ['Admin', 'HR']) && $store) {
+//     $query->whereIn('tasks.id', $firstTaskIds)
+//           ->where('assignee.store_id', $store->id); // Filtering tasks by the assigned user's store
+// }
 
-// Exclude the logged-in user's tasks (if needed)
-$query->where('tasks.assign_to', '!=', $user->id);
+// // Exclude the logged-in user's tasks (if needed)
+// $query->where('tasks.assign_to', '!=', $user->id);
 
-$task = $query->get();
+// $task = $query->get();
 
-        $cluster_check = DB::table('m_cluster')
-        ->where('cl_name','=',$user->id)
-        ->count();
+        // $cluster_check = DB::table('m_cluster')
+        // ->where('cl_name','=',$user->id)
+        // ->count();
 
         // return $cluster_check;
 
-     return view('task.list',['task'=>$task,'count'=> $cluster_check,'r_id'=>$user->role_id]);
+        $task_cby = DB::table('tasks')->where('assign_by',$user->id)
+        ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
+        ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
+        ->orderBy('id','DESC')
+        ->select(
+            'tasks.id',
+            'tasks.task_title',
+            'categories.category',
+            'sub_categories.subcategory',
+            'tasks.priority',
+            'tasks.start_date',
+            'tasks.end_date',
+            'tasks.task_status',
+             )
+        ->get();
+
+        //   dd($task_cby->toArray());
+
+     return view('task.list',['task'=>$task_cby,'r_id'=>$user->role_id]);
 
     }
 
@@ -459,9 +477,14 @@ public function store(Request $request)
 
 public function completedtaskstore(Request $request)
 {
+
     $request->validate([
         'task_file' => 'nullable|file|max:5120|mimes:pdf,xlsx,xls,csv,jpg,jpeg,png,gif,doc,docx,txt'
     ]);
+
+    //updating the old task
+
+
 
     $user_id = auth()->user()->id;
     $assignTo = $request->assign_to;
@@ -479,6 +502,11 @@ public function completedtaskstore(Request $request)
     $task->end_time = $request->end_time;
     $task->priority = $request->priority;
     $task->assign_by = $user_id;
+
+
+     $old_task = Task::find($request->task_id);
+     $old_task->task_status = 'Assigned';
+     $old_task->save();
 
     // Handle file upload
     if ($request->hasFile('task_file')) {
@@ -583,6 +611,68 @@ public function completedtaskstore(Request $request)
         return view('task.edit');
 
     }
+
+    public function completed_list(Request $req)
+    {
+        $user = Auth::user();
+
+        $task_cby = DB::table('tasks')->where('assign_to',$user->id)
+        ->whereIn('task_status',['Close','Assigned'])
+        ->whereRaw('DATE_ADD(end_date, INTERVAL 15 DAY) >= ?', [now()])
+        ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
+        ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
+        ->orderBy('id','DESC')
+        ->select(
+            'tasks.id',
+            'tasks.task_title',
+            'categories.category',
+            'sub_categories.subcategory',
+            'tasks.priority',
+            'tasks.start_date',
+            'tasks.end_date',
+             )
+        ->get();
+
+        //   dd($task_cby);
+
+        return view('task.completed_list',['task'=>$task_cby]);
+    }
+
+
+     public function updateTaskStatus(Request $request)
+    {
+
+
+        $request->validate([
+            'id' => 'required|integer|exists:tasks,id',
+            'status' => 'required|string',
+        ]);
+
+        $task = Task::findOrFail($request->id);
+
+        if($request->status=='Close'){
+
+            $first  = DB::table('tasks')->where('f_id',$task->f_id)->orderBy('id','asc')->first();
+
+            if ($first) {
+                // Update both the current task and the first task with the new status
+                DB::table('tasks')
+                    ->whereIn('id', [$task->id, $first->id]) // Updating both tasks
+                    ->update(['task_status' => $request->status]);
+            }
+
+        }else{
+             $task->update(['task_status' => $request->status]);
+        }
+
+
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Task status updated successfully'
+        ]);
+    }
+
 
     /**
      * Update the specified resource in storage.

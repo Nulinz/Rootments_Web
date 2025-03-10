@@ -27,7 +27,7 @@ trait common
         'us.name',
         'us.profile_image',
         'attendance.in_time',
-        'attendance.user_id',
+        'attendance.c_on',
         'attendance.attend_status',
         'attendance.out_time',
         'attendance.status',
@@ -44,17 +44,41 @@ trait common
        // \Log::info($message);
        $user = Auth::user();
 
-       $emp = DB::table('roles')->where('role_dept',$dept)
-       ->leftJoin('users as us','us.role_id','=','roles.id')
-            ->select(
-            'us.id',
-            'us.name',
-            'us.emp_code',
-            'us.email',
-            'us.contact_no',
-            'roles.role',
-            'roles.role_dept')
-            ->get();
+       if($dept=='HR'){
+
+        $emp = DB::table('users as us')->where('us.status','=',1)
+        ->whereNotNull('us.role_id')
+        ->leftJoin('roles','roles.id','=','us.role_id')
+             ->select(
+             'us.id',
+             'us.name',
+             'us.emp_code',
+             'us.email',
+             'us.contact_no',
+             'roles.role',
+             'roles.role_dept')
+             ->get();
+
+       }else{
+
+        $emp = DB::table('roles')->where('role_dept',$dept)
+        ->leftJoin('users as us','us.role_id','=','roles.id')
+        ->whereNotNull('us.role_id')
+             ->select(
+             'us.id',
+             'us.name',
+             'us.emp_code',
+             'us.email',
+             'us.contact_no',
+             'roles.role',
+             'roles.role_dept')
+             ->get();
+
+            //  dd($emp->toSql());
+
+       }
+
+
 
             return $emp;
     }
@@ -77,10 +101,10 @@ trait common
         case 3:
         case 4:
         case 5:
-            $arr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            $arr = [3, 4, 5, 26, 27, 6, 7, 8, 9, 10, 11, 12, 13,30,37,41,43];
             break;
         case 7:
-            $arr = [25];
+            $arr = [25,44];
             break;
         case 10:
             $arr = [11, 12];
@@ -107,7 +131,7 @@ trait common
             $arr = array_diff($arr, [$r_id]); // Exclude the current role ID
             break;
         case 25:
-            $arr = [7];
+            $arr = [7,44,25];
             break;
         case 30:
             $arr = [31,35,36];
@@ -116,22 +140,31 @@ trait common
         case 35:
         case 36:
             $arr = [30, 31, 35, 36];
-            $arr = array_diff($arr, [$r_id]); // Exclude $r_id
+            // $arr = array_diff($arr, [$r_id]); // Exclude $r_id
             break;
         case 37:
-            $arr = [32,38,39,40];
+            $arr = [38,39,40];
             break;
         case 38:
         case 39:
         case 40:
             $arr = [37, 38, 39, 40];
-            $arr = array_diff($arr, [$r_id]); // Exclude $r_id
+            // $arr = array_diff($arr, [$r_id]); // Exclude $r_id
             break;
         case 41:
             $arr = [42];
             break;
         case 42:
-            $arr = [41];
+            $arr = [42,41];
+            break;
+        case 43:
+        case 26:
+        case 27:
+            $arr = [3,4,5,26,27,43];
+            // $arr = array_diff($arr, [$r_id]); // Exclude $r_id
+            break;
+        case 44:
+            $arr = [7,25];
             break;
     }
 

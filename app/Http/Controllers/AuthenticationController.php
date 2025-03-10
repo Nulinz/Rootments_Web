@@ -50,16 +50,16 @@ class AuthenticationController extends Controller
                     // dd($user);
 
                     // $r_id = $user->role_id;
-                    if($user->role_id==13){
+                    // if($user->role_id==13){
 
-                        $asm_count = DB::table('asm_store')->where('store_id',$user->store_id)->where('emp_id',$user->id)->count();
+                    //     $asm_count = DB::table('asm_store')->where('store_id',$user->store_id)->where('emp_id',$user->id)->count();
 
-                        $asm_route = ($asm_count > 0) ? 'dashboard' : 'mydash.dashboard';
+                    //     $asm_route = ($asm_count > 0) ? 'dashboard' : 'mydash.dashboard';
 
-                    }
-                    else {
-                        $asm_route = null; // If role_id is not 13, set it to null to avoid overriding.
-                    }
+                    // }
+                    // else {
+                    //     $asm_route = null; // If role_id is not 13, set it to null to avoid overriding.
+                    // }
 
 
 
@@ -76,7 +76,7 @@ class AuthenticationController extends Controller
                             41 => 'purchase.index',
                         ];
 
-                    $route = $asm_route ?? $routes[$user->role_id] ?? 'mydash.dashboard';
+                    $route = $routes[$user->role_id] ?? 'mydash.dashboard';
 
 
 
@@ -92,8 +92,6 @@ class AuthenticationController extends Controller
         }
 
 
-
-
         return redirect()->route('login')->with(['status' => 'error', 'message' => 'Invalid Emp Code']);
     }
 
@@ -101,16 +99,6 @@ class AuthenticationController extends Controller
     {
         if (Auth::check()) {
             $user = Auth::user();
-
-            // DB::table('attendance')
-            //     ->where('user_id', $user->id)
-            //     ->whereDate('in_time', now()->toDateString())
-            //     ->update([
-            //         'out_time' => now()->format('H:i:s'),
-            //         'u_by'=>now()->format('Y-m-d')
-            //     ]);
-
-            // session()->forget('role_updated');
 
             Auth::logout();
         }

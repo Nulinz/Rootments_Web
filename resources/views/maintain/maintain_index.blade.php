@@ -129,7 +129,7 @@
                                                             Requesting for leave
                                                             {{ date('m-d-Y', strtotime($data->start_date)) }} to
                                                             {{ date('m-d-Y', strtotime($data->end_date)) }} -
-                                                            {{ $data->reason }}
+                                                            {{ $data->request_type }}
                                                         </h6>
                                                     </div>
                                                 </div>

@@ -40,78 +40,78 @@ if (!$role_get) {
 $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count = 0;
 
 
-if ($role_get->role_id == 12) {
-    $leave_count = DB::table('leaves')
-        ->where(function ($query) use ($user) {
-            $query->where('request_status', 'Pending')
-                  ->orWhere('created_by', $user->id);
-        })->where('request_to', 12)->count();
+// if ($role_get->role_id == 12) {
+//     $leave_count = DB::table('leaves')
+//         ->where(function ($query) use ($user) {
+//             $query->where('request_status', 'Pending')
+//                   ->orWhere('created_by', $user->id);
+//         })->where('request_to', 12)->count();
 
-    $repair_count = DB::table('repairs')
-        ->where(function ($query) use ($user) {
-            $query->where('request_status', 'Pending')
-                  ->orWhere('created_by', $user->id);
-        })->count();
+//     $repair_count = DB::table('repairs')
+//         ->where(function ($query) use ($user) {
+//             $query->where('request_status', 'Pending')
+//                   ->orWhere('created_by', $user->id);
+//         })->count();
 
-    $transfer_count = DB::table('transfers')
-        ->where(function ($query) use ($user) {
-            $query->where('request_status', 'Pending')
-                  ->orWhere('created_by', $user->id);
-        })->count();
+//     $transfer_count = DB::table('transfers')
+//         ->where(function ($query) use ($user) {
+//             $query->where('request_status', 'Pending')
+//                   ->orWhere('created_by', $user->id);
+//         })->count();
 
-    $resign_count = DB::table('resignations')
-        ->where(function ($query) use ($user) {
-            $query->where('request_status', 'Pending')
-                  ->orWhere('created_by', $user->id);
-        })->count();
+//     $resign_count = DB::table('resignations')
+//         ->where(function ($query) use ($user) {
+//             $query->where('request_status', 'Pending')
+//                   ->orWhere('created_by', $user->id);
+//         })->count();
 
-    $recruit_count = DB::table('recruitments')
-        ->where(function ($query) use ($user) {
-            $query->where('request_status', 'Pending')
-                  ->orWhere('created_by', $user->id);
-        })->count();
-} elseif ($role_get->role_id == 3) {
-    $leave_count = DB::table('leaves')
-        ->where(function ($query) use ($user) {
-            $query->where('esculate_status', 'Pending')
-                  ->orWhere('created_by', $user->id);
-        })->count();
+//     $recruit_count = DB::table('recruitments')
+//         ->where(function ($query) use ($user) {
+//             $query->where('request_status', 'Pending')
+//                   ->orWhere('created_by', $user->id);
+//         })->count();
+// } elseif ($role_get->role_id == 3) {
+//     $leave_count = DB::table('leaves')
+//         ->where(function ($query) use ($user) {
+//             $query->where('esculate_status', 'Pending')
+//                   ->orWhere('created_by', $user->id);
+//         })->count();
 
-    $repair_count = DB::table('repairs')
-        ->where(function ($query) use ($user) {
-            $query->where('esculate_status', 'Pending')
-                  ->orWhere('created_by', $user->id);
-        })->count();
+//     $repair_count = DB::table('repairs')
+//         ->where(function ($query) use ($user) {
+//             $query->where('esculate_status', 'Pending')
+//                   ->orWhere('created_by', $user->id);
+//         })->count();
 
-    $transfer_count = DB::table('transfers')
-        ->where(function ($query) use ($user) {
-            $query->where('esculate_status', 'Pending')
-                  ->orWhere('created_by', $user->id);
-        })->count();
+//     $transfer_count = DB::table('transfers')
+//         ->where(function ($query) use ($user) {
+//             $query->where('esculate_status', 'Pending')
+//                   ->orWhere('created_by', $user->id);
+//         })->count();
 
-    $resign_count = DB::table('resignations')
-        ->where(function ($query) use ($user) {
-            $query->where('esculate_status', 'Pending')
-                  ->orWhere('created_by', $user->id);
-        })->count();
+//     $resign_count = DB::table('resignations')
+//         ->where(function ($query) use ($user) {
+//             $query->where('esculate_status', 'Pending')
+//                   ->orWhere('created_by', $user->id);
+//         })->count();
 
-    $recruit_count = DB::table('recruitments')
-        ->where(function ($query) use ($user) {
-            $query->where('esculate_status', 'Pending')
-                  ->orWhere('created_by', $user->id);
-        })->count();
-}
+//     $recruit_count = DB::table('recruitments')
+//         ->where(function ($query) use ($user) {
+//             $query->where('esculate_status', 'Pending')
+//                   ->orWhere('created_by', $user->id);
+//         })->count();
+// }
 
 
 
 
 
     return view('approve.approvelist', [
-        'leave_count' => $leave_count,
-        'repair_count' => $repair_count,
-        'transfer_count' => $transfer_count,
-        'resign_count' => $resign_count,
-        'recruit_count' => $recruit_count
+        'leave_count' => $leave_count ?? 0,
+        'repair_count' => $repair_count ?? 0,
+        'transfer_count' => $transfer_count ?? 0,
+        'resign_count' => $resign_count ?? 0,
+        'recruit_count' => $recruit_count ?? 0
     ]);
 }
 

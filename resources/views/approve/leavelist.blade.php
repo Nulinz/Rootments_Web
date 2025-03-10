@@ -153,7 +153,7 @@
                             <option value="" selected disabled>Select Options</option>
                             <option value="Approved">Approved</option>
                             <option value="Rejected">Rejected</option>
-                            @if ($user->role_id == 12)
+                            @if (hasAccess($user->role_id,'leave'))
                             <option>Escalate</option>
                             @endif
                         </select>
@@ -241,11 +241,13 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // CSRF token for security
             },
             success: function(response) {
-                alert(response.message);
-                location.reload(); // Reload the page on success
+                // alert(response.message);
+                 location.reload(); // Reload the page on success
             },
             error: function(xhr, status, error) {
-                alert('An error occurred: ' + error); // Show an error message
+                 location.reload(); // Reload the page on success
+                // alert('An error occurred: ' + error); // Show an error message
+                console.log(error);
             }
         });
          });

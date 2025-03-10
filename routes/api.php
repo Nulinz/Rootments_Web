@@ -18,10 +18,17 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+
+
 Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
-    Route::post('/auth/login', 'AuthController@login')->name('auth.login');
+     Route::post('/auth/login', 'AuthController@login')->name('auth.login');
 
+     Route::post('/update_popup', 'AuthController@popup')->name('app.version');
+
+    // Route::post('/auth/login', function(){
+    //     return ("hello");
+    // })->name('auth.login');
 
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -45,7 +52,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::get('leaverequest-list', 'TaskController@leavelist')->name('leaverequest.list');
         Route::get('reginationrequest-list', 'TaskController@reginationlist')->name('reginationrequest.list');
         Route::get('transferquest-list', 'TaskController@transferlist')->name('transferrequest.list');
-        Route::post('leave-store','TaskController@leavestore')->name('leave.store');
+        Route::post('leave-store','mobile_cnt@leavestore')->name('leave.store');
         Route::post('regination-store','TaskController@reginationstore')->name('regination.store');
         Route::post('transfer-store','TaskController@transferstore')->name('transfer.store');
         Route::get('store-list', 'TaskController@storelist')->name('store.list');
@@ -61,16 +68,20 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
         // Attendance staus
 
-       Route::get('attd_row', 'TaskController@attd_row')->name('attd_status');
-
-
-
+       Route::get('attd_row', 'mobile_cnt@attd_row')->name('attd_status');
 
        // Attendance Insert and update
 
-       Route::post('attd_in', 'TaskController@attd_in')->name('attd_in');
-       Route::post('attd_out', 'TaskController@attd_out')->name('attd_out');
+       Route::post('attd_in', 'mobile_cnt@attd_in')->name('attd_in');
+       Route::post('attd_out', 'mobile_cnt@attd_out')->name('attd_out');
 
+
+
+       Route::post('/assign_to', 'mobile_cnt@assign_to')->name('assign_to');
+
+       // task create show API
+
+       Route::post('/tasks_show', 'mobile_cnt@create_task_show')->name('tasks_show');
 
 
     });
