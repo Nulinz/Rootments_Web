@@ -1,10 +1,11 @@
 <div class="empdetails">
     <div class="sidebodyhead">
-        <h4 class="mb-2">Applied Details</h4>
+        <h4 class="mb-2">Applied Details{{ $list->id}}</h4>
     </div>
     <div class="sidebodyhead">
         <h6 class="m-0" style="font-size: 12px"><a target="__blank"
-                href="http://127.0.0.1:5500/resources/views/recruit/application-form.html">http://127.0.0.1:5500/resources/views/recruit/application-form.html</a>
+                {{-- href="http://127.0.0.1:5500/resources/views/recruit/application-form.html">http://127.0.0.1:5500/resources/views/recruit/application-form.html</a> --}}
+                href="{{ route('post_application',['id'=>$list->id]) }}">http://127.0.0.1:5500/resources/views/recruit/application-form.html</a>
         </h6>
     </div>
     <div class="mt-3 listtable">
@@ -42,31 +43,42 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($ap_list as $ap)
+
                     <tr>
-                        <td>1</td>
-                        <td>Sheik</td>
-                        <td>sheik@gmail.com</td>
-                        <td>8608338833</td>
-                        <td>2 years</td>
-                        <td>Stylist</td>
-                        <td>B.E Fashion Designing</td>
+                        <td>{{ $loop->iteration}}</td>
+                        <td>{{ $ap->name }}</td>
+                        <td>{{ $ap->email }}</td>
+                        <td>{{ $ap->contact }}</td>
+                        <td>{{ $ap->work_exp }}</td>
+                        <td>{{ $ap->skill }}</td>
+                        <td>{{ $ap->edu }}</td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
-                                <a href="" data-bs-toggle="tooltip" data-bs-title="Certification"><i
-                                        class="fas fa-download"></i></a>
+                                @if(!is_null($ap->certify))
+                                <a href="{{ asset($ap->certify) }}" data-bs-toggle="tooltip" data-bs-title="Certification"><i
+                                        class="fas fa-download" download="{{ basename($ap->certify) }}"></i></a>
                                 |
-                                <a href="" data-bs-toggle="tooltip" data-bs-title="Resume"><i
+                                @endif
+                                @if(!is_null($ap->resume))
+                                <a href="{{ $ap->resume }}" data-bs-toggle="tooltip" data-bs-title="Resume"><i
                                         class="fas fa-download"></i></a>
+                                @endif
                             </div>
                         </td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
-                                <a href="{{ route('recruit.candidate_profile') }}"><i class="fas fa-eye"></i></a>
-                                <button class="listtdbtn" data-bs-toggle="modal"
-                                    data-bs-target="#updateApplied">Update</button>
+                                <a href="{{ route('recruit.candidate_profile',['id'=>$ap->id]) }}"><i class="fas fa-eye"></i></a>
+                                @if($ap->status=='applied')
+                                <button class="listtdbtn" data-bs-toggle="modal" data-id="{{ $ap->id }}" data-bs-target="#updateApplied">Update</button>
+                                @else
+                                   {{ $ap->status}}
+                                @endif
                             </div>
                         </td>
                     </tr>
+
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -82,7 +94,9 @@
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="" method="POST" id="updateApplyForm">
+
+                    <input hidden type="text" name="ap_id" id="ap_id">
                     <div class="col-sm-12 col-md-12 mb-3">
                         <label for="sts" class="col-form-label">Status</label>
                         <select class="form-select" name="status">
@@ -140,4 +154,40 @@
         // Initialize each table
         initTable('#table1', '#headerDropdown1', '#filterInput1');
     });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Set RecruitId value on button click
+        $('.listtdbtn').on('click', function () {
+            const id = $(this).data('id');
+            $('#ap_id').val(id);
+        });
+
+
+
+        // Handle form submission
+        $('#updateApplyForm').on('submit', function (e) {
+            e.preventDefault();
+            const formData = $(this).serialize();
+            // console.log(formData);
+
+            $.ajax({
+                url: '{{ route("update_screen") }}',
+                type: 'POST',
+                data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    alert(response.message);
+                    location.reload(); // Refresh the page after successful update
+                },
+                error: function (error) {
+                    alert('An error occurred. Please try again.');
+                    console.error(error.responseText); // Display detailed error
+                }
+            });
+        });
+     });
 </script>

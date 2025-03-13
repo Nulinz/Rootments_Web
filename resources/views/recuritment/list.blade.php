@@ -31,39 +31,22 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($rec as $rc)
+
+
                         <tr>
-                            <td>1</td>
-                            <td>REC01</td>
-                            <td>HR</td>
-                            <td>Manager</td>
-                            <td>2</td>
-                            <td>14-02-2025</td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>REC{{ $rc->id}}</td>
+                            <td>{{ $rc->dept }}</td>
+                            <td>{{ $rc->role }}</td>
+                            <td>{{ $rc->vacancy }}</td>
+                            <td>{{ date("d-m-Y",strtotime($rc->res_date))}}</td>
                             <td>
-                                <span class="text-success">Approved</span>
+                                <span class="text-success">{{ $rc->status }}</span>
                             </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>REC02</td>
-                            <td>Store</td>
-                            <td>Assistant Store Manager</td>
-                            <td>1</td>
-                            <td>16-03-2025</td>
-                            <td>
-                                <span class="text-warning">Pending</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>REC03</td>
-                            <td>Warehouse</td>
-                            <td>Manager</td>
-                            <td>1</td>
-                            <td>20-02-2025</td>
-                            <td>
-                                <span class="text-danger">Rejected</span>
-                            </td>
-                        </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>

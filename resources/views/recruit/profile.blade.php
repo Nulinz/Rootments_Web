@@ -26,60 +26,59 @@
                             <div class="row mt-2">
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Recruit ID</h6>
-                                    <h5 class="mb-0">REC01</h5>
+                                    <h5 class="mb-0">REC{{ $list->rec_id }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Job ID</h6>
-                                    <h5 class="mb-0">JOB01</h5>
+                                    <h5 class="mb-0">JOB{{ $list->id }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Job Title</h6>
-                                    <h5 class="mb-0">Management</h5>
+                                    <h5 class="mb-0">{{ $list->job_title }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Department</h6>
-                                    <h5 class="mb-0">HR</h5>
+                                    <h5 class="mb-0">{{ $list->role_dept }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Role</h6>
-                                    <h5 class="mb-0">Manager</h5>
+                                    <h5 class="mb-0">{{ $list->role }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Responsibilties</h6>
-                                    <h5 class="mb-0">Nil</h5>
+                                    <h5 class="mb-0">{{ $list->responsibility }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Location</h6>
-                                    <h5 class="mb-0">Salem</h5>
+                                    <h5 class="mb-0">{{ $list->loc }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Job Type</h6>
-                                    <h5 class="mb-0">Full-Time</h5>
+                                    <h5 class="mb-0">{{ $list->job_type }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Job Description</h6>
-                                    <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat,
-                                        quaerat.</h5>
+                                    <h5 class="mb-0">{{ $list->job_desc }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Experience</h6>
-                                    <h5 class="mb-0">2 years</h5>
+                                    <h5 class="mb-0">{{ $list->exp }} years</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Working Hours</h6>
-                                    <h5 class="mb-0">10 hrs</h5>
+                                    <h5 class="mb-0">{{ $list->hrs }} hrs</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Salary Range</h6>
-                                    <h5 class="mb-0">15,000</h5>
+                                    <h5 class="mb-0">{{ $list->salary }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Benefits</h6>
-                                    <h5 class="mb-0">Nil</h5>
+                                    <h5 class="mb-0">{{ $list->benefits }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Posting Date</h6>
-                                    <h5 class="mb-0">12-02-2025</h5>
+                                    <h5 class="mb-0">{{ date("d-m-Y",strtotime($list->created_at)) }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -116,10 +115,10 @@
                         @include('recruit.applied')
                     </div>
                     <div class="tab-pane fade" id="interview" role="tabpanel" aria-labelledby="interview-tab">
-                        @include('recruit.interview')
+                        {{-- @include('recruit.interview') --}}
                     </div>
                     <div class="tab-pane fade" id="shortlist" role="tabpanel" aria-labelledby="shortlist-tab">
-                        @include('recruit.shortlist')
+                        {{-- @include('recruit.shortlist') --}}
                     </div>
                 </div>
             </div>

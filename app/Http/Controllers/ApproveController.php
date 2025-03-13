@@ -328,38 +328,29 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
     {
         $user = auth()->user();
 
-    $role_get = DB::table('roles')
-        ->join('users', 'users.role_id', '=', 'roles.id')
-        ->where('users.id', $user->id)
-        ->select('roles.id as role_id', 'roles.role', 'roles.role_dept')
-        ->first();
+        $rec = DB::table('recruitments as rc')
+        ->leftJoin('roles', 'rc.request_to', '=', 'roles.id')
+        ->leftJoin('users as uc', 'uc.id', '=', 'rc.c_by')
+        ->where('rc.status','Pending')
+        ->select(
+            'rc.id',
+            'rc.dept',
+            'rc.role',
+            'rc.loc',
+            'rc.loc',
+            'rc.vacancy',
+            'rc.request_to',
+            'rc.exp',
+            'rc.description',
+            'rc.status',
+            'roles.role',
+            'rc.res_date',
+            'uc.name'
 
-    $rec = collect();
+        )
+        ->get();
 
-    if ($role_get) {
-        $rec = DB::table('recruitments')
-            ->leftJoin('stores', 'stores.id', '=', 'recruitments.store_id')
-            ->leftJoin('recruitment_lists', 'recruitment_lists.rect_id', '=', 'recruitments.id')
-            ->leftJoin('roles', 'recruitment_lists.role_id', '=', 'roles.id')
-            ->select(
-                'recruitments.id',
-                'recruitments.store_id',
-                'stores.store_name',
-                'recruitments.res_date',
-                'recruitments.status',
-                'recruitments.request_status',
-                'recruitments.esculate_status',
-                'stores.store_code',
-                DB::raw('GROUP_CONCAT(roles.role) as roles'),
-                DB::raw('GROUP_CONCAT(recruitment_lists.vat_count) as vat_counts')
-            )
-            ->where(function ($query) use ($user, $role_get) {
-                $query->where('recruitments.created_by', $user->id)
-                      ->orWhere('recruitments.request_to', $role_get->role_id);
-            })
-            ->groupBy('recruitments.id', 'recruitments.store_id', 'recruitments.res_date', 'stores.store_name', 'stores.store_code', 'recruitments.status')
-            ->get();
-    }
+        // dd($rec);
 
     return view('approve.recruitlist', ['rec' => $rec]);
 }
@@ -557,34 +548,30 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
     public function updaterecuirt(Request $request)
     {
         $request->validate([
-            'id' => 'required',
+            'RecruitId' => 'required',
             'status' => 'required',
         ]);
 
         try {
             $user = auth()->user();
 
-            $recruit = Recruitment::findOrFail($request->id);
+            $recruit = Recruitment::findOrFail($request->RecruitId);
 
-           if ($user->role_id == 3) {
-                $recruit->esculate_status = $request->status;
                 $recruit->status = $request->status;
+
+                $recruit->save();
+
                 // $notification = Notification::create([
                 //             'user_id' => $recruit->emp_id,
                 //             'noty_type' => 'recuriment',
                 //             'type_id' => $request->id,
                 //         ]);
 
-            } else {
-                return response()->json(['error' => 'Unauthorized action.'], 403);
-            }
-
-
-            $recruit->save();
-
             return response()->json(['message' => 'Recruitment updated successfully!'], 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to update Recruitment.'], 500);
+
+            dd($e);
+            // return response()->json(['error' => 'Failed to update Recruitment.'], 500);
         }
     }
 

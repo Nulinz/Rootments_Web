@@ -138,6 +138,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         // Recruitment Request
         Route::get('recruitment-list', 'RecruitmentController@index')->name('recruitment.index');
         Route::get('recruitment-add', 'RecruitmentController@create')->name('recruitment.add');
+        Route::post('recruitment-role', 'RecruitmentController@get_roles')->name('recruitment.role');
+        // Route::post('recruitment-role', 'RecruitmentController@store')->name('recruitment.add');
         Route::post('recruitment-store', 'RecruitmentController@store')->name('recruitment.store');
 
         // Request Approval
@@ -193,14 +195,22 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('get-coordinates', 'location_cnt@index')->name('get.coordinates');
         Route::post('attendance-ot', 'Attd_cnt@ot_approve')->name('ot.approve');
 
-        // Recruitment
+        // job posting....
         Route::get('recruit-list', 'RecruitController@list')->name('recruit.list');
         Route::get('recruit-add', 'RecruitController@create')->name('recruit.add');
         Route::get('recruit-edit', 'RecruitController@edit')->name('recruit.edit');
-        Route::get('recruit-profile', 'RecruitController@profile')->name('recruit.profile');
-        Route::get('recruit-candidate', 'RecruitController@candidate_profile')->name('recruit.candidate_profile');
+        Route::get('recruit-profile/{id}', 'RecruitController@profile')->name('recruit.profile');
+        Route::get('recruit-candidate/{id}', 'RecruitController@candidate_profile')->name('recruit.candidate_profile');
         Route::get('recruit-add-interview', 'RecruitController@add_interview')->name('recruit.add_interview');
         Route::get('recruit-edit-interview', 'RecruitController@edit_interview')->name('recruit.edit_interview');
+        Route::get('recruit-edit-interview', 'RecruitController@edit_interview')->name('recruit.edit_interview');
+        Route::post('recruit-data', 'RecruitController@rec_data')->name('recruit.data');
+        Route::post('job_post_add', 'RecruitController@store')->name('job_post_add');
+        Route::post('job_post_up', 'RecruitController@post_update')->name('job_post_up');
+        Route::post('job_app_store', 'RecruitController@post_app_store')->name('job_app_store');
+
+        Route::get('post_application/{id}', 'RecruitController@post_application')->name('post_application');
+        Route::post('update_screen', 'RecruitController@update_screen')->name('update_screen');
 
         // Area
         Route::get('area-list', 'AreaController@list')->name('area.list');

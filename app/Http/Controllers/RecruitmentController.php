@@ -18,24 +18,26 @@ class RecruitmentController extends Controller
     {
         $user_id = Auth::user()->id;
 
-        $rec = DB::table('recruitments')
-        ->leftJoin('stores', 'stores.id', '=', 'recruitments.store_id')
-        ->leftJoin('recruitment_lists', 'recruitment_lists.rect_id', '=', 'recruitments.id')
-        ->leftJoin('roles', 'recruitment_lists.role_id', '=', 'roles.id')
-        ->where('recruitments.created_by',$user_id)
+        $rec = DB::table('recruitments as rc')
+        ->leftJoin('roles', 'rc.request_to', '=', 'roles.id')
+        ->where('rc.c_by',$user_id)
         ->select(
-            'recruitments.id',
-            'recruitments.store_id',
-            'recruitments.store_name',
-            'recruitments.res_date',
-            'stores.store_code',
-            'recruitments.status',
-            DB::raw('GROUP_CONCAT(roles.role) as roles'),
-            DB::raw('GROUP_CONCAT(recruitment_lists.vat_count) as vat_counts')
+            'rc.id',
+            'rc.dept',
+            'rc.role',
+            'rc.loc',
+            'rc.vacancy',
+            'rc.request_to',
+            'rc.exp',
+            'rc.description',
+            'rc.status',
+            'roles.role',
+            'rc.res_date'
+
         )
-        ->groupBy('recruitments.id', 'recruitments.store_id','recruitments.res_date', 'recruitments.store_name', 'stores.store_code') // Add store_name here
         ->get();
 
+        // dd($rec);
 
         return view('recuritment.list',['rec'=>$rec]);
 
@@ -56,7 +58,19 @@ class RecruitmentController extends Controller
             ->groupBy('roles.role_dept', 'roles.id', 'roles.role')
             ->get();
 
-        return view('recuritment.add',['role_data'=>$role_data]);
+            // dd($role_data);
+
+         return view('recuritment.add',['role_data'=>$role_data]);
+
+    }
+
+    public function get_roles(Request $req)
+    {
+
+
+        $role = Role::where('role_dept',$req->dept)->select('id','role')->get();
+
+        return response()->json($role,200);
 
     }
 
@@ -64,45 +78,27 @@ class RecruitmentController extends Controller
      * Store a newly created resource in storage.
      */
 
-     public function store(Request $request)
+     public function store(Request $req)
      {
          $user = Auth::user();
 
-         $role_get = DB::table('roles')
-             ->join('users', 'users.role_id', '=', 'roles.id')
-             ->select('roles.id', 'roles.role', 'roles.role_dept')
-             ->where('users.id', $user->id)
-             ->first();
-
-
-
-         $role = $role_get->role;
-         $role_dept = $role_get->role_dept;
-
-         $manager_departments = ['Operation', 'Finance', 'IT', 'Sales/Marketing', 'Area', 'Cluster'];
-         $request_to = 12;
-
-         if ($role === 'Store Manager' && $role_dept === 'Store') {
-             $request_to = 3;
-         } elseif ($role === 'Manager') {
-             $request_to = ($role_dept === 'HR') ? 1 : (in_array($role_dept, $manager_departments) ? 3 : 12);
-         } elseif ($role === 'Managing Director') {
-             $request_to = 3;
-         }
-
-         DB::beginTransaction();
+        //  dd($req->department);
 
          try {
              $recruitment_id = DB::table('recruitments')->insertGetId([
-                'store_id'   => $request->input('store_id'),
-                'store_name' => $request->input('store_name'),
-                'res_date'   => $request->input('res_date'),
-                'request_to' => $request_to,
-                'created_by' => $user->id,
+                'dept'   => $req->input('department'),
+                'role' => $req->input('role'),
+                'loc'   => $req->input('location'),
+                'res_date'   => $req->input('res_date'),
+                'vacancy'   => $req->input('vacancy'),
+                'request_to'   => 3,
+                'exp'   => $req->input('experience'),
+                'description'   => $req->input('recruitdescp'),
+                'c_by' => $user->id,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-            
+
             Notification::create([
                 'user_id'   => $user->id,
                 'noty_type' => 'recruitments',
@@ -110,36 +106,16 @@ class RecruitmentController extends Controller
             ]);
 
 
-             $items = [];
-             $role_ids = $request->input('role_id', []);
-             $vat_counts = $request->input('vat_count', []);
-
-             foreach ($role_ids as $key => $roleId) {
-                 $items[] = [
-                     'rect_id'    => $recruitment_id,
-                     'role_id'    => $roleId,
-                     'vat_count'  => $vat_counts[$key] ?? 0,
-                     'created_at' => now(),
-                     'updated_at' => now(),
-                 ];
-             }
-
-             if (!empty($items)) {
-                 DB::table('recruitment_lists')->insert($items);
-             }
-
-             DB::commit();
-             
-             
              return redirect()->route('recruitment.index')->with([
                  'status' => 'success',
                  'message' => 'Recruitment added successfully!',
              ]);
 
          } catch (\Exception $e) {
-             DB::rollBack();
 
-             return redirect()->route('recruitment.index')->with([
+            // dd($e);
+
+             return redirect()->route('recruitment.index1')->with([
                  'status' => 'error',
                  'message' => 'Failed to add recruitment: ' . $e->getMessage(),
              ]);

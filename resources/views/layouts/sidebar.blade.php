@@ -338,17 +338,17 @@
                                                     ->where('created_by', $user->id)
                                                     ->count();
 
-                                                $recruit_count = DB::table('recruitments')
-                                                    ->where('request_status', 'Pending')
-                                                    ->where('created_by', $user->id)
-                                                    ->count();
+                                                // $recruit_count = DB::table('recruitments')
+                                                //     ->where('request_status', 'Pending')
+                                                //     ->where('created_by', $user->id)
+                                                //     ->count();
 
                                                 // Ensure $repair_count is defined
                                                 $repair_count = 0; // You might need to fetch this from a table
 
                                                 // Calculate total count
                                                 $total_count =
-                                                    $leave_count + $repair_count + $transfer_count + $resign_count + $recruit_count;
+                                                    $leave_count + $repair_count + $transfer_count + $resign_count + ($recruit_count ?? 0);
                                             } elseif ($role_get->role_id == 3) {
                                                 // Count requests where escalate_status = 'Pending' and created_by = user
                                                 $leave_count = DB::table('leaves')
@@ -366,13 +366,13 @@
                                                     ->where('created_by', $user->id)
                                                     ->count();
 
-                                                $recruit_count = DB::table('recruitments')
-                                                    ->where('esculate_status', 'Pending')
-                                                    ->where('created_by', $user->id)
-                                                    ->count();
+                                                // $recruit_count = DB::table('recruitments')
+                                                //     ->where('esculate_status', 'Pending')
+                                                //     ->where('created_by', $user->id)
+                                                //     ->count();
 
                                                 // Calculate total count
-                                                $total_count = $leave_count + $transfer_count + $resign_count + $recruit_count;
+                                                $total_count = $leave_count + $transfer_count + $resign_count + ($recruit_count ?? 0);
                                             }
                                         }
                                     @endphp
