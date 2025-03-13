@@ -216,7 +216,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         // Recruitment
         Route::get('resign-list', 'ResignController@list')->name('resign.list');
-        Route::get('resign-profile', 'ResignController@profile')->name('resign.profile');
+        Route::get('resign-profile/{id}', 'ResignController@profile')->name('resign.profile');
 
         // Area
         Route::get('area-list', 'AreaController@list')->name('area.list');

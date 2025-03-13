@@ -35,24 +35,26 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($list as $lt)
                         <tr>
-                            <td>1</td>
-                            <td>REC01</td>
-                            <td>EMP02</td>
-                            <td>Revathi</td>
-                            <td>HR</td>
-                            <td>Manager</td>
-                            <td>Salem</td>
+                            <td>{{ $loop->iteration}}</td>
+                            <td>RES{{ $lt->res_id }}</td>
+                            <td>{{ $lt->emp_code}}</td>
+                            <td>{{ $lt->name }}</td>
+                            <td>{{ $lt->role_dept }}</td>
+                            <td>{{ $lt->role }}</td>
+                            <td>{{ $lt->loc }}</td>
                             <td><span class="text-danger">Pending</span></td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
-                                    <a href="{{ route('resign.profile') }}" data-bs-toggle="tooltip"
+                                    <a href="{{ route('resign.profile',['id'=> $lt->res_id]) }}" data-bs-toggle="tooltip"
                                         data-bs-title="View Profile">
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
                                 </div>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

@@ -3,18 +3,34 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ResignController extends Controller
 {
 
     public function list()
     {
-        return view('resign.list');
+      $app =   DB::table('resignations as rs')->where('rs.status','Approved')
+      ->leftJoin('users','users.id','=','rs.created_by')
+      ->leftJoin('roles','roles.id','=','users.role_id')
+      ->select('rs.*','users.emp_code','users.name','roles.*','rs.id as res_id')
+      ->get();
+
+        return view('resign.list',['list'=>$app]);
+
     }
 
-    public function profile()
+    public function profile(Request $req)
     {
-        return view('resign.profile');
+        $pro =   DB::table('resignations as rs')->where('rs.id',$req->id)
+      ->leftJoin('users','users.id','=','rs.created_by')
+      ->leftJoin('roles','roles.id','=','users.role_id')
+      ->select('rs.*','users.emp_code','users.name','roles.*','rs.id as res_id')
+      ->first();
+
+    //   dd($pro);
+
+        return view('resign.profile',['pro'=>$pro]);
     }
 
     /**

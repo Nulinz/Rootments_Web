@@ -28,36 +28,35 @@
                             <div class="row mt-2">
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Resign ID</h6>
-                                    <h5 class="mb-0">RES01</h5>
+                                    <h5 class="mb-0">RES{{ $pro->res_id }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Employee Code</h6>
-                                    <h5 class="mb-0">EMP02</h5>
+                                    <h5 class="mb-0">{{ $pro->emp_code }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Employee Name</h6>
-                                    <h5 class="mb-0">Sheik</h5>
+                                    <h5 class="mb-0">{{ $pro->name}}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Department</h6>
-                                    <h5 class="mb-0">HR</h5>
+                                    <h5 class="mb-0">{{ $pro->role_dept}}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Role</h6>
-                                    <h5 class="mb-0">Manager</h5>
+                                    <h5 class="mb-0">{{ $pro->role}}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Location</h6>
-                                    <h5 class="mb-0">Edappally</h5>
+                                    <h5 class="mb-0">{{ $pro->loc}}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Reason For Leaving</h6>
-                                    <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat,
-                                        quaerat.</h5>
+                                    <h5 class="mb-0">{{ $pro->res_reason}}.</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Resign Req Date</h6>
-                                    <h5 class="mb-0">12-02-2025</h5>
+                                    <h5 class="mb-0">{{ date("d-m-Y",strtotime($pro->res_date))}}</h5>
                                 </div>
                             </div>
                         </div>
