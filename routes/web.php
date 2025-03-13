@@ -212,6 +212,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('post_application/{id}', 'RecruitController@post_application')->name('post_application');
         Route::post('update_screen', 'RecruitController@update_screen')->name('update_screen');
 
+        // Recruitment
+        Route::get('resign-list', 'ResignController@list')->name('resign.list');
+        Route::get('resign-profile', 'ResignController@profile')->name('resign.profile');
+
         // Area
         Route::get('area-list', 'AreaController@list')->name('area.list');
         Route::get('area-create', 'AreaController@create')->name('area.add');

@@ -4,7 +4,6 @@
     </div>
     <div class="sidebodyhead">
         <h6 class="m-0" style="font-size: 12px"><a target="__blank"
-                {{-- href="http://127.0.0.1:5500/resources/views/recruit/application-form.html">http://127.0.0.1:5500/resources/views/recruit/application-form.html</a> --}}
                 href="{{ route('post_application',['id'=>$list->id]) }}">http://127.0.0.1:5500/resources/views/recruit/application-form.html</a>
         </h6>
     </div>
@@ -15,15 +14,6 @@
                     <option value="All" selected>All</option>
                 </select>
                 <input type="text" id="filterInput1" class="form-control" placeholder=" Search">
-            </div>
-
-            <div class="select1 col-sm-12 col-md-4 mx-auto">
-                <div class="d-flex gap-3">
-                    <!--<a href="" id="pdfLink"><img src="{{ asset('assets/images/printer.png') }}" id="print" alt=""-->
-                    <!--        height="35px" data-bs-toggle="tooltip" data-bs-title="Print"></a>-->
-                    <!--<a href="" id="excelLink"><img src="{{ asset('assets/images/excel.png') }}" id="excel" alt=""-->
-                    <!--        height="35px" data-bs-toggle="tooltip" data-bs-title="Excel"></a>-->
-                </div>
             </div>
         </div>
 
@@ -44,7 +34,6 @@
                 </thead>
                 <tbody>
                     @foreach ($ap_list as $ap)
-
                     <tr>
                         <td>{{ $loop->iteration}}</td>
                         <td>{{ $ap->name }}</td>
@@ -77,7 +66,6 @@
                             </div>
                         </td>
                     </tr>
-
                     @endforeach
                 </tbody>
             </table>

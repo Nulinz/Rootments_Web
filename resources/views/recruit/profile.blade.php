@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
-<link rel="stylesheet" href="{{ asset('assets/css/profile.css') }}">
-
 @section('content')
+
+    <link rel="stylesheet" href="{{ asset('assets/css/profile.css') }}">
+
     <div class="sidebodydiv px-5 mb-4">
         <div class="sidebodyback my-3" onclick="goBack()">
             <div class="backhead">
@@ -78,7 +79,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Posting Date</h6>
-                                    <h5 class="mb-0">{{ date("d-m-Y",strtotime($list->created_at)) }}</h5>
+                                    <h5 class="mb-0">{{ date("d-m-Y", strtotime($list->created_at)) }}</h5>
                                 </div>
                             </div>
                         </div>

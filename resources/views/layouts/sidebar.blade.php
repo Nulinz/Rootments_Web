@@ -17,19 +17,11 @@
             //     $user->role_id = session('role_id');  // Update role_id from the session
             //     Auth::setUser($user);  // Re-set the user to reflect the new role_id
             //     // dd(Auth::user());
-
-
             // }
-
             $user = auth()->user();
-
             //  dd($user->role_id, session('role_id'), Auth::user());
-
-
             // dd($user);
-
             // echo $user->role_id ;
-
             // Get user role details
             $role_get = DB::table('roles')
                 ->join('users', 'users.role_id', '=', 'roles.id')
@@ -46,7 +38,6 @@
             // }else {
             //     $route = 'mydash.dashboard';
             // }
-
             $route = [
                 3 => ['route' => 'hr.dashboard', 'over' => 'HR'],
                 4 => ['route' => 'hr.dashboard', 'over' => 'HR'],
@@ -63,8 +54,6 @@
         @endphp
 
         <ul class="list-unstyled mt-5 ps-0">
-
-
             <li class="mb-1">
                 <a href="{{ route($route[$r_id]['route'] ?? 'mydash.dashboard') }}">
                     <button
@@ -164,32 +153,31 @@
                 </li>
             @endif
             @if(hasAccess($r_id, 'task'))
-            <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('task.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse4"
-                    aria-expanded="false">
-                    <div class="btnname">
-                        <i class="fa-solid fa-list-check"></i> &nbsp;Task
-                    </div>
-                    <div class="righticon d-flex mx-auto">
-                        <i class="fa-solid fa-angle-down toggle-icon"></i>
-                    </div>
-                </button>
-                <div class="collapse mt-3" id="collapse4">
-                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                        @if(hasAccess($r_id, 'all_task'))
-                        <li><a href="{{ route('task.index') }}"
-                                class="d-inline-flex text-decoration-none rounded">Task
-                                List</a>
-                        </li>
-                        @endif
-                        <li><a href="{{ route('task.completed-task') }}"
-                                class="d-inline-flex text-decoration-none rounded">Completed Task
-                                List</a>
-                        </li>
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('task.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-list-check"></i> &nbsp;Task
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse mt-3" id="collapse4">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            @if(hasAccess($r_id, 'all_task'))
+                                <li><a href="{{ route('task.index') }}" class="d-inline-flex text-decoration-none rounded">Task
+                                        List</a>
+                                </li>
+                            @endif
+                            <li><a href="{{ route('task.completed-task') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Completed Task
+                                    List</a>
+                            </li>
 
-                    </ul>
-                </div>
-            </li>
+                        </ul>
+                    </div>
+                </li>
             @endif
             @if(hasAccess($r_id, 'recruitment'))
                 <li class="mb-1">
@@ -212,6 +200,24 @@
                     </div>
                 </li>
             @endif
+            <li class="mb-1">
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('resign.*') ? 'active' : '' }}"
+                    data-bs-toggle="collapse" data-bs-target="#collapse12" aria-expanded="false">
+                    <div class="btnname">
+                        <i class="fa-solid fa-user-xmark"></i> &nbsp;Resignation
+                    </div>
+                    <div class="righticon d-flex mx-auto">
+                        <i class="fa-solid fa-angle-down toggle-icon"></i>
+                    </div>
+                </button>
+                <div class="collapse" id="collapse12">
+                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                        <li><a href="{{ route('resign.list') }}"
+                                class="d-inline-flex text-decoration-none rounded mt-3">Resignation List</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             @if(hasAccess($r_id, 'payroll'))
                 <li class="mb-1">
                     <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('payroll.*') ? 'active' : '' }}"
@@ -376,14 +382,9 @@
                                             }
                                         }
                                     @endphp
-
-
-
-
                                     <!--<div class="righticon d-flex mx-auto approvalno">-->
                                     <!--    <h6 class="mb-0">{{ $total_count }}</h6>-->
                                     <!--</div>-->
-
                                 </button>
                             </a>
                         </li>
@@ -391,14 +392,10 @@
             <li class="mb-3">
                 @php
                     $user_check = Auth::user()->id;
-
                     $attd = DB::table('attendance')->where('user_id', $user_check)->whereDate('c_on', date('Y-m-d'))->count();
-
-
                 @endphp
 
                 @if($attd == 0)
-
                     <a onclick="getLocation()">
                         <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
                             <div class="btnname">
@@ -408,7 +405,6 @@
                     </a>
                 @else
                     <a onclick="getLocation()">
-
                         <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
                             <div class="btnname">
                                 <i class="fa-solid fa-right-to-bracket" style="color: red;"></i> &nbsp;CheckOut

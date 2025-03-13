@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 <link rel="stylesheet" href="{{ asset('assets/css/profile.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/tasktimeline.css') }}">
 
 @section('content')
     <div class="sidebodydiv px-5 mb-4">
@@ -42,7 +43,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Date Of Birth</h6>
-                                    <h5 class="mb-0">{{ date("d-m-Y",strtotime($pro->dob))}}</h5>
+                                    <h5 class="mb-0">{{ date("d-m-Y", strtotime($pro->dob))}}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Email ID</h6>
