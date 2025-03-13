@@ -6,114 +6,39 @@
 <div class="container maindiv pt-3" style="height: 490px" id="timelinecards">
     <div class="timeline">
 
+        @foreach ($for_list as $fl)
+
+
         <div class="entry completed">
             <div class="title">
-                <h3>Handover</h3>
-                <h6 class="text-success">Completed</h6>
+                <h3>{{ $fl->formality }}</h3>
+                <h6 class="text-success">{{ $fl->status }}</h6>
             </div>
             <div class="entrybody">
                 <div class="taskname">
                     <div class="tasknameleft">
-                        <h6 class="mb-0">Team Coordinator</h6>
+                        <h6 class="mb-0">{{ $fl->name }}</h6>
                     </div>
                     <div class="tasknamefile">
-                        <a href="" data-bs-toggle="tooltip" data-bs-title="Attachment" download><i
+                        @if(!is_null($fl->file))
+                        <a href="" data-bs-toggle="tooltip" data-bs-title="Attachment" download="{{ basename($fl->file)}}"><i
                                 class="fa-solid fa-paperclip"></i></a>
+                        @endif
                     </div>
                 </div>
                 <div class="taskdescp mb-2">
-                    <h6 class="mb-0">Discuss staff responsibilities during the upcoming
-                        holiday rush.</h6>
+                    <h6 class="mb-0">{{ $fl->review }}.</h6>
                 </div>
                 <div class="taskdate">
                     <h6 class="m-0 startdate"><i class="fa-regular fa-calendar"></i>&nbsp;
-                        12/12/2024</h6>
+                        {{ date("d-m-Y",strtotime($fl->created_at)) }}</h6>
                     </h6>
                 </div>
             </div>
         </div>
 
-        <div class="entry pending">
-            <div class="title">
-                <h3>Exit Formalities</h3>
-                <h6 class="text-success">Completed</h6>
-            </div>
-            <div class="entrybody">
-                <div class="taskname">
-                    <div class="tasknameleft">
-                        <h6 class="mb-0">Team Coordinator</h6>
-                    </div>
-                    <div class="tasknamefile">
-                        <a href="" data-bs-toggle="tooltip" data-bs-title="Attachment" download><i
-                                class="fa-solid fa-paperclip"></i></a>
-                    </div>
-                </div>
-                <div class="taskdescp mb-2">
-                    <h6 class="mb-0">Discuss staff responsibilities during the upcoming
-                        holiday rush.</h6>
-                </div>
-                <div class="taskdate">
-                    <h6 class="m-0 startdate"><i class="fa-regular fa-calendar"></i>&nbsp;
-                        12/12/2024</h6>
-                    </h6>
-                </div>
-            </div>
-        </div>
+        @endforeach
 
-        <div class="entry">
-            <div class="title">
-                <h3>Final Settlements</h3>
-                <h6 class="text-success">Completed</h6>
-            </div>
-            <div class="entrybody">
-                <div class="taskname">
-                    <div class="tasknameleft">
-                        <h6 class="mb-0">Team Coordinator</h6>
-                    </div>
-                    <div class="tasknamefile">
-                        <a href="" data-bs-toggle="tooltip" data-bs-title="Attachment" download><i
-                                class="fa-solid fa-paperclip"></i></a>
-                    </div>
-                </div>
-                <div class="taskdescp mb-2">
-                    <h6 class="mb-0">Discuss staff responsibilities during the upcoming
-                        holiday rush.</h6>
-                </div>
-                <div class="taskdate">
-                    <h6 class="m-0 startdate"><i class="fa-regular fa-calendar"></i>&nbsp;
-                        12/12/2024</h6>
-                    </h6>
-                </div>
-            </div>
-        </div>
-
-        <div class="entry">
-            <div class="title">
-                <h3>Experience Certificate</h3>
-                <h6 class="text-danger">Pending</h6>
-            </div>
-            <div class="entrybody">
-                <div class="taskname">
-                    <div class="tasknameleft">
-                        <h6 class="mb-0">Update Now</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="entry">
-            <div class="title">
-                <h3>Termination</h3>
-                <h6 class="text-danger">Pending</h6>
-            </div>
-            <div class="entrybody">
-                <div class="taskname">
-                    <div class="tasknameleft">
-                        <h6 class="mb-0">Update Now</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </div>
 </div>
@@ -127,10 +52,12 @@
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="{{ route('resign.formality') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input hidden type="text" name="res_id" value="{{ $pro->res_id }}">
                     <div class="col-sm-12 col-md-12 mb-3">
                         <label for="formalities">Formalities <span>*</span></label>
-                        <select name="formalities" id="formalities" class="form-select" required>
+                        <select name="formal_type" id="formalities" class="form-select" required>
                             <option value="" selected disabled>Select Options</option>
                             <option value="Handover">Handover</option>
                             <option value="Exit Formalities">Exit Formalities</option>

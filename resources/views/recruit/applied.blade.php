@@ -1,6 +1,6 @@
 <div class="empdetails">
     <div class="sidebodyhead">
-        <h4 class="mb-2">Applied Details{{ $list->id}}</h4>
+        <h4 class="mb-2">Applied Details</h4>
     </div>
     <div class="sidebodyhead">
         <h6 class="m-0" style="font-size: 12px"><a target="__blank"
@@ -45,13 +45,13 @@
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 @if(!is_null($ap->certify))
-                                <a href="{{ asset($ap->certify) }}" data-bs-toggle="tooltip" data-bs-title="Certification"><i
-                                        class="fas fa-download" download="{{ basename($ap->certify) }}"></i></a>
+                                <a data-bs-toggle="tooltip" data-bs-title="Certification"><i
+                                        class="fas fa-download" download="{{ asset($ap->certify) }}"></i></a>
                                 |
                                 @endif
                                 @if(!is_null($ap->resume))
-                                <a href="{{ $ap->resume }}" data-bs-toggle="tooltip" data-bs-title="Resume"><i
-                                        class="fas fa-download"></i></a>
+                                <a data-bs-toggle="tooltip" data-bs-title="Resume"><i
+                                        class="fas fa-download" download="{{ asset($ap->resume) }}"></i></a>
                                 @endif
                             </div>
                         </td>

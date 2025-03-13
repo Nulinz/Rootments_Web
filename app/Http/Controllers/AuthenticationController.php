@@ -21,7 +21,7 @@ class AuthenticationController extends Controller
         $emp_code = $request->emp_code;
         $password = $request->password;
 
-        $user = User::where('emp_code', $emp_code)->first();
+        $user = User::where('emp_code', $emp_code)->where('status',1)->first();
 
 
         if ($user) {

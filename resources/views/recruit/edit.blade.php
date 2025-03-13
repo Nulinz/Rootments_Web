@@ -13,6 +13,7 @@
             <h4 class="m-0">Job Posting Details</h4>
         </div>
         <form action="{{ route('job_post_edit',['id'=>$edit->post_id]) }}" method="post" id="">
+            @csrf
             <div class="container-fluid maindiv">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">

@@ -474,36 +474,7 @@ class RecruitController extends Controller
 
 
 
-        // $user = Auth::user();
 
-    //     try{
-
-    //     $rec = DB::table('job_posting')->insert([
-    //         'rec_id'=>$req->rec_id,
-    //         'job_title'=>$req->jobtitle,
-    //         'responsibility'=>$req->resp,
-    //         'job_type'=>$req->jobtype,
-    //         'job_desc'=>$req->jobdesp,
-    //         'hrs'=>$req->workhours,
-    //         'salary'=>$req->slryrange,
-    //         'benefits'=>$req->benefits,
-    //         'post_date'=>$req->postdate,
-    //         'req_to'=>3,
-    //         'c_by'=>$user->id,
-    //         'created_at'=>now(),
-    //         'updated_at'=>now()
-
-    //     ]);
-    // }catch(\Exception $e){
-    //     dd($e);
-    // }
-
-    //     if($rec){
-    //         return view('recruit.list',['status'=>'success','message'=>'Recuritment Added Successfully']);
-    //     }
-    //     else{
-    //         return view('recruit.list',['status'=>'Failed','message'=>'Recuritment Failed  to Add!!']);
-    //     }
     }
 
     public function update_screen(Request $request)
@@ -545,12 +516,15 @@ class RecruitController extends Controller
      */
     public function add_round(Request $req)
     {
+        $user = Auth::user();
+
          $round = DB::table('rounds')->insert([
                 'app_id'=>$req->app_id,
                 'round'=>$req->round,
                 'status'=>$req->pop_status,
                 'assign_to'=>$req->assignto,
                 'review'=>$req->review,
+                'c_by'=>$user->id,
                 'created_at'=>now(),
                 'updated_at'=>now(),
 
@@ -574,8 +548,33 @@ class RecruitController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function job_post_edit(Request $req)
     {
-        //
+        $update = DB::table('job_posting')->update([
+            'job_title'=>$req->jobtitle,
+            'responsibility'=>$req->resp,
+            'job_type'=>$req->jobtype,
+            'job_desc'=>$req->jobdesp,
+            'hrs'=>$req->workhours,
+            'salary'=>$req->slryrange,
+            'benefits'=>$req->benefits,
+            'post_date'=>$req->postdate,
+            'updated_at'=>now()
+
+        ]);
+
+        if ($update) {
+            // Redirect back with a success message if insertion is successful
+            return redirect()->back()->with([
+                'status' => 'success',
+                'message' => 'Job Posting Updated successfully!'
+            ]);
+        }
+
+        // If insertion fails, you can redirect with an error message
+        return redirect()->back()->with([
+            'status' => 'error',
+            'message' => 'There was an issue with the operation.'
+        ]);
     }
 }
