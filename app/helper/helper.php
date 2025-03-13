@@ -25,7 +25,7 @@ if (!function_exists('hasAccess')) {
                         'approval' => [3,4,5,12,7,30,37,41],
                         'recruit_req' => [3,4,5,6,7,8,9,10,11,12],
                         'cat/sub'=>[3,4,5],
-                        'leave'=>[12,7,30,37,41],
+                        'leave'=>[10,11,12,7,30,37,41],
                         'mob_task'=>[1,2,3,4,5,6,7,8,9,10,11,12,13,30,37,41]
                         ];
         return in_array($role, $menuItems[$menuItem]);

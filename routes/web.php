@@ -198,19 +198,21 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         // job posting....
         Route::get('recruit-list', 'RecruitController@list')->name('recruit.list');
         Route::get('recruit-add', 'RecruitController@create')->name('recruit.add');
-        Route::get('recruit-edit', 'RecruitController@edit')->name('recruit.edit');
+        Route::get('recruit-edit/{id}', 'RecruitController@edit')->name('recruit.edit');
         Route::get('recruit-profile/{id}', 'RecruitController@profile')->name('recruit.profile');
         Route::get('recruit-candidate/{id}', 'RecruitController@candidate_profile')->name('recruit.candidate_profile');
         Route::get('recruit-add-interview', 'RecruitController@add_interview')->name('recruit.add_interview');
         Route::get('recruit-edit-interview', 'RecruitController@edit_interview')->name('recruit.edit_interview');
-        Route::get('recruit-edit-interview', 'RecruitController@edit_interview')->name('recruit.edit_interview');
+        // Route::get('recruit-edit-interview', 'RecruitController@edit_interview')->name('recruit.edit_interview');
         Route::post('recruit-data', 'RecruitController@rec_data')->name('recruit.data');
         Route::post('job_post_add', 'RecruitController@store')->name('job_post_add');
+        Route::post('job_post_edit/{id}', 'RecruitController@job_post_edit')->name('job_post_edit');
         Route::post('job_post_up', 'RecruitController@post_update')->name('job_post_up');
         Route::post('job_app_store', 'RecruitController@post_app_store')->name('job_app_store');
 
         Route::get('post_application/{id}', 'RecruitController@post_application')->name('post_application');
         Route::post('update_screen', 'RecruitController@update_screen')->name('update_screen');
+        Route::post('add_round', 'RecruitController@add_round')->name('add_round');
 
         // Recruitment
         Route::get('resign-list', 'ResignController@list')->name('resign.list');

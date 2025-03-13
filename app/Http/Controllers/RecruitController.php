@@ -139,13 +139,30 @@ class RecruitController extends Controller
         $job_pro = DB::table('job_apply as ja')->where('ja.id',$request->id)
         ->leftJoin('job_posting as jp','jp.id','=','ja.job_id')
         ->leftJoin('recruitments as rc','rc.id','=','jp.rec_id')
-        ->leftJoin('roles','roles.id','=','rc.role')
+        ->leftjoin ('roles',function($join){
+            $join->on('roles.id', '=', 'rc.role'); // Join on store_id and store_ref_id
+        })
+        ->select('ja.*','jp.*','rc.*','roles.role as rl','ja.id as jobid')
         ->first();
 
-            // dd($job_pro);
+        $hr = DB::table('users')-> whereIn('role_id',[3,4,5])->select('name','id')->get();
+
+        $round_list = DB::table('rounds')->where('app_id',$request->id)
+        ->leftJoin('users',function($join){
+
+            $join->on('users.id','=','rounds.c_by')
+            ->whereNotNull('rounds.c_by');
 
 
-     return view('recruit.candidate_profile',['pro'=>$job_pro]);
+        })
+        ->select('users.name','rounds.*')
+        ->get();
+
+
+                //  dd($round_list);
+
+
+     return view('recruit.candidate_profile',['pro'=>$job_pro,'assign_to'=>$hr,'round_list'=>$round_list]);
     }
 
     public function add_interview(Request $request)
@@ -244,18 +261,83 @@ class RecruitController extends Controller
             'status'
             )->get();
 
-        //   dd($ap_list);
 
-        //  dd($list);
-         return view('recruit.profile',['list'=>$list,'ap_list'=>$ap_list]);
+            $sc_list = DB::table('job_apply')
+            ->where('job_id', $pro)
+            ->where('job_apply.status', 'Screening')
+            ->leftJoin('rounds as ro', 'ro.app_id', '=', 'job_apply.id') // Join with rounds table
+            ->select(
+                'job_apply.*',  // Get all columns from the job_apply table
+                'ro.round', // Get the round from the rounds table
+                'ro.status as round_status', // Get the status of the round
+                'ro.created_at as round_created_at' // Get the created_at date of the round (or you can use it to sort)
+            )
+            ->groupBy('job_apply.name')
+            ->get();
+
+        $sc_list = $sc_list->map(function ($jobApply) {
+            // Now that we have joined the rounds, let's process each user with their rounds
+
+            // Fetch the rounds for this particular user (job application)
+            $rounds = DB::table('rounds')
+                ->where('app_id', $jobApply->id)  // Find rounds related to this job application
+                  // Order by the latest created round
+                ->get();  // Get all rounds for this job application
+
+            // If there are any rounds, attach them to the job application
+            $jobApply->rounds = $rounds;
+
+            return $jobApply;
+        });
+
+        // shortlist app
+
+        $short_list = DB::table('rounds')->where('status', 'Completed')->select('app_id')->get();
+
+        $new_list = $short_list->map(function($short_list) {
+            // Fetch job details for each app_id
+            $list = DB::table('job_apply')->where('id', $short_list->app_id)->first(); // Use 'first()' to get a single job entry
+
+            return $list; // Return the job_apply entry
+        });
+
+        // To get the result as an array of job_apply objects:
+        // dd($new_list);
+
+
+
+    //  dd($new_list);
+
+         return view('recruit.profile',['list'=>$list,'ap_list'=>$ap_list,'sc_list'=>$sc_list,'short'=>$new_list]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request)
+    public function edit(Request $req)
     {
-        return view('recruit.edit');
+
+        $job = DB::table('job_posting as jp')->where('jp.id',$req->id)
+        ->leftJoin('recruitments as rc','rc.id','=','jp.id')
+        ->leftjoin ('roles',function($join){
+            $join->on('roles.id', '=', 'rc.role'); // Join on store_id and store_ref_id
+        })
+
+        ->select(
+            'jp.*',
+            'roles.role',
+            'roles.role_dept',
+            'rc.exp',
+            'rc.loc',
+            'jp.status as jp_status',
+            'jp.id as post_id'
+        )
+        ->orderBy('jp.id','DESC')->first();
+
+        //  dd($job);
+
+        return view('recruit.edit',['edit'=>$job]);
+
     }
 
     public function post_application(Request $request)
@@ -461,9 +543,32 @@ class RecruitController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function add_round(Request $req)
     {
-        //
+         $round = DB::table('rounds')->insert([
+                'app_id'=>$req->app_id,
+                'round'=>$req->round,
+                'status'=>$req->pop_status,
+                'assign_to'=>$req->assignto,
+                'review'=>$req->review,
+                'created_at'=>now(),
+                'updated_at'=>now(),
+
+         ]);
+
+         if ($round) {
+            // Redirect back with a success message if insertion is successful
+            return redirect()->back()->with([
+                'status' => 'success',
+                'message' => 'Operation completed successfully!'
+            ]);
+        }
+
+        // If insertion fails, you can redirect with an error message
+        return redirect()->back()->with([
+            'status' => 'error',
+            'message' => 'There was an issue with the operation.'
+        ]);
     }
 
     /**

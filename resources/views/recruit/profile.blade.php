@@ -116,10 +116,10 @@
                         @include('recruit.applied')
                     </div>
                     <div class="tab-pane fade" id="interview" role="tabpanel" aria-labelledby="interview-tab">
-                        {{-- @include('recruit.interview') --}}
+                        @include('recruit.interview')
                     </div>
                     <div class="tab-pane fade" id="shortlist" role="tabpanel" aria-labelledby="shortlist-tab">
-                        {{-- @include('recruit.shortlist') --}}
+                        @include('recruit.shortlist')
                     </div>
                 </div>
             </div>

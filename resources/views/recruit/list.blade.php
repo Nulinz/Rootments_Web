@@ -66,7 +66,7 @@
                                     </button>
 
                                     @else
-                                    <a href="{{ route('recruit.edit') }}" data-bs-toggle="tooltip" data-bs-title="Edit">
+                                    <a href="{{ route('recruit.edit',['id'=>$lt->id]) }}" data-bs-toggle="tooltip" data-bs-title="Edit">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
                                     @endif

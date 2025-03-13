@@ -57,7 +57,7 @@
                         </td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
-                                <a href="{{ route('recruit.candidate_profile',['id'=>$ap->id]) }}"><i class="fas fa-eye"></i></a>
+                                {{-- <a href="{{ route('recruit.candidate_profile', ['id' => $ap->id] ) }}"><i class="fas fa-eye"></i></a> --}}
                                 @if($ap->status=='applied')
                                 <button class="listtdbtn" data-bs-toggle="modal" data-id="{{ $ap->id }}" data-bs-target="#updateApplied">Update</button>
                                 @else
@@ -90,8 +90,8 @@
                         <select class="form-select" name="status">
                             <option value="" selected disabled>Select Options</option>
                             <option value="Screening">Screening</option>
-                            <option value="Interview">Interview</option>
-                            <option value="Shortlisted">Shortlisted</option>
+                            {{-- <option value="Interview">Interview</option>
+                            <option value="Shortlisted">Shortlisted</option> --}}
                         </select>
                     </div>
                     <div class="d-flex justify-content-center align-items-center mx-auto">
