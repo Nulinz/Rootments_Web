@@ -7,13 +7,15 @@
     <title>Application Form</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="/public/assets/images/favicon_2.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="{{ asset('assets/images/favicon_2.png') }}" sizes="32x32" type="image/png">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="/public/assets/css/apply_form.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/common.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/buttons.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/apply_form.css') }}">
 
 </head>
 
@@ -22,7 +24,7 @@
     <div class="main">
         <div class="container px-0 m-0 w-100 d-flex justify-content-center align-items-center">
             <div class="row logoimg">
-                <img src="/public/assets/images/logo.png" height="100%" alt="">
+                <img src="{{ asset('assets/images/logo.png') }}" height="100%" alt="">
             </div>
         </div>
         @if(session('status'))
