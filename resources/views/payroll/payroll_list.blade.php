@@ -12,6 +12,14 @@
             <div class="container-fluid maindiv bg-white my-3">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                        <label for="dept">Departments</label>
+                        <select class="form-select" name="dept" id="dept" autofocus required>
+                            @foreach ($dept as $item)
+                               <option value="{{ $item->role_dept }}">{{ $item->role_dept }}</option>
+                           @endforeach
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs" id="store_div" style="display:none">
                         <label for="store">Store Name</label>
                         <select class="form-select" name="store" id="store" autofocus>
                             <option value="" selected disabled>Select Stores</option>
@@ -22,10 +30,11 @@
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="month">Month</label>
-                        <select class="form-select" name="month" id="month">
+                        <input type="month" class="form-control" name="month" id="month">
+                        {{-- <select class="form-select" name="month" id="month">
                             <option value="" selected disabled>Select Options</option>
 
-                        </select>
+                        </select> --}}
                     </div>
                 </div>
             </div>
@@ -102,7 +111,18 @@
     </div>
 
     <script>
-         $('#store').on('change', function() {
+        $('#dept').on('change',function(){
+            var dept = $(this).find('option:selected').val();
+            if(dept==='Store'){
+                $('#store_div').show();
+            }else{
+                $('#store_div').hide();
+            }
+        });
+    </script>
+
+    <script>
+         $('#store1').on('change', function() {
             // Trigger an AJAX request when the page is ready
             var store = $(this).val();
             $.ajax({

@@ -123,13 +123,23 @@ class PayrollController extends Controller
 
     public function payroll_list()
     {
-       $store =  DB::table('m_salary')
-        ->groupBy('store')
-        ->leftJoin('stores','stores.id','=','m_salary.store')
-        ->select('stores.store_name','stores.id')
-        ->get();
+    //    $store =  DB::table('m_salary')
+    //     ->groupBy('store')
+    //     ->leftJoin('stores','stores.id','=','m_salary.store')
+    //     ->select('stores.store_name','stores.id')
+    //     ->get();
+
+    $dept = DB::table('roles')
+    ->where('id', '!=', 1)
+    ->select('role_dept')
+    ->distinct()
+    ->get();
+
+      // stores for dropdown....
+
+    $store = DB::table('stores')->get();
         // return $store;
-         return view ('payroll.payroll_list',['store'=>$store]);
+         return view ('payroll.payroll_list',['store'=>$store,'dept'=>$dept]);
     }
 
     /**
@@ -238,14 +248,28 @@ class PayrollController extends Controller
      */
     public function salary_list(Request $req)
     {
-        $sal_list = DB::table('m_salary as ms')
+        //  dd($req->all());
+
+        $sal_mon = $req->month;
+
+        $sal = explode('-',$sal_mon);
+
+        $year = $sal[0];
+        $mon = $sal[1];
+
+        $sal_list = DB::table('m_salary as ms')->where('ms.month', $mon)
         ->leftJoin('users', 'users.id', '=', 'ms.emp_id')
-        ->where('ms.month', $req->month)
-        ->where('ms.store', $req->store)
+        ->leftJoin('roles', 'roles.id', '=', 'users.role_id')
+        ->when($req->dept == 'Store', function ($join) use ($req) {
+            return $join->where('ms.store', $req->store);
+        })
+        ->when($req->dept != 'Store', function ($join) use ($req) {
+            return $join->where('roles.role_dept', '=', $req->dept);
+        })
         ->select('ms.*', 'users.name','users.emp_code')
         ->get();
 
-        return view ('payroll.payroll_list',['sal_list'=>$sal_list]);
+         return view ('payroll.payroll_list',['sal_list'=>$sal_list]);
 
 
     }

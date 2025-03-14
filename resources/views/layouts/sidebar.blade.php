@@ -182,7 +182,7 @@
                     </div>
                 </li>
             @endif
-            @if(hasAccess($r_id, 'recruitment'))
+            @if(hasAccess($r_id, 'all_task'))
                 <li class="mb-1">
                     <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('recruit.*') ? 'active' : '' }}"
                         data-bs-toggle="collapse" data-bs-target="#collapse8" aria-expanded="false">
@@ -203,6 +203,7 @@
                     </div>
                 </li>
             @endif
+
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('resign.*') ? 'active' : '' }}"
                     data-bs-toggle="collapse" data-bs-target="#collapse12" aria-expanded="false">
@@ -221,6 +222,7 @@
                     </ul>
                 </div>
             </li>
+
             @if(hasAccess($r_id, 'payroll'))
                 <li class="mb-1">
                     <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('payroll.*') ? 'active' : '' }}"

@@ -15,16 +15,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::post('login', 'AuthenticationController@login')->name('login.submit');
     Route::get('logout', 'AuthenticationController@logout')->name('logout');
 
-    // Route::get('/api/firebase-config', function () {
-    //     return response()->json([
-    //         'apiKey' => 'AIzaSyDVdH_PbNRhl2YGMPronbaklLPbZCPyT4w',
-    //         'authDomain' => 'rootments-app.firebaseapp.com',
-    //         'projectId' => 'rootments-ap',
-    //         'storageBucket' => 'rootments-app.firebasestorage.app',
-    //         'messagingSenderId' => '406832035732',
-    //         'appId' => '1:406832035732:web:0564580a464ee6f336c181',
-    //     ]);
-    // });
+    // extranl application
+
+    Route::get('post_application/{id}', 'RecruitController@post_application')->name('post_application');
+
 
     Route::post('send_not', 'LeaveController@send_not')->name('send_not');
 
@@ -212,7 +206,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('job_post_up', 'RecruitController@post_update')->name('job_post_up');
         Route::post('job_app_store', 'RecruitController@post_app_store')->name('job_app_store');
 
-        Route::get('post_application/{id}', 'RecruitController@post_application')->name('post_application');
+
         Route::post('update_screen', 'RecruitController@update_screen')->name('update_screen');
         Route::post('add_round', 'RecruitController@add_round')->name('add_round');
 

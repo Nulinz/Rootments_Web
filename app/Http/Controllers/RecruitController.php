@@ -124,7 +124,7 @@ class RecruitController extends Controller
                 //             'type_id' => $request->id,
                 //         ]);
 
-            return view('recruit.list',['status'=>'success','message' => 'JobPost updated successfully!','list'=>$job]);
+            return back()->with(['status'=>'success','message' => 'JobPost updated successfully!','list'=>$job]);
 
         } catch (\Exception $e) {
 
