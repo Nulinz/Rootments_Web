@@ -45,13 +45,13 @@
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 @if(!is_null($ap->certify))
-                                <a data-bs-toggle="tooltip" data-bs-title="Certification"><i
-                                        class="fas fa-download" download="{{ asset($ap->certify) }}"></i></a>
+                                <a data-bs-toggle="tooltip" href="{{ asset($ap->certify) }}" data-bs-title="Certification"><i
+                                        class="fas fa-download" download="{{ basename($ap->certify) }}"></i></a>
                                 |
                                 @endif
                                 @if(!is_null($ap->resume))
-                                <a data-bs-toggle="tooltip" data-bs-title="Resume"><i
-                                        class="fas fa-download" download="{{ asset($ap->resume) }}"></i></a>
+                                <a data-bs-toggle="tooltip" href="{{ asset($ap->resume) }}" data-bs-title="Resume"><i
+                                        class="fas fa-download" download="{{ basename($ap->resume) }}"></i></a>
                                 @endif
                             </div>
                         </td>

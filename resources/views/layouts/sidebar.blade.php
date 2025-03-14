@@ -203,7 +203,7 @@
                     </div>
                 </li>
             @endif
-
+            @if(hasAccess($r_id, 'payroll'))
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('resign.*') ? 'active' : '' }}"
                     data-bs-toggle="collapse" data-bs-target="#collapse12" aria-expanded="false">
@@ -222,6 +222,7 @@
                     </ul>
                 </div>
             </li>
+            @endif
 
             @if(hasAccess($r_id, 'payroll'))
                 <li class="mb-1">

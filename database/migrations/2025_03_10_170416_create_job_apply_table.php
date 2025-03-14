@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->date('dob')->nullable();
             $table->string('email')->nullable();
-            $table->integer('contact')->nullable();
+            $table->string('contact')->nullable();
             $table->string('add')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();

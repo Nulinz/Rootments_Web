@@ -70,9 +70,11 @@
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
                                     @endif
+                                    @if($lt->jp_status=='Approved' || $lt->jp_status=='Pending')
                                     <a href="{{ route('recruit.profile',['id'=>$lt->id]) }}" data-bs-toggle="tooltip"
                                     data-bs-title="View Profile">
                                     <i class="fa-solid fa-eye"></i>
+                                    @endif
                                 </a>
                                 </div>
                             </td>

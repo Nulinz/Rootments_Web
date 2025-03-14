@@ -221,7 +221,7 @@ class RecruitController extends Controller
         $pro = $req->id;
 
         $list = DB::table('job_posting as jp')->where('jp.id',$pro)
-        ->leftJoin('recruitments as rc','rc.id','=','jp.id')
+        ->leftJoin('recruitments as rc','rc.id','=','jp.rec_id')
         ->leftjoin ('roles as ro',function($join){
             $join->on('ro.id', '=', 'rc.role'); // Join on store_id and store_ref_id
         })
