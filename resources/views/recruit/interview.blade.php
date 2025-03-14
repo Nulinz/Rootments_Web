@@ -30,6 +30,7 @@
                         <th>Email ID</th>
                         <th>Contact Number</th>
                         <th>Rounds</th>
+                        {{-- <th>Last</th> --}}
                         {{-- <th>Technical</th>
                         <th>Manager</th> --}}
                         <th>Action</th>
@@ -42,13 +43,14 @@
                         <td>{{ $sc->name }}</td>
                         <td>{{ $sc->email }}</td>
                         <td>{{ $sc->contact }}</td>
-                        <td>
+                        {{-- <td>
                             @foreach ($sc->rounds as $r)
                             <div>
                                 {{ $r->round }} - {{ $r->status }}<br>
                             </div>
                             @endforeach
-                        </td>
+                        </td> --}}
+                        <td>{{ $sc->rounds->last()->round }}-{{ $sc->rounds->last()->status }}</td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 <a href="{{ route('recruit.candidate_profile', ['id' => $sc->id] ) }}"><i class="fas fa-eye"></i></a>
