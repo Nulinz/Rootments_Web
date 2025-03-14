@@ -16,21 +16,21 @@ class RecruitController extends Controller
     {
 
         $job = DB::table('job_posting as jp')
-        ->leftJoin('recruitments as rc','rc.id','=','jp.id')
+        ->leftJoin('recruitments as rc','rc.id','=','jp.rec_id')
         ->leftjoin ('roles',function($join){
             $join->on('roles.id', '=', 'rc.role'); // Join on store_id and store_ref_id
         })
-
         ->select(
             'jp.*',
-            'roles.role',
-            'roles.role_dept',
+            'roles.role as roll',
+            'roles.role_dept as dept',
             'rc.exp',
             'rc.loc',
+            'rc.role as rec_role',
             'jp.status as jp_status'
         )
         ->orderBy('jp.id','DESC')->get();
-        //  dd($job);
+        //    dd($job);
          return view('recruit.list',['list'=>$job]);
     }
 
@@ -48,6 +48,7 @@ class RecruitController extends Controller
 
         )
         ->get();
+
         }
         catch(\Exception $e){
             dd($e);
@@ -205,10 +206,10 @@ class RecruitController extends Controller
     }
 
         if($rec){
-            return view('recruit.list',['status'=>'success','message'=>'Recuritment Added Successfully']);
+            return back()->with(['status'=>'success','message'=>'Recuritment Added Successfully']);
         }
         else{
-            return view('recruit.list',['status'=>'Failed','message'=>'Recuritment Failed  to Add!!']);
+            return back()->with(['status'=>'Failed','message'=>'Recuritment Failed  to Add!!']);
         }
     }
 

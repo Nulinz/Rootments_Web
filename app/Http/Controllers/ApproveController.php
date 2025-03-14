@@ -329,7 +329,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
         $user = auth()->user();
 
         $rec = DB::table('recruitments as rc')
-        ->leftJoin('roles', 'rc.request_to', '=', 'roles.id')
+        ->leftJoin('roles', 'rc.role', '=', 'roles.id')
         ->leftJoin('users as uc', 'uc.id', '=', 'rc.c_by')
         ->where('rc.status','Pending')
         ->select(

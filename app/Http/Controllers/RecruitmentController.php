@@ -19,8 +19,8 @@ class RecruitmentController extends Controller
         $user_id = Auth::user()->id;
 
         $rec = DB::table('recruitments as rc')
-        ->leftJoin('roles', 'rc.request_to', '=', 'roles.id')
         ->where('rc.c_by',$user_id)
+        ->leftJoin('roles', 'roles.id','=','rc.role')
         ->select(
             'rc.id',
             'rc.dept',

@@ -45,14 +45,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($list as $lt)
+                        @foreach($list as $lt)
                         <tr>
                             <td>{{ $loop->iteration}}</td>
                             <td>REC{{ $lt->rec_id}}</td>
                             <td>JOB{{ $lt->id}}</td>
                             <td>{{ $lt->job_title}}</td>
-                            <td>{{ $lt->role_dept}}</td>
-                            <td>{{ $lt->role}}</td>
+                            <td>{{ $lt->dept}}</td>
+                            <td>{{ $lt->roll}}</td>
                             <td>{{ $lt->exp}}</td>
                             <td>{{ $lt->loc}}</td>
                             <td>{{ $lt->salary}}</td>
