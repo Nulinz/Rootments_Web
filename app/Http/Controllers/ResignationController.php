@@ -14,21 +14,23 @@ class ResignationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+        public function index()
     {
         $user_id = Auth::user()->id;
 
         $resgination = DB::table('resignations')
-        ->leftjoin('stores','stores.id','=','resignations.store_id')
-        ->leftjoin('users','users.id','=','resignations.emp_id')
-        ->leftJoin('resignations as rs','rs.emp_id','=', 'users.id')
-        ->select('resignations.*','stores.store_name','users.emp_code','rs.id as res_id')
         ->where('resignations.created_by',$user_id)
+        ->leftjoin('users','users.id','=','resignations.emp_id')
+        // ->leftJoin('resignations as rs','rs.emp_id','=', 'users.id')
+        ->select('resignations.*','users.emp_code')
+
         ->get();
+
+        // dd($resgination);
 
         foreach($resgination as $res){
 
-            $resing_tbl = DB::table('resign_list')->where('res_id', $res->res_id)->latest()->first();
+            $resing_tbl = DB::table('resign_list')->where('res_id', $res->id)->latest()->first();
 
             // If a record is found, assign the status to the res_status field
             // if ($resing_tbl) {
@@ -40,7 +42,7 @@ class ResignationController extends Controller
 
         }
 
-        // dd($resgination);
+        //  dd($resgination);
 
 
 

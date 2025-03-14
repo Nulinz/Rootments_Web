@@ -33,6 +33,7 @@
                             <th>#</th>
                             <th>Employee Code</th>
                             <th>Employee Name</th>
+                            <th>Loc</th>
                             {{-- <th>Store Name</th> --}}
                             <th>Resign Req Date</th>
                             <th>Reason</th>
@@ -45,6 +46,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->emp_code }}</td>
                                 <td>{{ $data->emp_name }}</td>
+                                <td>{{ $data->loc }}</td>
                                 {{-- <td>{{ $data->store_name }}</td> --}}
                                 <td>{{ date("d-m-Y",strtotime($data->res_date)) }}</td>
                                 <td>{{ $data->res_reason }}</td>

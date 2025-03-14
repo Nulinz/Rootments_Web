@@ -60,7 +60,7 @@ class RecruitController extends Controller
     {
         try{
         $rec_data = DB::table('recruitments as rc')
-        ->leftJoin('roles', 'rc.request_to', '=', 'roles.id')
+        ->leftJoin('roles', 'rc.role', '=', 'roles.id')
         ->where('rc.id',$req->rec)
         ->select(
             'rc.id',
