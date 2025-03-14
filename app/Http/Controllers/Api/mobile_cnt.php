@@ -480,7 +480,7 @@ class mobile_cnt extends Controller
             $resgination = new Resignation();
             $resgination->emp_id =$request->emp_id;
             $resgination->emp_name =$request->emp_name;
-            $resgination->store_id =$request->store_id;
+            // $resgination->store_id =$request->store_id;
             $resgination->loc =$request->loc;
             $resgination->res_date =$request->res_date;
             $resgination->res_reason =$request->res_reason;
@@ -556,7 +556,6 @@ class mobile_cnt extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Resgination Request Sent successfully',
-
         ]);
 
 

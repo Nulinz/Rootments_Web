@@ -50,7 +50,7 @@
                             </div>
                             @endforeach
                         </td> --}}
-                        <td>{{ $sc->rounds->last()->round }}-{{ $sc->rounds->last()->status }}</td>
+                        <td>{{ $sc->rounds->last()->round ?? '' }}-{{ $sc->rounds->last()->status ?? '' }}</td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 <a href="{{ route('recruit.candidate_profile', ['id' => $sc->id] ) }}"><i class="fas fa-eye"></i></a>
