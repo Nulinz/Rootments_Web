@@ -19,13 +19,15 @@ class ResignController extends Controller
 
         $app = $app->map(function($new){
 
-           $st =  DB::table('resign_list')->where('res_id',$new->res_id)->latest()->select('status')->first();
+           $st =  DB::table('resign_list')->where('res_id',$new->res_id)->latest()->select('status','formality')->first();
 
            if ($st) {
                 $new->status = $st->status;
+                $new->for_status = $st->formality;
             } else {
                 // If no status found, set it to null (or a default value)
                 $new->status = null;
+                $new->for_status = null;
             }
 
            return $new;

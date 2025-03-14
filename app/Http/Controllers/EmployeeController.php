@@ -17,13 +17,15 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $req)
     {
+        // dd($req->status);
+        $status = $req->status;
       $user = Auth::user();
 
     if($user->role_id == 12){
 
-        $query = DB::table('users')
+        $query = DB::table('users')->where('status', $status)
             ->leftJoin('stores', 'users.store_id', '=', 'stores.id')
             ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
             ->select(
@@ -49,7 +51,7 @@ class EmployeeController extends Controller
          $dept = DB::table('roles')->where('id',$user->role_id)->select('role_dept')->first();
 
         //  dd($dept);
-         $employees = $this->get_emp_dept($dept->role_dept);
+         $employees = $this->get_emp_dept($dept->role_dept, $status);
 
         //   dd($employees);
     }
@@ -229,7 +231,7 @@ class EmployeeController extends Controller
         ->leftJoin('stores', 'users.store_id', '=', 'stores.id')
         ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
         ->where('users.id',$id)
-        ->select('users.id','users.profile_image','users.name','users.emp_code','users.contact_no','users.email','stores.store_name','roles.role','roles.role_dept')
+        ->select('users.id','users.profile_image','users.name','users.emp_code','users.contact_no','users.email','stores.store_name','roles.role','roles.role_dept','users.status as u_status')
         ->first();
 
         return view('employee.profile', ['users' => $users]);
@@ -403,8 +405,16 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function emp_active(Request $req)
     {
-        //
+       $up =  DB::table('users')->where('id',$req->emp_id)->update([
+            'status'=>1
+        ]);
+
+        if($up){
+        return back()->with(['status'=>'success','message'=>'Employee Activated Successfully']);
+        }else{
+        return back()->with(['status'=>'Failure','message'=>'Employee Activation Failed']);
+        }
     }
 }

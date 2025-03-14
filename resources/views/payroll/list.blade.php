@@ -12,21 +12,35 @@
             <div class="container-fluid maindiv bg-white my-3">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
-                        <label for="month">Month</label>
-                        <input type="month" class="form-control" name="month" id="month">
+                        <label for="dept">Departments</label>
+                        <select class="form-select" name="dept" id="dept" autofocus required>
+                            @foreach ($dept as $item)
+                               <option value="{{ $item->role_dept }}">{{ $item->role_dept }}</option>
+                           @endforeach
+                        </select>
                     </div>
-                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs" id="store_div" style="display:none">
                         <label for="store">Store Name</label>
                         <select class="form-select store" name="store" id="store" autofocus>
                             <option value="" selected disabled>Select Stores</option>
+                            @foreach ($stores as $store)
+                                <option value="{{$store->id}}" {{ old('stores') == $store->id ? 'selected' : '' }}>
+                                    {{$store->store_name}}
+                                </option>
+                            @endforeach
 
                         </select>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                        <label for="month">Month</label>
+                        <input type="month" class="form-control" name="month" id="month">
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="twd">Total Working Days</label>
                         <input type="number" class="form-control" name="twd" id="twd" min="0"
                             placeholder="Enter Total Working Days">
                     </div>
+
                 </div>
             </div>
 
@@ -124,6 +138,17 @@
     </div>
 
     <script>
+        $('#dept').on('change',function(){
+            var dept = $(this).find('option:selected').val();
+            if(dept==='Store'){
+                $('#store_div').show();
+            }else{
+                $('#store_div').hide();
+            }
+        });
+    </script>
+
+    <script>
         $(document).on('change', '#incentives, #bonus, #advance, #deduct, #over_time, #lop, #tpd, #twd', function () {
         // Get the current row
         let $currentRow = $(this).closest('tr');
@@ -179,7 +204,7 @@
     </script>
 
     <script>
-        $('#month').on('change', function() {
+        $('#month1').on('change', function() {
             // Trigger an AJAX request when the page is ready
             var mon = $(this).val();
             $.ajax({

@@ -16,8 +16,18 @@ class PayrollController extends Controller
 
             $user_list = collect(); // This will set $u_list to an empty collection
 
+            $dept = DB::table('roles')
+            ->where('id', '!=', 1)
+            ->select('role_dept')
+            ->distinct()
+            ->get();
 
-        return view ('payroll.list',['u_list'=>$user_list]);
+              // stores for dropdown....
+
+        $stores = DB::table('stores')->get();
+
+
+        return view ('payroll.list',['u_list'=>$user_list,'dept'=>$dept,'stores'=> $stores]);
     }
 
     public function drop_show(Request $req)
@@ -61,24 +71,13 @@ class PayrollController extends Controller
         // $user_list = DB::table('users as us')->where('store_id',$req->store)
         // ->select('us.name','us.emp_code','us.base_salary')
         // ->get();
+
+        // dd($req->all());
+
         $sal_mon = $req->month;
 
-        // $user_list = DB::table('users as us')
-        //     ->leftJoin('attendance as a', 'a.user_id', '=', 'us.id')  // Left join to include all users, even those without attendance records
-
-        //     ->whereRaw("DATE_FORMAT(a.c_on, '%Y-%m') = ?", [$sal_mon])  // Filter by the given month (YYYY-MM)
-        //     ->where('us.store_id', $req->store)  // Filter by store_id
-        //     ->select(
-        //         'us.name',
-        //         'us.emp_code',
-        //         'us.base_salary',
-        //         DB::raw('COUNT(a.id) as attendance_count')  // Count attendance records for the given month
-        //     )
-
-        //     ->groupBy('us.id')  // Group by user to count attendance records
-        //     ->get();
-
         $user_list = DB::table('users as us')
+        ->leftJoin('roles', 'roles.id', '=', 'us.role_id')
         ->leftJoin('attendance as a', function($join) use ($sal_mon) {
             $join->on('a.user_id', '=', 'us.id')
                 ->whereRaw("DATE_FORMAT(a.c_on, '%Y-%m') = ?", [$sal_mon]);  // Filter attendance by month (YYYY-MM)
@@ -88,7 +87,14 @@ class PayrollController extends Controller
                  ->where('ot.status', '=', 'approved')  // Filter attd_ot where status is 'approved'
                  ->whereRaw("DATE_FORMAT(ot.created_at, '%Y-%m') = ?", [$sal_mon]);  // Filter attd_ot by month (YYYY-MM)
         })
-        ->where('us.store_id', $req->store)  // Filter by store_id
+        ->when($req->dept == 'Store', function ($join) use ($req) {
+            return $join->leftJoin('stores', 'users.store_id', '=', 'stores.id')
+                         ->where('users.store_id', $req->store);
+        })
+        ->when($req->dept != 'Store', function ($join) use ($req) {
+            return $join->where('roles.role_dept', '=', $req->dept);
+        })
+        // ->where('us.store_id', $req->store)  // Filter by store_id
         ->select(
             'us.id as emp_id',
             'us.name',
@@ -107,6 +113,7 @@ class PayrollController extends Controller
 
         $year = $sal[0];
         $mon = $sal[1];
+
 
 
         //   return $user_list;

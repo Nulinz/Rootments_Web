@@ -50,7 +50,7 @@
                                 {{-- <td>{{ $data->store_name }}</td> --}}
                                 <td>{{ date("d-m-Y",strtotime($data->res_date)) }}</td>
                                 <td>{{ $data->res_reason }}</td>
-                                <td>{{ $data->res_formal }}-{{ $data->res_status }}</td>
+                                <td>{{ $data->status }}</td>
 
                                 </td>
                             </tr>

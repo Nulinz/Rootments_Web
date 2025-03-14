@@ -44,7 +44,7 @@
                             <td>{{ $lt->role_dept }}</td>
                             <td>{{ $lt->role }}</td>
                             <td>{{ $lt->loc }}</td>
-                            <td><span class="text-danger">{{ $lt->status ?? 'Pending' }}</span></td>
+                            <td><span class="text-danger">{{ $lt->for_status }} - {{ $lt->status }}</span></td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <a href="{{ route('resign.profile',['id'=> $lt->res_id]) }}" data-bs-toggle="tooltip"

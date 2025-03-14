@@ -80,7 +80,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('store-viewemp/{id}', 'StoreController@empview')->name('store.viewemp');
 
         // Employee
-        Route::get('employee-list', 'EmployeeController@index')->name('employee.index');
+        Route::get('employee-list/{status}', 'EmployeeController@index')->name('employee.index');
         Route::get('employee-add', 'EmployeeController@create')->name('employee.add');
         Route::post('employee-store', 'EmployeeController@store')->name('employee.store');
         Route::get('employee-jobdetails/{id}', 'EmployeeController@jobindex')->name('jobdetails');
@@ -98,6 +98,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('employee-jobupdate/{id}', 'EmployeeController@jobdetailupdate')->name('employee.jobupdate');
         Route::get('employee-bankedit/{id}', 'EmployeeController@bankedit')->name('employee.bankedit');
         Route::post('employee-bankupdate/{id}', 'EmployeeController@bankdetailupdate')->name('employee.bankupdate');
+
+        Route::get('employee-active/{emp_id}', 'EmployeeController@emp_active')->name('emp_active');
 
         // Task
         Route::get('task-list', 'TaskController@index')->name('task.index');

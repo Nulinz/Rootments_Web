@@ -39,14 +39,15 @@ trait common
     }
 
     // Another sample method inside the trait
-    public function get_emp_dept($dept)
+    public function get_emp_dept($dept,$st=1)
     {
        // \Log::info($message);
+
        $user = Auth::user();
 
        if($dept=='HR'){
 
-        $emp = DB::table('users as us')->where('us.status','=',1)
+        $emp = DB::table('users as us')->where('us.status','=',$st)
         ->whereNotNull('us.role_id')
         ->leftJoin('roles','roles.id','=','us.role_id')
              ->select(

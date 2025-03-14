@@ -28,19 +28,19 @@ class ResignationController extends Controller
 
         // dd($resgination);
 
-        foreach($resgination as $res){
+        // foreach($resgination as $res){
 
-            $resing_tbl = DB::table('resign_list')->where('res_id', $res->id)->latest()->first();
+        //     $resing_tbl = DB::table('resign_list')->where('res_id', $res->id)->latest()->first();
 
-            // If a record is found, assign the status to the res_status field
-            // if ($resing_tbl) {
-                $res->res_status = $resing_tbl->status ?? null;
-                $res->res_formal = $resing_tbl->formality ?? null;
-            // }else{
+        //     // If a record is found, assign the status to the res_status field
+        //     // if ($resing_tbl) {
+        //         $res->res_status = $resing_tbl->status ?? null;
+        //         $res->res_formal = $resing_tbl->formality ?? null;
+        //     // }else{
 
-            // }
+        //     // }
 
-        }
+        // }
 
         //  dd($resgination);
 

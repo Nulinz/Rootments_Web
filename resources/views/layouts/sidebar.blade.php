@@ -104,8 +104,11 @@
                     </button>
                     <div class="collapse" id="collapse2">
                         <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                            <li><a href="{{ route('employee.index') }}"
+                            <li><a href="{{ route('employee.index',['status'=>1]) }}"
                                     class="d-inline-flex text-decoration-none rounded mt-3">Employee List</a>
+                            </li>
+                            <li><a href="{{ route('employee.index',['status'=>2]) }}"
+                                    class="d-inline-flex text-decoration-none rounded">Inactive List</a>
                             </li>
                         </ul>
                     </div>
