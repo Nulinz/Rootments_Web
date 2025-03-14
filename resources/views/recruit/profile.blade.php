@@ -112,7 +112,7 @@
                 </div>
 
                 <div class="tab-content" id="tabContentWrapper">
-                    <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                    <div class="tab-pane fade" id="details" role="tabpanel" aria-labelledby="details-tab">
                         @include('recruit.applied')
                     </div>
                     <div class="tab-pane fade" id="interview" role="tabpanel" aria-labelledby="interview-tab">

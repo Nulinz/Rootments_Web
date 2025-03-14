@@ -577,8 +577,10 @@ class mobile_cnt extends Controller
 
 
         return response()->json([
-            'success' => true,
-            'data' => $resgination
+
+            'data' => [
+                'resgination' => $resgination
+            ]
 
         ]);
     }

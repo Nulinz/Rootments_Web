@@ -36,7 +36,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($short as $st)
+                    @forelse  ($short as $st)
                     <tr>
                         <td>{{ $loop->iteration}}</td>
                         <td>{{ $st->name }}</td>
@@ -46,14 +46,12 @@
                         <td>{{ $st->skill }}</td>
                         <td>{{ $st->edu }}</td>
 
-                        {{-- <td>
-                            <div>
-                                <button class="listtdbtn" data-bs-toggle="modal"
-                                    data-bs-target="#updateShortlist">Update</button>
-                            </div>
-                        </td> --}}
                     </tr>
-                    @endforeach
+                    @empty
+                    {{-- <tr>
+                            <td colspan="3">No data available</td>
+                        </tr> --}}
+                    @endforelse
                 </tbody>
             </table>
         </div>

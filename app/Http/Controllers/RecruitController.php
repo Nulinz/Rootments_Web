@@ -232,7 +232,8 @@ class RecruitController extends Controller
             'ro.role',
             'ro.role_dept',
             'rc.exp',
-            'rc.loc'
+            'rc.loc',
+            'jp.id as jp_id'
 
             // 'jp.id as job_id',
             // 'jp.status as jp_status',
@@ -248,6 +249,8 @@ class RecruitController extends Controller
         )
         ->orderBy('jp.id','DESC')->first();
 
+        // dd($list);
+
         $ap_list = DB::table('job_apply')->where('job_id',$pro)
         ->select(
             'id',
@@ -261,6 +264,8 @@ class RecruitController extends Controller
             'resume',
             'status'
             )->get();
+
+            // dd($ap_list);
 
 
             $sc_list = DB::table('job_apply')
