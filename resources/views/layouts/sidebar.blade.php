@@ -308,7 +308,7 @@
                                     class="d-inline-flex text-decoration-none rounded">Resignation
                                     Request</a>
                             </li>
-                            @if(hasAccess($r_id, 'recruit_req'))
+                            @if(hasAccess($r_id, 'all_task'))
                                 <li><a href="{{ route('recruitment.index') }}"
                                         class="d-inline-flex text-decoration-none rounded">Recruitment
                                         Request</a>
