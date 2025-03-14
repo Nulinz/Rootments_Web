@@ -12,13 +12,18 @@
 
             <div class="container-fluid maindiv my-3">
                 <div class="row">
+
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
-                        <label for="month">Month <span>*</span></label>
-                        <input type="month" class="form-control" name="month" id="month">
+                        <label for="dept">Departments <span>*</span></label>
+                        <select class="form-select" name="dept" id="dept" autofocus required>
+                            @foreach ($dept as $item)
+                               <option value="{{ $item->role_dept }}">{{ $item->role_dept }}</option>
+                           @endforeach
+                        </select>
                     </div>
-                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs" id="store_div" style="display:none">
                         <label for="stores">Stores <span>*</span></label>
-                        <select class="form-select" name="stores" id="stores" required>
+                        <select class="form-select" name="stores" id="stores" >
                             <option value="" selected disabled>Select Options</option>
                             @foreach ($stores as $store)
                                 <option value="{{$store->id}}" {{ old('stores') == $store->id ? 'selected' : '' }}>
@@ -33,6 +38,10 @@
                             <option value="" selected disabled>Select Options</option>
 
                         </select>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                        <label for="month">Month <span>*</span></label>
+                        <input type="month" class="form-control" name="month" id="month">
                     </div>
                 </div>
             </div>
@@ -88,20 +97,43 @@
         </div>
     </div>
 
+    <script>
+        $('#dept').on('change',function(){
+            var dept = $(this).find('option:selected').val();
+            if(dept==='Store'){
+                $('#store_div').show();
+            }else{
+                $('#store_div').hide();
+            }
+        });
+    </script>
+
 
 
 <script>
-     $('#stores').on('change', function() {
+     $('#stores, #dept').on('change', function() {
+
+
 
         $('#employee').empty();
             // Trigger an AJAX request when the page is ready
-            var store_id = $(this).find('option:selected').val();
+
+            var dept = $('#dept').find('option:selected').val();
+
+            if(dept=='Store'){
+
+                var store_id = $('#stores').find('option:selected').val();
+            }
+
+
+
             $.ajax({
                 url: '{{ route('get_store_per') }}', // Laravel route for the POST request
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}', // CSRF token for security
-                    store_id: store_id, // Send the selected store ID
+                    store_id: store_id, // Send the selected store ID,
+                    dept : dept
                 },
 
                 success: function(response) {

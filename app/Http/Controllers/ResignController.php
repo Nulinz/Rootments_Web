@@ -59,9 +59,12 @@ class ResignController extends Controller
     ->select('users.name','rl.*')
     ->get();
 
+    $for_arr = DB::table('resign_list as rl')->where('res_id',$req->id)->pluck('formality')->toArray(); // Convert to array;
+
+
     //   dd($for_list);
 
-        return view('resign.profile',['pro'=>$pro,'for_list'=> $for_list]);
+        return view('resign.profile',['pro'=>$pro,'for_list'=> $for_list,'for_arr'=>$for_arr]);
     }
 
     /**

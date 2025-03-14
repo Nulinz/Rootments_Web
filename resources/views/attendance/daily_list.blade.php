@@ -7,13 +7,28 @@
             <h4 class="m-0">Daily Attendance List</h4>
         </div>
 
+        @if(request()->isMethod('get'))
         <form action="{{ route('attendance.list')}}" method="POST" id="attendanceForm">
             @csrf
             <div class="container-fluid maindiv my-3">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                        <label for="">Dept<span>*</span></label>
+                        <select class="form-select" name="dept" id="dept" autofocus required>
+                         @foreach ($dept as $item)
+                            <option value="{{ $item->role_dept }}">{{ $item->role_dept }}</option>
+                        @endforeach
+                            {{-- <option value="" selected disabled>Select Options</option>
+                            @foreach ($stores as $store)
+                                <option value="{{$store->id}}" {{ old('stores') == $store->id ? 'selected' : '' }}>
+                                    {{$store->store_name}}
+                                </option>
+                            @endforeach --}}
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs" id="store_div" style="display:none">
                         <label for="stores">Stores <span>*</span></label>
-                        <select class="form-select" name="stores" id="stores" autofocus required>
+                        <select class="form-select" name="stores" id="stores"  >
                             <option value="" selected disabled>Select Options</option>
                             @foreach ($stores as $store)
                                 <option value="{{$store->id}}" {{ old('stores') == $store->id ? 'selected' : '' }}>
@@ -33,6 +48,7 @@
                 <button type="submit" class="formbtn">Save</button>
             </div>
         </form>
+        @endif
 
         <!-- Table for displaying attendance data -->
         <div class="container-fluid mt-4 listtable">
@@ -85,4 +101,14 @@
         </div>
     </div>
 
+    <script>
+        $('#dept').on('change',function(){
+            var dept = $(this).find('option:selected').val();
+            if(dept==='Store'){
+                $('#store_div').show();
+            }else{
+                $('#store_div').hide();
+            }
+        });
+    </script>
 @endsection

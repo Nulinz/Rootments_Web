@@ -21,7 +21,7 @@
                     </div>
                     <div class="tasknamefile">
                         @if(!is_null($fl->file))
-                        <a href="" data-bs-toggle="tooltip" data-bs-title="Attachment" download="{{ basename($fl->file)}}"><i
+                        <a href="{{ asset($fl->file) }}" data-bs-toggle="tooltip" data-bs-title="Attachment" download="{{ basename($fl->file)}}"><i
                                 class="fa-solid fa-paperclip"></i></a>
                         @endif
                     </div>
@@ -52,18 +52,27 @@
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                {{-- @dd($for_arr); --}}
                 <form action="{{ route('resign.formality') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input hidden type="text" name="res_id" value="{{ $pro->res_id }}">
                     <div class="col-sm-12 col-md-12 mb-3">
                         <label for="formalities">Formalities <span>*</span></label>
                         <select name="formal_type" id="formalities" class="form-select" required>
-                            <option value="" selected disabled>Select Options</option>
+                            @foreach(['Handover', 'Exit Formalities', 'Final Settlements', 'Experience Certificate', 'Termination'] as $option)
+                            <option value="{{ $option }}"
+                                @if(in_array($option, $for_arr)) disabled @endif>
+                                {{ $option }}
+                            </option>
+                        @endforeach
+
+
+                            {{-- <option value="" selected disabled>Select Options</option>
                             <option value="Handover">Handover</option>
                             <option value="Exit Formalities">Exit Formalities</option>
                             <option value="Final Settlements">Final Settlements</option>
                             <option value="Experience Certificate">Experience Certificate</option>
-                            <option value="Termination">Termination</option>
+                            <option value="Termination">Termination</option> --}}
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-12 mb-3">

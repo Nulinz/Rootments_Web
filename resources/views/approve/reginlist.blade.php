@@ -28,7 +28,7 @@
                     <th>#</th>
                     <th>Employee Code</th>
                     <th>Employee Name</th>
-                    <th>Store Name</th>
+                    {{-- <th>Store Name</th> --}}
                     <th>Resign Date</th>
                     <th>Reason</th>
                     <th>Status</th>
@@ -53,7 +53,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $data->emp_code }}</td>
                         <td>{{ $data->name }}</td>
-                        <td>{{ $data->store_name }}</td>
+                        {{-- <td>{{ $data->store_name }}</td> --}}
                         <td>{{ date("d-m-Y",strtotime($data->res_date)) }}</td>
                         <td>{{ $data->res_reason }}</td>
                         <td>
@@ -139,7 +139,7 @@
                             <option value="" selected disabled>Select Options</option>
                             {{-- <option value="Approved">Approved</option>
                             <option value="Rejected">Rejected</option> --}}
-                            @if ($user->role_id == 12)
+                            @if(hasAccess($user->role_id,'leave'))
                             <option>Escalate</option>
                             @else
                             <option value="Approved">Approved</option>

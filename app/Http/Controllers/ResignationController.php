@@ -21,9 +21,28 @@ class ResignationController extends Controller
         $resgination = DB::table('resignations')
         ->leftjoin('stores','stores.id','=','resignations.store_id')
         ->leftjoin('users','users.id','=','resignations.emp_id')
-        ->select('resignations.*','stores.store_name','users.emp_code')
+        ->leftJoin('resignations as rs','rs.emp_id','=', 'users.id')
+        ->select('resignations.*','stores.store_name','users.emp_code','rs.id as res_id')
         ->where('resignations.created_by',$user_id)
         ->get();
+
+        foreach($resgination as $res){
+
+            $resing_tbl = DB::table('resign_list')->where('res_id', $res->res_id)->latest()->first();
+
+            // If a record is found, assign the status to the res_status field
+            // if ($resing_tbl) {
+                $res->res_status = $resing_tbl->status ?? null;
+                $res->res_formal = $resing_tbl->formality ?? null;
+            // }else{
+
+            // }
+
+        }
+
+        // dd($resgination);
+
+
 
         return view('resgination.list',['resgination'=>$resgination]);
     }
