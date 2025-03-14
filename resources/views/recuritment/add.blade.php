@@ -18,7 +18,10 @@
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="department">Department <span>*</span></label>
                         <select class="form-select " name="department" id="department" autofocus required>
-                            <option value="" selected disabled>Select Options</option>
+                            @foreach ($dept as $item)
+                            <option value="{{ $item->role_dept }}">{{ $item->role_dept }}</option>
+                        @endforeach
+                            {{-- <option value="" selected disabled>Select Options</option>
                             <option value="Admin">Admin</option>
                             <option value="HR">HR</option>
                             <option value="Operation">Operation</option>
@@ -29,7 +32,7 @@
                             <option value="Cluster">Cluster</option>
                             <option value="Store">Store</option>
                             <option value="Warehouse">Warehouse</option>
-                            <option value="Maintenance">Maintenance</option>
+                            <option value="Maintenance">Maintenance</option> --}}
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">

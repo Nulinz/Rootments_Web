@@ -60,7 +60,13 @@ class RecruitmentController extends Controller
 
             // dd($role_data);
 
-         return view('recuritment.add',['role_data'=>$role_data]);
+            $dept = DB::table('roles')
+            ->where('id', '!=', 1)
+            ->select('role_dept')
+            ->distinct()
+            ->get();
+
+         return view('recuritment.add',['role_data'=>$role_data,'dept'=>$dept]);
 
     }
 
