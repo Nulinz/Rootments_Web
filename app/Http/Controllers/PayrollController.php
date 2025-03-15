@@ -88,8 +88,8 @@ class PayrollController extends Controller
                  ->whereRaw("DATE_FORMAT(ot.created_at, '%Y-%m') = ?", [$sal_mon]);  // Filter attd_ot by month (YYYY-MM)
         })
         ->when($req->dept == 'Store', function ($join) use ($req) {
-            return $join->leftJoin('stores', 'users.store_id', '=', 'stores.id')
-                         ->where('users.store_id', $req->store);
+            return $join->leftJoin('stores', 'us.store_id', '=', 'stores.id')
+                         ->where('us.store_id', $req->store);
         })
         ->when($req->dept != 'Store', function ($join) use ($req) {
             return $join->where('roles.role_dept', '=', $req->dept);

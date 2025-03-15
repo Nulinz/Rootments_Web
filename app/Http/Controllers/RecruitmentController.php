@@ -98,7 +98,7 @@ class RecruitmentController extends Controller
                 'loc'   => $req->input('location'),
                 'res_date'   => $req->input('res_date'),
                 'vacancy'   => $req->input('vacancy'),
-                'request_to'   => 3,
+                'request_to'   => 2,
                 'exp'   => $req->input('experience'),
                 'description'   => $req->input('recruitdescp'),
                 'c_by' => $user->id,
@@ -115,7 +115,7 @@ class RecruitmentController extends Controller
                 $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
                 Notification::create([
-                    'user_id' => 3,
+                    'user_id' => 2,
                     'noty_type' => 'recruitment',
                     'type_id' => $recruitment_id
                 ]);

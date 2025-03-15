@@ -162,7 +162,7 @@
                     </div>
 
                     <div class="col-sm-12 col-md-12 col-xl-12 mt-3 d-flex justify-content-center align-items-center">
-                        <button type="submit" id="submitBtn" class="formbtn">Save</button>
+                        <button type="submit" id="submitBtn" class="applybtn">Save</button>
                     </div>
 
                 </div>

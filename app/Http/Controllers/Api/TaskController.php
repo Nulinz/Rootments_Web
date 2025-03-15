@@ -654,8 +654,7 @@ public function notification_list(Request $request)
                         ->where('resignations.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
                         ->leftJoin('users', 'users.id', '=', 'resignations.created_by')  // Correct LEFT JOIN
                         ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
-                        ->where('resignations.emp_id', $user)  // Explicitly refer to 'resignations.emp_id'
-                        ->select('resignations.id as res_id', 'resignations.status', 'users.name','roles.role')
+                        ->select('resignations.id as res_id', 'resignations.status', 'users.name','roles.role','resignations.created_by as cr_by')
                         ->orderBy('resignations.id', 'desc')
                         ->first();
                     break;
@@ -668,7 +667,7 @@ public function notification_list(Request $request)
                     ->leftJoin('roles as rl',function($join){
                             $join->on('rl.id','=','rc.role');
                     })
-                    ->select('rc.id as rec_id', 'rc.description','rc.status','users.name','roles.role','rl.role as ap_role')
+                    ->select('rc.id as rec_id', 'rc.description','rc.status','users.name','roles.role','rl.role as ap_role','rc.c_by as cr_by')
                     ->orderBy('rc.id','desc')
                     ->first();
                 break;

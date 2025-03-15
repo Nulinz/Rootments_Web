@@ -3,7 +3,7 @@
         <h4 class="mb-2">Applied Details</h4>
     </div>
     <div class="sidebodyhead">
-        <h6 class="m-0" style="font-size: 12px"><a target="__blank"
+        <h6 class="m-0" style="font-size: 12px"><a target="__blank" class="copy-link" data-url="{{ route('post_application',['id'=>$list->id]) }}"
                 href="{{ route('post_application',['id'=>$list->id]) }}">Post Form Link</a>
         </h6>
     </div>
@@ -179,3 +179,16 @@
         });
      });
 </script>
+
+<script>
+    $(document).ready(function() {
+        $('.copy-link').on('click', function(e) {
+            e.preventDefault(); // Prevent default anchor behavior
+            var link = $(this).data('url'); // Get the link from data attribute
+
+            navigator.clipboard.writeText(link)
+                .then(() => alert('Link copied to clipboard!'))
+                .catch(err => console.error('Error copying link:', err));
+        });
+    });
+    </script>

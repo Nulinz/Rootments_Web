@@ -138,7 +138,7 @@ class RecruitController extends Controller
 
                 Notification::create([
                     'user_id' => $rec_post->c_by,
-                    'noty_type' => 'Recruitment',
+                    'noty_type' => 'recruitment',
                     'type_id' => $req->job_id
                 ]);
         } // notification end
