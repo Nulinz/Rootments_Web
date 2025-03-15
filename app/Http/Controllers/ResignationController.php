@@ -183,6 +183,8 @@ class ResignationController extends Controller
 
         }
 
+        // dd($req_token->device_token);
+
         return redirect()->route('resignation.index')->with([
             'status' => 'success',
             'message' => 'Resgination Request Added successfully!',

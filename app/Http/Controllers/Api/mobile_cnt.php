@@ -434,18 +434,18 @@ class mobile_cnt extends Controller
 
 
 
-            // if (!is_null($req_token->device_token)) {
-            //         $taskTitle = $request->request_type."Request";
-            //         $taskBody = $user_id->name. "Requested for " . $request->request_type;
+            if (!is_null($req_token->device_token)) {
+                    $taskTitle = $request->request_type."Request";
+                    $taskBody = $user_id->name. "Requested for " . $request->request_type;
 
-            //         $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
-            //         Notification::create([
-            //             'user_id' => $req_to ?? 0,
-            //             'noty_type' => 'leave',
-            //             'type_id' => $leave->id
-            //         ]);
-            // } // notification end
+                    Notification::create([
+                        'user_id' => $req_to ?? 0,
+                        'noty_type' => 'leave',
+                        'type_id' => $leave->id
+                    ]);
+            } // notification end
 
 
 

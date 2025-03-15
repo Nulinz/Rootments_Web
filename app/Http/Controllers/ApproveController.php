@@ -376,11 +376,23 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                     'request_status'=>$request->status,
                     'status'=>$request->status
                 ]);
-                //  $notification = Notification::create([
-                //             'user_id' => $leave->user_id,
-                //             'noty_type' => 'leave',
-                //             'type_id' => $request->id,
-                //         ]);
+
+                $user_id = Auth::user();
+
+                $req_token  = DB::table('users')->where('id',$request->hr)->first();
+
+                if ($req_token->device_token) {
+                        $taskTitle = "Leave Request";
+                       $taskBody = $user_id->name. " Leave Request Updated to".$request->status ;
+
+                       $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                       Notification::create([
+                           'user_id' => $request->hr,
+                           'noty_type' => 'leave',
+                           'type_id' => $request->id
+                       ]);
+               } // notification end
             }else{
 
                 $status =  DB::table('leaves')->where('id',$request->id)->first();
@@ -397,24 +409,29 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                     $col=>$request->status,
                     'status'=>$request->status
                 ]);
+
+                $user_id = Auth::user();
+
+                $req_token  = DB::table('users')->where('id',$status->created_by)->first();
+
+
+                if ($req_token->device_token) {
+                    $taskTitle = "Leave Request";
+                   $taskBody = $user_id->name. " Leave Request Updated to".$request->status ;
+
+                   $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                   Notification::create([
+                       'user_id' => $status->created_by,
+                       'noty_type' => 'leave',
+                       'type_id' => $request->id
+                   ]);
+           } // notification end
+
+
             }
 
-            $user_id = Auth::user();
 
-             $req_token  = DB::table('users')->where('id',$status->user_id)->first();
-
-             if ($req_token->device_token) {
-                     $taskTitle = "Leave Request Updated";
-                    $taskBody = $user_id->name. " Leave Request Updated to".$request->status ;
-
-                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
-
-                    Notification::create([
-                        'user_id' => $status->user_id,
-                        'noty_type' => 'leave',
-                        'type_id' => $request->id
-                    ]);
-            } // notification end
 
 
             return response()->json(['message' => 'Leave updated successfully!'], 200);
@@ -472,6 +489,8 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
     public function updateresgin(Request $request)
     {
+        $user_id = Auth::user();
+
         $request->validate([
             'id' => 'required',
             'status' => 'required',
@@ -486,11 +505,22 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                 'request_status'=>$request->status,
                 'status'=>$request->status
             ]);
-            //  $notification = Notification::create([
-            //             'user_id' => $leave->user_id,
-            //             'noty_type' => 'leave',
-            //             'type_id' => $request->id,
-            //         ]);
+                $req_token  = DB::table('users')->where('id',$request->hr)->first();
+
+                if ($req_token->device_token) {
+                    $taskTitle = "Resignation Request";
+                    $taskBody = $user_id->name. "Esculated for Resignation";
+
+                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                    Notification::create([
+                        'user_id' => $request->hr,
+                        'noty_type' => 'resignation',
+                        'type_id' => $request->id
+                    ]);
+            } // notification end
+
+            // dd($req_token->device_token);
         }else{
 
             $status =  DB::table('resignations')->where('id',$request->id)->first();
@@ -507,42 +537,31 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                 $col=>$request->status,
                 'status'=>$request->status
             ]);
+
+
+            $req_token  = DB::table('users')->where('id',$status->emp_id)->first();
+
+            if ($req_token->device_token) {
+                $taskTitle = "Resignation Request";
+                $taskBody = $user_id->name ."-" .$request->status . " for Resignation";
+
+                $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                Notification::create([
+                    'user_id' => $status->emp_id,
+                    'noty_type' => 'resignation',
+                    'type_id' => $request->id
+                ]);
+        } // notification end
+
         }
 
-        return response()->json(['message' => 'Resgination updated successfully!'], 200);
 
 
 
+        return response()->json(['message' => 'Resgination updated successfully!','token'=>$req_token->device_token], 200);
 
-            // try {
-            //     $user = auth()->user();
 
-            //     $resgin = Resignation::findOrFail($request->id);
-
-            //     if ($user->role_id == 12) {
-            //         $resgin->request_status = $request->status;
-            //         if($request->status == 'Rejected')
-            //     {
-            //          $resgin->status = $request->status;
-            //     }
-            //     } elseif ($user->role_id == 3) {
-            //         $resgin->esculate_status = $request->status;
-            //         $resgin->status = $request->status;
-            //             $notification = Notification::create([
-            //                 'user_id' => $resgin->emp_id,
-            //                 'noty_type' => 'resignation',
-            //                 'type_id' => $request->id,
-            //             ]);
-            //     } else {
-            //         return response()->json(['error' => 'Unauthorized action.'], 403);
-            //     }
-
-        //         $resgin->save();
-
-        //     return response()->json(['message' => 'Resgination updated successfully!'], 200);
-        // } catch (\Exception $e) {
-        //     return response()->json(['error' => 'Failed to update Resgination.'], 500);
-        // }
     }
 
     public function updaterecuirt(Request $request)
@@ -562,7 +581,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                 $recruit->save();
 
                 // $notification = Notification::create([
-                //             'user_id' => $recruit->emp_id,
+                //             'user_id' => $recruit->c_by,
                 //             'noty_type' => 'recuriment',
                 //             'type_id' => $request->id,
                 //         ]);

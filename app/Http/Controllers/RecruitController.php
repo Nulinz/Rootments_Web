@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Services\FirebaseService;
+use App\Models\Notification;
 
 class RecruitController extends Controller
 {
@@ -89,13 +91,16 @@ class RecruitController extends Controller
 
     public function post_update(Request $req){
 
+
+        $user = auth()->user();
+
         $req->validate([
             'job_id' => 'required',
             'status' => 'required',
         ]);
 
         try {
-            $user = auth()->user();
+
 
             $job_update = DB::table('job_posting')
             ->where('id',$req->job_id)
@@ -118,11 +123,26 @@ class RecruitController extends Controller
                 'jp.status as jp_status'
             )
             ->orderBy('jp.id','DESC')->get();
-                // $notification = Notification::create([
-                //             'user_id' => $recruit->emp_id,
-                //             'noty_type' => 'recuriment',
-                //             'type_id' => $request->id,
-                //         ]);
+
+            $job_post = DB::table('job_posting')->where('id',$req->job_id)->first();
+
+            $rec_post = DB::table('recruitments')->where('id',$job_post->rec_id)->first();
+
+            $req_token  = DB::table('users')->where('id',$rec_post->c_by)->first();
+
+            if ($req_token->device_token) {
+                $taskTitle = "Recruitment Request";
+                $taskBody = $user->name ."-".$req->status." for Job post";
+
+                $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                Notification::create([
+                    'user_id' => $rec_post->c_by,
+                    'noty_type' => 'Recruitment',
+                    'type_id' => $req->job_id
+                ]);
+        } // notification end
+
 
             return back()->with(['status'=>'success','message' => 'JobPost updated successfully!','list'=>$job]);
 

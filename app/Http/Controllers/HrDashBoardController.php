@@ -23,7 +23,7 @@ class HrDashBoardController extends Controller
         $user = Auth::user();
 
         $managerRoles = DB::table('roles')
-            ->whereIn('id', [7,12,17,30,37,41])
+            ->whereIn('id', [7,10,11,12,17,30,37,41])
             ->pluck('id')
             ->toArray();
 

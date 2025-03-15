@@ -8,6 +8,7 @@ use App\Models\Recruitment;
 use Illuminate\Support\Facades\Auth;
 use App\Models\{User,Role};
 use App\Models\Notification;
+use App\Services\FirebaseService;
 
 class RecruitmentController extends Controller
 {
@@ -105,11 +106,27 @@ class RecruitmentController extends Controller
                 'updated_at' => now(),
             ]);
 
-            Notification::create([
-                'user_id'   => $user->id,
-                'noty_type' => 'recruitments',
-                'type_id'   => $recruitment_id, // Corrected this
-            ]);
+            $req_token = DB::table('users')->where('role_id',3)->first();
+
+            if ($req_token->device_token) {
+                $taskTitle = "Recruitment Request";
+                $taskBody = $user->name. "Requested for Recruitment";
+
+                $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                Notification::create([
+                    'user_id' => 3,
+                    'noty_type' => 'recruitment',
+                    'type_id' => $recruitment_id
+                ]);
+        } // notification end
+
+
+            // Notification::create([
+            //     'user_id'   => $user->id,
+            //     'noty_type' => 'recruitments',
+            //     'type_id'   => $recruitment_id, // Corrected this
+            // ]);
 
 
              return redirect()->route('recruitment.index')->with([
