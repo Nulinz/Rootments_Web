@@ -48,9 +48,9 @@
 
                     </tr>
                     @empty
-                    {{-- <tr>
+                    <tr>
                             <td colspan="3">No data available</td>
-                        </tr> --}}
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
