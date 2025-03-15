@@ -32,26 +32,22 @@
                         <th>Experience</th>
                         <th>Skills</th>
                         <th>Education</th>
-                        {{-- <th>Action</th> --}}
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse  ($short as $st)
+                    @if(count($short) > 0)
+                    @foreach($short as $st)
                     <tr>
-                        <td>{{ $loop->iteration}}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $st->name }}</td>
                         <td>{{ $st->email }}</td>
                         <td>{{ $st->contact }}</td>
                         <td>{{ $st->work_exp }}</td>
                         <td>{{ $st->skill }}</td>
                         <td>{{ $st->edu }}</td>
-
                     </tr>
-                    @empty
-                    <tr>
-                            <td colspan="3">No data available</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
+                @endif
                 </tbody>
             </table>
         </div>
@@ -101,6 +97,10 @@
                 "pageLength": 30,
                 "dom": '<"top"f>rt<"bottom"ilp><"clear">',
             });
+
+            // console.log(table); // Debugging the DataTable object
+
+
             $(tableId + ' thead th').each(function (index) {
                 var headerText = $(this).text();
                 if (headerText != "" && headerText.toLowerCase() != "action") {

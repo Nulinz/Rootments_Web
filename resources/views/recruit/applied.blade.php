@@ -4,7 +4,7 @@
     </div>
     <div class="sidebodyhead">
         <h6 class="m-0" style="font-size: 12px"><a target="__blank"
-                href="{{ route('post_application',['id'=>$list->id]) }}">http://127.0.0.1:5500/resources/views/recruit/application-form.html</a>
+                href="{{ route('post_application',['id'=>$list->id]) }}">Post Form Link</a>
         </h6>
     </div>
     <div class="mt-3 listtable">
