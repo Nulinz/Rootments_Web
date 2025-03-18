@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 if (!function_exists('hasAccess')) {
     /**
@@ -32,4 +34,13 @@ if (!function_exists('hasAccess')) {
                         ];
         return in_array($role, $menuItems[$menuItem]);
     }
+}
+
+
+function enc($par) {
+    return Crypt::encrypt($par);
+}
+
+function dec($par) {
+    return Crypt::decrypt($par);
 }

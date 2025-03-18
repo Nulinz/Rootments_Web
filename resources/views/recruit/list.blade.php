@@ -76,6 +76,10 @@
                                     <i class="fa-solid fa-eye"></i>
                                     @endif
                                 </a>
+                                @php
+                            //    echo $en = enc($lt->id);  // Encrypt the ID
+                            //     $decryptedValue = dec($en); // Decrypt it back
+                            @endphp
                                 </div>
                             </td>
                         </tr>

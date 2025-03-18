@@ -318,23 +318,36 @@ class RecruitController extends Controller
 
         // shortlist app
 
-        $short_list = DB::table('rounds')->where('status', 'Completed')->select('app_id')->get();
+        // $short_list = DB::table('job_apply as jp')->where('jp.job_id','=',$pro)
+        //                 ->leftJoin('rounds as rs','rs.app_id','=','jp.id')
+        //                 ->where('rs.status', 'Completed')
+        //                 ->get();
 
-        $new_list = $short_list->map(function($short_list) {
-            // Fetch job details for each app_id
-            $list = DB::table('job_apply')->where('id', $short_list->app_id)->first(); // Use 'first()' to get a single job entry
+       $short_list = DB::table('rounds as rs')
+                     ->where('rs.status', 'Completed')
+                     ->distinct()->select('rs.app_id')
+                    ->leftJoin('job_apply as jp','jp.id','=','rs.app_id')
+                    ->where('jp.job_id','=',$pro)
 
-            return $list; // Return the job_apply entry
-        });
+                     ->select('jp.*')
+                    ->get();
+
+        // $new_list = $short_list->map(function($short_list) {
+        //     // Fetch job details for each app_id
+        //     $list = DB::table('job_apply')->where('id', $short_list->app_id)->first(); // Use 'first()' to get a single job entry
+
+        //     return $list; // Return the job_apply entry
+        // });
 
         // To get the result as an array of job_apply objects:
-        // dd($new_list);
+
+        //   dd($short_list);
 
 
 
     //  dd($new_list);
 
-         return view('recruit.profile',['list'=>$list,'ap_list'=>$ap_list,'sc_list'=>$sc_list,'short'=>$new_list]);
+         return view('recruit.profile',['list'=>$list,'ap_list'=>$ap_list,'sc_list'=>$sc_list,'short'=>$short_list]);
     }
 
     /**

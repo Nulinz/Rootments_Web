@@ -2,7 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashBoardController;
+use App\Http\Controllers\RecruitController;
 use Illuminate\Support\Facades\DB;
+
+Route::get('post_application/{id}', [RecruitController::class, 'post_application'])->name('post_application');
+
+Route::post('job_app_store', [RecruitController::class, 'post_app_store'])->name('job_app_store');
 
 
 Route::view('/', 'login')->name('login');
@@ -15,9 +20,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::post('login', 'AuthenticationController@login')->name('login.submit');
     Route::get('logout', 'AuthenticationController@logout')->name('logout');
 
-    // extranl application
 
-    Route::get('post_application/{id}', 'RecruitController@post_application')->name('post_application');
 
 
     Route::post('send_not', 'LeaveController@send_not')->name('send_not');
@@ -204,7 +207,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('job_post_add', 'RecruitController@store')->name('job_post_add');
         Route::post('job_post_edit/{id}', 'RecruitController@job_post_edit')->name('job_post_edit');
         Route::post('job_post_up', 'RecruitController@post_update')->name('job_post_up');
-        Route::post('job_app_store', 'RecruitController@post_app_store')->name('job_app_store');
+        // Route::post('job_app_store', 'RecruitController@post_app_store')->name('job_app_store');
 
 
         Route::post('update_screen', 'RecruitController@update_screen')->name('update_screen');

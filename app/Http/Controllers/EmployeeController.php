@@ -25,7 +25,7 @@ class EmployeeController extends Controller
 
     if($user->role_id == 12){
 
-        $query = DB::table('users')->where('status', $status)
+        $query = DB::table('users')->where('users.status', $status)
             ->leftJoin('stores', 'users.store_id', '=', 'stores.id')
             ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
             ->select(
@@ -48,17 +48,19 @@ class EmployeeController extends Controller
 
     }else{
 
+
          $dept = DB::table('roles')->where('id',$user->role_id)->select('role_dept')->first();
 
         //  dd($dept);
-         $employees = $this->get_emp_dept($dept->role_dept, $status);
+          $employees = $this->get_emp_dept($dept->role_dept, $status);
 
-        //   dd($employees);
+        //    dd($employees);
+
     }
 
-    // /return $employees;
+        //  dd($employees);
 
-         return view('employee.list',['employees'=>$employees]);
+           return view('employee.list',['employees'=>$employees]);
     }
 
     /**
@@ -217,7 +219,7 @@ class EmployeeController extends Controller
         $user->net_salary = $request->net_salary;
         $user->save();
 
-        return redirect()->route('employee.index')->with([
+        return redirect()->route('employee.index',['status' => 1])->with([
             'status' => 'success',
             'message' => 'Employee Bank Details Added successfully!'
         ]);
