@@ -194,7 +194,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('get-coordinates', 'location_cnt@index')->name('get.coordinates');
         Route::post('attendance-ot', 'Attd_cnt@ot_approve')->name('ot.approve');
 
-        // job posting....
+        // Job Posting
         Route::get('recruit-list', 'RecruitController@list')->name('recruit.list');
         Route::get('recruit-add', 'RecruitController@create')->name('recruit.add');
         Route::get('recruit-edit/{id}', 'RecruitController@edit')->name('recruit.edit');
@@ -209,14 +209,18 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('job_post_up', 'RecruitController@post_update')->name('job_post_up');
         // Route::post('job_app_store', 'RecruitController@post_app_store')->name('job_app_store');
 
-
         Route::post('update_screen', 'RecruitController@update_screen')->name('update_screen');
         Route::post('add_round', 'RecruitController@add_round')->name('add_round');
 
-        // Recruitment
+        // Resignation
         Route::get('resign-list', 'ResignController@list')->name('resign.list');
         Route::get('resign-profile/{id}','ResignController@profile')->name('resign.profile');
         Route::post('resign-formality', 'ResignController@formality')->name('resign.formality');
+
+        // Store Setup
+        Route::get('setup-list', 'StoreSetupController@list')->name('setup.list');
+        Route::get('setup-create','StoreSetupController@create')->name('setup.add');
+        Route::get('setup-profile','StoreSetupController@profile')->name('setup.profile');
 
         // Area
         Route::get('area-list', 'AreaController@list')->name('area.list');
@@ -308,14 +312,15 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         // Finance
         Route::get('finance_index', 'fin_cnt@index')->name('fin.index');
+
         // Maintainence
         Route::get('maintain_index', 'maintain_cnt@index')->name('maintain.index');
+        
         // Warehouse
         Route::get('warehouse_index', 'warehouse_cnt@index')->name('warehouse.index');
+
         // Purchase
         Route::get('purchase_index', 'purchase_cnt@index')->name('purchase.index');
-
-
 
     });
 
