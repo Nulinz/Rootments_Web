@@ -573,7 +573,9 @@ public function completedtaskstore(Request $request)
 public function notification_list(Request $request)
 {
 
-    $user = $request->input('user_id') ?? 2;
+    $user = $request->user_id;
+
+    // $user = $request->input('user_id');
 
 
     if (!$user) {
@@ -585,9 +587,11 @@ public function notification_list(Request $request)
     $notifications = DB::table('notifications')
         ->select('id', 'user_id', 'noty_type', 'type_id', 'created_at')
         ->where('user_id', $user)
-        ->where('noty_type','task')
+        ->whereIn('noty_type',['task','resignation','recruitment', 'Recruitment','leave'])
         ->OrderBy('id','DESC')
         ->get();
+
+        // dd($notifications);
 
     if ($notifications->isEmpty()) {
         return response()->json(['message' => 'No notifications found', 'data' => []]);
@@ -624,29 +628,15 @@ public function notification_list(Request $request)
                     ->first();
                 break;
 
-            case 'leave1':
+            case 'leave':
                 $details = DB::table('leaves')
-                    ->leftJoin('users as request_to_user', 'leaves.request_to', '=', 'request_to_user.id')
-                    ->leftJoin('users as esculate_to_user', 'leaves.esculate_to', '=', 'esculate_to_user.id')
-                    ->leftJoin('roles as request_to_role', 'request_to_user.role_id', '=', 'request_to_role.id')
-                    ->leftJoin('roles as esculate_to_role', 'esculate_to_user.role_id', '=', 'esculate_to_role.id')
-                    ->where('leaves.id', $notification->type_id)
-                    ->where('leaves.user_id', $user)
-                    ->select(
-                        'leaves.id as leave_id',
-                        'leaves.request_type',
-                        'leaves.start_date',
-                        'leaves.end_date',
-                        'leaves.request_to',
-                        'request_to_user.name as request_to_name',
-                        'request_to_role.role as request_to_role',
-                        'leaves.esculate_to',
-                        'esculate_to_user.name as esculate_to_name',
-                        'esculate_to_role.role as esculate_to_role',
-                        'leaves.user_id'
-                    )
-                    ->orderBy('leaves.id as leave_id','desc')
-                    ->first();
+                ->where('leaves.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
+                        ->leftJoin('users', 'users.id', '=', 'leaves.created_by')  // Correct LEFT JOIN
+                        ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
+                        ->select('leaves.id as lev_id', 'leaves.status', 'users.name','leaves.request_type','roles.role','leaves.created_by as cr_by')
+                        ->orderBy('leaves.id', 'desc')
+                        ->first();
+
                 break;
 
 
@@ -659,12 +649,26 @@ public function notification_list(Request $request)
                     ->first();
                 break;
 
-            case 'resignation1':
-                $details = DB::table('resignations')
-                    ->where('id', $notification->type_id)
-                    ->where('emp_id', $user)
-                    ->select('id as res_id', 'res_reason')
-                    ->orderBy('resignations.id as res_id','desc')
+                case 'resignation':
+                    $details = DB::table('resignations')
+                        ->where('resignations.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
+                        ->leftJoin('users', 'users.id', '=', 'resignations.created_by')  // Correct LEFT JOIN
+                        ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
+                        ->select('resignations.id as res_id', 'resignations.status', 'users.name','roles.role','resignations.created_by as cr_by')
+                        ->orderBy('resignations.id', 'desc')
+                        ->first();
+                    break;
+
+            case ('recruitment'||'Recruitment'):
+                $details = DB::table('recruitments as rc')
+                    ->where('rc.id', $notification->type_id)
+                    ->leftJoin('users', 'users.id', '=', 'rc.c_by')  // Correct LEFT JOIN
+                    ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
+                    ->leftJoin('roles as rl',function($join){
+                            $join->on('rl.id','=','rc.role');
+                    })
+                    ->select('rc.id as rec_id', 'rc.description','rc.status','users.name','roles.role','rl.role as ap_role','rc.c_by as cr_by')
+                    ->orderBy('rc.id','desc')
                     ->first();
                 break;
 

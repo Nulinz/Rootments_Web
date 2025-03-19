@@ -17,19 +17,11 @@
             //     $user->role_id = session('role_id');  // Update role_id from the session
             //     Auth::setUser($user);  // Re-set the user to reflect the new role_id
             //     // dd(Auth::user());
-
-
             // }
-
             $user = auth()->user();
-
             //  dd($user->role_id, session('role_id'), Auth::user());
-
-
             // dd($user);
-
             // echo $user->role_id ;
-
             // Get user role details
             $role_get = DB::table('roles')
                 ->join('users', 'users.role_id', '=', 'roles.id')
@@ -46,7 +38,6 @@
             // }else {
             //     $route = 'mydash.dashboard';
             // }
-
             $route = [
                 3 => ['route' => 'hr.dashboard', 'over' => 'HR'],
                 4 => ['route' => 'hr.dashboard', 'over' => 'HR'],
@@ -63,8 +54,6 @@
         @endphp
 
         <ul class="list-unstyled mt-5 ps-0">
-
-
             <li class="mb-1">
                 <a href="{{ route($route[$r_id]['route'] ?? 'mydash.dashboard') }}">
                     <button
@@ -115,8 +104,11 @@
                     </button>
                     <div class="collapse" id="collapse2">
                         <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                            <li><a href="{{ route('employee.index') }}"
+                            <li><a href="{{ route('employee.index',['status'=>1]) }}"
                                     class="d-inline-flex text-decoration-none rounded mt-3">Employee List</a>
+                            </li>
+                            <li><a href="{{ route('employee.index',['status'=>2]) }}"
+                                    class="d-inline-flex text-decoration-none rounded">Inactive List</a>
                             </li>
                         </ul>
                     </div>
@@ -164,34 +156,33 @@
                 </li>
             @endif
             @if(hasAccess($r_id, 'task'))
-            <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('task.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse4"
-                    aria-expanded="false">
-                    <div class="btnname">
-                        <i class="fa-solid fa-list-check"></i> &nbsp;Task
-                    </div>
-                    <div class="righticon d-flex mx-auto">
-                        <i class="fa-solid fa-angle-down toggle-icon"></i>
-                    </div>
-                </button>
-                <div class="collapse mt-3" id="collapse4">
-                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                        @if(hasAccess($r_id, 'all_task'))
-                        <li><a href="{{ route('task.index') }}"
-                                class="d-inline-flex text-decoration-none rounded">Task
-                                List</a>
-                        </li>
-                        @endif
-                        <li><a href="{{ route('task.completed-task') }}"
-                                class="d-inline-flex text-decoration-none rounded">Completed Task
-                                List</a>
-                        </li>
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('task.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-list-check"></i> &nbsp;Task
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse mt-3" id="collapse4">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            @if(hasAccess($r_id, 'all_task'))
+                                <li><a href="{{ route('task.index') }}" class="d-inline-flex text-decoration-none rounded">Task
+                                        List</a>
+                                </li>
+                            @endif
+                            <li><a href="{{ route('task.completed-task') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Completed Task
+                                    List</a>
+                            </li>
 
-                    </ul>
-                </div>
-            </li>
+                        </ul>
+                    </div>
+                </li>
             @endif
-            @if(hasAccess($r_id, 'recruitment'))
+            @if(hasAccess($r_id, 'payroll'))
                 <li class="mb-1">
                     <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('recruit.*') ? 'active' : '' }}"
                         data-bs-toggle="collapse" data-bs-target="#collapse8" aria-expanded="false">
@@ -212,6 +203,27 @@
                     </div>
                 </li>
             @endif
+            @if(hasAccess($r_id, 'payroll'))
+            <li class="mb-1">
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('resign.*') ? 'active' : '' }}"
+                    data-bs-toggle="collapse" data-bs-target="#collapse12" aria-expanded="false">
+                    <div class="btnname">
+                        <i class="fa-solid fa-user-xmark"></i> &nbsp;Resignation
+                    </div>
+                    <div class="righticon d-flex mx-auto">
+                        <i class="fa-solid fa-angle-down toggle-icon"></i>
+                    </div>
+                </button>
+                <div class="collapse" id="collapse12">
+                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                        <li><a href="{{ route('resign.list') }}"
+                                class="d-inline-flex text-decoration-none rounded mt-3">Resignation List</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            @endif
+
             @if(hasAccess($r_id, 'payroll'))
                 <li class="mb-1">
                     <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('payroll.*') ? 'active' : '' }}"
@@ -296,7 +308,7 @@
                                     class="d-inline-flex text-decoration-none rounded">Resignation
                                     Request</a>
                             </li>
-                            @if(hasAccess($r_id, 'recruit_req'))
+                            @if(hasAccess($r_id, 'all_task'))
                                 <li><a href="{{ route('recruitment.index') }}"
                                         class="d-inline-flex text-decoration-none rounded">Recruitment
                                         Request</a>
@@ -338,17 +350,17 @@
                                                     ->where('created_by', $user->id)
                                                     ->count();
 
-                                                $recruit_count = DB::table('recruitments')
-                                                    ->where('request_status', 'Pending')
-                                                    ->where('created_by', $user->id)
-                                                    ->count();
+                                                // $recruit_count = DB::table('recruitments')
+                                                //     ->where('request_status', 'Pending')
+                                                //     ->where('created_by', $user->id)
+                                                //     ->count();
 
                                                 // Ensure $repair_count is defined
                                                 $repair_count = 0; // You might need to fetch this from a table
 
                                                 // Calculate total count
                                                 $total_count =
-                                                    $leave_count + $repair_count + $transfer_count + $resign_count + $recruit_count;
+                                                    $leave_count + $repair_count + $transfer_count + $resign_count + ($recruit_count ?? 0);
                                             } elseif ($role_get->role_id == 3) {
                                                 // Count requests where escalate_status = 'Pending' and created_by = user
                                                 $leave_count = DB::table('leaves')
@@ -366,24 +378,19 @@
                                                     ->where('created_by', $user->id)
                                                     ->count();
 
-                                                $recruit_count = DB::table('recruitments')
-                                                    ->where('esculate_status', 'Pending')
-                                                    ->where('created_by', $user->id)
-                                                    ->count();
+                                                // $recruit_count = DB::table('recruitments')
+                                                //     ->where('esculate_status', 'Pending')
+                                                //     ->where('created_by', $user->id)
+                                                //     ->count();
 
                                                 // Calculate total count
-                                                $total_count = $leave_count + $transfer_count + $resign_count + $recruit_count;
+                                                $total_count = $leave_count + $transfer_count + $resign_count + ($recruit_count ?? 0);
                                             }
                                         }
                                     @endphp
-
-
-
-
                                     <!--<div class="righticon d-flex mx-auto approvalno">-->
                                     <!--    <h6 class="mb-0">{{ $total_count }}</h6>-->
                                     <!--</div>-->
-
                                 </button>
                             </a>
                         </li>
@@ -391,14 +398,10 @@
             <li class="mb-3">
                 @php
                     $user_check = Auth::user()->id;
-
                     $attd = DB::table('attendance')->where('user_id', $user_check)->whereDate('c_on', date('Y-m-d'))->count();
-
-
                 @endphp
 
                 @if($attd == 0)
-
                     <a onclick="getLocation()">
                         <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
                             <div class="btnname">
@@ -408,7 +411,6 @@
                     </a>
                 @else
                     <a onclick="getLocation()">
-
                         <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
                             <div class="btnname">
                                 <i class="fa-solid fa-right-to-bracket" style="color: red;"></i> &nbsp;CheckOut

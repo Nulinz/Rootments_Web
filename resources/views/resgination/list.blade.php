@@ -33,7 +33,8 @@
                             <th>#</th>
                             <th>Employee Code</th>
                             <th>Employee Name</th>
-                            <th>Store Name</th>
+                            <th>Loc</th>
+                            {{-- <th>Store Name</th> --}}
                             <th>Resign Req Date</th>
                             <th>Reason</th>
                             <th>Status</th>
@@ -45,17 +46,12 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->emp_code }}</td>
                                 <td>{{ $data->emp_name }}</td>
-                                <td>{{ $data->store_name }}</td>
+                                <td>{{ $data->loc }}</td>
+                                {{-- <td>{{ $data->store_name }}</td> --}}
                                 <td>{{ date("d-m-Y",strtotime($data->res_date)) }}</td>
                                 <td>{{ $data->res_reason }}</td>
-                                <td>
-                                    @if($data->status == 'Approved')
-                                    <span class="text-success">Approved</span>
-                                    @elseif($data->status == 'Rejected')
-                                    <span class="text-danger">Rejected</span>
-                                    @else
-                                    <span class="text-warning">Pending</span>
-                                    @endif
+                                <td>{{ $data->status }}</td>
+
                                 </td>
                             </tr>
                         @endforeach

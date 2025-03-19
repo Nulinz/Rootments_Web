@@ -57,6 +57,12 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
         Route::post('transfer-store','TaskController@transferstore')->name('transfer.store');
         Route::get('store-list', 'TaskController@storelist')->name('store.list');
 
+        // resignation routes
+
+        Route::post('resign-store', 'mobile_cnt@res_store')->name('resign-store'); // insert the resignation table
+        Route::post('resign-show', 'mobile_cnt@resign_show')->name('resign-show'); // insert the resignation table
+
+
 
         //Notifications
 

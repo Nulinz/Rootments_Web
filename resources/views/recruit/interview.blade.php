@@ -29,37 +29,45 @@
                         <th>Name</th>
                         <th>Email ID</th>
                         <th>Contact Number</th>
-                        <th>HR</th>
-                        <th>Technical</th>
-                        <th>Manager</th>
+                        <th>Rounds</th>
+                        {{-- <th>Last</th> --}}
+                        {{-- <th>Technical</th>
+                        <th>Manager</th> --}}
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($sc_list as $sc)
                     <tr>
-                        <td>1</td>
-                        <td>Sheik</td>
-                        <td>sheik@gmail.com</td>
-                        <td>8608338833</td>
-                        <td><span class="text-success">Completed</span></td>
-                        <td><span class="text-success">Completed</span></td>
-                        <td><span class="text-success">Completed</span></td>
+                        <td>{{ $loop->iteration}}</td>
+                        <td>{{ $sc->name }}</td>
+                        <td>{{ $sc->email }}</td>
+                        <td>{{ $sc->contact }}</td>
+                        {{-- <td>
+                            @foreach ($sc->rounds as $r)
+                            <div>
+                                {{ $r->round }} - {{ $r->status }}<br>
+                            </div>
+                            @endforeach
+                        </td> --}}
+                        <td>{{ $sc->rounds->last()->round ?? '' }}-{{ $sc->rounds->last()->status ?? '' }}</td>
                         <td>
-                            <div class="d-flex align-item-center gap-2">
-                                <a href="{{ route('recruit.candidate_profile') }}" data-bs-toggle="tooltip"
-                                    data-bs-title="Candidate Profile"><i class="fas fa-eye"></i></a>
-                                <button class="listtdbtn" data-bs-toggle="modal"
-                                    data-bs-target="#updateInterview">Update</button>
+                            <div class="d-flex align-items-center gap-2">
+                                <a href="{{ route('recruit.candidate_profile', ['id' => $sc->id] ) }}"><i class="fas fa-eye"></i></a>
+
                             </div>
                         </td>
+
+
                     </tr>
+                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
-<!-- Update Interview Modal -->
+{{-- <!-- Update Interview Modal -->
 <div class="modal fade" id="updateInterview" tabindex="-1" aria-labelledby="updateInterviewLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -85,7 +93,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 <script>
     $(document).ready(function () {

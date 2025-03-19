@@ -68,6 +68,11 @@
         align-items: center;
         gap: 10px;
     }
+    
+    .table-wrapper {
+        width: 100%;
+        overflow-x: scroll;
+    }
 
     .table thead th {
         color: var(--thead);

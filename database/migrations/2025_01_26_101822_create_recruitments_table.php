@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('recruitments', function (Blueprint $table) {
             $table->id();
-            $table->integer('store_id');
-            $table->string('store_name');
+            $table->string('dept')->nullable();
+            $table->integer('role')->nullable();
+            $table->string('loc')->nullable();
             $table->date('res_date');
+            $table->integer('vacancy')->nullable();
             $table->string('request_to')->nullable();
-            $table->string('esculate_to')->nullable();
-            $table->string('request_status')->nullable();
-            $table->string('esculate_status')->nullable();
-            $table->string('esculate_status')->nullable();
+            $table->string('exp')->nullable();
+            $table->string('description')->nullable();
             $table->string('status')->default('Pending')->nullable();
-            $table->integer('created_by')->nullable();
+            $table->integer('c_by')->nullable();
             $table->timestamps();
         });
     }

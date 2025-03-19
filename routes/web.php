@@ -2,7 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashBoardController;
+use App\Http\Controllers\RecruitController;
 use Illuminate\Support\Facades\DB;
+
+Route::get('post_application/{id}', [RecruitController::class, 'post_application'])->name('post_application');
+
+Route::post('job_app_store', [RecruitController::class, 'post_app_store'])->name('job_app_store');
 
 
 Route::view('/', 'login')->name('login');
@@ -15,16 +20,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::post('login', 'AuthenticationController@login')->name('login.submit');
     Route::get('logout', 'AuthenticationController@logout')->name('logout');
 
-    // Route::get('/api/firebase-config', function () {
-    //     return response()->json([
-    //         'apiKey' => 'AIzaSyDVdH_PbNRhl2YGMPronbaklLPbZCPyT4w',
-    //         'authDomain' => 'rootments-app.firebaseapp.com',
-    //         'projectId' => 'rootments-ap',
-    //         'storageBucket' => 'rootments-app.firebasestorage.app',
-    //         'messagingSenderId' => '406832035732',
-    //         'appId' => '1:406832035732:web:0564580a464ee6f336c181',
-    //     ]);
-    // });
+
+
 
     Route::post('send_not', 'LeaveController@send_not')->name('send_not');
 
@@ -80,7 +77,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('store-viewemp/{id}', 'StoreController@empview')->name('store.viewemp');
 
         // Employee
-        Route::get('employee-list', 'EmployeeController@index')->name('employee.index');
+        Route::get('employee-list/{status}', 'EmployeeController@index')->name('employee.index');
         Route::get('employee-add', 'EmployeeController@create')->name('employee.add');
         Route::post('employee-store', 'EmployeeController@store')->name('employee.store');
         Route::get('employee-jobdetails/{id}', 'EmployeeController@jobindex')->name('jobdetails');
@@ -98,6 +95,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('employee-jobupdate/{id}', 'EmployeeController@jobdetailupdate')->name('employee.jobupdate');
         Route::get('employee-bankedit/{id}', 'EmployeeController@bankedit')->name('employee.bankedit');
         Route::post('employee-bankupdate/{id}', 'EmployeeController@bankdetailupdate')->name('employee.bankupdate');
+
+        Route::get('employee-active/{emp_id}', 'EmployeeController@emp_active')->name('emp_active');
 
         // Task
         Route::get('task-list', 'TaskController@index')->name('task.index');
@@ -138,6 +137,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         // Recruitment Request
         Route::get('recruitment-list', 'RecruitmentController@index')->name('recruitment.index');
         Route::get('recruitment-add', 'RecruitmentController@create')->name('recruitment.add');
+        Route::post('recruitment-role', 'RecruitmentController@get_roles')->name('recruitment.role');
+        // Route::post('recruitment-role', 'RecruitmentController@store')->name('recruitment.add');
         Route::post('recruitment-store', 'RecruitmentController@store')->name('recruitment.store');
 
         // Request Approval
@@ -193,14 +194,29 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('get-coordinates', 'location_cnt@index')->name('get.coordinates');
         Route::post('attendance-ot', 'Attd_cnt@ot_approve')->name('ot.approve');
 
-        // Recruitment
+        // job posting....
         Route::get('recruit-list', 'RecruitController@list')->name('recruit.list');
         Route::get('recruit-add', 'RecruitController@create')->name('recruit.add');
-        Route::get('recruit-edit', 'RecruitController@edit')->name('recruit.edit');
-        Route::get('recruit-profile', 'RecruitController@profile')->name('recruit.profile');
-        Route::get('recruit-candidate', 'RecruitController@candidate_profile')->name('recruit.candidate_profile');
+        Route::get('recruit-edit/{id}', 'RecruitController@edit')->name('recruit.edit');
+        Route::get('recruit-profile/{id}', 'RecruitController@profile')->name('recruit.profile');
+        Route::get('recruit-candidate/{id}', 'RecruitController@candidate_profile')->name('recruit.candidate_profile');
         Route::get('recruit-add-interview', 'RecruitController@add_interview')->name('recruit.add_interview');
         Route::get('recruit-edit-interview', 'RecruitController@edit_interview')->name('recruit.edit_interview');
+        // Route::get('recruit-edit-interview', 'RecruitController@edit_interview')->name('recruit.edit_interview');
+        Route::post('recruit-data', 'RecruitController@rec_data')->name('recruit.data');
+        Route::post('job_post_add', 'RecruitController@store')->name('job_post_add');
+        Route::post('job_post_edit/{id}', 'RecruitController@job_post_edit')->name('job_post_edit');
+        Route::post('job_post_up', 'RecruitController@post_update')->name('job_post_up');
+        // Route::post('job_app_store', 'RecruitController@post_app_store')->name('job_app_store');
+
+
+        Route::post('update_screen', 'RecruitController@update_screen')->name('update_screen');
+        Route::post('add_round', 'RecruitController@add_round')->name('add_round');
+
+        // Recruitment
+        Route::get('resign-list', 'ResignController@list')->name('resign.list');
+        Route::get('resign-profile/{id}','ResignController@profile')->name('resign.profile');
+        Route::post('resign-formality', 'ResignController@formality')->name('resign.formality');
 
         // Area
         Route::get('area-list', 'AreaController@list')->name('area.list');

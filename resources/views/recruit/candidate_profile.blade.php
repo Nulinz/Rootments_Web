@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 <link rel="stylesheet" href="{{ asset('assets/css/profile.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/tasktimeline.css') }}">
 
 @section('content')
     <div class="sidebodydiv px-5 mb-4">
@@ -26,51 +27,51 @@
                             <div class="row mt-2">
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Applied Role</h6>
-                                    <h5 class="mb-0">Fashion Stylist</h5>
+                                    <h5 class="mb-0">{{ $pro->rl}}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Job Location</h6>
-                                    <h5 class="mb-0">Edappally</h5>
+                                    <h5 class="mb-0">{{ $pro->loc}}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Code</h6>
-                                    <h5 class="mb-0">CAND01</h5>
+                                    <h5 class="mb-0">JOB{{ $pro->job_id}}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Full Name</h6>
-                                    <h5 class="mb-0">Sheik</h5>
+                                    <h5 class="mb-0">{{ $pro->name }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Date Of Birth</h6>
-                                    <h5 class="mb-0">14-04-2003</h5>
+                                    <h5 class="mb-0">{{ date("d-m-Y", strtotime($pro->dob))}}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Email ID</h6>
-                                    <h5 class="mb-0">sheik@gmail.com</h5>
+                                    <h5 class="mb-0">{{ $pro->email }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Contact Number</h6>
-                                    <h5 class="mb-0">8608338833</h5>
+                                    <h5 class="mb-0">{{ $pro->contact }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Address</h6>
-                                    <h5 class="mb-0">73, Cherry Road, Salem - 636001</h5>
+                                    <h5 class="mb-0">{{ $pro->add }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Educational Background</h6>
-                                    <h5 class="mb-0">BE. Fashion Designing</h5>
+                                    <h5 class="mb-0">{{ $pro->edu }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Work Experience</h6>
-                                    <h5 class="mb-0">1 year</h5>
+                                    <h5 class="mb-0">{{ $pro->work_exp}}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Skills</h6>
-                                    <h5 class="mb-0">Stylist</h5>
+                                    <h5 class="mb-0">{{ $pro->skill }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Notice Period</h6>
-                                    <h5 class="mb-0">Nil</h5>
+                                    <h5 class="mb-0">{{ $pro->notice }}</h5>
                                 </div>
                             </div>
                         </div>

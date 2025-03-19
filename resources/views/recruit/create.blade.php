@@ -12,18 +12,23 @@
         <div class="sidebodyhead my-3">
             <h4 class="m-0">Job Posting Details</h4>
         </div>
-        <form action="" method="post" id="">
+        <form action="{{ route('job_post_add') }}" method="post" id="">
+            @csrf
             <div class="container-fluid maindiv">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="recruitid">Recruit ID <span>*</span></label>
-                        <input type="text" class="form-control" name="recruitid" id="recruitid"
-                            placeholder="Enter Recruit ID" autofocus required>
+                        <select name="rec_id" id="rec_id" class="form-select" required>
+                            <option value="" selected disabled>Select Options</option>
+                           @foreach ($rec as $rc)
+                               <option value="{{ $rc->id }}">REC{{ $rc->id }}</option>
+                           @endforeach
+                        </select>
                     </div>
-                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                    {{-- <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="jobid">Job ID <span>*</span></label>
                         <input type="text" class="form-control" name="jobid" id="jobid" placeholder="Enter Job ID" required>
-                    </div>
+                    </div> --}}
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="jobtitle">Job Title <span>*</span></label>
                         <input type="text" class="form-control" name="jobtitle" id="jobtitle" placeholder="Enter Job Title"
@@ -31,12 +36,12 @@
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="department">Department <span>*</span></label>
-                        <input type="text" class="form-control" name="department" id="department"
+                        <input type="text" class="form-control" name="department" id="department" readonly
                             placeholder="Enter Department" required>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="role">Role <span>*</span></label>
-                        <input type="text" class="form-control" name="role" id="role" placeholder="Enter Role" required>
+                        <input type="text" class="form-control" name="role" id="role" placeholder="Enter Role" readonly required>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="resp">Responsibilities <span>*</span></label>
@@ -45,7 +50,12 @@
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="joblocation">Job Location <span>*</span></label>
-                        <input type="text" class="form-control" name="joblocation" id="joblocation"
+                        <input type="text" class="form-control" name="joblocation" id="joblocation" readonly
+                            placeholder="Enter Job Location" required>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                        <label for="joblocation">Vacancy<span>*</span></label>
+                        <input type="text" class="form-control" name="vacancy" id="vacancy" readonly
                             placeholder="Enter Job Location" required>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
@@ -64,7 +74,7 @@
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="expreq">Experience (In Years) <span>*</span></label>
-                        <input type="number" class="form-control" name="expreq" id="expreq" min="0"
+                        <input type="number" class="form-control" name="expreq" id="expreq" min="0" readonly
                             placeholder="Enter Experience" required>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
@@ -86,18 +96,18 @@
                         <label for="postdate">Posting Date <span>*</span></label>
                         <input type="date" class="form-control" name="postdate" id="postdate" required>
                     </div>
-                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                    {{-- <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="appdeadline">Application Deadline</label>
                         <input type="date" class="form-control" name="appdeadline" id="appdeadline">
-                    </div>
-                    <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
+                    </div> --}}
+                    {{-- <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="sts">Status <span>*</span></label>
                         <select name="sts" id="sts" class="form-select" required>
                             <option value="" selected disabled>Select Options</option>
                             <option value="Opened">Opened</option>
                             <option value="Closed">Closed</option>
                         </select>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
@@ -106,5 +116,32 @@
             </div>
         </form>
     </div>
+
+    <script>
+        $('#rec_id').on('change',function(){
+            var rec = $(this).val();
+            // alert(rec);
+            $.ajax({
+                url:'{{ route("recruit.data") }}',
+                type:'POST',
+                data:{rec:rec,_token:'{{ csrf_token() }}'},
+                success:function(res){
+                    //  console.log(res);
+
+                    $('#department').val(res[0].dept);
+                    $('#role').val(res[0].role);
+                    $('#joblocation').val(res[0].loc);
+
+                    $('#expreq').val(res[0].exp);
+                    $('#vacancy').val(res[0].vacancy);
+
+                },
+                error:function(error){
+                    console.log(error)
+                }
+            });
+        });
+    </script>
+
 
 @endsection

@@ -31,23 +31,30 @@
                     <th>Role</th>
                     <th>Vacant Count</th>
                     <th>Recruit Date</th>
+                    <th>Request By</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach ($rec as $rc)
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>REC{{ $rc->id}}</td>
+                    <td>{{ $rc->dept }}</td>
+                    <td>{{ $rc->role }}</td>
+                    <td>{{ $rc->vacancy }}</td>
+                    <td>{{ date("d-m-Y",strtotime($rc->res_date))}}</td>
+                    <td>{{ $rc->name }}</td>
                     <td>
-                        <button class="listtdbtn" data-bs-toggle="modal" data-bs-target="#updateRecruitApproval">
+                        <button class="listtdbtn" data-id="{{ $rc->id }}" data-bs-toggle="modal" data-bs-target="#updateRecruitApproval">
                             Update
                         </button>
                     </td>
                 </tr>
+                @endforeach
+
+            </tbody>
+
             </tbody>
         </table>
     </div>
@@ -64,7 +71,7 @@
             </div>
             <div class="modal-body">
                 <form id="updateRecruitForm">
-                    <input type="hidden" id="RecruitId" name="id">
+                    <input type="hidden" id="RecruitId" name="RecruitId">
                     <div class="col-sm-12 col-md-12 mb-3">
                         <label for="sts" class="col-form-label">Status</label>
                         <select class="form-select" name="status">
@@ -137,7 +144,7 @@
         $('#updateRecruitForm').on('submit', function (e) {
             e.preventDefault();
             const formData = $(this).serialize();
-            console.log(formData);
+            // console.log(formData);
 
             $.ajax({
                 url: '{{ route('approvelrecurit.update') }}',

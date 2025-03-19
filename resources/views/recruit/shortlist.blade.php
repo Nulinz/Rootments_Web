@@ -32,25 +32,22 @@
                         <th>Experience</th>
                         <th>Skills</th>
                         <th>Education</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @if(count($short) > 0)
+                    @foreach($short as $st)
                     <tr>
-                        <td>1</td>
-                        <td>Sheik</td>
-                        <td>sheik@gmail.com</td>
-                        <td>8608338833</td>
-                        <td>2 years</td>
-                        <td>Stylist</td>
-                        <td>B.E Fashion Designing</td>
-                        <td>
-                            <div>
-                                <button class="listtdbtn" data-bs-toggle="modal"
-                                    data-bs-target="#updateShortlist">Update</button>
-                            </div>
-                        </td>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $st->name }}</td>
+                        <td>{{ $st->email }}</td>
+                        <td>{{ $st->contact }}</td>
+                        <td>{{ $st->work_exp }}</td>
+                        <td>{{ $st->skill }}</td>
+                        <td>{{ $st->edu }}</td>
                     </tr>
+                    @endforeach
+                @endif
                 </tbody>
             </table>
         </div>
@@ -100,6 +97,10 @@
                 "pageLength": 30,
                 "dom": '<"top"f>rt<"bottom"ilp><"clear">',
             });
+
+            // console.log(table); // Debugging the DataTable object
+
+
             $(tableId + ' thead th').each(function (index) {
                 var headerText = $(this).text();
                 if (headerText != "" && headerText.toLowerCase() != "action") {

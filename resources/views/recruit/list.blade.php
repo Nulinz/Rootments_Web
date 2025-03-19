@@ -41,37 +41,50 @@
                             <th>Location</th>
                             <th>Salary Range</th>
                             <th>Status</th>
-                            <th>Action</th>
+
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($list as $lt)
                         <tr>
-                            <td>1</td>
-                            <td>REC01</td>
-                            <td>JOB01</td>
-                            <td>1</td>
-                            <td>HR</td>
-                            <td>Manager</td>
-                            <td>2 years</td>
-                            <td>Salem</td>
-                            <td>15,000</td>
-                            <td>Opened</td>
+                            <td>{{ $loop->iteration}}</td>
+                            <td>REC{{ $lt->rec_id}}</td>
+                            <td>JOB{{ $lt->id}}</td>
+                            <td>{{ $lt->job_title}}</td>
+                            <td>{{ $lt->dept}}</td>
+                            <td>{{ $lt->roll}}</td>
+                            <td>{{ $lt->exp}}</td>
+                            <td>{{ $lt->loc}}</td>
+                            <td>{{ $lt->salary}}</td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
-                                    <button class="listtdbtn" data-bs-toggle="modal"
+                                    @if($lt->jp_status=='Pending')
+
+                                    <button class="listtdbtn"  data-id="{{ $lt->id }}" data-bs-toggle="modal"
                                         data-bs-target="#updateRecruitApproval">
                                         Update
                                     </button>
-                                    <a href="{{ route('recruit.profile') }}" data-bs-toggle="tooltip"
-                                        data-bs-title="View Profile">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('recruit.edit') }}" data-bs-toggle="tooltip" data-bs-title="Edit">
+
+                                    @else
+                                    <a href="{{ route('recruit.edit',['id'=>$lt->id]) }}" data-bs-toggle="tooltip" data-bs-title="Edit">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
+                                    @endif
+                                    @if($lt->jp_status=='Approved' || $lt->jp_status=='Pending')
+                                    <a href="{{ route('recruit.profile',['id'=>$lt->id]) }}" data-bs-toggle="tooltip"
+                                    data-bs-title="View Profile">
+                                    <i class="fa-solid fa-eye"></i>
+                                    @endif
+                                </a>
+                                @php
+                            //    echo $en = enc($lt->id);  // Encrypt the ID
+                            //     $decryptedValue = dec($en); // Decrypt it back
+                            @endphp
                                 </div>
                             </td>
                         </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>
@@ -89,8 +102,9 @@
                     <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="updateRecruitForm">
-                        <input type="hidden" id="RecruitId" name="id">
+                    <form action="{{ route('job_post_up') }}" id="updateRecruitForm" method="POST">
+                        <input type="hidden" id="job_id" name="job_id">
+                        @csrf
                         <div class="col-sm-12 col-md-12 mb-3">
                             <label for="sts" class="col-form-label">Status</label>
                             <select class="form-select" name="status">
@@ -107,5 +121,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('.listtdbtn').on('click',function(){
+
+            let job = $(this).data('id');
+
+            $('#job_id').val(job);
+
+            // console.log(job);
+
+        });
+    </script>
 
 @endsection

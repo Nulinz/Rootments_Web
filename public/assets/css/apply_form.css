@@ -91,3 +91,21 @@ label span {
     width: 11%;
     text-align: center;
 }
+
+/* Apply Button */
+.applybtn {
+    background-color: #231F20;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid #231F20;
+    height: 35px;
+    border-radius: 5px;
+    width: 150px;
+}
+
+.applybtn:hover {
+    background-color: #fff;
+    color: #231F20;
+    transition: 0.5s ease-in-out;
+}

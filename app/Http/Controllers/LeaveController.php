@@ -124,7 +124,7 @@ class LeaveController extends Controller
 
 
 
-              if (!is_null($req_token->device_token)) {
+              if ($req_token->device_token) {
                     $taskTitle = $request->request_type."Request";
                     $taskBody = $user_id->name. "Requested for " . $request->request_type;
 
@@ -136,18 +136,7 @@ class LeaveController extends Controller
                         'type_id' => $leave->id
                     ]);
             } // notification end
-            else {
-                // Optionally handle the case where the device token is empty
-                // For example, log it or send a different type of notification
-                // Log::warning('Device token missing for user: ' . $req_to);
-            }
 
-            //  Notification::create([
-            //             'user_id' => $user_id,
-            //             'noty_type' => 'leave',
-            //             'type_id' => $leave->id
-
-            //         ]);
 
 
         return redirect()->route('leave.index')->with([

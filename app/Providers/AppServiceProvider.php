@@ -30,11 +30,10 @@ class AppServiceProvider extends ServiceProvider
          $dbName = 'rootments';
 
          // Set the DB name based on the current branch
-         if ($branch === 'main') {
+         if (($branch === 'main')||($branch === 'error')) {
              $dbName = 'rootments';
-         } elseif ($branch === 'error') {
-             $dbName = 'rootments_error';
-         } else {
+         }
+         else {
              // For any other branch, append the branch name to the DB name
              $dbName = 'rootments_' . $branch;
          }

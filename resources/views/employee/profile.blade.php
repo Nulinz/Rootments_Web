@@ -36,7 +36,7 @@
                         <div class="row mt-2">
                             <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                 <h6 class="mb-1">Employee Code</h6>
-                                <h5 class="mb-0">{{ $users->emp_code }}</h5>
+                                <h5 class="mb-0">{{ $users->emp_code }}  @if($users->u_status==2) - <a class="listtdbtn" onclick="return confirm('Are u sure to Activate the Employee ?')" href="{{ route('emp_active',['emp_id'=>$users->id]) }}" >Active</a> @endif</h5>
                             </div>
                             <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                 <h6 class="mb-1">Full Name</h6>
