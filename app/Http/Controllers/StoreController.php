@@ -164,7 +164,7 @@ class StoreController extends Controller
         ->leftJoin('stores', 'users.store_id', '=', 'stores.id')
         ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
         ->where('users.id',$userId)
-        ->select('users.id','users.profile_image','users.name','users.emp_code','users.contact_no','users.email','stores.store_name','roles.role','roles.role_dept')
+        ->select('users.id','users.profile_image','users.name','users.emp_code','users.contact_no','users.email','stores.store_name','roles.role','roles.role_dept','users.status as u_status')
         ->first();
 
         return view('employee.profile', ['users' => $users]);

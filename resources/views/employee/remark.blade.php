@@ -32,12 +32,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    {{-- <tr>
                         <td>1</td>
                         <td>Sheik</td>
                         <td>Tailor</td>
                         <td>Nil</td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
         </div>

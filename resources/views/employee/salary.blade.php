@@ -35,7 +35,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    {{-- <tr>
                         <td>1</td>
                         <td>December</td>
                         <td>15000</td>
@@ -43,7 +43,7 @@
                         <td>1</td>
                         <td>1</td>
                         <td>16000</td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
         </div>
