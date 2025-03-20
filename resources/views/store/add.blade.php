@@ -173,5 +173,33 @@
     };
 });
 
+        $(document).ready(function(){
+
+            var store = $('#storeid').val();
+
+            $.ajax({
+                url:"{{ route('store.check') }}",
+                type:"POST",
+                data:{
+                    _token: '{{ csrf_token() }}',
+                    store:store
+                },
+                success:function(res){
+                    console.log(res);
+                    if(res.st_code!=null){
+                        $('#storename').val(res.data['st_name']);
+                        $('#adrs').val(res.data['st_add']);
+                        $('#pincode').val(res.data['st_pin']);
+                        $('#storeloc').val(res.data['st_loc']);
+                    }
+                },
+                error:function(error){
+                    console.log(error);
+                }
+
+            });
+
+        });
+
     </script>
 @endsection

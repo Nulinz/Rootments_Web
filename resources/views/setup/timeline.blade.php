@@ -6,37 +6,47 @@
 <div class="container maindiv pt-3" style="height: 490px" id="timelinecards">
     <div class="timeline">
 
+        @foreach ($list as $sl)
         <div class="entry completed">
             <div class="title">
                 <h3>Category</h3>
-                <h6 class="text-success">Completed</h6>
+                <h6 class="text-success">{{ $sl->cat ?? null }}</h6>
             </div>
             <div class="entrybody">
                 <div class="taskname">
                     <div class="tasknameleft">
-                        <h6 class="mb-0">Sub Category</h6>
+
+                        <h6 class="mb-0">{{ $sl->sub ?? null }}</h6>
+
                     </div>
                     <div class="tasknamefile">
-                        <a href="" data-bs-toggle="tooltip" data-bs-title="Attachment"><i
+                        @if(!is_null($sl->file))
+                        <a href="{{ asset($sl->file) }}" data-bs-toggle="tooltip" data-bs-title="Attachment" download="{{ basename($sl->file) }}"><i
                                 class="fa-solid fa-paperclip"></i></a>
+                                @endif
                     </div>
                 </div>
                 <div class="taskdescp mb-2">
-                    <h6 class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, veniam.</h6>
-                    <h6 class="mb-0"><span class="text-dark fw-bold">Remarks:</span> Lorem ipsum dolor sit amet
-                        consectetur adipisicing elit. Dolore, veniam.</h6>
+                    <h6 class="mb-0">{{ $sl->remark ?? null }}</h6>
+                    <h6 class="mb-0"><span class="text-dark fw-bold">@if(!is_null($sl->s_remark))Remarks:</span> {{ $sl->s_remark ?? null }}@endif</h6>
                 </div>
                 <div class="taskdate">
-                    <h6 class="m-0 startdate"><i class="fa-regular fa-calendar"></i>&nbsp; 15-03-2025</h6>
+                    <h6 class="m-0 startdate"><i class="fa-regular fa-calendar"></i>&nbsp; {{ date("d-m-Y",strtotime($sl->created_at)) }}</h6>
                     <div>
-                        <a class="mb-0" data-bs-toggle="modal" data-bs-target="#updatestsModal"><button
-                                class="listtdbtn">Update</button></a>
+
+                        @if($sl->status=='Active')
+                        <a  class="mb-0" data-bs-toggle="modal" data-bs-target="#updatestsModal" ><button
+                                class="listtdbtn" data-id="{{ $sl->id }}">Update</button></a>
+                        @else
+                        <button class="listtdbtn" >{{ $sl->status }}</button>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
+        @endforeach
 
-        <div class="entry">
+        {{-- <div class="entry">
             <div class="title">
                 <h3>Category</h3>
                 <h6 class="text-warning">Pending</h6>
@@ -63,7 +73,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
     </div>
 </div>
@@ -77,7 +87,9 @@
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="">
+                <form action="{{ route('set.liststore') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" class="form-control" name="set_id" value="{{ $set_id }}">
                     <div class="col-sm-12 col-md-12 mb-3">
                         <label for="setupcat">Setup Category <span>*</span></label>
                         <select name="setupcat" id="setupcat" class="form-select" required>
@@ -126,7 +138,9 @@
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="">
+                <form action="{{ route('liststore.update') }}" method="POST">
+                    @csrf
+                    <input type="hidden" class="form-control" name="e_id" id="e_id">
                     <div class="col-sm-12 col-md-12 mb-3">
                         <label for="status">Status <span>*</span></label>
                         <select name="status" id="status" class="form-select" required>
@@ -137,8 +151,8 @@
                     </div>
                     <div class="col-sm-12 col-md-12 mb-3">
                         <label for="remarks">Remarks</label>
-                        <textarea rows="3" class="form-control" name="remarks" id="remarks"
-                            placeholder="Enter Remarks"></textarea>
+                        <textarea rows="3" class="form-control" name="s_remark" id="remarks"
+                            placeholder="Enter Remarks">nil</textarea>
                     </div>
                     <div class="d-flex justify-content-center align-items-center mx-auto">
                         <button type="submit" class="modalbtn">Update</button>
@@ -148,6 +162,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('.listtdbtn').on('click',function(){
+        var set_id = $(this).data('id');
+
+        $('#e_id').val(set_id);
+
+    });
+</script>
 
 <script>
     const categories = {
