@@ -133,78 +133,21 @@ class HrDashBoardController extends Controller
             ->select('leaves.id', 'users.name', 'users.emp_code','users.profile_image', 'roles.role', 'roles.role_dept', 'leaves.request_status', 'leaves.request_type','stores.store_name','leaves.start_date','leaves.end_date')
             ->get();
 
-        // Fetch Pending Transfers
-        // $pendingTransfers = DB::table('transfers')
-        //     ->leftJoin('users', 'transfers.emp_id', '=', 'users.id')
-        //     ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
-        //     ->select(
-        //         DB::raw("'Transfer' as request_type"),
-        //         'transfers.id',
-        //         'users.name',
-        //         'users.profile_image',
-        //         'users.emp_code',
-        //         'users.store_id',
-        //         DB::raw('NULL as store_name'),
-        //         'transfers.request_to',
-        //         'transfers.status',
-        //         DB::raw('NULL as start_date'),
-        //         DB::raw('NULL as end_date'),
-        //         DB::raw('NULL as reason')
-        //     )
-        //     ->where('transfers.esculate_to', $role_get->role_id)
-        //     ->where('transfers.status', 'Pending');
 
-        // Fetch Pending Resignations
-        // $pendingResignations = DB::table('resignations')
-        //     ->leftJoin('users', 'resignations.emp_id', '=', 'users.id')
-        //     ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
-        //     ->select(
-        //         DB::raw("'Resignation' as request_type"),
-        //         'resignations.id',
-        //         'users.name',
-        //         'users.profile_image',
-        //         'users.emp_code',
-        //         'users.store_id',
-        //         DB::raw('NULL as store_name'),
-        //         'resignations.request_to',
-        //         'resignations.status',
-        //         DB::raw('NULL as start_date'),
-        //         DB::raw('NULL as end_date'),
-        //         DB::raw('NULL as reason')
-        //     )
-        //     ->where('resignations.esculate_to', $role_get->role_id)
-        //     ->where('resignations.status', 'Pending');
+            $currentDate = Carbon::now()->format('Y-m-d');  // Get current date in Y-m-d format
 
-        // Fetch Pending Recruitments
-        // $pendingRecruitments = DB::table('recruitments')
-        //     ->leftJoin('stores', 'recruitments.store_id', '=', 'stores.id') // Join stores to get store_name
-        //     ->select(
-        //         DB::raw("'Recruitment' as request_type"),
-        //         'recruitments.id',
-        //         DB::raw('NULL as name'), // No user linked
-        //         DB::raw('NULL as profile_image'),
-        //         DB::raw('NULL as emp_code'),
-        //         'recruitments.store_id',
-        //         'stores.store_name',
-        //         'recruitments.request_to',
-        //         'recruitments.status',
-        //         DB::raw('NULL as start_date'),
-        //         DB::raw('NULL as end_date'),
-        //         DB::raw('NULL as reason')
-        //     )
-        //     ->where('recruitments.request_to', $role_get->role_id)
-        //     ->where('recruitments.status', 'Pending');
+            $absent = DB::table('leaves')
+                ->whereDate('start_date', '<=', $currentDate) // Check if the current date is after or equal to the start_date
+                ->whereDate('end_date', '>=', $currentDate)
+                ->leftJoin('users as us','us.id','=','leaves.user_id')
+                ->leftJoin('roles','roles.id','=','us.role_id')
+                ->select('us.name','roles.role','roles.role_dept','users.profile_image') // Check if the current date is before or equal to the end_date
+                ->get();
 
-        // // Combine all queries with UNION ALL
-        // $pendingRequests = $pendingLeaves
-        //     ->unionAll($pendingTransfers)
-        //     ->unionAll($pendingResignations)
-        //     ->unionAll($pendingRecruitments)
-        //     ->get();
+                //  dd($absent);
 
-        // return($pendingLeaves);
 
-          return view('hr.overview',['overview'=>$overview,'roleNames'=>$roleNames,'userCounts'=>$userCounts,'pendingRequests'=>$pendingLeaves,'hr_emp'=>$hr_emp]);
+          return view('hr.overview',['overview'=>$overview,'roleNames'=>$roleNames,'userCounts'=>$userCounts,'pendingRequests'=>$pendingLeaves,'hr_emp'=>$hr_emp,'absent'=>$absent]);
     }
 
    public function mydashboard()
