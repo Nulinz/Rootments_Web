@@ -74,6 +74,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('store-update/{id}', 'StoreController@update')->name('store.update');
         Route::get('store-strength/{id}', 'StoreController@strlist')->name('store.strength');
         Route::get('store-details/{id}', 'StoreController@detailslist')->name('store.details');
+        Route::get('add-workupdate', 'StoreController@addworkupdate')->name('store.addworkupdate');
+        Route::get('store-workupdate', 'StoreController@workupdatelist')->name('store.workupdate');
         Route::get('store-viewemp/{id}', 'StoreController@empview')->name('store.viewemp');
 
         // Employee
@@ -116,10 +118,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('update-leaveescalate', 'LeaveController@updateEscalate')->name('update.leaveescalate');
 
         // Repair Request
-        Route::get('repair-list', 'RepairController@index')->name('repair.index');
-        Route::get('repair-add', 'RepairController@create')->name('repair.add');
-        Route::post('repair-store', 'RepairController@store')->name('repair.store');
-        Route::post('get-storename', 'RepairController@getstorename')->name('get_store_name');
+        Route::get('maintenance-list', 'RepairController@index')->name('repair.index');
+        Route::get('maintenance-add', 'RepairController@create')->name('repair.add');
 
         // Transfer Request
         Route::get('transfer-list', 'TransferController@index')->name('transfer.index');
@@ -214,13 +214,13 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         // Resignation
         Route::get('resign-list', 'ResignController@list')->name('resign.list');
-        Route::get('resign-profile/{id}','ResignController@profile')->name('resign.profile');
+        Route::get('resign-profile/{id}', 'ResignController@profile')->name('resign.profile');
         Route::post('resign-formality', 'ResignController@formality')->name('resign.formality');
 
         // Store Setup
         Route::get('setup-list', 'StoreSetupController@list')->name('setup.list');
-        Route::get('setup-create','StoreSetupController@create')->name('setup.add');
-        Route::get('setup-profile','StoreSetupController@profile')->name('setup.profile');
+        Route::get('setup-create', 'StoreSetupController@create')->name('setup.add');
+        Route::get('setup-profile', 'StoreSetupController@profile')->name('setup.profile');
 
         // Area
         Route::get('area-list', 'AreaController@list')->name('area.list');
@@ -315,7 +315,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         // Maintainence
         Route::get('maintain_index', 'maintain_cnt@index')->name('maintain.index');
-        
+        Route::get('maintenance_list', 'maintain_cnt@list')->name('maintain.list');
+        Route::get('maintenance_profile', 'maintain_cnt@profile')->name('maintain.profile');
+
         // Warehouse
         Route::get('warehouse_index', 'warehouse_cnt@index')->name('warehouse.index');
 
