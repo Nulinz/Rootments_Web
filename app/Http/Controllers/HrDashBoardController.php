@@ -141,7 +141,7 @@ class HrDashBoardController extends Controller
                 ->whereDate('end_date', '>=', $currentDate)
                 ->leftJoin('users as us','us.id','=','leaves.user_id')
                 ->leftJoin('roles','roles.id','=','us.role_id')
-                ->select('us.name','roles.role','roles.role_dept','users.profile_image') // Check if the current date is before or equal to the end_date
+                ->select('us.name','roles.role','roles.role_dept','us.profile_image') // Check if the current date is before or equal to the end_date
                 ->get();
 
                 //  dd($absent);

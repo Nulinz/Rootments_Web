@@ -206,18 +206,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($hr_emp as $hr)
+                                    @foreach ($absent as $ab)
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center justify-content-start gap-2">
-                                                        <img src="{{ asset($hr->profile_image ?? 'assets/images/avatar.png') }}" alt="">
+                                                        <img src="{{ asset($ab->profile_image ?? 'assets/images/avatar.png') }}" alt="">
                                                     <div>
-                                                        <h5 class="mb-0">{{ $hr->name }}</h5>
-                                                        <h6 class="mb-0">Department</h6>
+                                                        <h5 class="mb-0">{{ $ab->name }}</h5>
+                                                        <h6 class="mb-0">{{ $ab->role_dept }}</h6>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>Manager</td>
+                                            <td>{{ $ab->role }}</td>
                                         </tr>
                                     @endforeach
 
