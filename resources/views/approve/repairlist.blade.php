@@ -36,25 +36,29 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($repair as $rp)
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $rp->title }}</td>
+                    <td>{{ $rp->category }}</td>
+                    <td>{{ $rp->subcategory }}</td>
+                    <td>{{ date("d-m-Y",strtotime($rp->req_date)) }}</td>
+                    <td>{{ $rp->desp }}</td>
                     <td>
-                        <div class="d-flex gap-3">
-                            <a href="" download>
-                                <i class="fas fa-download"></i>
-                            </a>
-                        </div>
+                        @if(!is_null($rp->file))
+                            <div class="d-flex gap-3">
+                                <a href="{{ asset($rp->file) }}" download="{{ basename($rp->file) }}">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                            </div>
+                        @endif
                     </td>
                     <td>
-                        <button class="listtdbtn" data-bs-toggle="modal"
+                        <button class="listtdbtn" data-bs-toggle="modal" data-id="{{ $rp->rep_id }}"
                             data-bs-target="#updateMaintenanceApproval">Update</button>
                     </td>
                 </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -70,15 +74,19 @@
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST" id="updateRepairForm">
+                <form action="{{ route('approvelrepair.update') }}" method="POST" id="">
                     @csrf
-                    <input type="hidden" id="RepairId" name="id">
+                    <input type="hidden" id="rep_id" name="rep_id">
                     <div class="col-sm-12 col-md-12 mb-3">
                         <label for="sts" class="col-form-label">Status</label>
                         <select class="form-select sts" name="status" id="sts" required>
                             <option value="" selected disabled>Select Options</option>
+                            @if(auth()->user()->role_id==30)
+                                <option value="Approve">Approve</option>
+                            @else
                             <option value="Escalate">Escalate</option>
                             <option value="Rejected">Rejected</option>
+                            @endif
                         </select>
                     </div>
                     <!-- Move the button inside the form -->
@@ -90,6 +98,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('.listtdbtn').on('click',function(){
+        var rep_id = $(this).data('id');
+
+        $('#rep_id').val(rep_id);
+
+    });
+</script>
 
 <script>
     $(document).ready(function () {

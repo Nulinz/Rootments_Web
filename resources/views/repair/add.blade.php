@@ -11,7 +11,8 @@
         <div class="sidebodyhead my-3">
             <h4 class="m-0">Maintenance Request Details</h4>
         </div>
-        <form action="" method="">
+        <form action="{{ route('repair.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
             <div class="container-fluid maindiv my-3">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
@@ -23,12 +24,17 @@
                         <label for="category">Category <span>*</span></label>
                         <select class="form-select" name="category" id="category" required>
                             <option value="" selected disabled>Select Options</option>
+                            @foreach ($cat as $cs)
+                            <option value="{{ $cs->id }}">{{ $cs->category}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="subcategory">Sub Category <span>*</span></label>
-                        <input type="text" class="form-control" name="subcategory" id="subcategory"
-                            placeholder="Enter Sub Category" required>
+                        <select class="form-select" name="subcategory" id="subcategory" required>
+                            <option value="" selected disabled>Select Options</option>
+                        </select>
+
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="repairdate">Repair Request Date <span>*</span></label>
@@ -37,7 +43,7 @@
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="reason">Repair Description <span>*</span></label>
-                        <textarea rows="1" class="form-control" name="repair_description" id="reason"
+                        <textarea rows="1" class="form-control" name="desp" id="reason"
                             placeholder="Enter Repair Description" required></textarea>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
@@ -46,8 +52,11 @@
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="requestto">Request To <span>*</span></label>
-                        <select class="form-select" name="requestto" id="requestto" autofocus required>
+                        <select class="form-select" name="request_to" id="request_to" autofocus required>
                             <option value="" selected disabled>Select Options</option>
+                            @foreach ($req_to as $req)
+                                <option value="{{ $req->id }}">{{ $req->name}}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -58,5 +67,45 @@
             </div>
         </form>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#category').on('change', function() {
+                var categoryId = $(this).val();
+                var subcategorySelect = $('#subcategory');
+
+                subcategorySelect.html('<option value="">Select Subcategory</option>');
+
+                if (categoryId) {
+                    $.ajax({
+                        url: '{{ route('get_sub_cat') }}',
+                        type: 'POST',
+                        data: {
+                            category_id: categoryId,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(data) {
+                            if (data.length > 0) {
+                                $.each(data, function(index, subcategory) {
+                                    subcategorySelect.append(
+                                        $('<option></option>')
+                                        .val(subcategory.id)
+                                        .text(subcategory.subcategory)
+                                    );
+                                });
+                            } else {
+                                subcategorySelect.append(
+                                    '<option value="">No Subcategories Available</option>'
+                                );
+                            }
+                        },
+                        error: function() {
+                            alert('Failed to fetch subcategories. Please try again.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 
 @endsection
