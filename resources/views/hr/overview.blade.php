@@ -3,7 +3,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/dashboard_main.css') }}">
 
-    <div class="sidebodydiv px-5 py-3">
+    <div class="px-5 py-3 sidebodydiv">
         <div class="sidebodyhead">
             <h4 class="m-0">Overview</h4>
         </div>
@@ -11,9 +11,9 @@
         <!-- Tabs -->
         @include('generaldashboard.tabs')
 
-        <div class="container px-0 mt-2">
+        <div class="container mt-2 px-0">
             <div class="row">
-                <div class="col-sm-12 col-md-4 col-xl-4 mb-3 cards">
+                <div class="col-md-4 col-sm-12 col-xl-4 cards mb-3">
                     <div class="cardsdiv">
                         <div class="cardshead">
                             <h6 class="card1h6 mb-2">Today Login</h6>
@@ -57,12 +57,12 @@
                                                 @if ($data->status == 'approved')
                                                     <button class="" data-bs-toggle="tooltip"
                                                         data-id="{{ $data->user_id }}" data-bs-title="Approved"><i
-                                                            class="fas fa-circle-check text-success"></i></button>
+                                                            class="text-success fa-circle-check fas"></i></button>
                                                 @else
                                                     @if(!empty($data->in_time))
                                                     <button class="approve-attendance" data-bs-toggle="tooltip"
                                                         data-id="{{ $data->user_id }}" data-bs-title="Not Approved"><i
-                                                            class="fas fa-circle-check text-warning"></i></button>
+                                                            class="text-warning fa-circle-check fas"></i></button>
                                                     @endif
                                                 @endif
                                             </td>
@@ -75,7 +75,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-12 col-md-4 col-xl-4 mb-3 cards">
+                <div class="col-md-4 col-sm-12 col-xl-4 cards mb-3">
                     <div class="cardsdiv">
                         <div class="cardshead">
                             <h6 class="card1h6 mb-2">Team Counts</h6>
@@ -84,7 +84,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-12 col-md-4 col-xl-4 mb-3 cards">
+                <div class="col-md-4 col-sm-12 col-xl-4 cards mb-3">
                     <div class="cardsdiv">
                         <div class="cardshead">
                             <h6 class="card1h6 mb-2">Request</h6>
@@ -131,7 +131,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-12 col-md-4 col-xl-4 mb-3 cards">
+                <div class="col-md-4 col-sm-12 col-xl-4 cards mb-3">
                     <div class="cardsdiv">
                         <div class="cardshead">
                             <h6 class="card1h6 mb-2">Employee Login</h6>
@@ -173,16 +173,51 @@
                                                 @if ($hr->status == 'approved')
                                                     <button class="" data-bs-toggle="tooltip"
                                                         data-id="{{ $hr->user_id }}" data-bs-title="Approved"><i
-                                                            class="fas fa-circle-check text-success"></i></button>
+                                                            class="text-success fa-circle-check fas"></i></button>
                                                 @else
                                                      @if(!empty($hr->in_time))
 
                                                     <button class="approve-attendance1" data-bs-toggle="tooltip"
                                                         data-id="{{ $hr->user_id }}" data-bs-title="Not Approved"><i
-                                                            class="fas fa-circle-check text-warning"></i></button>
+                                                            class="text-warning fa-circle-check fas"></i></button>
                                                     @endif
                                                 @endif
                                             </td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-xl-4 cards mb-3">
+                    <div class="cardsdiv">
+                        <div class="cardshead">
+                            <h6 class="card1h6 mb-2">Absent List</h6>
+                        </div>
+                        <div class="cardtable">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Role</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($hr_emp as $hr)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-start gap-2">
+                                                        <img src="{{ asset($hr->profile_image ?? 'assets/images/avatar.png') }}" alt="">
+                                                    <div>
+                                                        <h5 class="mb-0">{{ $hr->name }}</h5>
+                                                        <h6 class="mb-0">Department</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Manager</td>
                                         </tr>
                                     @endforeach
 
