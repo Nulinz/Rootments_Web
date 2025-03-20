@@ -275,8 +275,14 @@ class StoreController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    public function addworkupdate()
+    {
+        return view('store.add-workupdate');
+    }
+
+    public function workupdatelist()
+    {
+        return view('store.workupdate');
+    }
 
 }

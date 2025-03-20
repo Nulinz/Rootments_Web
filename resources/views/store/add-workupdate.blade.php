@@ -37,6 +37,7 @@
                                 <th>ACH %</th>
                                 <th>TGT</th>
                                 <th>ABS</th>
+                                <th>CON %</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -66,6 +67,9 @@
                                 <td>
                                     <input type="text" class="form-control" id="" name="abs" disabled>
                                 </td>
+                                <td>
+                                    <input type="text" class="form-control" id="" name="con" disabled>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Quantity</td>
@@ -92,6 +96,9 @@
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" id="" name="abs" disabled>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" id="" name="con" disabled>
                                 </td>
                             </tr>
                             <tr>
@@ -120,6 +127,9 @@
                                 <td>
                                     <input type="text" class="form-control" id="" name="abs" disabled>
                                 </td>
+                                <td>
+                                    <input type="text" class="form-control" id="" name="con" disabled>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Loss Of Sales</td>
@@ -146,6 +156,9 @@
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" id="" name="abs">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" id="" name="con" disabled>
                                 </td>
                             </tr>
                             <tr>
@@ -174,11 +187,14 @@
                                 <td>
                                     <input type="text" class="form-control" id="" name="abs" disabled>
                                 </td>
+                                <td>
+                                    <input type="text" class="form-control" id="" name="con" disabled>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Conversion</td>
                                 <td>
-                                    <input type="text" class="form-control" id="" name="ftd">
+                                    <input type="text" class="form-control" id="" name="ftd" disabled>
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" id="" name="mtd" disabled>
@@ -190,17 +206,20 @@
                                     <input type="text" class="form-control" id="" name="l2l" disabled>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" id="" name="tgt_1">
+                                    <input type="text" class="form-control" id="" name="tgt_1" disabled>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" id="" name="ach">
+                                    <input type="text" class="form-control" id="" name="ach" disabled>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" id="" name="tgt_2">
+                                    <input type="text" class="form-control" id="" name="tgt_2" disabled>
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" id="" name="abs" disabled>
                                 </td>
+                                <td>
+                                    <input type="text" class="form-control" id="" name="con">
+                                </td>`  
                             </tr>
                         </tbody>
                     </table>

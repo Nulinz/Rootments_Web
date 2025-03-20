@@ -320,7 +320,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         // Maintainence
         Route::get('maintain_index', 'maintain_cnt@index')->name('maintain.index');
-
+        Route::get('maintenance_task', 'maintain_cnt@task')->name('maintain.task');
         Route::get('maintenance_list', 'maintain_cnt@list')->name('maintain.list');
         Route::get('maintenance_profile', 'maintain_cnt@profile')->name('maintain.profile');
 

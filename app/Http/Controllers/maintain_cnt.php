@@ -157,6 +157,11 @@ class maintain_cnt extends Controller
         return view('maintain.maintain_profile');
     }
 
+    public function task(Request $request)
+    {
+        return view('maintain.maintain_task');
+    }
+
     public function show(string $id)
     {
         //
