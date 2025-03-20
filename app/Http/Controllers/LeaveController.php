@@ -77,9 +77,10 @@ class LeaveController extends Controller
             if($user_id->role_id >= 13 && $user_id->role_id <= 19){
 
             $store_man = DB::table('users')->where('store_id',$user_id->store_id)->where('role_id',12)->first();
-                    $leave->request_to = $store_man->id ?? 2;
-                    $req_to = $store_man->id ?? 2;
-                    $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
+            $leave->request_to = $store_man->id ?? 2;
+            $req_to = $store_man->id ?? 2;
+            $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
+
             }
             else if(!hasAccess($user_id->role_id,'leave')){
 
@@ -117,6 +118,7 @@ class LeaveController extends Controller
                         $leave->request_to = $request->request_to;
                         $req_to = $request->request_to;
                         $req_token  = DB::table('users')->where('id',$request->request_to)->first();
+                        // dd($req_token);
                     }
 
 
@@ -124,7 +126,7 @@ class LeaveController extends Controller
 
 
 
-              if ($req_token->device_token) {
+              if (!is_null($req_token->device_token)) {
                     $taskTitle = $request->request_type."Request";
                     $taskBody = $user_id->name. "Requested for " . $request->request_type;
 
