@@ -13,7 +13,15 @@ class RepairController extends Controller
 {
     public function index()
     {
-        return view('repair.list');
+
+        $rep = DB::table('maintain_req')->where('maintain_req.c_by',auth()->user()->id)
+        ->leftJoin('users','users.id','=','maintain_req.req_to')
+        ->leftJoin('categories','categories.id','=','maintain_req.cat')
+        ->leftJoin('sub_categories','sub_categories.id','=','maintain_req.sub')
+        ->select('maintain_req.*','users.name','categories.category','sub_categories.subcategory','maintain_req.status as m_status')
+        ->get();
+// dd($rep);
+        return view('repair.list',['rep'=>$rep]);
     }
 
     public function create()
@@ -31,7 +39,7 @@ class RepairController extends Controller
 
         $user = Auth::user();
 
-        $ins = DB::table('maintain_req')->insert([
+        $ins = DB::table('maintain_req')->insertGetId([
             'title'=>$req->title,
             'cat'=>$req->category,
             'sub'=>$req->subcategory,
@@ -65,12 +73,17 @@ class RepairController extends Controller
                 ->update(['file'=>$f_path]);
         }
 
-        // $list = DB::table('set_up')->get();
+        $rep = DB::table('maintain_req')->where('maintain_req.c_by',auth()->user()->id)
+        ->leftJoin('users','users.id','=','maintain_req.req_to')
+        ->leftJoin('categories','categories.id','=','maintain_req.cat')
+        ->leftJoin('sub_categories','sub_categories.id','=','maintain_req.sub')
+        ->select('maintain_req.*','users.name','categories.category','sub_categories.subcategory','maintain_req.status as m_status')
+        ->get();
 
         if($ins){
-            return response()->view('repair.list',['status'=>'sucess','message'=>'Maintenance Request added Successfully']);
+            return response()->view('repair.list',['rep'=> $rep,'status'=>'sucess','message'=>'Maintenance Request added Successfully']);
         }else{
-            return response()->view('repair.list',['status'=>'Failed','message'=>'Maintenance Request Failed to add']);
+            return response()->view('repair.list',['rep'=> $rep,'status'=>'Failed','message'=>'Maintenance Request Failed to add']);
         }
 
     }

@@ -469,6 +469,17 @@ public function store(Request $request)
         }
     }
 
+    // maintain request task.......
+    if($request->maintain=='maintain'){
+
+        $lat = DB::table('tasks')->orderBy('id','DESC')->first();
+        $up = DB::table('maintain_req')->where('id',$request->m_id)
+        ->update([
+            'task_id'=>$lat->id
+        ]);
+
+    }
+
     return redirect()->route('task.index')->with([
             'status' => 'success',
             'message' => 'Task Added successfully!'

@@ -119,7 +119,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('update-leaveescalate', 'LeaveController@updateEscalate')->name('update.leaveescalate');
 
         // Repair Request
-        Route::get('maintenance-list', 'RepairController@index')->name('repair.index');
+        Route::get('repair_list', 'RepairController@index')->name('repair.index');
         Route::get('maintenance-add', 'RepairController@create')->name('repair.add');
         Route::post('maintenance-store', 'RepairController@store')->name('repair.store');
 
@@ -244,9 +244,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         // Maintainence
         Route::get('maintain_index', 'maintain_cnt@index')->name('maintain.index');
-        Route::get('maintenance_task', 'maintain_cnt@task')->name('maintain.task');
+        Route::get('maintenance_task/{id}', 'maintain_cnt@task')->name('maintain.task');
         Route::get('maintenance_list', 'maintain_cnt@list')->name('maintain.list');
-        Route::get('maintenance_profile', 'maintain_cnt@profile')->name('maintain.profile');
+        Route::get('maintenance_profile/{id}', 'maintain_cnt@profile')->name('maintain.profile');
 
         // Warehouse
         Route::get('warehouse_index', 'warehouse_cnt@index')->name('warehouse.index');

@@ -4,60 +4,65 @@
 
 <div class="container maindiv pt-3" style="height: 490px" id="timelinecards">
     <div class="timeline">
+        @foreach ($rep_task as $t)
+
 
         <div class="entry completed">
             <div class="title">
-                <h3>Sheik</h3>
-                <h6 class="mb-2">Developer</h6>
-                <h6>11: 00 AM</h6>
+                <h3>{{ $t->c_name }}</h3>
+                <h6 class="mb-2">{{ $t->cr_role }}}</h6>
+                {{-- <h6>11: 00 AM</h6> --}}
             </div>
             <div class="entrybody">
                 <div class="taskname mb-1">
                     <div class="tasknameleft">
                         <i class="fa-solid fa-circle text-danger"></i>
-                        <h6 class="mb-0">Task Title</h6>
+                        <h6 class="mb-0">{{ $t->task_title}}</h6>
                     </div>
                     <div class="tasknamefile">
                         <h6 class="mb-0">
-                            <a href="" data-bs-toggle="tooltip" data-bs-title="Attachment" download>
+                            @if(!is_null($t->task_file))
+                            <a href="{{ asset($t->task_file) }}" data-bs-toggle="tooltip" data-bs-title="Attachment" download="{{ basename($t->task_file) }}">
                                 <i class="fa-solid fa-paperclip"></i>
+                             @endif
                             </a>
                         </h6>
                     </div>
                 </div>
                 <div class="taskcategory mb-1">
                     <h6 class="mb-0">
-                        <span class="category">Category</span> /
-                        <span class="subcat">Sub Category</span>
+                        <span class="category">{{ $t->category }}</span> /
+                        <span class="subcat">{{ $t->subcategory }}</span>
                     </h6>
                 </div>
                 <div class="taskdescp mb-1">
-                    <h6 class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi, optio.</h6>
-                    <h5 class="mb-0">Sabari - Developer</h5>
+                    <h6 class="mb-0">{{ $t->task_description }}.</h6>
+                    <h5 class="mb-0">{{ $t->assign_name }} - {{ $t->user_role }}</h5>
                 </div>
                 <div class="taskdate mb-2">
                     <h6 class="m-0 startdate">
                         <i class="fa-regular fa-calendar"></i>&nbsp;
-                        12-03-2025
+                       {{ date("d-m-Y",strtotime($t->start_date))}}
                     </h6>
                     <h6 class="m-0 enddate">
                         <i class="fas fa-flag"></i>&nbsp;
-                        15-03-2025
+                        {{ date("d-m-Y",strtotime($t->end_date))}}
                     </h6>
                 </div>
                 <div class="taskdate">
                     <h6 class="m-0 startdate">
                         <i class="fas fa-hourglass-start"></i>&nbsp;
-                        12: 00 AM
+                        {{ date("h:i a",strtotime($t->start_time))}}
                     </h6>
                     <h6 class="m-0 enddate">
                         <i class="fas fa-hourglass-end"></i>&nbsp;
-                        12: 00 PM
+                        {{ date("h:i a",strtotime($t->end_time))}}
                     </h6>
                 </div>
             </div>
         </div>
 
+        @endforeach
     </div>
 </div>
 

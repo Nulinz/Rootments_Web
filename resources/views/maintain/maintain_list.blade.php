@@ -28,26 +28,28 @@
                             <th>Category</th>
                             <th>Sub Category</th>
                             <th>Repair Date</th>
-                            <th>Requested To</th>
+                            <th>Created</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($rep as $rp)
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $rp->title}}</td>
+                            <td>{{ $rp->category}}</td>
+                            <td>{{ $rp->subcategory}}</td>
+                            <td>{{ date("d-m-Y",strtotime($rp->req_date))}}</td>
+                            <td>{{ $rp->name }}</td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
-                                    <a href="{{ route('maintain.profile') }}" data-bs-toggle="tooltip" data-bs-title="View Profile">
+                                    <a href="{{ route('maintain.profile',['id'=> $rp->m_id ]) }}" data-bs-toggle="tooltip" data-bs-title="View Profile">
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
                                 </div>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

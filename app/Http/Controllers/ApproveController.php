@@ -13,9 +13,11 @@ use App\Models\User;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use App\Services\FirebaseService;
+use App\Http\Controllers\trait\common;
 
 class ApproveController extends Controller
 {
+    use common;
     /**
      * Display a listing of the resource.
      */
@@ -40,71 +42,6 @@ if (!$role_get) {
 $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count = 0;
 
 
-// if ($role_get->role_id == 12) {
-//     $leave_count = DB::table('leaves')
-//         ->where(function ($query) use ($user) {
-//             $query->where('request_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->where('request_to', 12)->count();
-
-//     $repair_count = DB::table('repairs')
-//         ->where(function ($query) use ($user) {
-//             $query->where('request_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $transfer_count = DB::table('transfers')
-//         ->where(function ($query) use ($user) {
-//             $query->where('request_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $resign_count = DB::table('resignations')
-//         ->where(function ($query) use ($user) {
-//             $query->where('request_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $recruit_count = DB::table('recruitments')
-//         ->where(function ($query) use ($user) {
-//             $query->where('request_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-// } elseif ($role_get->role_id == 3) {
-//     $leave_count = DB::table('leaves')
-//         ->where(function ($query) use ($user) {
-//             $query->where('esculate_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $repair_count = DB::table('repairs')
-//         ->where(function ($query) use ($user) {
-//             $query->where('esculate_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $transfer_count = DB::table('transfers')
-//         ->where(function ($query) use ($user) {
-//             $query->where('esculate_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $resign_count = DB::table('resignations')
-//         ->where(function ($query) use ($user) {
-//             $query->where('esculate_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $recruit_count = DB::table('recruitments')
-//         ->where(function ($query) use ($user) {
-//             $query->where('esculate_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-// }
-
-
-
-
 
     return view('approve.approvelist', [
         'leave_count' => $leave_count ?? 0,
@@ -127,18 +64,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
         if(in_array($user->role_id,$arr)){
 
-            // $leave = DB::table('leaves')
-            // ->leftJoin('users','users.id','=','leaves.user_id')
-            // ->leftJoin('roles','roles.id','=','users.role_id')
-            // ->where('request_status','Escalate')
-            // ->Where('esculate_status','Pending')
-            // ->where(function($query) use ($user) {
-            //     $query->where('request_to', $user->id)
-            //           ->orWhere('esculate_to', $user->id);
-            // })
 
-            // ->select('users.name','users.emp_code','roles.role','roles.role_dept','leaves.request_status','leaves.request_type','leaves.id')
-            // ->get();
 
             $leave = DB::table('leaves')
             ->leftJoin('users', 'users.id', '=', 'leaves.user_id')
@@ -168,16 +94,6 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
             ->select('users.name','users.emp_code','roles.role','roles.role_dept','leaves.request_status','leaves.request_type','leaves.id','stores.store_name','leaves.start_date','leaves.end_date','leaves.start_time','leaves.end_time')
             ->get();
 
-
-            //     $l_id =[];
-            // foreach($leave as $lv){
-            //         $l_id = $lv->id;
-            // }
-
-            // $list =DB::table('leaves')
-            // ->leftJoin('users','users.id','=','leaves.request_to')
-            // ->leftJoin('roles','roles.id','=','users.role_id')
-
         }
 
 
@@ -186,25 +102,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
         //  return $leave;
           return view('approve.leavelist', ['leave' => $leave,'hr_list'=>$hr]);
 
-             // $storeMembers = DB::table('users')->where('store_id', $user->store_id)->pluck('id')->toArray();
 
-        // $role_get = DB::table('roles')
-        //     ->join('users', 'users.role_id', '=', 'roles.id')
-        //     ->select('roles.id as role_id', 'roles.role', 'roles.role_dept')
-        //     ->where('users.id', $user->id)
-        //     ->first();
-
-        // if ($role_get) {
-        //     $leave = DB::table('leaves')
-        //         ->join('users', 'users.id', '=', 'leaves.user_id')
-        //         ->where(function ($query) use ($role_get) {
-        //             $query->where('leaves.request_to', $role_get->role_id)
-        //                 ->orWhere('leaves.esculate_to', $role_get->role_id);
-        //         })
-        //         ->whereIn('users.id', $storeMembers)
-        //         ->select('leaves.id as l_id','leaves.request_type')
-        //         ->get();
-        // }
     }
 
 
@@ -319,27 +217,6 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
         ->get();
     }
 
-
-
-        // $role_get = DB::table('roles')
-        //     ->join('users', 'users.role_id', '=', 'roles.id')
-        //     ->where('users.id', $user->id)
-        //     ->select('roles.id as role_id', 'roles.role', 'roles.role_dept')
-        //     ->first();
-
-        // $resignation = collect();
-
-        // if ($role_get) {
-        //     $resignation = DB::table('resignations')
-        //         ->leftJoin('stores', 'stores.id', '=', 'resignations.store_id')
-        //         ->leftJoin('users', 'users.id', '=', 'resignations.emp_id')
-        //         ->select('resignations.*', 'stores.store_name', 'users.emp_code')
-        //         ->where(function ($query) use ($role_get) {
-        //             $query->where('resignations.request_to', $role_get->role_id)
-        //                   ->orWhere('resignations.esculate_to', $role_get->role_id);
-        //         })
-        //         ->get();
-        // // }
 
         return view('approve.reginlist',['resgination'=>$resignation,'hr_list'=>$hr]);
     }
@@ -457,33 +334,6 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
             return response()->json(['message' => 'Leave updated successfully!'], 200);
 
-                // $leave->status = $request->status;
-
-
-
-            // if ($user->role_id == 12) {
-            //     $leave->request_status = $request->status;
-            //     if($request->status == 'Rejected')
-            //     {
-            //          $leave->status = $request->status;
-            //     }
-            // } elseif ($user->role_id == 3) {
-            //     $leave->esculate_status = $request->status;
-            //     $leave->status = $request->status;
-
-            //      $notification = Notification::create([
-            //                 'user_id' => $leave->user_id,
-            //                 'noty_type' => 'leave',
-            //                 'type_id' => $request->id,
-            //             ]);
-
-            // } else {
-            //     return response()->json(['error' => 'Unauthorized action.'], 403);
-            // }
-
-            // $leave->save();
-
-            // return response()->json(['message' => 'Leave updated successfully!'], 200);
 
     }
 
@@ -534,7 +384,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
             }
 
             DB::table('maintain_req')
-            ->where('id',$request->req_id)
+            ->where('id',$request->rep_id)
             ->update([
                 $col=>$request->status,
                 'status'=>$request->status
@@ -559,10 +409,22 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
        } // notification end
 
 
+       if($request->status == 'Approved'){
+        return redirect()->route('maintain.task',['id'=>$request->rep_id])->with(['status'=>'success','message' => 'Maintenance Request updated successfully!']);
+
+       }
+       else{
+        return back()->with(['status'=>'success','message' => 'Maintenance Request updated successfully!']);
+       }
+
+
+
+
+
         }
 
 
-        return back()->with(['message' => 'Maintenance Request updated successfully!']);
+         return back()->with(['status'=>'success','message' => 'Maintenance Request updated successfully!']);
 
 
     }

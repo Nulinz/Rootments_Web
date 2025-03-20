@@ -82,7 +82,7 @@
                         <select class="form-select sts" name="status" id="sts" required>
                             <option value="" selected disabled>Select Options</option>
                             @if(auth()->user()->role_id==30)
-                                <option value="Approve">Approve</option>
+                                <option value="Approved">Approve</option>
                             @else
                             <option value="Escalate">Escalate</option>
                             <option value="Rejected">Rejected</option>

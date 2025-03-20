@@ -12,7 +12,10 @@
         <div class="sidebodyhead my-3">
             <h4 class="m-0">Task Details</h4>
         </div>
-        <form action="" method="" enctype="">
+        <form action="{{ route('task.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+             <input type="hidden" class="form-control" name="maintain" value="maintain">
+             <input type="hidden" class="form-control" name="m_id" value="{{ $m_id }}">
             <div class="container-fluid maindiv my-3">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
@@ -24,7 +27,9 @@
                         <label for="category">Category <span>*</span></label>
                         <select name="category_id" id="category" class="form-select" required>
                             <option value="" selected disabled>Select Options</option>
-                            <option value=""></option>
+                            @foreach ($cat as $ct)
+                                <option value="{{ $ct->id }}">{{ $ct->category}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
@@ -46,11 +51,13 @@
                                     </button>
                                     <ul class="dropdown-menu w-100 px-1" id="roleDropdownMenu">
                                         <ul class="ms-2 list-unstyled">
+                                            @foreach ($emp as $em)
                                             <li class="d-flex justify-content-start gap-1">
                                                 <input type="checkbox" class="me-2 employee-checkbox role"
-                                                    name="assign_to[]" value="">
-                                                <label>Sheik - Developer - IT</label>
+                                                    name="assign_to[]" value="{{ $em->id }}">
+                                                <label>{{ $em->name }} - {{ $em->role }}</label>
                                             </li>
+                                            @endforeach
                                         </ul>
                                     </ul>
                                 </div>
@@ -107,5 +114,45 @@
             </div>
         </form>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#category').on('change', function() {
+                var categoryId = $(this).val();
+                var subcategorySelect = $('#subcategory');
+
+                subcategorySelect.html('<option value="">Select Subcategory</option>');
+
+                if (categoryId) {
+                    $.ajax({
+                        url: '{{ route('get_sub_cat') }}',
+                        type: 'POST',
+                        data: {
+                            category_id: categoryId,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(data) {
+                            if (data.length > 0) {
+                                $.each(data, function(index, subcategory) {
+                                    subcategorySelect.append(
+                                        $('<option></option>')
+                                        .val(subcategory.id)
+                                        .text(subcategory.subcategory)
+                                    );
+                                });
+                            } else {
+                                subcategorySelect.append(
+                                    '<option value="">No Subcategories Available</option>'
+                                );
+                            }
+                        },
+                        error: function() {
+                            alert('Failed to fetch subcategories. Please try again.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 
 @endsection

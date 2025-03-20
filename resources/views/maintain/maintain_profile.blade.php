@@ -28,35 +28,37 @@
                             <div class="row mt-2">
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Title</h6>
-                                    <h5 class="mb-0">Lorem, ipsum dolor.</h5>
+                                    <h5 class="mb-0">{{ $rep[0]->title }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Category</h6>
-                                    <h5 class="mb-0">Layout and 3D Designing</h5>
+                                    <h5 class="mb-0">{{ $rep[0]->category }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Sub Category</h6>
-                                    <h5 class="mb-0">Lorem ipsum dolor ipsum.</h5>
+                                    <h5 class="mb-0">{{ $rep[0]->subcategory }}.</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Repair Date</h6>
-                                    <h5 class="mb-0">15-03-2025</h5>
+                                    <h5 class="mb-0">{{ date("d-m-Y",strtotime($rep[0]->req_date)) }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Repair Description</h6>
-                                    <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quam, itaque.
+                                    <h5 class="mb-0">{{ $rep[0]->desp }}.
                                     </h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
-                                    <h6 class="mb-1">Requested To</h6>
-                                    <h5 class="mb-0">Revathi</h5>
+                                    <h6 class="mb-1">Created To</h6>
+                                    <h5 class="mb-0">{{ $rep[0]->name }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">File Attachment</h6>
                                     <h5 class="mb-0">
-                                        <a href="" download>
+                                        @if(!is_null($rep[0]->file))
+                                        <a href="{{ asset($rep[0]->file) }}" download="{{ basename($rep[0]->file) }}">
                                             <i class="fas fa-download"></i>
                                         </a>
+                                        @endif
                                     </h5>
                                 </div>
                             </div>
@@ -78,6 +80,8 @@
                         </li>
                     </ul>
                 </div>
+
+                {{-- @dd($rep_task); --}}
 
                 <div class="tab-content" id="tabContentWrapper">
                     <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">

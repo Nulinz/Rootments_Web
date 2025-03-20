@@ -29,30 +29,32 @@
                             <th>Repair Date</th>
                             <th>Repair Description</th>
                             <th>Requested To</th>
-                            <th>File</th>
+                            {{-- <th>File</th> --}}
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($rep as $rp)
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $rp->title}}</td>
+                            <td>{{ $rp->category}}</td>
+                            <td>{{ $rp->subcategory}}</td>
+                            <td>{{ date("d-m-Y",strtotime($rp->req_date))}}</td>
+                            <td>{{ $rp->desp}}</td>
+                            <td>{{ $rp->name }}</td>
+                            {{-- <td>
                                 <div class="d-flex gap-3">
                                     <a href="" download>
                                         <i class="fas fa-download"></i>
                                     </a>
                                 </div>
-                            </td>
+                            </td> --}}
                             <td>
-                                <span class="text-success">Approved</span>
+                                <span class="text-success">{{ $rp->m_status }}</span>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
