@@ -220,14 +220,12 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         // Store Setup
         Route::get('setup-list', 'StoreSetupController@list')->name('setup.list');
-        Route::get('setup-create','StoreSetupController@create')->name('setup.add');
-        Route::post('setup-store','StoreSetupController@store')->name('setup.store');
-        Route::get('setup-profile/{tab?}/{id}','StoreSetupController@profile')->name('setup.profile');
-        Route::post('setup-list-store','StoreSetupController@set_list_store')->name('set.liststore');
-
-        Route::post('liststore-update','StoreSetupController@setlist_update')->name('liststore.update');
-
-        Route::get('liststore-new/{id}','StoreSetupController@store_new')->name('liststore.new');
+        Route::get('setup-create', 'StoreSetupController@create')->name('setup.add');
+        Route::post('setup-store', 'StoreSetupController@store')->name('setup.store');
+        Route::get('setup-profile/{tab?}/{id}', 'StoreSetupController@profile')->name('setup.profile');
+        Route::post('setup-list-store', 'StoreSetupController@set_list_store')->name('set.liststore');
+        Route::post('liststore-update', 'StoreSetupController@setlist_update')->name('liststore.update');
+        Route::get('liststore-new/{id}', 'StoreSetupController@store_new')->name('liststore.new');
 
         // Area
         Route::get('area-list', 'AreaController@list')->name('area.list');
@@ -323,7 +321,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         // Maintainence
         Route::get('maintain_index', 'maintain_cnt@index')->name('maintain.index');
 
-        
+        Route::get('maintenance_list', 'maintain_cnt@list')->name('maintain.list');
+        Route::get('maintenance_profile', 'maintain_cnt@profile')->name('maintain.profile');
+
         // Warehouse
         Route::get('warehouse_index', 'warehouse_cnt@index')->name('warehouse.index');
 
