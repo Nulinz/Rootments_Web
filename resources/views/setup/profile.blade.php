@@ -28,32 +28,41 @@
                             <div class="row mt-2">
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Store Name</h6>
-                                    <h5 class="mb-0">Suitor's Guy Kottayam</h5>
+                                    <h5 class="mb-0">{{ $pro->st_name }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Address</h6>
-                                    <h5 class="mb-0">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt, voluptatem?</h5>
+                                    <h5 class="mb-0">{{ $pro->st_add }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">City</h6>
-                                    <h5 class="mb-0">Kottayam</h5>
+                                    <h5 class="mb-0">{{ $pro->st_city }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">State</h6>
-                                    <h5 class="mb-0">Tamil Nadu</h5>
+                                    <h5 class="mb-0">{{ $pro->st_state }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Pincode</h6>
-                                    <h5 class="mb-0">636063</h5>
+                                    <h5 class="mb-0">{{ $pro->st_pin }}063</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Geolocation</h6>
-                                    <h5 class="mb-0">Nil</h5>
+                                    <h5 class="mb-0">{{ $pro->st_loc }}</h5>
                                 </div>
+                                @if(auth()->user()->role_id == 3)
                                 <div class="col-sm-12 col-md-12 col-xl-12 mt-5 mb-3">
                                     <h6 class="mb-1">Status</h6>
-                                    <button class="formbtn">Complete</button>
+                                    @if($pro->status!='Complete')
+                                    <a href="{{ route('liststore.new', ['id' => $pro->id]) }}">
+                                        <button class="formbtn">Complete</button>
+                                    </a>
+                                    @else
+                                    <button class="formbtn">{{ $pro->status }}</button>
+                                    @endif
                                 </div>
+                            @endif
+
                             </div>
                         </div>
                     </div>
@@ -75,8 +84,11 @@
                 </div>
 
                 <div class="tab-content" id="tabContentWrapper">
-                    <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
-                        @include('setup.timeline')
+                    <div class="tab-pane fade {{ $tab == 'details' ? 'show active' : '' }}" id="details" role="tabpanel" aria-labelledby="details-tab">
+                        @if($tab=='details')
+                            @include('setup.timeline',['set_id'=>$pro->id])
+                        @endif
+
                     </div>
                 </div>
             </div>

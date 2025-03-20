@@ -93,6 +93,7 @@
                     </div>
                 </li>
             @endif
+            @if(hasAccess($r_id, 'set_up'))
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('setup.*') ? 'active' : '' }}"
                     data-bs-toggle="collapse" data-bs-target="#collapse13" aria-expanded="false">
@@ -111,6 +112,7 @@
                     </ul>
                 </div>
             </li>
+            @endif
             @if(hasAccess($r_id, 'employee'))
                 <li class="mb-1">
                     <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('employee.*') ? 'active' : '' }}"

@@ -262,14 +262,21 @@ class StoreController extends Controller
         ]);
     }
 
-    public function addworkupdate()
-    {
-        return view('store.add-workupdate');
+    public function store_check(Request $req){
+
+        $st = DB::table('set_up')->where('st_code', $req->store)->first();
+
+        // dd($st);
+
+        return response()->json([
+            'st_code' => $st->st_code ?? null,
+            'data' => $st
+        ], 200);
+
     }
 
-    public function workupdatelist()
-    {
-        return view('store.workupdate');
-    }
+    /**
+     * Remove the specified resource from storage.
+     */
 
 }

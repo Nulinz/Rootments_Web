@@ -31,27 +31,36 @@
                             <th>State</th>
                             <th>Pincode</th>
                             <th>Geolocation</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($list as $li)
+
+                        @php
+                            $st = $li->status == 'Active' ? 'Pending' : $li->status;
+                        @endphp
+
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{ $loop->iteration}}</td>
+                            <td>{{ $li->st_name }}</td>
+                            <td>{{ $li->st_add }}</td>
+                            <td>{{ $li->st_city }}</td>
+                            <td>{{ $li->st_state }}</td>
+                            <td>{{ $li->st_pin }}</td>
+                            <td>{{ $li->st_loc }}</td>
+                            <td>{{ $st }}</td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
-                                    <a href="{{ route('setup.profile') }}" data-bs-toggle="tooltip"
+                                    <a href="{{ route('setup.profile',['id'=>$li->id,'tab'=>'details']) }}" data-bs-toggle="tooltip"
                                         data-bs-title="View Profile">
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
                                 </div>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
