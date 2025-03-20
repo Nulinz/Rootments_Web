@@ -212,13 +212,34 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
     {
         $user_id = Auth::user()->id;
 
-        $repair=DB::table('repairs')
-        ->leftjoin('stores','stores.id','=','repairs.store_code')
-        ->select('repairs.*','stores.store_code')
-        ->where('repairs.created_by',$user_id)
-        ->get();
+        $user = auth()->user();
 
-        return view('approve.repairlist',['repair'=>$repair]);
+
+        if($user->role_id==30){
+            $status = 'esculate_status';
+            $to = 'esculate_to';
+        }else{
+            $status = 'req_status';
+            $to = 'req_to';
+        }
+
+            $repair = DB::table('maintain_req')
+            ->join('users', 'users.id', '=', 'maintain_req.c_by')
+            ->leftJoin('roles', 'roles.id', '=', 'users.role_id')
+            ->leftJoin('categories as cat','cat.id','=','maintain_req.cat')
+            ->leftJoin('sub_categories as sub','sub.id','=','maintain_req.sub')
+            ->where('maintain_req.'.$to, $user->id)
+            ->where('maintain_req.'.$status, 'Pending')
+            ->select('users.name','users.emp_code','sub.subcategory','cat.category','maintain_req.*','maintain_req.id as rep_id')
+            ->get();
+
+        // }
+
+        // dd($repair);
+
+
+
+        return view('approve.repairlist',['repair'=> $repair ]);
     }
 
     public function transferindex()
@@ -471,20 +492,79 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
     public function updaterepair(Request $request)
     {
         $request->validate([
-            'id' => 'required',
+            'rep_id' => 'required',
             'status' => 'required',
         ]);
 
-        try {
-            $repair = Repair::findOrFail($request->id);
+        $req_token  = DB::table('users')->where('role_id',30)->first();
 
-            $repair->status = $request->status;
-            $repair->save();
+        if($request->status == 'Escalate'){
 
-            return response()->json(['message' => 'Repair updated successfully!'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to update Repaair.'], 500);
+            DB::table('maintain_req')
+            ->where('id',$request->rep_id)
+            ->update([
+                'esculate_to'=>$req_token->id,
+                'esculate_status'=>'Pending',
+                'req_status'=>$request->status,
+                'status'=>$request->status
+            ]);
+
+            $user_id = Auth::user();
+
+            if (!is_null($req_token->device_token)) {
+                    $taskTitle = "Maintenance Request";
+                   $taskBody = $user_id->name. " Maintenance  Request Updated to".$request->status ;
+
+                   $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                   Notification::create([
+                       'user_id' =>  $req_token->id,
+                       'noty_type' => 'Maintenance',
+                       'type_id' => $request->rep_id
+                   ]);
+           } // notification end
+        }else{
+
+            $status =  DB::table('maintain_req')->where('id',$request->rep_id)->first();
+
+            if($status->req_status=='Pending'){
+                $col = 'req_status';
+            }else{
+                $col = 'esculate_status';
+            }
+
+            DB::table('maintain_req')
+            ->where('id',$request->req_id)
+            ->update([
+                $col=>$request->status,
+                'status'=>$request->status
+            ]);
+
+            $user_id = Auth::user();
+
+            $req_token  = DB::table('users')->where('id',$status->c_by)->first();
+
+
+            if (!is_null($req_token->device_token)) {
+                $taskTitle = "Maintenance Request";
+               $taskBody = $user_id->name. " Maintenance Request Updated to".$request->status ;
+
+               $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+               Notification::create([
+                   'user_id' => $status->created_by,
+                   'noty_type' => 'Maintenance',
+                   'type_id' => $request->req_id
+               ]);
+       } // notification end
+
+
         }
+
+
+        return back()->with(['message' => 'Maintenance Request updated successfully!']);
+
+
     }
 
     public function updateresgin(Request $request)
