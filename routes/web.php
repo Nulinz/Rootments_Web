@@ -318,6 +318,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('maintenance_list', 'maintain_cnt@list')->name('maintain.list');
         Route::get('maintenance_profile', 'maintain_cnt@profile')->name('maintain.profile');
 
+        
         // Warehouse
         Route::get('warehouse_index', 'warehouse_cnt@index')->name('warehouse.index');
 
