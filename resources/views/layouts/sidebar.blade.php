@@ -86,6 +86,9 @@
                                     class="d-inline-flex text-decoration-none rounded mt-3">Store
                                     List</a>
                             </li>
+                            <li><a href="{{ route('store.addworkupdate') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Work Update</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -242,7 +245,24 @@
                     </div>
                 </li>
             @endif
-
+            <li class="mb-1">
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('setup.*') ? 'active' : '' }}"
+                    data-bs-toggle="collapse" data-bs-target="#collapse14" aria-expanded="false">
+                    <div class="btnname">
+                        <i class="fa-solid fa-screwdriver-wrench"></i> &nbsp;Maintenance
+                    </div>
+                    <div class="righticon d-flex mx-auto">
+                        <i class="fa-solid fa-angle-down toggle-icon"></i>
+                    </div>
+                </button>
+                <div class="collapse" id="collapse14">
+                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                        <li><a href="{{ route('maintain.list') }}"
+                                class="d-inline-flex text-decoration-none rounded mt-3">Maintenance List</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             @if(hasAccess($r_id, 'payroll'))
                 <li class="mb-1">
                     <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('payroll.*') ? 'active' : '' }}"
@@ -315,16 +335,16 @@
                                     class="d-inline-flex text-decoration-none rounded mt-3">Leave
                                     Request</a>
                             </li>
-                            {{-- <li><a href="{{ route('repair.index') }}"
-                                    class="d-inline-flex text-decoration-none rounded">Repair
-                                    Request</a>
-                            </li> --}}
                             {{-- <li><a href="{{ route('transfer.index') }}"
                                     class="d-inline-flex text-decoration-none rounded">Transfer
                                     Request</a>
                             </li> --}}
                             <li><a href="{{ route('resignation.index') }}"
                                     class="d-inline-flex text-decoration-none rounded">Resignation
+                                    Request</a>
+                            </li>
+                            <li><a href="{{ route('repair.index') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Maintenance
                                     Request</a>
                             </li>
                             @if(hasAccess($r_id, 'all_task'))

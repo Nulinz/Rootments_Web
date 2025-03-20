@@ -4,8 +4,7 @@
 
     <div class="sidebodydiv px-5 py-3">
         <div class="sidebodyhead">
-            <h4 class="m-0">Maintenance Request List</h4>
-            <a href="{{ route('repair.add') }}"><button class="listbtn">+ Add Maintenance Request</button></a>
+            <h4 class="m-0">Maintenance List</h4>
         </div>
 
         <div class="container-fluid mt-4 listtable">
@@ -16,6 +15,8 @@
                     </select>
                     <input type="text" id="customSearch" class="form-control filterInput" placeholder=" Search">
                 </div>
+
+                <div class="select1 col-sm-12 col-md-4 mx-auto"></div>
             </div>
 
             <div class="table-wrapper">
@@ -27,10 +28,8 @@
                             <th>Category</th>
                             <th>Sub Category</th>
                             <th>Repair Date</th>
-                            <th>Repair Description</th>
                             <th>Requested To</th>
-                            <th>File</th>
-                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,16 +40,12 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td>
                             <td>
-                                <div class="d-flex gap-3">
-                                    <a href="" download>
-                                        <i class="fas fa-download"></i>
+                                <div class="d-flex align-items-center gap-2">
+                                    <a href="{{ route('maintain.profile') }}" data-bs-toggle="tooltip" data-bs-title="View Profile">
+                                        <i class="fa-solid fa-eye"></i>
                                     </a>
                                 </div>
-                            </td>
-                            <td>
-                                <span class="text-success">Approved</span>
                             </td>
                         </tr>
                     </tbody>
