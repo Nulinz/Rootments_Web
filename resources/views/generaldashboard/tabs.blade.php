@@ -36,7 +36,8 @@
             // Define routes and over values in an array
             $route = [
                 1 => ['route' => 'gm.dashboard', 'over' => 'GM'],
-                
+                2 => ['route' => 'gm.dashboard', 'over' => 'AGM'],
+
                 3 => ['route' => 'hr.dashboard', 'over' => 'HR'],
                 4 => ['route' => 'hr.dashboard', 'over' => 'HR'],
                 5 => ['route' => 'hr.dashboard', 'over' => 'HR'],

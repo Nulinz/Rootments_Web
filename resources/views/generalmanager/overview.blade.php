@@ -29,26 +29,44 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img src="{{ asset('assets/images/avatar.png') }}" alt="">
-                                                <div>
-                                                    <h5 class="mb-0">Sheik</h5>
-                                                    <h6 class="mb-0">Salem</h6>
+                                    @foreach ($hr_emp as $hr)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-start gap-2">
+                                                    {{-- @if ($hr->profile_image) --}}
+                                                        <img src="{{ asset($hr->profile_image ?? 'assets/images/avatar.png') }}" alt="">
+                                                    {{-- @endif --}}
+                                                    <div>
+                                                        <h5 class="mb-0">{{ $hr->name }}</h5>
+                                                        <h6 class="mb-0">{{ $data->in_location ?? 'No location' }}</h6>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
 
-                                        <td>10: 00 AM</td>
-                                        <td>18: 00 PM</td>
-                                        <td>
-                                            <button class="approve-attendance" data-bs-toggle="tooltip"
-                                                data-bs-title="Not Approved"><i
-                                                    class="text-warning fa-circle-check fas"></i></button>
+                                            <td>@if(!is_null($hr->in_time))
+                                                    {{ date("h:i", strtotime($hr->in_time)) }}
+                                                @endif
+                                            </td>
+                                            <td>@if(!is_null($hr->out_time))
+                                                    {{ date("h:i", strtotime($hr->out_time)) }}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($hr->status == 'approved')
+                                                    <button class="" data-bs-toggle="tooltip"
+                                                        data-id="{{ $hr->user_id }}" data-bs-title="Approved"><i
+                                                            class="text-success fa-circle-check fas"></i></button>
+                                                @else
+                                                     @if(!empty($hr->in_time))
 
-                                        </td>
-                                    </tr>
+                                                    <button class="approve-attendance1" data-bs-toggle="tooltip"
+                                                        data-id="{{ $hr->user_id }}" data-bs-title="Not Approved"><i
+                                                            class="text-warning fa-circle-check fas"></i></button>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
 
                                 </tbody>
                             </table>
@@ -73,28 +91,38 @@
                         <div class="cardtable">
                             <table class="table">
                                 <tbody>
+                                    @foreach ($pendingRequests as $data)
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center justify-content-start gap-2">
-
-                                                <img src="{{ asset('assets/images/avatar.png') }}" alt="">
+                                                @if ($data->profile_image)
+                                                    <img src="{{ asset($data->profile_image) }}" alt="" width="40" height="40">
+                                                @else
+                                                    <img src="{{ asset('assets/images/avatar.png') }}" alt="">
+                                                @endif
                                                 <div>
-                                                    <h5 class="mb-0">Sheik</h5>
+                                                    <h5 class="mb-0">{{ $data->name }}</h5>
                                                     <h6 class="mb-0">
                                                         Requesting for
-                                                        <strong>Week Off</strong>
+                                                        <strong>{{ $data->request_type }}</strong>
 
-
+                                                        @if($data->request_type == 'Leave' && isset($data->start_date, $data->end_date))
+                                                            ({{ date('m-d-Y', strtotime($data->start_date)) }} to
+                                                            {{ date('m-d-Y', strtotime($data->end_date)) }})
+                                                            - {{ $data->reason }}
+                                                        @endif
                                                     </h6>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
-                                            <a href="{{ route('approve.index') }}" class="text-decoration-underline">
+                                            <a href="{{ route('approve.index', ['id' => $data->id, 'type' => $data->request_type]) }}"
+                                                class="text-decoration-underline">
                                                 View
                                             </a>
                                         </td>
                                     </tr>
+                                @endforeach
                                 </tbody>
                             </table>
 
@@ -139,4 +167,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var roleNames = @json($roleNames);
+            var userCounts = @json($userCounts);
+
+            var options = {
+                series: [{
+                    name: "Users Count",
+                    data: userCounts
+                }],
+                chart: {
+                    type: "bar",
+                    height: 320,
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: 0,
+                        horizontal: true,
+                        barHeight: '80%',
+                    },
+                },
+                dataLabels: {
+                    enabled: false,
+                    formatter: function (val, opt) {
+                        return opt.w.globals.labels[opt.dataPointIndex] + ': ' + val;
+                    },
+                },
+                xaxis: {
+                    categories: roleNames,
+                },
+                legend: {
+                    show: false
+                },
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chart2"), options);
+            chart.render();
+        });
+    </script>
 @endsection
