@@ -31,7 +31,7 @@ class ClusterController extends Controller
         return view('cluster.list', ['cluster' => $cluster]);
     }
 
-    public function cluster_overview()
+     public function cluster_overview()
     {
 
         $user = Auth::user()->id;
