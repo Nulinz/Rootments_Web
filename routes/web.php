@@ -38,6 +38,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('store_dashboard', 'DashBoardController@useragainststask')->name('store.usertaskdashboard');
         Route::post('attendance-approve', 'DashBoardController@attendanceApprove')->name('attendance.approve');
 
+        // GM Dashboard
+        Route::get('gm-dashboard', 'GMController@index')->name('gm.dashboard');
+        Route::get('gm-mydashboard', 'GMController@mydashboard')->name('gm.mydashboard');
+        
         // HR Dashboard
         Route::get('hr-dashboard', 'HrDashBoardController@index')->name('hr.dashboard');
         Route::get('hr-mydashboard', 'HrDashBoardController@mydashboard')->name('hr.mydashboard');
