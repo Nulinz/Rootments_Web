@@ -41,7 +41,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         // GM Dashboard
         Route::get('gm-dashboard', 'GMController@index')->name('gm.dashboard');
         Route::get('gm-mydashboard', 'GMController@mydashboard')->name('gm.mydashboard');
-        
+
         // HR Dashboard
         Route::get('hr-dashboard', 'HrDashBoardController@index')->name('hr.dashboard');
         Route::get('hr-mydashboard', 'HrDashBoardController@mydashboard')->name('hr.mydashboard');
@@ -246,7 +246,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         // Work Update
         Route::get('abstract-list', 'WorkUpdateController@abstractlist')->name('workupdate.abstract-list');
         Route::get('report-list', 'WorkUpdateController@reportlist')->name('workupdate.report-list');
-        
+        Route::post('daily-work', 'WorkUpdateController@daily_work')->name('daily.work');
+
         // Finance
         Route::get('finance_index', 'fin_cnt@index')->name('fin.index');
 

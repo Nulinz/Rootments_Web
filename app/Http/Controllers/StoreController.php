@@ -292,16 +292,19 @@ class StoreController extends Controller
         )
         ->first(); // Use first() to get a single result
 
-        $count = DB::table('work_update')->whereDate('created_at',date("y-m-d"))->where('store_id',auth()->user()->store_id)->count();
 
         //  dd($count);
 
-        return view('store.add-workupdate',['data'=>$sums,'count'=>$count]);
+        return view('store.add-workupdate',['data'=>$sums]);
     }
 
     public function workupdatelist()
     {
-        return view('store.list-workupdate');
+        $count = DB::table('work_update')->whereDate('created_at',date("y-m-d"))->where('store_id',auth()->user()->store_id)->count();
+
+        $list = DB::table('work_update')->where('store_id',auth()->user()->store_id)->orderBy('id','DESC')->get();
+
+        return view('store.list-workupdate',['count'=>$count,'list'=>$list]);
     }
 
     public function store_work(Request $req)

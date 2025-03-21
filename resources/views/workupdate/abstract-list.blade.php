@@ -19,22 +19,22 @@
                     <thead>
                         <tr>
                             <th style="border-right: 1px solid #888;">Store</th>
-                            <th style="border-right: 1px solid #888;">Date</th>
-                            <th colspan="4" style="border-right: 1px solid #888;">Bills</th>
-                            <th colspan="4" style="border-right: 1px solid #888;">Quantity</th>
-                            <th colspan="4" style="border-right: 1px solid #888;">Walk-In</th>
+
+                            <th colspan="3" style="border-right: 1px solid #888;">Bills</th>
+                            <th colspan="3" style="border-right: 1px solid #888;">Quantity</th>
+                            <th colspan="3" style="border-right: 1px solid #888;">Walk-In</th>
                             <th colspan="3" style="border-right: 1px solid #888;">Loss Of Sale</th>
                             <th colspan="4" style="border-right: 1px solid #888;">ABS</th>
                             <th style="text-align: center;">Conversion</th>
                         </tr>
                         <tr class="tr-div">
                             <th style="width: 450px; border-right: 1px solid #888;"></th>
-                            <th style="width: 350px; border-right: 1px solid #888;"></th>
-                            <th style="width: 200px; border-right: 1px solid #888;">FTD</th>
+
+
                             <th style="width: 200px; border-right: 1px solid #888;">MTD</th>
                             <th style="width: 200px; border-right: 1px solid #888;">LY MTD</th>
                             <th style="width: 200px; border-right: 1px solid #888;">L2L</th>
-                            <th style="width: 200px; border-right: 1px solid #888;">FTD</th>
+
                             <th style="width: 200px; border-right: 1px solid #888;">MTD</th>
                             <th style="width: 200px; border-right: 1px solid #888;">LY MTD</th>
                             <th style="width: 200px; border-right: 1px solid #888;">L2L</th>
@@ -53,30 +53,31 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($list as $li)
                         <tr>
-                            <td>STR01 <br> Suitor's Guy Edappally </td>
-                            <td>15-03-2025</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
+                            <td>{{ $li->store_code }} <br> {{ $li->store_name }} </td>
+
+                            <td class="text-end">{{ $li->b_mtd }}</td>
+                            <td class="text-end">{{ $li->b_ly }}</td>
+                            <td class="text-end">{{ $li->b_ltl }}</td>
+
+                            <td class="text-end">{{ $li->q_mtd }}</td>
+                            <td class="text-end">{{ $li->q_ly }}</td>
+                            <td class="text-end">{{ $li->q_ltl }}</td>
+
+                            <td class="text-end">{{ $li->w_mtd }}</td>
+                            <td class="text-end">{{ $li->w_ly }}</td>
+                            <td class="text-end">{{ $li->w_ltl }}</td>
+                            <td class="text-end">{{ $li->los_ftd }}</td>
+                            <td class="text-end">{{ $li->los_mtd }}</td>
+                            <td class="text-end">{{ $li->los_abs }}</td>
+                            <td class="text-end">{{ $li->abs_ftd }}</td>
+                            <td class="text-end">{{ $li->abs_tgt }}</td>
+                            <td class="text-end">{{ $li->abs_ach }}</td>
+                            <td class="text-end">{{ $li->abs_per }}</td>
+                            <td class="text-end">{{ $li->con_per }}</td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

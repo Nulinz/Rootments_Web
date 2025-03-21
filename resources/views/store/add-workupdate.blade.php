@@ -7,15 +7,6 @@
             <h4 class="m-0">Add Work Update</h4>
         </div>
 
-        <script>
-            var count = '{{ $count }}';
-
-            if(count>0){
-                window.history.back();
-            }
-
-        </script>
-
 
             <div class="container-fluid maindiv bg-white my-3">
                 <div class="row">

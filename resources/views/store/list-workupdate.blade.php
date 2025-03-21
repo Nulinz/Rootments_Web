@@ -11,7 +11,9 @@
     <div class="sidebodydiv px-5 py-3">
         <div class="sidebodyhead">
             <h4 class="m-0">Work Update List</h4>
+            @if($count==0)
             <a href="{{ route('store.addworkupdate') }}"><button class="listbtn">+ Add Work Update</button></a>
+            @endif
         </div>
 
         <div class="container-fluid mt-4 listtable">
@@ -52,29 +54,31 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($list as $li)
                         <tr>
-                            <td>15-03-2025</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
-                            <td class="text-end">100</td>
+                            <td>{{ date("d-m-Y",strtotime($li->created_at)) }}</td>
+                            <td class="text-end">{{ $li->b_ftd }}</td>
+                            <td class="text-end">{{ $li->b_mtd }}</td>
+                            <td class="text-end">{{ $li->b_ly }}</td>
+                            <td class="text-end">{{ $li->b_ltl }}</td>
+                            <td class="text-end">{{ $li->q_ftd }}</td>
+                            <td class="text-end">{{ $li->q_mtd }}</td>
+                            <td class="text-end">{{ $li->q_ly }}</td>
+                            <td class="text-end">{{ $li->q_ltl }}</td>
+                            <td class="text-end">{{ $li->w_ftd }}</td>
+                            <td class="text-end">{{ $li->w_mtd }}</td>
+                            <td class="text-end">{{ $li->w_ly }}</td>
+                            <td class="text-end">{{ $li->w_ltl }}</td>
+                            <td class="text-end">{{ $li->los_ftd }}</td>
+                            <td class="text-end">{{ $li->los_mtd }}</td>
+                            <td class="text-end">{{ $li->los_abs }}</td>
+                            <td class="text-end">{{ $li->abs_ftd }}</td>
+                            <td class="text-end">{{ $li->abs_tgt }}</td>
+                            <td class="text-end">{{ $li->abs_ach }}</td>
+                            <td class="text-end">{{ $li->abs_per }}</td>
+                            <td class="text-end">{{ $li->con_per }}</td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
