@@ -41,7 +41,21 @@ class LeaveController extends Controller
      */
     public function create()
     {
-        $hr = DB::table('users')->whereIn('role_id', [3,4,5])->select('users.id','users.name')->get();
+        $ar = [3,4,5];
+
+        // dd(auth()->user());
+
+         if((auth()->user()->dept=='HR')){
+            $hr = DB::table('users')->whereIn('role_id', [1,2])->select('users.id','users.name')->get();
+         }else{
+            $hr = DB::table('users')->whereIn('role_id', [3,4,5])->select('users.id','users.name')->get();
+         }
+
+        //     $hr = DB::table('users')->whereIn('role_id', [3,4,5])->select('users.id','users.name')->get();
+        // }else{
+        //
+        // }
+
 
         return view('leave.add',['hr_list'=>$hr]);
     }
@@ -87,9 +101,9 @@ class LeaveController extends Controller
                 $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->first();
 
                 switch($dept->role_dept) {
-                    case 'HR':
-                        $arr = 3;
-                        break;
+                    // case 'HR':
+                    //     $arr = 3;
+                    //     break;
                     case 'Finance':
                         $arr = 7;
                         break;

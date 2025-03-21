@@ -42,22 +42,20 @@ class GMController extends Controller
 
 
         $store_per = DB::table('stores')
-        ->join('users as us', 'us.store_id', '=', 'stores.id')
-        ->join('attendance as att', 'att.user_id', '=', 'us.id')
-        ->whereDate('att.c_on', Carbon::today()) // Filter for today's date
-        ->where('att.attend_status', 'Present') // Assuming 'status' holds the present status, adjust if needed
-        ->select(
-            'stores.id',
-            'stores.name',
-            DB::raw('count(us.id) as members_count'),
-            DB::raw('count(att.id) as present_today_count') // Count of present users today
-        )
-        ->groupBy('stores.id', 'stores.name') // Group by store ID and name
-        ->get();
+    ->leftJoin('users as us', 'us.store_id', '=', 'stores.id')
+    ->leftJoin('attendance as att', 'att.user_id', '=', 'us.id')
+    ->select(
+        'stores.store_code',
+        'stores.store_name',
+        DB::raw('count(us.id) as members_count'),
+        DB::raw('count(case when date(att.c_on) = "' .date("Y-m-d") . '" then 1 end) as present_today_count') // Count of present users today
+    )
+    ->groupBy('stores.id') // Group by store ID (no need to group by user_id)
+    ->get();
 
-        // dd($store_per);
+        //  dd($store_per);
 
-        return view('generalmanager.overview',['hr_emp'=>$hr_emp,'roleNames'=>$roleNames,'userCounts'=>$userCounts,'pendingRequests'=>$pendingLeaves]);
+        return view('generalmanager.overview',['hr_emp'=>$hr_emp,'roleNames'=>$roleNames,'userCounts'=>$userCounts,'pendingRequests'=>$pendingLeaves,'store_per'=>$store_per]);
     }
 
     public function create()

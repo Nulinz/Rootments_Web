@@ -146,12 +146,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($store_per as $sp)
+
                                     <tr>
-                                        <td>STR01</td>
-                                        <td>Zorucci Edappally</td>
-                                        <td>10</td>
-                                        <td>5</td>
+                                        <td>{{ $sp->store_code }}</td>
+                                        <td>{{ $sp->store_name }}</td>
+                                        <td>{{ $sp->members_count }}</td>
+                                        <td>{{ $sp->present_today_count }}</td>
                                     </tr>
+                                    @endforeach
 
                                 </tbody>
                             </table>

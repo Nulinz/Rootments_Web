@@ -99,6 +99,12 @@ trait common
        ->count();
 
        switch($r_id) {
+        case 1:
+            $arr = [1];
+            break;
+        case 2:
+            $arr = [2];
+            break;
         case 3:
         case 4:
         case 5:
