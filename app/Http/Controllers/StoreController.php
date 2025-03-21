@@ -301,7 +301,7 @@ class StoreController extends Controller
 
     public function workupdatelist()
     {
-        return view('store.workupdate');
+        return view('store.list-workupdate');
     }
 
     public function store_work(Request $req)

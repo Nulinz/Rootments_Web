@@ -79,7 +79,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('store-strength/{id}', 'StoreController@strlist')->name('store.strength');
         Route::get('store-details/{id}', 'StoreController@detailslist')->name('store.details');
         Route::get('add-workupdate', 'StoreController@addworkupdate')->name('store.addworkupdate');
-        Route::get('store-workupdate', 'StoreController@workupdatelist')->name('store.workupdate');
+        Route::get('store-workupdatelist', 'StoreController@workupdatelist')->name('store.workupdatelist');
         Route::get('store-viewemp/{id}', 'StoreController@empview')->name('store.viewemp');
         Route::post('store-check', 'StoreController@store_check')->name('store.check');
         Route::post('store-work', 'StoreController@store_work')->name('store.work');
@@ -243,7 +243,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('area-mydashboard', 'AreaController@area_mydashboard')->name('area.mydashboard');
         Route::get('area-kpidashboard', 'AreaController@area_kpi')->name('area.kpidashboard');
 
-
+        // Work Update
+        Route::get('abstract-list', 'WorkUpdateController@abstractlist')->name('workupdate.abstract-list');
+        Route::get('report-list', 'WorkUpdateController@reportlist')->name('workupdate.report-list');
+        
         // Finance
         Route::get('finance_index', 'fin_cnt@index')->name('fin.index');
 
