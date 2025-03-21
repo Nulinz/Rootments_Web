@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class StoreController extends Controller
 {
@@ -277,12 +278,70 @@ class StoreController extends Controller
 
     public function addworkupdate()
     {
-        return view('store.add-workupdate');
+
+        $currentMonth = Carbon::now()->month;
+
+        $sums = DB::table('work_update')
+        ->whereMonth('created_at', $currentMonth)
+        ->where('store_id',auth()->user()->store_id)
+        ->select(
+            DB::raw('SUM(b_mtd) as b_mtd_sum'),
+            DB::raw('SUM(q_mtd) as q_mtd_sum'),
+            DB::raw('SUM(w_mtd) as w_mtd_sum'),
+            DB::raw('SUM(los_mtd) as los_mtd_sum')
+        )
+        ->first(); // Use first() to get a single result
+
+        $count = DB::table('work_update')->whereDate('created_at',date("y-m-d"))->where('store_id',auth()->user()->store_id)->count();
+
+        //  dd($count);
+
+        return view('store.add-workupdate',['data'=>$sums,'count'=>$count]);
     }
 
     public function workupdatelist()
     {
         return view('store.workupdate');
+    }
+
+    public function store_work(Request $req)
+    {
+
+
+       $ins =  DB::table('work_update')->insert([
+            'store_id' => auth()->user()->store_id,
+            'b_ftd' => $req->b_ftd,
+            'b_mtd' => $req->b_mtd,
+            'b_ly' => $req->b_lymtd,
+            'b_ltl' => $req->b_ltl,
+            'q_ftd' => $req->q_ftd,
+            'q_mtd' => $req->q_mtd,
+            'q_ly' => $req->q_lymtd,
+            'q_ltl' => $req->q_ltl,
+            'w_ftd' => $req->w_ftd,
+            'w_mtd' => $req->w_mtd,
+            'w_ly' => $req->w_lymtd,
+            'w_ltl' => $req->w_ltl,
+            'los_ftd' => $req->los_ftd,
+            'los_mtd' => $req->los_mtd,
+            'los_abs' => $req->los_abs,
+            'abs_ftd' => $req->abs_ftd,
+            'abs_tgt' => $req->abs_tgt,
+            'abs_ach' => $req->abs_ach,
+            'abs_per' => $req->abs_per,
+            'con_per' => $req->conversion,
+            'c_by' => auth()->user()->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        if($ins){
+            return view('store.workupdate',['status'=>'success','message'=>'Work updated SuccessFully']);
+        }else{
+            return view('store.workupdate',['status'=>'success','message'=>'Work Failed to Add']);
+        }
+
+
     }
 
 }

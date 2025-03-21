@@ -78,6 +78,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('store-workupdate', 'StoreController@workupdatelist')->name('store.workupdate');
         Route::get('store-viewemp/{id}', 'StoreController@empview')->name('store.viewemp');
         Route::post('store-check', 'StoreController@store_check')->name('store.check');
+        Route::post('store-work', 'StoreController@store_work')->name('store.work');
 
         // Employee
         Route::get('employee-list/{status}', 'EmployeeController@index')->name('employee.index');
