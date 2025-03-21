@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Services\FirebaseService;
+use App\Models\Notification;
 
 class StoreSetupController extends Controller
 {
@@ -43,7 +45,7 @@ class StoreSetupController extends Controller
     {
         $user = Auth::user();
 
-        $ins = DB::table('set_up')->insert([
+        $ins = DB::table('set_up')->insertGetId([
             'st_name'=>$req->storename,
             'st_add'=>$req->address,
             'st_city'=>$req->city,
@@ -55,6 +57,25 @@ class StoreSetupController extends Controller
             'created_at'=>now(),
             'updated_at'=>now(),
         ]);
+
+        $for_token  = DB::table('users')->whereIn('role_id',[1,2])->get();
+
+        foreach($for_token as $req_token){
+
+        if (!is_null($req_token->device_token)) {
+            $taskTitle ="Store Setup Request";
+            $taskBody = $req_token->name . "Requested for Store Setup";
+
+            $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+            Notification::create([
+                'user_id' => $req_token->id ?? 0,
+                'noty_type' => 'Store Setup',
+                'type_id' => $ins
+            ]);
+         } // notification end
+
+    } // foreach end....
 
         $list = DB::table('set_up')->get();
 
@@ -101,6 +122,33 @@ class StoreSetupController extends Controller
                 ->update(['file'=>$f_path]);
         }
 
+
+        if(($req->setupcat=='Store Furniture & Fittings Setup')&&($req->setupsubcat=='Cash Counter & Storage Units')){
+
+                    $req_token  = DB::table('users')->whereIn('role_id',[3])->get();
+
+                    $setup_table = DB::table('set_up')->where('id',$req->set_id)->first();
+
+
+                if (!is_null($req_token->device_token)) {
+                    $taskTitle ="Store Setup Request";
+                    $taskBody = $req_token->name . "Store Setup Process End For ".$setup_table->st_name;
+
+                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                    Notification::create([
+                        'user_id' => $req_token->id ?? 0,
+                        'noty_type' => 'Store Request',
+                        'type_id' => $req->set_id
+                    ]);
+                } // notification end
+
+        }// if close for HR nottification
+
+
+
+
+
         if($ins){
             return back()->with(['status'=>'sucess','message'=>'Store set Up added Successfully']);
         }else{
@@ -120,6 +168,25 @@ class StoreSetupController extends Controller
             'status'=>$req->status,
             's_remark'=>$req->s_remark
         ]);
+
+        $set_up = DB::table('e_setup')->where('id',$req->e_id)->first();
+
+        $req_token  = DB::table('users')->whereIn('role_id',[30])->get();
+
+
+        if (!is_null($req_token->device_token)) {
+            $taskTitle ="Store Setup Request";
+            $taskBody = $req_token->name . "Requested Updated for ".$set_up->cat." - ".$set_up->sub;
+
+            $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+            Notification::create([
+                'user_id' => $req_token->id ?? 0,
+                'noty_type' => 'E_Setup',
+                'type_id' => $req->e_id
+            ]);
+         } // notification end
+
 
         if($up){
             return back()->with(['status'=>'sucess','message'=>'Store set Up Updated Successfully']);

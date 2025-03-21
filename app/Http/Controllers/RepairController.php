@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Repair;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use App\Services\FirebaseService;
+use App\Models\Notification;
 
 
 class RepairController extends Controller
@@ -72,6 +74,22 @@ class RepairController extends Controller
             $up_file = DB::table('maintain_req')->where('id', $ins)
                 ->update(['file'=>$f_path]);
         }
+
+
+                $req_token  = DB::table('users')->whereid('id',$req->request_to)->first();
+
+                if (!is_null($req_token->device_token)) {
+                    $taskTitle ="Maintenance  Request";
+                    $taskBody = auth()->user()->name . "Request For Maintenance  Request";
+
+                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                    Notification::create([
+                        'user_id' => $req_token->id ?? 0,
+                        'noty_type' => 'Maintenance Request',
+                        'type_id' => $ins
+                    ]);
+                } // notification end
 
         $rep = DB::table('maintain_req')->where('maintain_req.c_by',auth()->user()->id)
         ->leftJoin('users','users.id','=','maintain_req.req_to')

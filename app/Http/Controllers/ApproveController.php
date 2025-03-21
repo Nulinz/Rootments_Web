@@ -263,7 +263,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
             //  $user = auth()->user();
 
-            //  $leave = Leave::findOrFail($request->id);
+             $leave = Leave::findOrFail($request->id);
 
             if($request->status == 'Escalate'){
 
@@ -277,20 +277,23 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
                 $user_id = Auth::user();
 
-                $req_token  = DB::table('users')->where('id',$request->hr)->first();
+                $leave_token  = DB::table('users')->whereIn('id',[$request->hr,$leave->created_by])->get();
 
-                if ($req_token->device_token) {
-                        $taskTitle = "Leave Request";
-                       $taskBody = $user_id->name. " Leave Request Updated to".$request->status ;
+                foreach( $leave_token as $req_token){
 
-                       $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+                    if (!is_null($req_token->device_token)) {
+                            $taskTitle = "Leave Request";
+                            $taskBody = $user_id->name. " Leave Request Updated to".$request->status ;
 
-                       Notification::create([
-                           'user_id' => $request->hr,
-                           'noty_type' => 'leave',
-                           'type_id' => $request->id
-                       ]);
-               } // notification end
+                            $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                            Notification::create([
+                                'user_id' => $req_token->id,
+                                'noty_type' => 'leave',
+                                'type_id' => $request->id
+                            ]);
+                    } // notification end
+                } // foreach end
             }else{
 
                 $status =  DB::table('leaves')->where('id',$request->id)->first();
@@ -361,18 +364,28 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
             $user_id = Auth::user();
 
-            if (!is_null($req_token->device_token)) {
-                    $taskTitle = "Maintenance Request";
-                   $taskBody = $user_id->name. " Maintenance  Request Updated to".$request->status ;
+            $c_by = DB::table('maintain_req')->where('id',$request->rep_id)->first();
 
-                   $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+            $two_not = DB::table('users')->whereId('id',[$c_by->created_at,$req_token->id])->get();
 
-                   Notification::create([
-                       'user_id' =>  $req_token->id,
-                       'noty_type' => 'Maintenance',
-                       'type_id' => $request->rep_id
-                   ]);
-           } // notification end
+            foreach($two_not  as $two_token){
+
+                    if (!is_null($two_token->device_token)) {
+                            $taskTitle = "Maintenance Request";
+                        $taskBody = $user_id->name. " Maintenance Request Updated to".$request->status ;
+
+                        $response = app(FirebaseService::class)->sendNotification($two_token->device_token,$taskTitle,$taskBody);
+
+                        Notification::create([
+                            'user_id' =>  $two_token->id,
+                            'noty_type' => 'Maintenance',
+                            'type_id' => $request->rep_id
+                        ]);
+                } // notification end
+
+            } // foreach end///.......
+
+
         }else{
 
             $status =  DB::table('maintain_req')->where('id',$request->rep_id)->first();
@@ -410,7 +423,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
 
        if($request->status == 'Approved'){
-        return redirect()->route('maintain.task',['id'=>$request->rep_id])->with(['status'=>'success','message' => 'Maintenance Request updated successfully!']);
+            return redirect()->route('maintain.task',['id'=>$request->rep_id])->with(['status'=>'success','message' => 'Maintenance Request updated successfully!']);
 
        }
        else{

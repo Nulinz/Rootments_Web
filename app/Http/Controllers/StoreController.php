@@ -338,10 +338,15 @@ class StoreController extends Controller
             'updated_at' => now(),
         ]);
 
+        $count = DB::table('work_update')->whereDate('created_at',date("y-m-d"))->where('store_id',auth()->user()->store_id)->count();
+
+        $list = DB::table('work_update')->where('store_id',auth()->user()->store_id)->orderBy('id','DESC')->get();
+
+
         if($ins){
-            return view('store.workupdate',['status'=>'success','message'=>'Work updated SuccessFully']);
+            return view('store.list-workupdate',['status'=>'success','message'=>'Work updated SuccessFully','count'=>$count,'list'=>$list]);
         }else{
-            return view('store.workupdate',['status'=>'success','message'=>'Work Failed to Add']);
+            return view('store.list-workupdate',['status'=>'success','message'=>'Work Failed to Add','count'=>$count,'list'=>$list]);
         }
 
 

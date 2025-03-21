@@ -1,6 +1,6 @@
 <div class="sidebodyhead mb-3">
     <h4 class="m-0">Maintenance Task Flow</h4>
-    <a href="{{ route('maintain.task') }}">
+    <a href="{{ route('maintain.task',['id'=>$rep[0]->id]) }}">
         <button class="listbtn">+ Add Task</button>
     </a>
 </div>
