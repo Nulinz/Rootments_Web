@@ -93,7 +93,7 @@
                     </div>
                 </li>
             @endif
-            @if(hasAccess($r_id, 'set_up'))
+            @if(hasAccess($r_id, 'store_setup'))
                 <li class="mb-1">
                     <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('setup.*') ? 'active' : '' }}"
                         data-bs-toggle="collapse" data-bs-target="#collapse13" aria-expanded="false">
@@ -245,6 +245,7 @@
                     </div>
                 </li>
             @endif
+            @if(hasAccess($r_id, 'maintain_req'))
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('maintain.*') ? 'active' : '' }}"
                     data-bs-toggle="collapse" data-bs-target="#collapse14" aria-expanded="false">
@@ -263,6 +264,7 @@
                     </ul>
                 </div>
             </li>
+            @endif
             @if(hasAccess($r_id, 'payroll'))
                 <li class="mb-1">
                     <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('payroll.*') ? 'active' : '' }}"
@@ -343,11 +345,13 @@
                                     class="d-inline-flex text-decoration-none rounded">Resignation
                                     Request</a>
                             </li>
+                            @if(hasAccess($r_id, 'st_manager'))
                             <li><a href="{{ route('repair.index') }}"
                                     class="d-inline-flex text-decoration-none rounded">Maintenance
                                     Request</a>
                             </li>
-                            @if(hasAccess($r_id, 'all_task'))
+                            @endif
+                            @if(hasAccess($r_id, 'all_manager'))
                                 <li><a href="{{ route('recruitment.index') }}"
                                         class="d-inline-flex text-decoration-none rounded">Recruitment
                                         Request</a>
@@ -434,6 +438,7 @@
                             </a>
                         </li>
             @endif
+            @if(hasAccess($r_id, 'work_update'))
             <li class="mb-1">
                 <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('workupdate.*') ? 'active' : '' }}"
                     data-bs-toggle="collapse" data-bs-target="#collapse15" aria-expanded="false">
@@ -455,6 +460,7 @@
                     </ul>
                 </div>
             </li>
+            @endif
             <li class="mb-3">
                 @php
                     $user_check = Auth::user()->id;

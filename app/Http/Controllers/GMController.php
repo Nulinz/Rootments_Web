@@ -42,12 +42,12 @@ class GMController extends Controller
 
 
         $store_per = DB::table('stores')
-    ->leftJoin('users as us', 'us.store_id', '=', 'stores.id')
-    ->leftJoin('attendance as att', 'att.user_id', '=', 'us.id')
-    ->select(
+        ->leftJoin('users as us', 'us.store_id', '=', 'stores.id')
+        ->leftJoin('attendance as att', 'att.user_id', '=', 'us.id')
+        ->select(
         'stores.store_code',
         'stores.store_name',
-        DB::raw('count(us.id) as members_count'),
+        DB::raw('count(distinct us.id) as members_count'),
         DB::raw('count(case when date(att.c_on) = "' .date("Y-m-d") . '" then 1 end) as present_today_count') // Count of present users today
     )
     ->groupBy('stores.id') // Group by store ID (no need to group by user_id)

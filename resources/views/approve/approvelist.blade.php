@@ -45,11 +45,13 @@
                     <!--role="tab" data-bs-toggle="tab" type="button" data-bs-target="#recruit" aria-controls="recruit"-->
                     <!--aria-selected="false">Recruit &nbsp;<span class="aprvlcnt">{{ $recruit_count }}</span></button>-->
                 </li>
+                @if(hasAccess(auth()->user()->role_id, 'maintain_req'))
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" id="repair-tab" data-url="{{ route('approverepair.index') }}" role="tab"
                         data-bs-toggle="tab" type="button" data-bs-target="#repair" aria-controls="repair"
                         aria-selected="false">Maintenance</button>
                 </li>
+                @endif
             </ul>
         </div>
 

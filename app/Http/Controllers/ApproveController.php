@@ -415,7 +415,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
                Notification::create([
-                   'user_id' => $status->created_by,
+                   'user_id' => $status->c_by,
                    'noty_type' => 'Maintenance',
                    'type_id' => $request->req_id
                ]);

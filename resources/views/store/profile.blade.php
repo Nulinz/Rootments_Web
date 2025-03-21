@@ -99,11 +99,11 @@
                                 id="strength-tab" role="tab" data-bs-toggle="tab" type="button" data-bs-target="#strength"
                                 aria-controls="strength" aria-selected="false">Strength</button>
                         </li>
-                        <!-- <li class="nav-item" role="presentation">
+                        {{-- <!-- <li class="nav-item" role="presentation">
                             <button class="profiletabs" data-url="{{ route('store.workupdate') }}" id="workupdate-tab"
                                 role="tab" data-bs-toggle="tab" type="button" data-bs-target="#workupdate"
                                 aria-controls="workupdate" aria-selected="false">Work Update</button>
-                        </li> -->
+                        </li> --> --}}
                     </ul>
                 </div>
 
