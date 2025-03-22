@@ -372,7 +372,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
                     if (!is_null($two_token->device_token)) {
                             $taskTitle = "Maintenance Request";
-                        $taskBody = $user_id->name. " Maintenance Request Updated to".$request->status ;
+                        $taskBody = auth()->user()->name . " Maintenance Request Updated to".$request->status ;
 
                         $response = app(FirebaseService::class)->sendNotification($two_token->device_token,$taskTitle,$taskBody);
 
@@ -410,7 +410,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
             if (!is_null($req_token->device_token)) {
                 $taskTitle = "Maintenance Request";
-               $taskBody = $user_id->name. " Maintenance Request Updated to".$request->status ;
+               $taskBody = auth()->user()->name. " Maintenance Request Updated to".$request->status ;
 
                $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 

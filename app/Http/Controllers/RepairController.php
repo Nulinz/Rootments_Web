@@ -86,7 +86,7 @@ class RepairController extends Controller
 
                     Notification::create([
                         'user_id' => $req_token->id ?? 0,
-                        'noty_type' => 'Maintenance Request',
+                        'noty_type' => 'Maintenance',
                         'type_id' => $ins
                     ]);
                 } // notification end

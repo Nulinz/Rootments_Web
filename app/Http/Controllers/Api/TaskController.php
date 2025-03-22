@@ -587,7 +587,7 @@ public function notification_list(Request $request)
     $notifications = DB::table('notifications')
         ->select('id', 'user_id', 'noty_type', 'type_id', 'created_at')
         ->where('user_id', $user)
-        ->whereIn('noty_type',['task','resignation','recruitment', 'Recruitment','leave'])
+        ->whereIn('noty_type',['task','resignation','recruitment', 'Recruitment','leave','Store Setup','Maintenance','E_store'])
         ->OrderBy('id','DESC')
         ->get();
 
@@ -656,6 +656,34 @@ public function notification_list(Request $request)
                         ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
                         ->select('resignations.id as res_id', 'resignations.status', 'users.name','roles.role','resignations.created_by as cr_by')
                         ->orderBy('resignations.id', 'desc')
+                        ->first();
+                    break;
+
+                case 'Store Setup':
+                    $details = DB::table('set_up')
+                        ->where('set_up.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
+                        ->leftJoin('users', 'users.id', '=', 'set_up.c_by')  // Correct LEFT JOIN
+                        ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
+                        ->select('set_up.id as set_id', 'set_up.status', 'users.name','roles.role','set_up.c_by as cr_by')
+                        ->orderBy('set_up.id', 'desc')
+                        ->first();
+                    break;
+                case 'E_store':
+                    $details = DB::table('e_setup')
+                        ->where('e_setup.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
+                        ->leftJoin('users', 'users.id', '=', 'e_setup.c_by')  // Correct LEFT JOIN
+                        ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
+                        ->select('e_setup.id as e_set_id', 'e_setup.status', 'users.name','roles.role','e_setup.c_by as cr_by')
+                        ->orderBy('e_setup.id', 'desc')
+                        ->first();
+                    break;
+                case 'E_store':
+                    $details = DB::table('maintain_req as main')
+                        ->where('main.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
+                        ->leftJoin('users', 'users.id', '=', 'main.c_by')  // Correct LEFT JOIN
+                        ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
+                        ->select('main.id as main_id', 'main.status', 'users.name','roles.role','main.c_by as cr_by')
+                        ->orderBy('main.id', 'desc')
                         ->first();
                     break;
 

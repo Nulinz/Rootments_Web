@@ -64,7 +64,7 @@ class StoreSetupController extends Controller
 
         if (!is_null($req_token->device_token)) {
             $taskTitle ="Store Setup Request";
-            $taskBody = $req_token->name . "Requested for Store Setup";
+            $taskBody = auth()->user()->name . "Requested for Store Setup";
 
             $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
@@ -132,13 +132,13 @@ class StoreSetupController extends Controller
 
                 if (!is_null($req_token->device_token)) {
                     $taskTitle ="Store Setup Request";
-                    $taskBody = $req_token->name . "Store Setup Process End For ".$setup_table->st_name;
+                    $taskBody = auth()->user()->name . "Store Setup Process End For ".$setup_table->st_name;
 
                     $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
                     Notification::create([
                         'user_id' => $req_token->id ?? 0,
-                        'noty_type' => 'Store Request',
+                        'noty_type' => 'Store Setup',
                         'type_id' => $req->set_id
                     ]);
                 } // notification end
@@ -176,13 +176,13 @@ class StoreSetupController extends Controller
 
         if (!is_null($req_token->device_token)) {
             $taskTitle ="Store Setup Request";
-            $taskBody = $req_token->name . "Requested Updated for ".$set_up->cat." - ".$set_up->sub;
+            $taskBody = auth()->user()->name . "Request Updated for ".$set_up->sub ." - ".$req->status;
 
             $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
             Notification::create([
                 'user_id' => $req_token->id ?? 0,
-                'noty_type' => 'E_Setup',
+                'noty_type' => 'E_store',
                 'type_id' => $req->e_id
             ]);
          } // notification end
