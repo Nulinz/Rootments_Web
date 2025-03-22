@@ -45,7 +45,7 @@ trait common
 
        $user = Auth::user();
 
-       if($dept=='HR'){
+       if(($dept=='HR')||($dept=='Admin')){
 
         $emp = DB::table('users as us')->where('us.status','=',$st)
         ->whereNotNull('us.role_id')
