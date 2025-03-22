@@ -366,7 +366,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
             $c_by = DB::table('maintain_req')->where('id',$request->rep_id)->first();
 
-            $two_not = DB::table('users')->whereId('id',[$c_by->created_at,$req_token->id])->get();
+            $two_not = DB::table('users')->whereIn('id',[$c_by->c_by,$req_token->id])->get();
 
             foreach($two_not  as $two_token){
 
@@ -385,6 +385,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
             } // foreach end///.......
 
+            // dd($two_not);
 
         }else{
 
@@ -417,7 +418,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                Notification::create([
                    'user_id' => $status->c_by,
                    'noty_type' => 'Maintenance',
-                   'type_id' => $request->req_id
+                   'type_id' => $request->rep_id
                ]);
        } // notification end
 

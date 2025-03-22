@@ -125,7 +125,7 @@ class StoreSetupController extends Controller
 
         if(($req->setupcat=='Store Furniture & Fittings Setup')&&($req->setupsubcat=='Cash Counter & Storage Units')){
 
-                    $req_token  = DB::table('users')->whereIn('role_id',[3])->get();
+                    $req_token  = DB::table('users')->whereIn('role_id',[3])->first();
 
                     $setup_table = DB::table('set_up')->where('id',$req->set_id)->first();
 
@@ -171,7 +171,7 @@ class StoreSetupController extends Controller
 
         $set_up = DB::table('e_setup')->where('id',$req->e_id)->first();
 
-        $req_token  = DB::table('users')->whereIn('role_id',[30])->get();
+        $req_token  = DB::table('users')->where('role_id',[30])->first();
 
 
         if (!is_null($req_token->device_token)) {

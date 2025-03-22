@@ -76,7 +76,7 @@ class RepairController extends Controller
         }
 
 
-                $req_token  = DB::table('users')->whereid('id',$req->request_to)->first();
+                $req_token  = DB::table('users')->where('id',$req->request_to)->first();
 
                 if (!is_null($req_token->device_token)) {
                     $taskTitle ="Maintenance  Request";

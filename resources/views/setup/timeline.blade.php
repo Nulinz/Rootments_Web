@@ -94,15 +94,15 @@
                         <label for="setupcat">Setup Category <span>*</span></label>
                         <select name="setupcat" id="setupcat" class="form-select" required>
                             <option value="" selected disabled>Select Category</option>
-                            <option value="layout_design">Layout & 3D Designing</option>
-                            <option value="structural_work">Structural & Civil Work</option>
-                            <option value="electrical_installation">Electrical & Lighting Installations</option>
-                            <option value="ac_ventilation">Air Conditioning & Ventilation</option>
-                            <option value="plumbing_work">Plumbing & Water Supply Setup</option>
-                            <option value="branding_work">Branding & Store Front Setup</option>
-                            <option value="security_work">Security & Surveillance System Setup</option>
-                            <option value="it_work">IT & Digital Infrastructure Setup</option>
-                            <option value="furniture_work">Store Furniture & Fittings Setup</option>
+                            <option value="Layout & 3D Designing">Layout & 3D Designing</option>
+                            <option value="Structural & Civil Work">Structural & Civil Work</option>
+                            <option value="Electrical & Lighting Installations">Electrical & Lighting Installations</option>
+                            <option value="Air Conditioning & Ventilation">Air Conditioning & Ventilation</option>
+                            <option value="Plumbing & Water Supply Setup">Plumbing & Water Supply Setup</option>
+                            <option value="Branding & Store Front Setup">Branding & Store Front Setup</option>
+                            <option value="Security & Surveillance System Setup">Security & Surveillance System Setup</option>
+                            <option value="IT & Digital Infrastructure Setup">IT & Digital Infrastructure Setup</option>
+                            <option value="Store Furniture & Fittings Setup">Store Furniture & Fittings Setup</option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-12 mb-3">
@@ -174,48 +174,48 @@
 
 <script>
     const categories = {
-        "layout_design": [
+        "Layout & 3D Designing": [
             "Creating 3D layout based on available space",
             "Designing Interior & exterior branding elements",
             "Finalizing Display Unit placements",
             "Approvals & Modification Before Execution"
         ],
-        "structural_work": [
+        "Structural & Civil Work": [
             "Flooring Installation",
             "Tiling & Carpentry Work",
             "Ceiling & Partition Installation",
             "Wall Painting & Finishing"
         ],
-        "electrical_installation": [
+        "Electrical & Lighting Installations": [
             "Main Power Connection Setup",
             "Electrical Wiring & Power Distribution",
             "Lighting Fixture Installation",
             "Backup Power Setup (Inverter/Generator)"
         ],
-        "ac_ventilation": [
+        "Air Conditioning & Ventilation": [
             "AC Unit Procurement & Installation",
             "Exhaust & Ventilation Setup"
         ],
-        "plumbing_work": [
+        "Plumbing & Water Supply Setup": [
             "Pipe Fittings & Plumbing Installations",
             "Water Tank & Drainage Setup"
         ],
-        "branding_work": [
+        "Branding & Store Front Setup": [
             "Exterior Signage & Display Board Installation",
             "Interior Branding & Promotional Fixtures",
             "Glass Panel & Partition Installations"
         ],
-        "security_work": [
+        "Security & Surveillance System Setup": [
             "CCTV System Installation",
             "Access Control Systems (Door Lock Systems, Biometrics)",
             "Fire Safety & Security Alarm Installation"
         ],
-        "it_work": [
+        "IT & Digital Infrastructure Setup": [
             "POS System & Billing Software Installation",
             "WiFi & Network System Setup",
             "Barcode Scanner & Printer Configuration"
         ],
-        "furniture_work": [
+        "Store Furniture & Fittings Setup": [
             "Display Units & Shelving Installation",
             "Office chair and Seating Furniture",
             "Trial Room Setup",
