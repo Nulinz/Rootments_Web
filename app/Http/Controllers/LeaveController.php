@@ -66,11 +66,11 @@ class LeaveController extends Controller
 
         $user_id = auth()->user();
 
-          $role_get = DB::table('roles')
-            ->leftJoin('users', 'users.role_id', '=', 'roles.id')
-            ->select('roles.id', 'roles.role', 'roles.role_dept')
-            ->where('users.id', $user_id->id)
-            ->first();
+        //   $role_get = DB::table('roles')
+        //     ->leftJoin('users', 'users.role_id', '=', 'roles.id')
+        //     ->select('roles.id', 'roles.role', 'roles.role_dept')
+        //     ->where('users.id', $user_id->id)
+        //     ->first();
 
 
             $leave = new Leave();

@@ -103,7 +103,7 @@
                             <option value="Approved">Approved</option>
                             <option value="Rejected">Rejected</option>
                             @if (hasAccess($user->role_id,'leave'))
-                            <option>Escalate</option>
+                                 <option>Escalate</option>
                             @endif
                         </select>
                     </div>

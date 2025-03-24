@@ -279,7 +279,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
                 $leave_token  = DB::table('users')->whereIn('id',[$request->hr,$leave->created_by])->get();
 
-                foreach( $leave_token as $req_token){
+                foreach($leave_token as $req_token){
 
                     if (!is_null($req_token->device_token)) {
                             $taskTitle = "Leave Request";
@@ -327,7 +327,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                        'noty_type' => 'leave',
                        'type_id' => $request->id
                    ]);
-           } // notification end
+                } // notification end
 
 
             }
