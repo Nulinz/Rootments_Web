@@ -110,6 +110,9 @@ trait common
         case 5:
             $arr = [3, 4, 5, 26, 27, 6, 7, 8, 9, 10, 11, 12, 13,30,37,41,43];
             break;
+        case 6:
+            $arr = [6];
+            break;
         case 7:
             $arr = [25,44];
             break;

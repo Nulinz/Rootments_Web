@@ -43,6 +43,7 @@ class AuthenticationController extends Controller
                             3 => 'hr.dashboard',
                             4 => 'hr.dashboard',
                             5 => 'hr.dashboard',
+                            6 => 'operation.dashboard',
                             7 => 'fin.index',
                             10 => 'area.dashboard',
                             11 => 'cluster.dashboard',

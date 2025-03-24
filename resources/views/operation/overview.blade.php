@@ -27,23 +27,46 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img src="{{ asset('assets/images/avatar.png') }}" alt="">
-                                                <div>
-                                                    <h5 class="mb-0">Sheik</h5>
-                                                    <h6 class="mb-0">Salem</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>12-03-2025</td>
-                                        <td>18-03-2025</td>
-                                        <td>
-                                            <button data-bs-toggle="tooltip" data-bs-title="Not Approved"><i
-                                                    class="text-warning fa-circle-check fas"></i></button>
-                                        </td>
-                                    </tr>
+                                    <tbody>
+                                        @foreach ($overview as $data)
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center justify-content-start gap-2">
+                                                        @if ($data->profile_image)
+                                                            <img src="{{ asset($data->profile_image) }}" alt="">
+                                                        @else
+                                                            <img src="{{ asset('assets/images/avatar.png') }}" alt="">
+                                                        @endif
+                                                        <div>
+                                                            <h5 class="mb-0">{{ $data->name }}</h5>
+                                                            <h6 class="mb-0">{{ $data->in_location }}</h6>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <td>@if(!is_null($data->in_time))
+                                                        {{ date("h:i", strtotime($data->in_time)) }}
+                                                    @endif
+                                                </td>
+                                                <td>@if(!is_null($data->out_time))
+                                                        {{ date("h:i", strtotime($data->out_time)) }}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($data->status == 'approved')
+                                                        <button class="" data-bs-toggle="tooltip"
+                                                            data-id="{{ $data->user_id }}" data-bs-title="Approved"><i
+                                                                class="text-success fa-circle-check fas"></i></button>
+                                                    @else
+                                                        @if(!empty($data->in_time))
+                                                        <button class="approve-attendance" data-bs-toggle="tooltip"
+                                                            data-id="{{ $data->user_id }}" data-bs-title="Not Approved"><i
+                                                                class="text-warning fa-circle-check fas"></i></button>
+                                                        @endif
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -56,7 +79,9 @@
                             <h6 class="card1h6 mb-2">Cluster Stores</h6>
                             <select class="form-select mb-2" name="store" id="store">
                                 <option value="" selected disabled>Select Options</option>
-                                <option value=""></option>
+                               @foreach ($list as $li)
+                                    <option value="{{ $li->mc_id }}">{{ $li->name }}</option>
+                               @endforeach
                             </select>
                         </div>
                         <div class="cardtable">
@@ -68,12 +93,12 @@
                                         <th>Location</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
+                                <tbody id="st_list">
+                                    {{-- <tr>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                    </tr>
+                                    </tr> --}}
                                 </tbody>
                             </table>
                         </div>
@@ -118,6 +143,45 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('#store').on('change', function () {
+            // Trigger an AJAX request when the page is ready
+            var cluster = $(this).find('option:selected').val();
+            $.ajax({
+                url: '{{ route('get_cluster_store') }}', // Laravel route for the POST request
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}', // CSRF token for security
+                    cluster: cluster, // Send the selected store ID
+                },
+
+                success: function (response) {
+                    // console.log(response);
+
+                    $('#st_list').empty();
+
+                    $.each(response, function (index, value) {
+                        // Create a new table row
+                        var row = '<tr>' +
+
+                            '<td>' + value.store_code + '</td>' +
+                            '<td>' + value.store_name + '</td>' +
+                            '<td>' + value.store_geo + '</td>' +
+                            '</tr>';
+
+                        // Append the new row to the tbody
+                        $('#st_list').append(row);
+                    });
+
+                },
+                error: function (xhr, status, error) {
+
+                    alert('An error occurred: ' + error);
+                }
+            });
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@latest"></script>
 
@@ -359,6 +423,33 @@
 
         var chart = new ApexCharts(document.querySelector("#chart4"), options);
         chart.render();
+    </script>
+
+    <script>
+         $(document).on("click", ".approve-attendance", function () {
+                let userId = $(this).data("id");
+
+                console.log(userId);
+                $.ajax({
+                    url: "{{ route('attendance.approve') }}",
+                    type: "POST",
+                    data: {
+                        user_id: userId,
+                        _token: $('meta[name="csrf-token"]').attr("content")
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            alert("Attendance Approved!");
+                            location.reload();
+                        } else {
+                            alert("Something went wrong!");
+                        }
+                    },
+                    error: function () {
+                        alert("Error occurred!");
+                    }
+                });
+            });
     </script>
 
 @endsection

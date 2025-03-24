@@ -44,6 +44,7 @@ class LeaveController extends Controller
     {
 
 
+
         $show = $this->role_dept();
 
         $list = DB::table('users')
@@ -53,6 +54,8 @@ class LeaveController extends Controller
         })
         ->select('users.id', 'users.name')
         ->get();
+
+        // dd($show);
 
 
         return view('leave.add',['list'=>$list]);

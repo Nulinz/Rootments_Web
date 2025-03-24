@@ -37,6 +37,7 @@
                     <!--data-bs-toggle="tab" type="button" data-bs-target="#resign" aria-controls="resign"-->
                     <!--aria-selected="false">Resign &nbsp;<span class="aprvlcnt">{{ $resign_count }}</span></button>-->
                 </li>
+                @if(in_array(auth()->user()->role_id, [1,2,3,4,5]))
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" id="recruit-tab" data-url="{{ route('approverecruit.index') }}" role="tab"
                         data-bs-toggle="tab" type="button" data-bs-target="#recruit" aria-controls="recruit"
@@ -45,6 +46,7 @@
                     <!--role="tab" data-bs-toggle="tab" type="button" data-bs-target="#recruit" aria-controls="recruit"-->
                     <!--aria-selected="false">Recruit &nbsp;<span class="aprvlcnt">{{ $recruit_count }}</span></button>-->
                 </li>
+                @endif
                 @if(hasAccess(auth()->user()->role_id, 'maintain_req'))
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs" id="repair-tab" data-url="{{ route('approverepair.index') }}" role="tab"

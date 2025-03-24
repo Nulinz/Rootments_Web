@@ -42,6 +42,7 @@
                 3 => ['route' => 'hr.dashboard', 'over' => 'HR'],
                 4 => ['route' => 'hr.dashboard', 'over' => 'HR'],
                 5 => ['route' => 'hr.dashboard', 'over' => 'HR'],
+                6 => ['route' => 'operation.dashboard', 'over' => 'Operation'],
                 12 => ['route' => 'dashboard', 'over' => 'Store'],
                 11 => ['route' => 'cluster.dashboard', 'over' => 'Cluster'],
                 10 => ['route' => 'area.dashboard', 'over' => 'Area'],
