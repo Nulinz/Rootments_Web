@@ -29,14 +29,14 @@ class StoreController extends Controller
 
             $query = DB::table('stores');
 
-            if ($user->dept !== 'Admin' && $user->dept !== 'HR') {
+            if ($user->dept !== 'Admin' && $user->dept !== 'HR' && $user->dept !== 'Operation') {
                 $query->where('id', $user->store_id);
             }
 
             $store = $query->get();
         }
 
-
+        // dd($store);
 
 
         return view('store.list', ['store' => $store]);

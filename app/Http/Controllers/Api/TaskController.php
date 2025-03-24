@@ -587,7 +587,8 @@ public function notification_list(Request $request)
     $notifications = DB::table('notifications')
         ->select('id', 'user_id', 'noty_type', 'type_id', 'created_at')
         ->where('user_id', $user)
-        ->whereIn('noty_type',['task','resignation','recruitment', 'Recruitment','leave','Store Setup','Maintenance','E_store'])
+        // ->whereIn('noty_type',['task','resignation','recruitment', 'Recruitment','leave','Store Setup','Maintenance','E_store'])
+         ->whereIn('noty_type',['Store Setup','E_store'])
         ->OrderBy('id','DESC')
         ->get();
 
@@ -664,7 +665,7 @@ public function notification_list(Request $request)
                         ->where('set_up.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
                         ->leftJoin('users', 'users.id', '=', 'set_up.c_by')  // Correct LEFT JOIN
                         ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
-                        ->select('set_up.id as set_id', 'set_up.status', 'users.name','roles.role','set_up.c_by as cr_by')
+                        ->select('set_up.id as set_id', 'set_up.status','set_up.st_name', 'users.name','roles.role','set_up.c_by as cr_by')
                         ->orderBy('set_up.id', 'desc')
                         ->first();
                     break;
@@ -672,33 +673,34 @@ public function notification_list(Request $request)
                     $details = DB::table('e_setup')
                         ->where('e_setup.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
                         ->leftJoin('users', 'users.id', '=', 'e_setup.c_by')  // Correct LEFT JOIN
-                        ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
-                        ->select('e_setup.id as e_set_id', 'e_setup.status', 'users.name','roles.role','e_setup.c_by as cr_by')
+                        ->leftJoin('set_up', 'set_up.id', '=', 'e_setup.set_id')  // Correct LEFT JOIN
+                        ->select('e_setup.id as e_set_id', 'e_setup.status','set_up.st_name','e_setup.sub')
                         ->orderBy('e_setup.id', 'desc')
                         ->first();
                     break;
-                case 'E_store':
+                case 'Maintenance':
                     $details = DB::table('maintain_req as main')
                         ->where('main.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
                         ->leftJoin('users', 'users.id', '=', 'main.c_by')  // Correct LEFT JOIN
                         ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
-                        ->select('main.id as main_id', 'main.status', 'users.name','roles.role','main.c_by as cr_by')
+                        ->leftJoin('stores', 'stores.id', '=', 'users.store_id')  // Correct LEFT JOIN
+                        ->select('main.id as main_id', 'main.status', 'users.name','roles.role','main.c_by as cr_by','stores.store_name')
                         ->orderBy('main.id', 'desc')
                         ->first();
                     break;
 
-            case ('recruitment'||'Recruitment'):
-                $details = DB::table('recruitments as rc')
-                    ->where('rc.id', $notification->type_id)
-                    ->leftJoin('users', 'users.id', '=', 'rc.c_by')  // Correct LEFT JOIN
-                    ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
-                    ->leftJoin('roles as rl',function($join){
-                            $join->on('rl.id','=','rc.role');
-                    })
-                    ->select('rc.id as rec_id', 'rc.description','rc.status','users.name','roles.role','rl.role as ap_role','rc.c_by as cr_by')
-                    ->orderBy('rc.id','desc')
-                    ->first();
-                break;
+                // case ('recruitment'||'Recruitment'):
+                //     $details = DB::table('recruitments as rc')
+                //         ->where('rc.id', $notification->type_id)
+                //         ->leftJoin('users', 'users.id', '=', 'rc.c_by')  // Correct LEFT JOIN
+                //         ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
+                //         ->leftJoin('roles as rl',function($join){
+                //                 $join->on('rl.id','=','rc.role');
+                //         })
+                //         ->select('rc.id as rec_id', 'rc.description','rc.status','users.name','roles.role','rl.role as ap_role','rc.c_by as cr_by')
+                //         ->orderBy('rc.id','desc')
+                //         ->first();
+                //     break;
 
             default:
                 Log::warning("Unknown notification type: " . $notification->noty_type);

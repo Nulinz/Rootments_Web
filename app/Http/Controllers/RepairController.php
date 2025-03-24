@@ -78,9 +78,11 @@ class RepairController extends Controller
 
                 $req_token  = DB::table('users')->where('id',$req->request_to)->first();
 
+                $store_name = DB::table('stores')->where('id',auth()->user()->store_id)->first();
+
                 if (!is_null($req_token->device_token)) {
                     $taskTitle ="Maintenance  Request";
-                    $taskBody = auth()->user()->name . "Request For Maintenance  Request";
+                    $taskBody = auth()->user()->name . " Request For Maintenance  Request" ." - ".$store_name->store_name;
 
                     $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 

@@ -64,7 +64,7 @@ class StoreSetupController extends Controller
 
         if (!is_null($req_token->device_token)) {
             $taskTitle ="Store Setup Request";
-            $taskBody = auth()->user()->name . "Requested for Store Setup";
+            $taskBody = auth()->user()->name . " Requested for Store Setup -". $req->storename;
 
             $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
@@ -131,8 +131,8 @@ class StoreSetupController extends Controller
 
 
                 if (!is_null($req_token->device_token)) {
-                    $taskTitle ="Store Setup Request";
-                    $taskBody = auth()->user()->name . "Store Setup Process End For ".$setup_table->st_name;
+                    $taskTitle ="Store Setup Completed";
+                    $taskBody = auth()->user()->name . " has Updated for Store Setup Process to Completed For ".$setup_table->st_name;
 
                     $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
@@ -175,8 +175,8 @@ class StoreSetupController extends Controller
 
 
         if (!is_null($req_token->device_token)) {
-            $taskTitle ="Store Setup Request";
-            $taskBody = auth()->user()->name . "Request Updated for ".$set_up->sub ." - ".$req->status;
+            $taskTitle ="Store Setup Update";
+            $taskBody = auth()->user()->name ." ".$req->status." for ".$set_up->sub;
 
             $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
