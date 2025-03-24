@@ -15,11 +15,12 @@ use Google\Service\FirebaseCloudMessaging;
 use Google\Service\FirebaseCloudMessaging\Message;
 use Google\Service\FirebaseCloudMessaging\Notification as FcmNotification;
 use Google\Service\FirebaseCloudMessaging\SendMessageRequest;
-
+use App\Http\Controllers\trait\common;
 
 
 class LeaveController extends Controller
 {
+    use common;
     /**
      * Display a listing of the resource.
      */
@@ -41,23 +42,20 @@ class LeaveController extends Controller
      */
     public function create()
     {
-        $ar = [3,4,5];
-
-        // dd(auth()->user());
-
-         if((auth()->user()->dept=='HR')){
-            $hr = DB::table('users')->whereIn('role_id', [1,2])->select('users.id','users.name')->get();
-         }else{
-            $hr = DB::table('users')->whereIn('role_id', [3,4,5])->select('users.id','users.name')->get();
-         }
-
-        //     $hr = DB::table('users')->whereIn('role_id', [3,4,5])->select('users.id','users.name')->get();
-        // }else{
-        //
-        // }
 
 
-        return view('leave.add',['hr_list'=>$hr]);
+        $show = $this->role_dept();
+
+        $list = DB::table('users')
+        ->whereIn('role_id', $show)
+        ->when($show == [12], function ($query) {
+            return $query->where('store_id', auth()->user()->store_id);
+        })
+        ->select('users.id', 'users.name')
+        ->get();
+
+
+        return view('leave.add',['list'=>$list]);
     }
 
     /**
@@ -83,75 +81,82 @@ class LeaveController extends Controller
             $leave->start_time = date("h:i",strtotime($request->start_time));
             $leave->end_time = date("h:i",strtotime($request->end_time));
             $leave->user_id = $user_id->id;
+            $leave->request_to = $request->request_to;
             $leave->created_by = $user_id->id;
+            $leave->save();
 
-            $role = $role_get->role;
-            $role_dept = $role_get->role_dept;
+            $req_token  = DB::table('users')->where('id',$request->request_to)->first();
 
-            if($user_id->role_id >= 13 && $user_id->role_id <= 19){
+                if (!is_null($req_token->device_token)) {
 
-            $store_man = DB::table('users')->where('store_id',$user_id->store_id)->where('role_id',12)->first();
-            $leave->request_to = $store_man->id ?? 2;
-            $req_to = $store_man->id ?? 2;
-            $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
-
-            }
-            else if(!hasAccess($user_id->role_id,'leave')){
-
-                $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->first();
-
-                switch($dept->role_dept) {
-                    // case 'HR':
-                    //     $arr = 3;
-                    //     break;
-                    case 'Finance':
-                        $arr = 7;
-                        break;
-                    case 'Maintenance':
-                        $arr = 30;
-                        break;
-                    case 'Warehouse':
-                        $arr = 37;
-                        break;
-                    case 'Purchase':
-                        $arr = 41;
-                        break;
-
-                }
-
-                $arr1 = DB::table('users')->where('role_id',$arr)->select('id')->first();
-
-                // dd($dept);
-
-                $leave->request_to = $arr1->id;
-                $req_to = $arr1->id;
-                $req_token  = DB::table('users')->where('id',$arr1->id)->first();
-
-                }
-                else{
-                        $leave->request_to = $request->request_to;
-                        $req_to = $request->request_to;
-                        $req_token  = DB::table('users')->where('id',$request->request_to)->first();
-                        // dd($req_token);
-                    }
-
-
-              $leave->save();
-
-
-
-              if (!is_null($req_token->device_token)) {
                     $taskTitle = $request->request_type."Request";
                     $taskBody = $user_id->name. "Requested for " . $request->request_type;
 
                     $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
                     Notification::create([
-                        'user_id' => $req_to ?? 0,
+                        'user_id' => $req_token->id,
                         'noty_type' => 'leave',
                         'type_id' => $leave->id
                     ]);
-            } // notification end
+                } // notification end
+
+
+            // $role = $role_get->role;
+            // $role_dept = $role_get->role_dept;
+
+            // if($user_id->role_id >= 13 && $user_id->role_id <= 19){
+
+            // $store_man = DB::table('users')->where('store_id',$user_id->store_id)->where('role_id',12)->first();
+            // $leave->request_to = $store_man->id ?? 2;
+            // $req_to = $store_man->id ?? 2;
+            // $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
+
+            // }
+            // else if(!hasAccess($user_id->role_id,'leave')){
+
+            //     $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->first();
+
+            //     switch($dept->role_dept) {
+            //         // case 'HR':
+            //         //     $arr = 3;
+            //         //     break;
+            //         case 'Finance':
+            //             $arr = 7;
+            //             break;
+            //         case 'Maintenance':
+            //             $arr = 30;
+            //             break;
+            //         case 'Warehouse':
+            //             $arr = 37;
+            //             break;
+            //         case 'Purchase':
+            //             $arr = 41;
+            //             break;
+
+            //     }
+
+            //     $arr1 = DB::table('users')->where('role_id',$arr)->select('id')->first();
+
+            //     // dd($dept);
+
+            //     $leave->request_to = $arr1->id;
+            //     $req_to = $arr1->id;
+            //     $req_token  = DB::table('users')->where('id',$arr1->id)->first();
+
+            //     }
+            //     else{
+            //             $leave->request_to = $request->request_to;
+            //             $req_to = $request->request_to;
+            //             $req_token  = DB::table('users')->where('id',$request->request_to)->first();
+            //             // dd($req_token);
+            //         }
+
+
+
+
+
+
 
 
 

@@ -36,7 +36,7 @@ class StoreSetupController extends Controller
 
         // }
 
-        // dd($set_list);
+        //  dd($pro);
 
         return view('setup.profile',['tab'=>$tab,'pro'=> $pro,'list'=>$set_list]);
     }

@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Pincode</h6>
-                                    <h5 class="mb-0">{{ $pro->st_pin }}063</h5>
+                                    <h5 class="mb-0">{{ $pro->st_pin }}</h5>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Geolocation</h6>

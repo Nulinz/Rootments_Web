@@ -178,7 +178,65 @@ trait common
 
         return $arr;
     }
-}
 
+
+
+    // return dept for leave create request
+
+    public function role_dept()
+    {
+    // \Log::info($message);
+    $user = Auth::user();
+    $r_dept = $user->dept;
+    $r_id = $user->role_id;
+
+    // $cluster_check = DB::table('m_cluster as mc')
+    // ->leftJoin('users','users.id','=','mc.cl_name')
+    // ->where('mc.cl_name','=',$user->id)
+    // ->where('users.role_id',12)
+    // ->count();
+
+    switch($r_dept) {
+        case ($r_dept=='HR'):
+            $arr = [1,2];
+            break;
+        case ($r_dept=='Operation'):
+            $arr = [3,4,5];
+            break;
+        case ($r_dept=='Finance'):
+            $arr = ($r_id == 7) ? [3, 4, 5] : [7];
+            break;
+        case ($r_dept=='IT'):
+            $arr = [3,4,5];
+            break;
+        case ($r_dept=='Sales/Marketing'):
+            $arr = [3,4,5];
+            break;
+        case ($r_dept=='Area'):
+            $arr = [3,4,5];
+            break;
+        case ($r_dept=='Cluster'):
+            $arr = [3,4,5];
+            break;
+        case ($r_dept=='Store'):
+            $arr = ($r_id == 12) ? [3, 4, 5] : [12];
+            break;
+        case ($r_dept=='Maintenance'):
+            $arr = ($r_id == 30) ? [3, 4, 5] : [30];
+            break;
+        case ($r_dept=='Warehouse'):
+            $arr = ($r_id == 37) ? [3, 4, 5] : [37];
+            break;
+        case ($r_dept=='Purchase'):
+            $arr = ($r_id == 41) ? [3, 4, 5] : [41];
+            break;
+    }
+
+
+        return $arr;
+    }
+
+
+}
 
 ?>
