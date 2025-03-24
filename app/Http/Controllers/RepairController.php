@@ -101,7 +101,7 @@ class RepairController extends Controller
         ->get();
 
         if($ins){
-            return response()->view('repair.list',['rep'=> $rep,'status'=>'sucess','message'=>'Maintenance Request added Successfully']);
+            return response()->view('repair.list',['rep'=> $rep,'status'=>'success','message'=>'Maintenance Request added Successfully']);
         }else{
             return response()->view('repair.list',['rep'=> $rep,'status'=>'Failed','message'=>'Maintenance Request Failed to add']);
         }

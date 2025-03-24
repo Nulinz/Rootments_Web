@@ -156,7 +156,7 @@
                                                     {{-- @endif --}}
                                                     <div>
                                                         <h5 class="mb-0">{{ $hr->name }}</h5>
-                                                        <h6 class="mb-0">{{ $data->in_location ?? 'No location' }}</h6>
+                                                        <h6 class="mb-0">{{ $hr->in_location ?? 'No location' }}</h6>
                                                     </div>
                                                 </div>
                                             </td>

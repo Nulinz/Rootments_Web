@@ -90,6 +90,11 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
        Route::post('/tasks_show', 'mobile_cnt@create_task_show')->name('tasks_show');
 
 
+            // leave request persons.....
+
+       Route::post('leave_req', 'mobile_cnt@leave_req')->name('leave_req');
+
+
     });
 
               //post method HR
