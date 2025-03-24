@@ -89,7 +89,10 @@ class RepairController extends Controller
                     Notification::create([
                         'user_id' => $req_token->id ?? 0,
                         'noty_type' => 'Maintenance',
-                        'type_id' => $ins
+                        'type_id' => $ins,
+                        'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>auth()->user()->id
                     ]);
                 } // notification end
 

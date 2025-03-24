@@ -71,7 +71,10 @@ class StoreSetupController extends Controller
             Notification::create([
                 'user_id' => $req_token->id ?? 0,
                 'noty_type' => 'Store Setup',
-                'type_id' => $ins
+                'type_id' => $ins,
+                'title'=> $taskTitle,
+                'body'=> $taskBody,
+                'c_by'=>$user->id
             ]);
          } // notification end
 
@@ -139,7 +142,10 @@ class StoreSetupController extends Controller
                     Notification::create([
                         'user_id' => $req_token->id ?? 0,
                         'noty_type' => 'Store Setup',
-                        'type_id' => $req->set_id
+                        'type_id' => $req->set_id,
+                        'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>$user->id
                     ]);
                 } // notification end
 
@@ -183,7 +189,10 @@ class StoreSetupController extends Controller
             Notification::create([
                 'user_id' => $req_token->id ?? 0,
                 'noty_type' => 'E_store',
-                'type_id' => $req->e_id
+                'type_id' => $req->e_id,
+                'title'=> $taskTitle,
+                'body'=> $taskBody,
+                'c_by'=>auth()->user()->id
             ]);
          } // notification end
 

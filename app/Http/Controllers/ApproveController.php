@@ -290,7 +290,10 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                             Notification::create([
                                 'user_id' => $req_token->id,
                                 'noty_type' => 'leave',
-                                'type_id' => $request->id
+                                'type_id' => $request->id,
+                                'title'=> $taskTitle,
+                                'body'=> $taskBody,
+                                'c_by'=>$user_id->id
                             ]);
                     } // notification end
                 } // foreach end
@@ -325,7 +328,10 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                    Notification::create([
                        'user_id' => $status->created_by,
                        'noty_type' => 'leave',
-                       'type_id' => $request->id
+                       'type_id' => $request->id,
+                       'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>$user_id->id
                    ]);
                 } // notification end
 
@@ -379,7 +385,10 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                         Notification::create([
                             'user_id' =>  $two_token->id,
                             'noty_type' => 'Maintenance',
-                            'type_id' => $request->rep_id
+                            'type_id' => $request->rep_id,
+                            'title'=> $taskTitle,
+                            'body'=> $taskBody,
+                            'c_by'=>auth()->user()->id
                         ]);
                 } // notification end
 
@@ -418,7 +427,10 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                Notification::create([
                    'user_id' => $status->c_by,
                    'noty_type' => 'Maintenance',
-                   'type_id' => $request->rep_id
+                   'type_id' => $request->rep_id,
+                   'title'=> $taskTitle,
+                    'body'=> $taskBody,
+                    'c_by'=>auth()->user()->id
                ]);
        } // notification end
 

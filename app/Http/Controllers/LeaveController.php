@@ -100,7 +100,10 @@ class LeaveController extends Controller
                     Notification::create([
                         'user_id' => $req_token->id,
                         'noty_type' => 'leave',
-                        'type_id' => $leave->id
+                        'type_id' => $leave->id,
+                        'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>$user_id->id
                     ]);
                 } // notification end
 

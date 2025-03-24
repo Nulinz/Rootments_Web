@@ -382,55 +382,6 @@ class mobile_cnt extends Controller
             $leave->request_to = $request->request_to;
             $leave->save();
 
-            // if($user_id->role_id >= 13 && $user_id->role_id <= 19){
-
-            // $store_man = DB::table('users')->where('store_id',$user_id->store_id)->where('role_id',12)->first();
-            //         $leave->request_to = $store_man->id ?? 2;
-            //         $req_to = $store_man->id ?? 2;
-            //         $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
-            // }
-
-            // else if(!hasAccess($user_id->role_id,'leave')){
-
-            //    $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->first();
-
-            //    switch($dept->role_dept) {
-            //         case 'HR':
-            //         $arr = 3;
-            //         break;
-            //        case 'Finance':
-            //            $arr = 7;
-            //            break;
-            //        case 'Maintenance':
-            //            $arr = 30;
-            //            break;
-            //        case 'Warehouse':
-            //            $arr = 37;
-            //            break;
-            //        case 'Purchase':
-            //            $arr = 41;
-            //            break;
-
-            //    }
-
-            //    $arr1 = DB::table('users')->where('role_id',$arr)->select('id')->first();
-
-            //    // dd($dept);
-
-            //    $leave->request_to = $arr1->id;
-            //    $req_to = $arr1->id;
-            //    $req_token  = DB::table('users')->where('id',$arr1->id)->first();
-
-            //    }
-
-
-
-            // else{
-
-            //     $leave->request_to = $request->request_to;
-            //     $req_to = $request->request_to;
-            //     $req_token  = DB::table('users')->where('id',$request->request_to)->first();
-            // }
 
 
             $req_token  = DB::table('users')->where('id',$request->request_to)->first();
@@ -443,9 +394,12 @@ class mobile_cnt extends Controller
                     $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
                     Notification::create([
-                        'user_id' => $req_to ?? 0,
+                        'user_id' => $request->request_to,
                         'noty_type' => 'leave',
-                        'type_id' => $leave->id
+                        'type_id' => $leave->id,
+                        'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>$user_id->id
                     ]);
             } // notification end
 
@@ -465,33 +419,7 @@ class mobile_cnt extends Controller
         ]);
     }
 
-    public function leave_req()
-    {
-        try {
-                // Fetch the HR data from the database
-                $show = $this->role_dept();
 
-                $list = DB::table('users')
-                ->whereIn('role_id', $show)
-                ->when($show == [12], function ($query) {
-                    return $query->where('store_id', auth()->user()->store_id);
-                })
-                ->select('users.id', 'users.name')
-                ->get();
-                // Return the data in a successful response
-                return response()->json([
-                    'status' => 'Success',
-                    'data' => $list
-                ]);
-            } catch (\Exception $e) {
-                // If an error occurs, return the error message in the response
-                return response()->json([
-                    'status' => 'Error',
-                    'message' => $e->getMessage(),
-                    'error' => $e->getTraceAsString() // optional, shows the stack trace
-                ], 500); // 500 is the status code for internal server error
-            }
-    }
 
 
 
@@ -614,6 +542,99 @@ class mobile_cnt extends Controller
             ]
 
         ]);
+    }
+
+    public function leave_req(Request $req)
+    {
+        // try {
+                // Fetch the HR data from the database
+                //  $show = $this->role_dept();
+
+                //  $user = Auth::user();
+                 // Fetch user from database
+        $user = DB::table('users')->where('id', $req->user_id)->first();
+
+        // Check if the user exists before continuing
+        if (!$user) {
+            return response()->json([
+                'status' => 'Failed',
+                'message' => 'User not found',
+            ], 404);
+        }
+
+        $r_dept = $user->dept;
+        $r_id = $user->role_id;
+
+        // Initialize the $arr variable
+        $arr = [];
+
+        // Simplify the switch statement
+        switch($r_dept) {
+            case 'HR':
+                $arr = [1, 2];
+                break;
+            case 'Operation':
+                $arr = [3, 4, 5];
+                break;
+            case 'Finance':
+                $arr = ($r_id == 7) ? [3, 4, 5] : [7];
+                break;
+            case 'IT':
+                $arr = [3, 4, 5];
+                break;
+            case 'Sales/Marketing':
+                $arr = [3, 4, 5];
+                break;
+            case 'Area':
+                $arr = [3, 4, 5];
+                break;
+            case 'Cluster':
+                $arr = [3, 4, 5];
+                break;
+            case 'Store':
+                $arr = ($r_id == 12) ? [3, 4, 5] : [12];
+                break;
+            case 'Maintenance':
+                $arr = ($r_id == 30) ? [3, 4, 5] : [30];
+                break;
+            case 'Warehouse':
+                $arr = ($r_id == 37) ? [3, 4, 5] : [37];
+                break;
+            case 'Purchase':
+                $arr = ($r_id == 41) ? [3, 4, 5] : [41];
+                break;
+            default:
+                // If no department matched, return an error
+                return response()->json([
+                    'status' => 'Failed',
+                    'message' => 'Invalid department',
+                ], 400);
+        }
+
+            // Query the users table based on the roles
+            $list = DB::table('users')
+                ->whereIn('role_id', $arr)
+                ->when($arr == [12], function ($query) use ($user) {
+                    return $query->where('store_id', $user->store_id);
+                })
+                ->select('users.id', 'users.name')
+                ->get();
+
+            // Return the data in a successful response
+            if ($list->isNotEmpty()) {
+                return response()->json([
+                    'status' => 'Success',
+                    'data' => $list
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'Failed',
+                    'data' => null
+                ], 500);
+            }
+
+
+
     }
 
 
