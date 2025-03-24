@@ -42,6 +42,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('gm-dashboard', 'GMController@index')->name('gm.dashboard');
         Route::get('gm-mydashboard', 'GMController@mydashboard')->name('gm.mydashboard');
 
+        // Operational Dashboard
+        Route::get('operation-dashboard', 'OperationController@index')->name('operation.dashboard');
+        Route::get('operation-mydashboard', 'OperationController@mydashboard')->name('operation.mydashboard');
+
         // HR Dashboard
         Route::get('hr-dashboard', 'HrDashBoardController@index')->name('hr.dashboard');
         Route::get('hr-mydashboard', 'HrDashBoardController@mydashboard')->name('hr.mydashboard');
