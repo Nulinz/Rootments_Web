@@ -377,9 +377,11 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
             $two_not = DB::table('users')->whereIn('id',[$c_by->c_by,$req_token->id])->get();
 
+            $st_name = DB::table('stores')->where('id',$two_not->store_id)->first();
+
             foreach($two_not  as $two_token){
 
-                        $st_name = DB::table('stores')->where('id',$two_token->store_id)->first();
+
 
                     if (!is_null($two_token->device_token)) {
 
