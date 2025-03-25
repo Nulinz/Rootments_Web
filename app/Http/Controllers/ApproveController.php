@@ -445,7 +445,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
                Notification::create([
                    'user_id' => $status->c_by,
-                   'noty_type' => 'Store Maintenance Update',
+                   'noty_type' => 'Maintenance',
                    'type_id' => $request->rep_id,
                    'title'=> $taskTitle,
                     'body'=> $taskBody,
@@ -492,27 +492,36 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                 'request_status'=>$request->status,
                 'status'=>$request->status
             ]);
-                $req_token  = DB::table('users')->where('id',$request->hr)->first();
 
-                if ($req_token->device_token) {
+            $res_cby = DB::table('resignations')->where('id',$request->id)->first();
 
-                    $role_get = DB::table('roles')->where('id', $user_id->role_id)->first();
+                 $req_token_lt  = DB::table('users')->whereIn('id',[$request->hr,$res_cby->created_by])->get();
 
-                    $taskTitle = "Resignation Request";
+                // dd($req_token_lt);
 
-                    $taskBody = $user_id->name."[".$role_get->role."] Esculated for Resignation";
 
-                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+            foreach($req_token_lt as $req_token){
 
-                    Notification::create([
-                        'user_id' => $request->hr,
-                        'noty_type' => 'resignation',
-                        'type_id' => $request->id,
-                        'title'=> $taskTitle,
-                        'body'=> $taskBody,
-                        'c_by'=>auth()->user()->id
-                    ]);
-            } // notification end
+                    if (!is_null($req_token->device_token)) {
+
+                        $role_get = DB::table('roles')->where('id', $user_id->role_id)->first();
+
+                        $taskTitle = "Resignation Request";
+
+                        $taskBody = $user_id->name."[".$role_get->role."] Esculated for Resignation";
+
+                        $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                        Notification::create([
+                            'user_id' => $req_token->id,
+                            'noty_type' => 'resignation',
+                            'type_id' => $request->id,
+                            'title'=> $taskTitle,
+                            'body'=> $taskBody,
+                            'c_by'=>auth()->user()->id
+                        ]);
+                } // notification end
+            }
 
             // dd($req_token->device_token);
         }else{
@@ -617,7 +626,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
                     Notification::create([
                         'user_id' => $req_token->id,
-                        'noty_type' => 'recuriment',
+                        'noty_type' => 'recruitment',
                         'type_id' => $request->RecruitId,
                         'title'=> $taskTitle,
                         'body'=> $taskBody,

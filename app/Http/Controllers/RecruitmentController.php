@@ -115,9 +115,14 @@ class RecruitmentController extends Controller
                 $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
 
 
+                $role_data = DB::table('roles')->where('id', $ap_role)->first();
+
+
+
+
                 $taskTitle = "Recruitment Request";
 
-                $taskBody = $user->name."[".$role_get->role."]". " Requested for Recruitment -".$ap_role;
+                $taskBody = $user->name."[".$role_get->role."]". " Requested for Recruitment -".$role_data->role;
 
                 $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 

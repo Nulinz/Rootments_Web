@@ -128,24 +128,30 @@ class RecruitController extends Controller
 
             $rec_post = DB::table('recruitments')->where('id',$job_post->rec_id)->first();
 
-            $req_token  = DB::table('users')->where('id',$rec_post->c_by)->first();
+            $hr_asst = DB::table('users')->where('role_id',5)->first();
 
-            if ($req_token->device_token) {
-                $taskTitle = "Recruitment Request Status";
+            $req_token_lt  = DB::table('users')->whereIn('id',[$rec_post->c_by,$hr_asst->id])->get();
 
-                $taskBody = "REC".$rec_post->id." Job Post has ".$req->status;
+            foreach($req_token_lt as $req_token){
 
-                $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+                    if (!is_null($req_token->device_token)) {
+                        $taskTitle = "Recruitment Request Status";
 
-                Notification::create([
-                    'user_id' => $rec_post->c_by,
-                    'noty_type' => 'recruitment',
-                    'type_id' => $req->job_id,
-                    'title'=> $taskTitle,
-                    'body'=> $taskBody,
-                    'c_by'=>$user->id
-                ]);
-        } // notification end
+                        $taskBody = "REC".$rec_post->id." Job Post has ".$req->status;
+
+                        $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                        Notification::create([
+                            'user_id' => $req_token->id,
+                            'noty_type' => 'recruitment',
+                            'type_id' => $req->job_id,
+                            'title'=> $taskTitle,
+                            'body'=> $taskBody,
+                            'c_by'=>$user->id
+                        ]);
+                } // notification end
+
+            } // end foreach.....
 
 
             return back()->with(['status'=>'success','message' => 'JobPost updated successfully!','list'=>$job]);
