@@ -224,8 +224,12 @@ class TaskController extends Controller
                 $user_assign = User::findOrFail($assignTo);
 
                 if ($user_assign->device_token) {
-                    $taskTitle = $request->task_title;
-                    $taskBody = "You have been assigned a new task: " . $taskTitle;
+
+                    $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+                    $taskTitle = "New Task Assigned";
+                    $taskBody = "You have been assigned a new task: " . $taskTitle." by ".auth()->user()->name."[".$role_get->role."]";
+
 
                     $response = app(FirebaseService::class)->sendNotification(
                         $user_assign->device_token,
@@ -314,8 +318,12 @@ public function completedtaskstore(Request $request)
                 $user = User::findOrFail($assignTo);
 
                 if ($user->device_token) {
-                    $taskTitle = $request->task_title;
-                    $taskBody = "You have been assigned a new task: " . $taskTitle;
+
+                    $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+                    $taskTitle = "New Task Assigned";
+                    $taskBody = "You have been assigned a new task: " . $taskTitle." by ".auth()->user()->name."[".$role_get->role."]";
+
 
                     $response = app(FirebaseService::class)->sendNotification(
                         $user->device_token,

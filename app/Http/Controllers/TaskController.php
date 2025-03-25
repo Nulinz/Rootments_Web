@@ -436,9 +436,12 @@ public function store(Request $request)
         try {
             $user = User::find($assignTo);
 
+            $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
             if ($user && $user->device_token) {
-                $taskTitle = $request->task_title;
-                $taskBody = "You have been assigned a new task: " . $taskTitle;
+
+                $taskTitle = "New Task Assigned";
+                $taskBody = "You have been assigned a new task: " . $taskTitle." by ".auth()->user()->name."[".$role_get->role."]";
 
                 $response = app(FirebaseService::class)->sendNotification(
                     $user->device_token,
@@ -541,8 +544,12 @@ public function completedtaskstore(Request $request)
 
         $user = User::find($assignTo);
         if ($user && $user->device_token) {
-            $taskTitle = $request->task_title;
-            $taskBody = "You have been assigned a new task: " . $taskTitle;
+
+                $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+                $taskTitle = "New Task Assigned";
+                $taskBody = "You have been assigned a new task: " . $taskTitle." by ".auth()->user()->name."[".$role_get->role."]";
+
 
             $response = app(FirebaseService::class)->sendNotification(
                 $user->device_token,
