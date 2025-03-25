@@ -506,7 +506,10 @@ class mobile_cnt extends Controller
                     Notification::create([
                         'user_id' => $req_to,
                         'noty_type' => 'resignation',
-                        'type_id' => $resgination->id
+                        'type_id' => $resgination->id,
+                        'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>auth()->user()->id
                     ]);
             } // notification end
 

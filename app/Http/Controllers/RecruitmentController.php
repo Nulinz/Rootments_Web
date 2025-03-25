@@ -115,9 +115,12 @@ class RecruitmentController extends Controller
                 $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
                 Notification::create([
-                    'user_id' => 2,
+                    'user_id' => $req_token->id,
                     'noty_type' => 'recruitment',
-                    'type_id' => $recruitment_id
+                    'type_id' => $recruitment_id,
+                    'title'=> $taskTitle,
+                    'body'=> $taskBody,
+                    'c_by'=>auth()->user()->id
                 ]);
         } // notification end
 

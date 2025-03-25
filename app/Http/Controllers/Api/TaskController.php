@@ -235,7 +235,10 @@ class TaskController extends Controller
                     Notification::create([
                         'user_id' => $assignTo,
                         'noty_type' => 'task',
-                        'type_id' => $task->id
+                        'type_id' => $task->id,
+                        'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>auth()->user()->id
                     ]);
 
                     $notifications[] = [
@@ -578,7 +581,7 @@ public function notification_list(Request $request)
      $notifications = DB::table('notifications')
 
         ->where('user_id', $user)
-        //  ->whereIn('noty_type',['leave','task','resignation','recruitment', 'Recruitment','leave','Store Setup','Maintenance','E_store'])
+        //  ->whereIn('noty_type',['task','resignation','recruitment', 'Recruitment','leave','Store Setup','Maintenance','E_store'])
         ->whereIn('noty_type',['leave','Store Setup','Maintenance','E_store'])
         ->select('id', 'user_id', 'noty_type', 'type_id', 'created_at','title','body')
         ->OrderBy('id','DESC')

@@ -484,7 +484,10 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                     Notification::create([
                         'user_id' => $request->hr,
                         'noty_type' => 'resignation',
-                        'type_id' => $request->id
+                        'type_id' => $request->id,
+                        'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>auth()->user()->id
                     ]);
             } // notification end
 
@@ -518,7 +521,10 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                 Notification::create([
                     'user_id' => $status->emp_id,
                     'noty_type' => 'resignation',
-                    'type_id' => $request->id
+                    'type_id' => $request->id,
+                    'title'=> $taskTitle,
+                    'body'=> $taskBody,
+                    'c_by'=>auth()->user()->id
                 ]);
         } // notification end
 
@@ -548,11 +554,15 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
                 $recruit->save();
 
-                // $notification = Notification::create([
+                //  Notification::create([
                 //             'user_id' => $recruit->c_by,
                 //             'noty_type' => 'recuriment',
                 //             'type_id' => $request->id,
+                //             'title'=> $taskTitle,
+                //             'body'=> $taskBody,
+                //             'c_by'=>auth()->user()->id
                 //         ]);
+
 
             return response()->json(['message' => 'Recruitment updated successfully!'], 200);
         } catch (\Exception $e) {
