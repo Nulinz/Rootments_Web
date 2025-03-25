@@ -555,6 +555,9 @@ public function completedtaskstore(Request $request)
                             'user_id' => $assignTo,
                             'noty_type' => 'task',
                             'type_id' => $task->id,
+                            'title'=> $taskTitle,
+                            'body'=> $taskBody,
+                            'c_by'=>auth()->user()->id
                         ]);
         }
     } catch (\Exception $e) {

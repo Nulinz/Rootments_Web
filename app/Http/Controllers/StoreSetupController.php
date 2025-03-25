@@ -63,8 +63,13 @@ class StoreSetupController extends Controller
         foreach($for_token as $req_token){
 
         if (!is_null($req_token->device_token)) {
+
             $taskTitle ="Store Setup Request";
-            $taskBody = auth()->user()->name . " Requested for Store Setup -". $req->storename;
+
+            $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+
+            $taskBody = "New Store Setup has created by ".auth()->user()->name."[".$role_get->role."] - ". $req->storename;
 
             $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
@@ -134,8 +139,9 @@ class StoreSetupController extends Controller
 
 
                 if (!is_null($req_token->device_token)) {
+
                     $taskTitle ="Store Setup Completed";
-                    $taskBody = auth()->user()->name . " has Updated for Store Setup Process to Completed For ".$setup_table->st_name;
+                    $taskBody = $setup_table->st_name." Store Setup Process Completed ";
 
                     $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
@@ -177,12 +183,14 @@ class StoreSetupController extends Controller
 
         $set_up = DB::table('e_setup')->where('id',$req->e_id)->first();
 
+        $st_name1 = DB::table('set_up')->where('id',$set_up->set_id)->first();
+
         $req_token  = DB::table('users')->where('role_id',[30])->first();
 
 
         if (!is_null($req_token->device_token)) {
             $taskTitle ="Store Setup Update";
-            $taskBody = auth()->user()->name ." ".$req->status." for ".$set_up->sub;
+            $taskBody = $st_name1->st_name."-".$set_up->sub." has ".$req->status." by GM/AGM";
 
             $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 

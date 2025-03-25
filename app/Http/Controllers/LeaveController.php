@@ -92,8 +92,9 @@ class LeaveController extends Controller
 
                 if (!is_null($req_token->device_token)) {
 
-                    $taskTitle = $request->request_type."Request";
-                    $taskBody = $user_id->name. "Requested for " . $request->request_type;
+                    $role_get = DB::table('roles')->where('id', $user_id->role_id)->first();
+                    $taskTitle = $request->request_type." Request";
+                    $taskBody = $user_id->name."[".$role_get->role."]". " Requested for " . $request->request_type;
 
                     $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 

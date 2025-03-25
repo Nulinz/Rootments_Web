@@ -282,8 +282,10 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                 foreach($leave_token as $req_token){
 
                     if (!is_null($req_token->device_token)) {
+
+                        $role_get = DB::table('roles')->where('id', $user_id->role_id)->first();
                             $taskTitle = "Leave Request";
-                            $taskBody = $user_id->name. " Leave Request Updated to".$request->status ;
+                            $taskBody = $user_id->name."[".$role_get->role."] Leave Request Updated to".$request->status ;
 
                             $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
@@ -320,8 +322,9 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
 
                 if ($req_token->device_token) {
+                    $role_get = DB::table('roles')->where('id', $user_id->role_id)->first();
                     $taskTitle = "Leave Request";
-                   $taskBody = $user_id->name. " Leave Request Updated to".$request->status ;
+                   $taskBody =$user_id->name."[".$role_get->role."] Leave Request Updated to".$request->status ;
 
                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
@@ -376,9 +379,15 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
             foreach($two_not  as $two_token){
 
+                        $st_name = DB::table('stores')->where('id',$two_token->store_id)->first();
+
                     if (!is_null($two_token->device_token)) {
-                            $taskTitle = "Maintenance Request";
-                        $taskBody = auth()->user()->name . " Maintenance Request Updated to".$request->status ;
+
+                        $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+                        $taskTitle = "Store Maintenance Update";
+
+                        $taskBody = $st_name->store_name." Maintenance Request has been ".$request->status."by".auth()->user()->name ."[".$role_get->role."]";
 
                         $response = app(FirebaseService::class)->sendNotification($two_token->device_token,$taskTitle,$taskBody);
 
@@ -419,14 +428,20 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
 
             if (!is_null($req_token->device_token)) {
+
+                $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+                $st_name = DB::table('stores')->where('id',$req_token->store_id)->first();
+
                 $taskTitle = "Maintenance Request";
-               $taskBody = auth()->user()->name. " Maintenance Request Updated to".$request->status ;
+
+                $taskBody = $st_name->store_name." Maintenance Request has been ".$request->status."by".auth()->user()->name ."[".$role_get->role."]";
 
                $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
                Notification::create([
                    'user_id' => $status->c_by,
-                   'noty_type' => 'Maintenance',
+                   'noty_type' => 'Store Maintenance Update',
                    'type_id' => $request->rep_id,
                    'title'=> $taskTitle,
                     'body'=> $taskBody,
@@ -476,8 +491,12 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                 $req_token  = DB::table('users')->where('id',$request->hr)->first();
 
                 if ($req_token->device_token) {
+
+                    $role_get = DB::table('roles')->where('id', $user_id->role_id)->first();
+
                     $taskTitle = "Resignation Request";
-                    $taskBody = $user_id->name. "Esculated for Resignation";
+
+                    $taskBody = $user_id->name."[".$role_get->role."] Esculated for Resignation";
 
                     $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
@@ -513,8 +532,12 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
             $req_token  = DB::table('users')->where('id',$status->emp_id)->first();
 
             if ($req_token->device_token) {
+
+                $role_get = DB::table('roles')->where('id', $user_id->role_id)->first();
+
                 $taskTitle = "Resignation Request";
-                $taskBody = $user_id->name ."-" .$request->status . " for Resignation";
+
+                $taskBody = $user_id->name ."[".$role_get->role."]"."-" .$request->status . " for Resignation";
 
                 $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
@@ -562,6 +585,43 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                 //             'body'=> $taskBody,
                 //             'c_by'=>auth()->user()->id
                 //         ]);
+
+                $hr_asst =  DB::table('users')->where('role_id',5)->first();
+
+                $for_token  = DB::table('users')->whereIn('id',[$recruit->c_by,$hr_asst->id])->get();
+
+                foreach($for_token as $req_token){
+
+                if (!is_null($req_token->device_token)) {
+
+                    $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+                    if($req_token->dept=='HR'){
+
+                        $taskTitle ="Recruitment Request Status";
+                        $taskBody = "Kindly Prepare the Job post for Recruitment -REC".$request->RecruitId;
+
+                    }else{
+
+                        $taskTitle ="Recruitment Request Status";
+                        $taskBody = "Your Recruitment Request has been ".$request->status." by ".auth()->user()->name."[".$role_get->role."]";
+
+                    }
+
+
+                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                    Notification::create([
+                        'user_id' => $req_token->id,
+                        'noty_type' => 'recuriment',
+                        'type_id' => $request->RecruitId,
+                        'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>$user->id
+                    ]);
+                 } // notification end
+
+            } // foreach end....
 
 
             return response()->json(['message' => 'Recruitment updated successfully!'], 200);

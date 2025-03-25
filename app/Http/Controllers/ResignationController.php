@@ -169,15 +169,21 @@ class ResignationController extends Controller
 
 
             if ($req_token->device_token) {
+                $role_get = DB::table('roles')->where('id', $user_id->role_id)->first();
+
                     $taskTitle = "Resignation Request";
-                    $taskBody = $user_id->name. "Requested for Resignation";
+
+                    $taskBody = $user_id->name."[".$role_get->role."] Requested for Resignation";
 
                     $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
                     Notification::create([
                         'user_id' => $req_to,
                         'noty_type' => 'resignation',
-                        'type_id' => $resgination->id
+                        'type_id' => $resgination->id,
+                        'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>auth()->user()->id
                     ]);
             } // notification end
 
