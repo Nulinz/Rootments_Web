@@ -24,7 +24,7 @@
                                         <th>Store Code</th>
                                         <th>Store Name</th>
                                         <th>Location</th>
-                                        <th>Status</th>
+                                        {{-- <th>Status</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -33,7 +33,7 @@
                                             <td>{{$cl->store_code}}</td>
                                             <td>{{$cl->store_name}}</td>
                                             <td>{{$cl->store_geo}}</td>
-                                            <td>{{$cl->st_name ?? 'no name'}}</td>
+                                            {{-- <td>{{$cl->st_name ?? 'no name'}}</td> --}}
                                         </tr>
                                     @endforeach
 

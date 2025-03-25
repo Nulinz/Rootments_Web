@@ -245,7 +245,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('area-edit', 'AreaController@edit')->name('area.edit');
         Route::get('area-overview', 'AreaController@area_overview')->name('area.dashboard');
         Route::get('area-mydashboard', 'AreaController@area_mydashboard')->name('area.mydashboard');
-        Route::get('area-kpidashboard', 'AreaController@area_kpi')->name('area.kpidashboard');
+        Route::get('area-kpidashboard', 'AreaController@area_kpi')->name('area.kpidashboard'); 
 
         // Work Update
         Route::get('abstract-list', 'WorkUpdateController@abstractlist')->name('workupdate.abstract-list');
