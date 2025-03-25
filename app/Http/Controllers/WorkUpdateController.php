@@ -33,7 +33,7 @@ class WorkUpdateController extends Controller
     ->whereYear('wu.created_at', date('Y'))  // Optional: Filtering for current year
     ->get();
 
-           dd($list);
+        //    dd($list);
 
 
         return view('workupdate.abstract-list',['list'=>$list]);
