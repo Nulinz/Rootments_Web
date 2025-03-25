@@ -11,16 +11,29 @@ class WorkUpdateController extends Controller
 {
     public function abstractlist()
     {
-        $list = DB::table('work_update as wp')
-        ->join('stores as s', 'wp.store_id', '=', 's.id')  // Assuming 'store_id' is the column in wp to reference store.
-        ->whereMonth('wp.created_at', date("m"))
-        ->whereYear('wp.created_at', date("Y"))  // Optional, to get rows only from this year.
-        ->select('wp.*','s.store_name','s.store_code')
-        ->groupBy('s.id')  // Grouping by store
-        ->orderBy('wp.created_at', 'DESC')  // Get the latest
-        ->get();
+        // $list = DB::table('work_update as wp')
+        // ->join('stores as s', 'wp.store_id', '=', 's.id')  // Assuming 'store_id' is the column in wp to reference store.
+        // ->whereMonth('wp.created_at', date("m"))
+        // ->whereYear('wp.created_at', date("Y"))  // Optional, to get rows only from this year.
+        // ->select('wp.*','s.store_name','s.store_code')
+        // ->groupBy('s.id')  // Grouping by store
+        // ->orderBy('wp.created_at', 'DESC')  // Get the latest
+        // ->get();
 
-        // dd($list);
+        $list = DB::table('work_update as wu')
+    ->join(
+        DB::raw('(SELECT store_id, MAX(created_at) AS latest_created_at FROM work_update GROUP BY store_id) AS latest'),
+        function($join) {
+            $join->on('wu.store_id', '=', 'latest.store_id')
+                 ->on('wu.created_at', '=', 'latest.latest_created_at');
+        })
+    ->join('stores as s', 'wu.store_id', '=', 's.id') // Joining the store table
+    ->select('wu.*', 's.store_name', 's.store_code')  // Selecting required fields
+    ->whereMonth('wu.created_at', date('m')) // Filtering for current month
+    ->whereYear('wu.created_at', date('Y'))  // Optional: Filtering for current year
+    ->get();
+
+           dd($list);
 
 
         return view('workupdate.abstract-list',['list'=>$list]);
