@@ -377,7 +377,9 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
             $two_not = DB::table('users')->whereIn('id',[$c_by->c_by,$req_token->id])->get();
 
-            $st_name = DB::table('stores')->where('id',$two_not->store_id)->first();
+            $st_det = DB::table('users')->where('users.id',$c_by->c_by)
+                        ->leftJoin('stores','stores.id','=','users.store_id')
+                        ->first();
 
             foreach($two_not  as $two_token){
 
@@ -389,7 +391,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
                         $taskTitle = "Store Maintenance Update";
 
-                        $taskBody = $st_name->store_name." Maintenance Request has been ".$request->status."by".auth()->user()->name ."[".$role_get->role."]";
+                        $taskBody = $st_det->store_name." Maintenance Request has been ".$request->status."by".auth()->user()->name ."[".$role_get->role."]";
 
                         $response = app(FirebaseService::class)->sendNotification($two_token->device_token,$taskTitle,$taskBody);
 
