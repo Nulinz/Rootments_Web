@@ -35,24 +35,24 @@
                             <option value="Sick Leave">Sick Leave</option>
                         </select>
                     </div>
-                    @php
+                    {{-- @php
                         $user = auth()->user();
                         $role = $user->role_id;
 
                         // echo $role;
 
                     @endphp
-                     @if(hasAccess($role,'employee'))
+                     @if(hasAccess($role,'employee')) --}}
                      {{-- ($role < 13 || $role > 19) --}}
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="reqtype">Request To <span>*</span></label>
                         <select class="form-select" name="request_to" id="" required>
-                            @foreach ($hr_list as $hr)
-                            <option value="{{$hr->id}}">{{$hr->name}}</option>
+                            @foreach ($list as $li)
+                            <option value="{{$li->id}}">{{$li->name}}</option>
                         @endforeach
                         </select>
                     </div>
-                    @endif
+                    {{-- @endif --}}
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs time-section" style="display: none;">
                         <label for="starttime">Start Time</label>
                         <input type="time" class="form-control" name="start_time" id="starttime">

@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         document.getElementById("print").addEventListener("click", function(e) {
             e.preventDefault();
 
@@ -134,5 +134,5 @@
             link.click();
             document.body.removeChild(link);
         });
-    </script>
+    </script> --}}
 @endsection

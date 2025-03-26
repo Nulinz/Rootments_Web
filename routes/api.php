@@ -26,9 +26,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
      Route::post('/update_popup', 'AuthController@popup')->name('app.version');
 
-    // Route::post('/auth/login', function(){
-    //     return ("hello");
-    // })->name('auth.login');
+        // leave request persons.....
+        Route::get('leave_req', 'mobile_cnt@leave_req')->name('leave_req');
+
 
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -83,6 +83,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
 
 
+
        Route::post('/assign_to', 'mobile_cnt@assign_to')->name('assign_to');
 
        // task create show API
@@ -90,7 +91,12 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
        Route::post('/tasks_show', 'mobile_cnt@create_task_show')->name('tasks_show');
 
 
+
+
+
+
     });
+
 
               //post method HR
        Route::post('hr_list', 'TaskController@hr_list')->name('hr_list');

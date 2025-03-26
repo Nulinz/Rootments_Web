@@ -25,21 +25,9 @@ class AuthenticationController extends Controller
 
 
         if ($user) {
-            // $alreadyLoggedIn = DB::table('attendance')
-            //     ->where('user_id', $user->id)
-            //     ->whereDate('c_on', now()->format('Y-m-d'))
-            //     ->exists();
+
 
             if (Auth::attempt(['emp_code' => $emp_code, 'password' => $password])) {
-                // if (!$alreadyLoggedIn) {
-                //     DB::table('attendance')->insert([
-                //         'user_id' => $user->id,
-                //         'attend_status' => 'Present',
-                //         'in_location' => 'Some Location',
-                //         'in_time' => now()->format('H:i:s'),
-                //         'c_on' => now()->format('Y-m-d')
-                //     ]);
-                // }
 
                 $user = DB::table('users')
                     ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
@@ -47,26 +35,15 @@ class AuthenticationController extends Controller
                     ->select('roles.id as role_id','roles.role','roles.role_dept','users.store_id','users.id')
                     ->first();
 
-                    // dd($user);
-
-                    // $r_id = $user->role_id;
-                    // if($user->role_id==13){
-
-                    //     $asm_count = DB::table('asm_store')->where('store_id',$user->store_id)->where('emp_id',$user->id)->count();
-
-                    //     $asm_route = ($asm_count > 0) ? 'dashboard' : 'mydash.dashboard';
-
-                    // }
-                    // else {
-                    //     $asm_route = null; // If role_id is not 13, set it to null to avoid overriding.
-                    // }
-
 
 
                         $routes = [
+                            1 => 'gm.dashboard',
+                            2 => 'gm.dashboard',
                             3 => 'hr.dashboard',
                             4 => 'hr.dashboard',
                             5 => 'hr.dashboard',
+                            6 => 'operation.dashboard',
                             7 => 'fin.index',
                             10 => 'area.dashboard',
                             11 => 'cluster.dashboard',

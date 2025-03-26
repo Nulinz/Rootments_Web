@@ -128,20 +128,30 @@ class RecruitController extends Controller
 
             $rec_post = DB::table('recruitments')->where('id',$job_post->rec_id)->first();
 
-            $req_token  = DB::table('users')->where('id',$rec_post->c_by)->first();
+            $hr_asst = DB::table('users')->where('role_id',5)->first();
 
-            if ($req_token->device_token) {
-                $taskTitle = "Recruitment Request";
-                $taskBody = $user->name ."-".$req->status." for Job post";
+            $req_token_lt  = DB::table('users')->whereIn('id',[$rec_post->c_by,$hr_asst->id])->get();
 
-                $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+            foreach($req_token_lt as $req_token){
 
-                Notification::create([
-                    'user_id' => $rec_post->c_by,
-                    'noty_type' => 'recruitment',
-                    'type_id' => $req->job_id
-                ]);
-        } // notification end
+                    if (!is_null($req_token->device_token)) {
+                        $taskTitle = "Recruitment Request Status";
+
+                        $taskBody = "REC".$rec_post->id." Job Post has ".$req->status;
+
+                        $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                        Notification::create([
+                            'user_id' => $req_token->id,
+                            'noty_type' => 'recruitment',
+                            'type_id' => $req->job_id,
+                            'title'=> $taskTitle,
+                            'body'=> $taskBody,
+                            'c_by'=>$user->id
+                        ]);
+                } // notification end
+
+            } // end foreach.....
 
 
             return back()->with(['status'=>'success','message' => 'JobPost updated successfully!','list'=>$job]);
@@ -205,7 +215,7 @@ class RecruitController extends Controller
 
         try{
 
-        $rec = DB::table('job_posting')->insert([
+        $rec = DB::table('job_posting')->insertGetId([
             'rec_id'=>$req->rec_id,
             'job_title'=>$req->jobtitle,
             'responsibility'=>$req->resp,
@@ -221,6 +231,28 @@ class RecruitController extends Controller
             'updated_at'=>now()
 
         ]);
+
+
+        $req_token  = DB::table('users')->where('role_id',3)->first();
+
+        if ($req_token->device_token) {
+
+            $taskTitle = "Recruitment Request Status";
+
+            $taskBody = "Kindly Approve the job Post for Recruitment-REC".$rec;
+
+            $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+            Notification::create([
+                'user_id' => $req_token->id,
+                'noty_type' => 'recruitment',
+                'type_id' => $rec,
+                'title'=> $taskTitle,
+                'body'=> $taskBody,
+                'c_by'=>auth()->user()->id
+            ]);
+    } // notification end
+
     }catch(\Exception $e){
         dd($e);
     }

@@ -31,7 +31,7 @@ class ClusterController extends Controller
         return view('cluster.list', ['cluster' => $cluster]);
     }
 
-    public function cluster_overview()
+     public function cluster_overview()
     {
 
         $user = Auth::user()->id;
@@ -259,7 +259,7 @@ class ClusterController extends Controller
     {
         $create = DB::table('m_cluster')->insertGetId([
             'cl_name' => $req->clustername,
-            'alter' => $req->altcontact,
+           'alter_con' => $req->altcontact,
             'location' => $req->storeloc,
             'created_at' => now(),  // Don't manually include these!
             'updated_at' => now()   // Don't manually include these!

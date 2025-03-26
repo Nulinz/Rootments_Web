@@ -147,49 +147,97 @@ class maintain_cnt extends Controller
         return view('maintain.maintain_index',['main_emp'=>$main_emp,'task'=>$task,'staffNames'=>$staffNames,'taskCounts'=>$taskCounts,'categoryNames'=>$categoryNames,'categorytaskCounts'=>$categorytaskCounts,'subcategoryNames'=>$subcategoryNames,'subcategorytaskCounts'=>$subcategorytaskCounts,'pendingLeaves'=>$pendingLeaves]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function list()
     {
-        //
+        $rep = DB::table('maintain_req')
+        ->leftJoin('users','users.id','=','maintain_req.c_by')
+        ->leftJoin('categories','categories.id','=','maintain_req.cat')
+        ->leftJoin('sub_categories','sub_categories.id','=','maintain_req.sub')
+        ->select('maintain_req.*','users.name','categories.category','sub_categories.subcategory','maintain_req.status as m_status','maintain_req.id as m_id')
+        ->get();
+
+
+        return view('maintain.maintain_list',['rep'=>$rep]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function profile(Request $req)
     {
-        //
+        $rep = DB::table('maintain_req')->where('maintain_req.id',$req->id)
+        ->leftJoin('users','users.id','=','maintain_req.c_by')
+        ->leftJoin('categories','categories.id','=','maintain_req.cat')
+        ->leftJoin('sub_categories','sub_categories.id','=','maintain_req.sub')
+        ->select('maintain_req.*','users.name','categories.category','sub_categories.subcategory','maintain_req.status as m_status')
+        ->get();
+        //   dd($rep);
+
+
+        $rep_task = DB::table('tasks')
+        ->where('f_id', $rep[0]->task_id)
+        ->leftJoin('categories', 'categories.id', '=', 'tasks.category_id')
+        ->leftJoin('sub_categories', 'sub_categories.id', '=', 'tasks.subcategory_id')
+        ->join('users as us', 'tasks.assign_to', '=', 'us.id') // Join for assign_to
+        ->join('roles as u_role', 'us.role_id', '=', 'u_role.id') // Corrected join with roles for assign_to
+        ->join('users as c_user', 'tasks.assign_by', '=', 'c_user.id') // Join for assign_by
+        ->join('roles as c_role', 'c_user.role_id', '=', 'c_role.id') // Corrected join with roles for assign_by
+        ->select(
+            'tasks.*',
+            'us.name as assign_name', // Name of user assigned to the task
+            'c_user.name as c_name',  // Name of user who assigned the task
+            'u_role.role as user_role', // Role of the user assigned to the task
+            'c_role.role as cr_role', // Role of the user who assigned the task
+            'categories.category',
+            'sub_categories.subcategory'
+        )
+        ->get();
+
+
+
+        //   dd($rep_task);
+
+        return view('maintain.maintain_profile',['rep'=>$rep,'rep_task'=>$rep_task]);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    public function task(Request $req)
+    {
+        $cat =  DB::table('categories')->whereIn('id',[17,18,19,20,21,22,23,24,25,26])->get();
+
+        $arr = $this->role_arr();
+
+        $status =  DB::table('maintain_req')->where('maintain_req.id',$req->id)
+        ->leftJoin('users','users.id','=','maintain_req.c_by')
+        ->select('users.role_id as u_role')
+        ->first();
+
+        $arr[] = intval($status->u_role);
+
+        //  dd($arr);
+
+        // $url = $req->url();
+
+        // dd($url);
+
+        $emp =  DB::table('users')->whereIn('role_id',$arr)
+        ->leftJoin('roles','roles.id','=','users.role_id')
+        ->select('users.name','users.emp_code','roles.role','roles.role_dept','users.id')->get();
+
+        return view('maintain.maintain_task',['cat'=> $cat,'emp'=>$emp,'m_id'=>$req->id]);
+    }
+
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         //

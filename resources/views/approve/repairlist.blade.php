@@ -1,5 +1,5 @@
 <div class="sidebodyhead mt-3">
-    <h4 class="m-0">Repair Approval List</h4>
+    <h4 class="m-0">Maintenance Approval List</h4>
 </div>
 
 <div class="container-fluid mt-3 listtable">
@@ -26,8 +26,9 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Store Code</th>
-                    <th>Store Name</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Sub Category</th>
                     <th>Repair Date</th>
                     <th>Repair Description</th>
                     <th>File</th>
@@ -35,61 +36,57 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($repair as $data)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $data->store_code }}</td>
-                        <td>{{ $data->store_name }}</td>
-                        <td>{{ $data->repair_date }}</td>
-                        <td>{{ $data->repair_description }}</td>
-                        <td>
+                @foreach ($repair as $rp)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $rp->title }}</td>
+                    <td>{{ $rp->category }}</td>
+                    <td>{{ $rp->subcategory }}</td>
+                    <td>{{ date("d-m-Y",strtotime($rp->req_date)) }}</td>
+                    <td>{{ $rp->desp }}</td>
+                    <td>
+                        @if(!is_null($rp->file))
                             <div class="d-flex gap-3">
-                                @if (!empty($data->repair_file) && file_exists(public_path($data->repair_file)))
-                                    <a href="{{ asset($data->repair_file) }}" download>
-                                        <i class="fas fa-download"></i> Download
-                                    </a>
-                                @else
-                                    <span>Nil</span>
-                                @endif
+                                <a href="{{ asset($rp->file) }}" download="{{ basename($rp->file) }}">
+                                    <i class="fas fa-download"></i>
+                                </a>
                             </div>
-                        </td>
-                        <td>
-                            @if ($data->status === 'Approved')
-                                <span class="text-success">Approved</span>
-                            @elseif ($data->status == 'Rejected')
-                                <span class="text-danger">Rejected</span>
-                            @else
-                                <button class="listtdbtn" data-id="{{ $data->id }}" data-bs-toggle="modal"
-                                    data-bs-target="#updateRepairApproval">Update</button>
-                            @endif
-                        </td>
-                    </tr>
+                        @endif
+                    </td>
+                    <td>
+                        <button class="listtdbtn" data-bs-toggle="modal" data-id="{{ $rp->rep_id }}"
+                            data-bs-target="#updateMaintenanceApproval">Update</button>
+                    </td>
+                </tr>
                 @endforeach
-
             </tbody>
         </table>
     </div>
 </div>
 
 <!-- Update Approval Modal -->
-<div class="modal fade" id="updateRepairApproval" tabindex="-1" aria-labelledby="updateRepairApprovalLabel"
+<div class="modal fade" id="updateMaintenanceApproval" tabindex="-1" aria-labelledby="updateMaintenanceApprovalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title fs-5" id="updateRepairApprovalLabel">Update Repair Approval</h4>
+                <h4 class="modal-title fs-5" id="updateMaintenanceApprovalLabel">Update Maintenance Approval</h4>
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST" id="updateRepairForm">
+                <form action="{{ route('approvelrepair.update') }}" method="POST" id="">
                     @csrf
-                    <input type="hidden" id="RepairId" name="id">
+                    <input type="hidden" id="rep_id" name="rep_id">
                     <div class="col-sm-12 col-md-12 mb-3">
                         <label for="sts" class="col-form-label">Status</label>
                         <select class="form-select sts" name="status" id="sts" required>
                             <option value="" selected disabled>Select Options</option>
-                            <option value="Approved">Approved</option>
+                            @if(auth()->user()->role_id==30)
+                                <option value="Approved">Approve</option>
+                            @else
+                            <option value="Escalate">Escalate</option>
                             <option value="Rejected">Rejected</option>
+                            @endif
                         </select>
                     </div>
                     <!-- Move the button inside the form -->
@@ -101,6 +98,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('.listtdbtn').on('click',function(){
+        var rep_id = $(this).data('id');
+
+        $('#rep_id').val(rep_id);
+
+    });
+</script>
 
 <script>
     $(document).ready(function () {
@@ -140,40 +146,5 @@
         }
         // Initialize each table
         initTable('#table2', '#headerDropdown2', '#filterInput2');
-    });
-</script>
-
-<script>
-    $(document).ready(function () {
-        $('.listtdbtn').on('click', function () {
-            const id = $(this).data('id');
-            $('#updateRepairApproval #RepairId').val(id);
-        });
-
-        $('#updateRepairForm').on('submit', function (e) {
-            e.preventDefault();
-
-            const formData = $(this).serialize();
-
-            console.log(formData);
-
-            $.ajax({
-                url: '{{ route('approvelrepair.update') }}',
-                type: 'POST',
-                data: formData,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                        'content')
-                },
-                success: function (response) {
-                    alert(response.message);
-                    location.reload();
-                },
-                error: function (error) {
-                    alert('An error occurred. Please try again.');
-                    console.error(error);
-                }
-            });
-        });
     });
 </script>

@@ -119,19 +119,19 @@ class ResignController extends Controller
 
 
 
-     if ($res_lt) {
-        // Redirect back with a success message if insertion is successful
-        return redirect()->back()->with([
-            'status' => 'success',
-            'message' => 'Resignation Formality Updated successfully!'
-        ]);
-    }
+        if ($res_lt) {
+            // Redirect back with a success message if insertion is successful
+            return redirect()->back()->with([
+                'status' => 'success',
+                'message' => 'Resignation Formality Updated successfully!'
+            ]);
+        }
 
-    // If insertion fails, you can redirect with an error message
-    return redirect()->back()->with([
-        'status' => 'error',
-        'message' => 'There was an issue with the operation.'
-    ]);
+        // If insertion fails, you can redirect with an error message
+        return redirect()->back()->with([
+            'status' => 'error',
+            'message' => 'There was an issue with the operation.'
+        ]);
     }
 
     /**

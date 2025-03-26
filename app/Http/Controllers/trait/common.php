@@ -45,7 +45,7 @@ trait common
 
        $user = Auth::user();
 
-       if($dept=='HR'){
+       if(($dept=='HR')||($dept=='Admin')||($dept=='Operation')){
 
         $emp = DB::table('users as us')->where('us.status','=',$st)
         ->whereNotNull('us.role_id')
@@ -99,10 +99,19 @@ trait common
        ->count();
 
        switch($r_id) {
+        case 1:
+            $arr = [1];
+            break;
+        case 2:
+            $arr = [2];
+            break;
         case 3:
         case 4:
         case 5:
             $arr = [3, 4, 5, 26, 27, 6, 7, 8, 9, 10, 11, 12, 13,30,37,41,43];
+            break;
+        case 6:
+            $arr = [6];
             break;
         case 7:
             $arr = [25,44];
@@ -172,7 +181,65 @@ trait common
 
         return $arr;
     }
-}
 
+
+
+    // return dept for leave create request
+
+    public function role_dept()
+    {
+    // \Log::info($message);
+    $user = Auth::user();
+    $r_dept = $user->dept;
+    $r_id = $user->role_id;
+
+    // $cluster_check = DB::table('m_cluster as mc')
+    // ->leftJoin('users','users.id','=','mc.cl_name')
+    // ->where('mc.cl_name','=',$user->id)
+    // ->where('users.role_id',12)
+    // ->count();
+
+    switch($r_dept) {
+        case ($r_dept=='HR'):
+            $arr = [1,2];
+            break;
+        case ($r_dept=='Operation'):
+            $arr = [3,4,5];
+            break;
+        case ($r_dept=='Finance'):
+            $arr = ($r_id == 7) ? [3, 4, 5] : [7];
+            break;
+        case ($r_dept=='IT'):
+            $arr = [3,4,5];
+            break;
+        case ($r_dept=='Sales/Marketing'):
+            $arr = [3,4,5];
+            break;
+        case ($r_dept=='Area'):
+            $arr = [3,4,5];
+            break;
+        case ($r_dept=='Cluster'):
+            $arr = [3,4,5];
+            break;
+        case ($r_dept=='Store'):
+            $arr = ($r_id == 12) ? [3, 4, 5] : [12];
+            break;
+        case ($r_dept=='Maintenance'):
+            $arr = ($r_id == 30) ? [3, 4, 5] : [30];
+            break;
+        case ($r_dept=='Warehouse'):
+            $arr = ($r_id == 37) ? [3, 4, 5] : [37];
+            break;
+        case ($r_dept=='Purchase'):
+            $arr = ($r_id == 41) ? [3, 4, 5] : [41];
+            break;
+    }
+
+
+        return $arr;
+    }
+
+
+}
 
 ?>

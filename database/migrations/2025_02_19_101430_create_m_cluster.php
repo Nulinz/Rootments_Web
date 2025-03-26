@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('m_cluster', function (Blueprint $table) {
             $table->id();
             $table->integer('cl_name')->nullable();
-            $table->string('alter')->nullable();
+            $table->string('alter_con')->nullable();
             $table->string('location')->nullable();
             $table->integer('c_by')->nullable();
             $table->timestamps();

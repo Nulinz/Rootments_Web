@@ -436,9 +436,12 @@ public function store(Request $request)
         try {
             $user = User::find($assignTo);
 
+            $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
             if ($user && $user->device_token) {
-                $taskTitle = $request->task_title;
-                $taskBody = "You have been assigned a new task: " . $taskTitle;
+
+                $taskTitle = "New Task Assigned";
+                $taskBody = "You have been assigned a new task: " . $taskTitle." by ".auth()->user()->name."[".$role_get->role."]";
 
                 $response = app(FirebaseService::class)->sendNotification(
                     $user->device_token,
@@ -450,6 +453,9 @@ public function store(Request $request)
                     'user_id' => $assignTo,
                     'noty_type' => 'task',
                     'type_id' => $task->id,
+                    'title'=> $taskTitle,
+                    'body'=> $taskBody,
+                    'c_by'=>auth()->user()->id
                 ]);
 
                 $notifications[] = [
@@ -467,6 +473,17 @@ public function store(Request $request)
                 'error' => $e->getMessage()
             ];
         }
+    }
+
+    // maintain request task.......
+    if($request->maintain=='maintain'){
+
+        $lat = DB::table('tasks')->orderBy('id','DESC')->first();
+        $up = DB::table('maintain_req')->where('id',$request->m_id)
+        ->update([
+            'task_id'=>$lat->id
+        ]);
+
     }
 
     return redirect()->route('task.index')->with([
@@ -527,8 +544,12 @@ public function completedtaskstore(Request $request)
 
         $user = User::find($assignTo);
         if ($user && $user->device_token) {
-            $taskTitle = $request->task_title;
-            $taskBody = "You have been assigned a new task: " . $taskTitle;
+
+                $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+                $taskTitle = "New Task Assigned";
+                $taskBody = "You have been assigned a new task: " . $taskTitle." by ".auth()->user()->name."[".$role_get->role."]";
+
 
             $response = app(FirebaseService::class)->sendNotification(
                 $user->device_token,
@@ -541,6 +562,9 @@ public function completedtaskstore(Request $request)
                             'user_id' => $assignTo,
                             'noty_type' => 'task',
                             'type_id' => $task->id,
+                            'title'=> $taskTitle,
+                            'body'=> $taskBody,
+                            'c_by'=>auth()->user()->id
                         ]);
         }
     } catch (\Exception $e) {

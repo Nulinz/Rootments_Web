@@ -54,13 +54,10 @@
             <tbody>
                 @foreach ($leave as $data)
                     @php
-
-                        // $user = DB::table('users')
-                        //     ->leftjoin('roles', 'users.role_id', '=', 'roles.id')
-                        //     ->where('users.id', $data->created_by)
-                        //     ->select('users.name', 'users.emp_code', 'roles.role', 'roles.role_dept')
-                        //     ->first();
+                    $c_date = date("Y-m-d");
+                    $prolong_date = date("Y-m-d",strtotime($data->end_date.'+15 days'));
                     @endphp
+                    @if(($c_date <= $prolong_date))
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $data->emp_code }}</td>
@@ -76,57 +73,9 @@
                                 Update
                             </button>
                         </td>
-                        <?php
-                        /*
 
-                        <td>
-                            @php
-                                $user = auth()->user();
-                            @endphp
-
-                            @if ($user->role_id == 12)
-                                @if ($data->request_status == 'Approved')
-                                    <span class="text-success">Approved</span>
-                                    @if ($data->esculate_to == null)
-                                        <button class="esulate_button" data-id="{{ $data->l_id }}">Escalate</button>
-                                    @endif
-                                @elseif ($data->request_status == 'Rejected')
-                                    <span class="text-danger">Rejected</span>
-                                @elseif ($data->request_status == 'Pending')
-                                    <button class="listtdbtn" data-id="{{ $data->l_id }}" data-role='12'
-                                        data-bs-toggle="modal" data-bs-target="#updateLeaveApproval">
-                                        Update
-                                    </button>
-                                @endif
-                            @elseif ($user->role_id == 3)
-                                @if ($data->esculate_status == 'Approved')
-                                    <span class="text-success">Approved</span>
-                                @elseif ($data->esculate_status == 'Rejected')
-                                    <span class="text-danger">Rejected</span>
-                                @else
-                                    <button class="listtdbtn" data-id="{{ $data->l_id }}" data-role='3'
-                                        data-bs-toggle="modal" data-bs-target="#updateLeaveApproval">
-                                        Update
-                                    </button>
-                                @endif
-                            @endif
-                        </td>
-
-                        @if (optional($user)->role_id == 3)
-                            <td>
-
-                                @if ($data->request_status == 'Rejected')
-                                    <span class="text-danger">Rejected</span>
-                                @elseif($data->status == 'Rejected')
-                                    <span class="text-danger">Rejected</span>
-                                @else
-                                    <span class="text-success"> {{ $data->status }}</span>
-                                @endif
-                            </td>
-                        @endif
-                        */
-                        ?>
                     </tr>
+                    @endif
                 @endforeach
             </tbody>
 
@@ -154,7 +103,7 @@
                             <option value="Approved">Approved</option>
                             <option value="Rejected">Rejected</option>
                             @if (hasAccess($user->role_id,'leave'))
-                            <option>Escalate</option>
+                                 <option>Escalate</option>
                             @endif
                         </select>
                     </div>

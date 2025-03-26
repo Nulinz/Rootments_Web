@@ -42,6 +42,7 @@
                 3 => ['route' => 'hr.dashboard', 'over' => 'HR'],
                 4 => ['route' => 'hr.dashboard', 'over' => 'HR'],
                 5 => ['route' => 'hr.dashboard', 'over' => 'HR'],
+                6 => ['route' => 'operation.dashboard', 'over' => 'Operation'],
                 12 => ['route' => 'dashboard', 'over' => 'Store'],
                 11 => ['route' => 'cluster.dashboard', 'over' => 'Cluster'],
                 10 => ['route' => 'area.dashboard', 'over' => 'Area'],
@@ -86,12 +87,34 @@
                                     class="d-inline-flex text-decoration-none rounded mt-3">Store
                                     List</a>
                             </li>
+                            <li><a href="{{ route('store.workupdatelist') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Work Update</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
+            @if(hasAccess($r_id, 'store_setup'))
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('setup.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse13" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-shop-lock"></i> &nbsp;Store Setup
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" id="collapse13">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            <li><a href="{{ route('setup.list') }}"
+                                    class="d-inline-flex text-decoration-none rounded mt-3">Setup List</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
             @endif
             @if(hasAccess($r_id, 'employee'))
-
                 <li class="mb-1">
                     <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('employee.*') ? 'active' : '' }}"
                         data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false">
@@ -104,10 +127,10 @@
                     </button>
                     <div class="collapse" id="collapse2">
                         <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                            <li><a href="{{ route('employee.index',['status'=>1]) }}"
+                            <li><a href="{{ route('employee.index', ['status' => 1]) }}"
                                     class="d-inline-flex text-decoration-none rounded mt-3">Employee List</a>
                             </li>
-                            <li><a href="{{ route('employee.index',['status'=>2]) }}"
+                            <li><a href="{{ route('employee.index', ['status' => 2]) }}"
                                     class="d-inline-flex text-decoration-none rounded">Inactive List</a>
                             </li>
                         </ul>
@@ -204,26 +227,45 @@
                 </li>
             @endif
             @if(hasAccess($r_id, 'payroll'))
+                <li class="mb-1">
+                    <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('resign.*') ? 'active' : '' }}"
+                        data-bs-toggle="collapse" data-bs-target="#collapse12" aria-expanded="false">
+                        <div class="btnname">
+                            <i class="fa-solid fa-user-xmark"></i> &nbsp;Resignation
+                        </div>
+                        <div class="righticon d-flex mx-auto">
+                            <i class="fa-solid fa-angle-down toggle-icon"></i>
+                        </div>
+                    </button>
+                    <div class="collapse" id="collapse12">
+                        <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                            <li><a href="{{ route('resign.list') }}"
+                                    class="d-inline-flex text-decoration-none rounded mt-3">Resignation List</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
+            @if(hasAccess($r_id, 'maintain_req'))
             <li class="mb-1">
-                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('resign.*') ? 'active' : '' }}"
-                    data-bs-toggle="collapse" data-bs-target="#collapse12" aria-expanded="false">
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('maintain.*') ? 'active' : '' }}"
+                    data-bs-toggle="collapse" data-bs-target="#collapse14" aria-expanded="false">
                     <div class="btnname">
-                        <i class="fa-solid fa-user-xmark"></i> &nbsp;Resignation
+                        <i class="fa-solid fa-screwdriver-wrench"></i> &nbsp;Maintenance
                     </div>
                     <div class="righticon d-flex mx-auto">
                         <i class="fa-solid fa-angle-down toggle-icon"></i>
                     </div>
                 </button>
-                <div class="collapse" id="collapse12">
+                <div class="collapse" id="collapse14">
                     <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
-                        <li><a href="{{ route('resign.list') }}"
-                                class="d-inline-flex text-decoration-none rounded mt-3">Resignation List</a>
+                        <li><a href="{{ route('maintain.list') }}"
+                                class="d-inline-flex text-decoration-none rounded mt-3">Maintenance List</a>
                         </li>
                     </ul>
                 </div>
             </li>
             @endif
-
             @if(hasAccess($r_id, 'payroll'))
                 <li class="mb-1">
                     <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('payroll.*') ? 'active' : '' }}"
@@ -296,10 +338,6 @@
                                     class="d-inline-flex text-decoration-none rounded mt-3">Leave
                                     Request</a>
                             </li>
-                            {{-- <li><a href="{{ route('repair.index') }}"
-                                    class="d-inline-flex text-decoration-none rounded">Repair
-                                    Request</a>
-                            </li> --}}
                             {{-- <li><a href="{{ route('transfer.index') }}"
                                     class="d-inline-flex text-decoration-none rounded">Transfer
                                     Request</a>
@@ -308,7 +346,13 @@
                                     class="d-inline-flex text-decoration-none rounded">Resignation
                                     Request</a>
                             </li>
-                            @if(hasAccess($r_id, 'all_task'))
+                            @if(hasAccess($r_id, 'st_manager'))
+                            <li><a href="{{ route('repair.index') }}"
+                                    class="d-inline-flex text-decoration-none rounded">Maintenance
+                                    Request</a>
+                            </li>
+                            @endif
+                            @if(hasAccess($r_id, 'all_manager'))
                                 <li><a href="{{ route('recruitment.index') }}"
                                         class="d-inline-flex text-decoration-none rounded">Recruitment
                                         Request</a>
@@ -394,6 +438,29 @@
                                 </button>
                             </a>
                         </li>
+            @endif
+            @if(hasAccess($r_id, 'work_update'))
+            <li class="mb-1">
+                <button class="btn0 mx-auto btn-toggle collapsed {{ Request::routeIs('workupdate.*') ? 'active' : '' }}"
+                    data-bs-toggle="collapse" data-bs-target="#collapse15" aria-expanded="false">
+                    <div class="btnname">
+                        <i class="fa-solid fa-pencil"></i> &nbsp;Work Update
+                    </div>
+                    <div class="righticon d-flex mx-auto">
+                        <i class="fa-solid fa-angle-down toggle-icon"></i>
+                    </div>
+                </button>
+                <div class="collapse" id="collapse15">
+                    <ul class="btn-toggle-nav list-unstyled text-start ps-5 pe-0 pb-3">
+                        <li><a href="{{ route('workupdate.abstract-list') }}"
+                                class="d-inline-flex text-decoration-none rounded mt-3">Abstract List</a>
+                        </li>
+                        <li><a href="{{ route('workupdate.report-list') }}"
+                                class="d-inline-flex text-decoration-none rounded">Report List</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             @endif
             <li class="mb-3">
                 @php

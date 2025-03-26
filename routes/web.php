@@ -38,6 +38,14 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('store_dashboard', 'DashBoardController@useragainststask')->name('store.usertaskdashboard');
         Route::post('attendance-approve', 'DashBoardController@attendanceApprove')->name('attendance.approve');
 
+        // GM Dashboard
+        Route::get('gm-dashboard', 'GMController@index')->name('gm.dashboard');
+        Route::get('gm-mydashboard', 'GMController@mydashboard')->name('gm.mydashboard');
+
+        // Operational Dashboard
+        Route::get('operation-dashboard', 'OperationController@index')->name('operation.dashboard');
+        Route::get('operation-mydashboard', 'OperationController@mydashboard')->name('operation.mydashboard');
+
         // HR Dashboard
         Route::get('hr-dashboard', 'HrDashBoardController@index')->name('hr.dashboard');
         Route::get('hr-mydashboard', 'HrDashBoardController@mydashboard')->name('hr.mydashboard');
@@ -74,7 +82,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('store-update/{id}', 'StoreController@update')->name('store.update');
         Route::get('store-strength/{id}', 'StoreController@strlist')->name('store.strength');
         Route::get('store-details/{id}', 'StoreController@detailslist')->name('store.details');
+        Route::get('add-workupdate', 'StoreController@addworkupdate')->name('store.addworkupdate');
+        Route::get('store-workupdatelist', 'StoreController@workupdatelist')->name('store.workupdatelist');
         Route::get('store-viewemp/{id}', 'StoreController@empview')->name('store.viewemp');
+        Route::post('store-check', 'StoreController@store_check')->name('store.check');
+        Route::post('store-work', 'StoreController@store_work')->name('store.work');
 
         // Employee
         Route::get('employee-list/{status}', 'EmployeeController@index')->name('employee.index');
@@ -116,10 +128,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('update-leaveescalate', 'LeaveController@updateEscalate')->name('update.leaveescalate');
 
         // Repair Request
-        Route::get('repair-list', 'RepairController@index')->name('repair.index');
-        Route::get('repair-add', 'RepairController@create')->name('repair.add');
-        Route::post('repair-store', 'RepairController@store')->name('repair.store');
-        Route::post('get-storename', 'RepairController@getstorename')->name('get_store_name');
+        Route::get('repair_list', 'RepairController@index')->name('repair.index');
+        Route::get('maintenance-add', 'RepairController@create')->name('repair.add');
+        Route::post('maintenance-store', 'RepairController@store')->name('repair.store');
 
         // Transfer Request
         Route::get('transfer-list', 'TransferController@index')->name('transfer.index');
@@ -194,7 +205,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('get-coordinates', 'location_cnt@index')->name('get.coordinates');
         Route::post('attendance-ot', 'Attd_cnt@ot_approve')->name('ot.approve');
 
-        // job posting....
+        // Job Posting
         Route::get('recruit-list', 'RecruitController@list')->name('recruit.list');
         Route::get('recruit-add', 'RecruitController@create')->name('recruit.add');
         Route::get('recruit-edit/{id}', 'RecruitController@edit')->name('recruit.edit');
@@ -209,14 +220,22 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('job_post_up', 'RecruitController@post_update')->name('job_post_up');
         // Route::post('job_app_store', 'RecruitController@post_app_store')->name('job_app_store');
 
-
         Route::post('update_screen', 'RecruitController@update_screen')->name('update_screen');
         Route::post('add_round', 'RecruitController@add_round')->name('add_round');
 
-        // Recruitment
+        // Resignation
         Route::get('resign-list', 'ResignController@list')->name('resign.list');
-        Route::get('resign-profile/{id}','ResignController@profile')->name('resign.profile');
+        Route::get('resign-profile/{id}', 'ResignController@profile')->name('resign.profile');
         Route::post('resign-formality', 'ResignController@formality')->name('resign.formality');
+
+        // Store Setup
+        Route::get('setup-list', 'StoreSetupController@list')->name('setup.list');
+        Route::get('setup-create', 'StoreSetupController@create')->name('setup.add');
+        Route::post('setup-store', 'StoreSetupController@store')->name('setup.store');
+        Route::get('setup-profile/{tab?}/{id}', 'StoreSetupController@profile')->name('setup.profile');
+        Route::post('setup-list-store', 'StoreSetupController@set_list_store')->name('set.liststore');
+        Route::post('liststore-update', 'StoreSetupController@setlist_update')->name('liststore.update');
+        Route::get('liststore-new/{id}', 'StoreSetupController@store_new')->name('liststore.new');
 
         // Area
         Route::get('area-list', 'AreaController@list')->name('area.list');
@@ -226,96 +245,27 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('area-edit', 'AreaController@edit')->name('area.edit');
         Route::get('area-overview', 'AreaController@area_overview')->name('area.dashboard');
         Route::get('area-mydashboard', 'AreaController@area_mydashboard')->name('area.mydashboard');
-        Route::get('area-kpidashboard', 'AreaController@area_kpi')->name('area.kpidashboard');
+        Route::get('area-kpidashboard', 'AreaController@area_kpi')->name('area.kpidashboard'); 
 
-        // Route::get('get_model', function() {
-        //     //  $role = \App\Models\Role::with(['users_rel:id,name,role_id'])->select('id', 'role_dept')->whereIn('id', [3, 4, 5])->whereHas('users_rel')
-        //     // // $role = \App\Models\User::with(['role_rel:id,role_dept'])  // Eager load the 'role_rel' relationship with specified columns
-        //     // // ->select('id', 'role_id', 'name')  // Select only 'id', 'role_id', and 'name' from the 'users' table
-        //     // // ->whereIn('role_id', [3, 4, 5])  // Filter users with specific role_ids
-        //     // ->get();
-
-        //     // $role = \App\Models\Role::all();
-
-        //     DB::enableQueryLog();
-        //     // $user = \App\Models\User::with([
-        //     //     'role_rel' => function ($query) {
-        //     //         $query->where('role_dept', 'store')  // Apply filter on the `role_dept` column
-        //     //               ->select('id', 'role', 'role_dept');  // Select specific columns from `Role`
-        //     //     },
-        //     //     'store_rel' => function ($query) {
-        //     //         $query->select('id', 'store_name');  // Select specific columns from `Store`
-        //     //     }
-        //     // ])
-        //     // ->select('id', 'name', 'emp_code', 'store_id', 'role_id')  // Select specific columns from the `User` model
-        //     // ->get();
-
-
-        //     // $roles = \App\Models\Role::  // Add withCount to count the related users
-        //     //     with([
-        //     //         'users' => function ($query) {
-        //     //             // Select specific columns from the `users` model
-        //     //             $query->select('id', 'name', 'emp_code', 'role_id');
-        //     //         }
-        //     //     ])
-        //     //     ->withCount('users')
-        //     //     ->wherehas('users')  // Only roles that do not have users
-        //     //     ->where('role_dept', 'Store')  // Filter roles by `role_dept`
-        //     //     ->select('id', 'role_dept')  // Select specific columns from the `Role` model
-        //     //     ->get();
-
-
-        //         // $role = \App\Models\Role::with('users:id,name,role_id')->where('role_dept','Store')->get();  // Find role with id 1
-        //         // $users = $role->users;
-
-        //         $role = \App\Models\Role::with('users:id,name,role_id')->where('role_dept','Store')->get();  // Find role with id 1
-
-
-
-
-
-        //     // $user = \App\Models\User::with([
-        //     //     'role_rel',
-        //     //     'store_rel'
-        //     // ])
-        //     // ->select('id', 'name', 'emp_code','store_id','role_id')  // Select specific columns
-        //     // ->get();
-
-        //     //  dd(DB::getQueryLog());
-        //     // $pwd = Hash::make('123456');
-
-
-        //     //  dd(DB::getQueryLog());
-
-        //     // $role = \App\Models\Role::with(['users_rel' => function($query) {
-        //     //     // Filter users by their IDs (3, 4, 5)
-        //     //     $query->whereIn('id', [3, 4, 5]);
-        //     // }])->get();
-        //     // $role = \App\Models\Role::find(12);  // Find the role with role_id 12
-        //     // $users = $role->users_rel;  // Get all users who belong to role_id 12
-
-
-        //             // $cluster = \App\Models\Cluster::with('cluster_store')->find(1);
-        //             // foreach ($role as $u) {
-        //             //    echo  $rel =  $u->name."<br>";
-        //             //     // foreach($rel as $r){
-        //             //     //     echo  $r->name. "<br>";
-        //             //     // }
-        //             //     // echo $role->role_dept . "<br>";
-        //             // }
-        //                   return response()->json($role);
-        // });
+        // Work Update
+        Route::get('abstract-list', 'WorkUpdateController@abstractlist')->name('workupdate.abstract-list');
+        Route::get('report-list', 'WorkUpdateController@reportlist')->name('workupdate.report-list');
+        Route::post('daily-work', 'WorkUpdateController@daily_work')->name('daily.work');
 
         // Finance
         Route::get('finance_index', 'fin_cnt@index')->name('fin.index');
+
         // Maintainence
         Route::get('maintain_index', 'maintain_cnt@index')->name('maintain.index');
+        Route::get('maintenance_task/{id}', 'maintain_cnt@task')->name('maintain.task');
+        Route::get('maintenance_list', 'maintain_cnt@list')->name('maintain.list');
+        Route::get('maintenance_profile/{id}', 'maintain_cnt@profile')->name('maintain.profile');
+
         // Warehouse
         Route::get('warehouse_index', 'warehouse_cnt@index')->name('warehouse.index');
+
         // Purchase
         Route::get('purchase_index', 'purchase_cnt@index')->name('purchase.index');
-
-
 
     });
 

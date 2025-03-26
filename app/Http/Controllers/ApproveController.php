@@ -13,9 +13,11 @@ use App\Models\User;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use App\Services\FirebaseService;
+use App\Http\Controllers\trait\common;
 
 class ApproveController extends Controller
 {
+    use common;
     /**
      * Display a listing of the resource.
      */
@@ -40,71 +42,6 @@ if (!$role_get) {
 $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count = 0;
 
 
-// if ($role_get->role_id == 12) {
-//     $leave_count = DB::table('leaves')
-//         ->where(function ($query) use ($user) {
-//             $query->where('request_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->where('request_to', 12)->count();
-
-//     $repair_count = DB::table('repairs')
-//         ->where(function ($query) use ($user) {
-//             $query->where('request_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $transfer_count = DB::table('transfers')
-//         ->where(function ($query) use ($user) {
-//             $query->where('request_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $resign_count = DB::table('resignations')
-//         ->where(function ($query) use ($user) {
-//             $query->where('request_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $recruit_count = DB::table('recruitments')
-//         ->where(function ($query) use ($user) {
-//             $query->where('request_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-// } elseif ($role_get->role_id == 3) {
-//     $leave_count = DB::table('leaves')
-//         ->where(function ($query) use ($user) {
-//             $query->where('esculate_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $repair_count = DB::table('repairs')
-//         ->where(function ($query) use ($user) {
-//             $query->where('esculate_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $transfer_count = DB::table('transfers')
-//         ->where(function ($query) use ($user) {
-//             $query->where('esculate_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $resign_count = DB::table('resignations')
-//         ->where(function ($query) use ($user) {
-//             $query->where('esculate_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-
-//     $recruit_count = DB::table('recruitments')
-//         ->where(function ($query) use ($user) {
-//             $query->where('esculate_status', 'Pending')
-//                   ->orWhere('created_by', $user->id);
-//         })->count();
-// }
-
-
-
-
 
     return view('approve.approvelist', [
         'leave_count' => $leave_count ?? 0,
@@ -127,18 +64,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
         if(in_array($user->role_id,$arr)){
 
-            // $leave = DB::table('leaves')
-            // ->leftJoin('users','users.id','=','leaves.user_id')
-            // ->leftJoin('roles','roles.id','=','users.role_id')
-            // ->where('request_status','Escalate')
-            // ->Where('esculate_status','Pending')
-            // ->where(function($query) use ($user) {
-            //     $query->where('request_to', $user->id)
-            //           ->orWhere('esculate_to', $user->id);
-            // })
 
-            // ->select('users.name','users.emp_code','roles.role','roles.role_dept','leaves.request_status','leaves.request_type','leaves.id')
-            // ->get();
 
             $leave = DB::table('leaves')
             ->leftJoin('users', 'users.id', '=', 'leaves.user_id')
@@ -168,16 +94,6 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
             ->select('users.name','users.emp_code','roles.role','roles.role_dept','leaves.request_status','leaves.request_type','leaves.id','stores.store_name','leaves.start_date','leaves.end_date','leaves.start_time','leaves.end_time')
             ->get();
 
-
-            //     $l_id =[];
-            // foreach($leave as $lv){
-            //         $l_id = $lv->id;
-            // }
-
-            // $list =DB::table('leaves')
-            // ->leftJoin('users','users.id','=','leaves.request_to')
-            // ->leftJoin('roles','roles.id','=','users.role_id')
-
         }
 
 
@@ -186,25 +102,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
         //  return $leave;
           return view('approve.leavelist', ['leave' => $leave,'hr_list'=>$hr]);
 
-             // $storeMembers = DB::table('users')->where('store_id', $user->store_id)->pluck('id')->toArray();
 
-        // $role_get = DB::table('roles')
-        //     ->join('users', 'users.role_id', '=', 'roles.id')
-        //     ->select('roles.id as role_id', 'roles.role', 'roles.role_dept')
-        //     ->where('users.id', $user->id)
-        //     ->first();
-
-        // if ($role_get) {
-        //     $leave = DB::table('leaves')
-        //         ->join('users', 'users.id', '=', 'leaves.user_id')
-        //         ->where(function ($query) use ($role_get) {
-        //             $query->where('leaves.request_to', $role_get->role_id)
-        //                 ->orWhere('leaves.esculate_to', $role_get->role_id);
-        //         })
-        //         ->whereIn('users.id', $storeMembers)
-        //         ->select('leaves.id as l_id','leaves.request_type')
-        //         ->get();
-        // }
     }
 
 
@@ -212,13 +110,34 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
     {
         $user_id = Auth::user()->id;
 
-        $repair=DB::table('repairs')
-        ->leftjoin('stores','stores.id','=','repairs.store_code')
-        ->select('repairs.*','stores.store_code')
-        ->where('repairs.created_by',$user_id)
-        ->get();
+        $user = auth()->user();
 
-        return view('approve.repairlist',['repair'=>$repair]);
+
+        if($user->role_id==30){
+            $status = 'esculate_status';
+            $to = 'esculate_to';
+        }else{
+            $status = 'req_status';
+            $to = 'req_to';
+        }
+
+            $repair = DB::table('maintain_req')
+            ->join('users', 'users.id', '=', 'maintain_req.c_by')
+            ->leftJoin('roles', 'roles.id', '=', 'users.role_id')
+            ->leftJoin('categories as cat','cat.id','=','maintain_req.cat')
+            ->leftJoin('sub_categories as sub','sub.id','=','maintain_req.sub')
+            ->where('maintain_req.'.$to, $user->id)
+            ->where('maintain_req.'.$status, 'Pending')
+            ->select('users.name','users.emp_code','sub.subcategory','cat.category','maintain_req.*','maintain_req.id as rep_id')
+            ->get();
+
+        // }
+
+        // dd($repair);
+
+
+
+        return view('approve.repairlist',['repair'=> $repair ]);
     }
 
     public function transferindex()
@@ -299,27 +218,6 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
     }
 
 
-
-        // $role_get = DB::table('roles')
-        //     ->join('users', 'users.role_id', '=', 'roles.id')
-        //     ->where('users.id', $user->id)
-        //     ->select('roles.id as role_id', 'roles.role', 'roles.role_dept')
-        //     ->first();
-
-        // $resignation = collect();
-
-        // if ($role_get) {
-        //     $resignation = DB::table('resignations')
-        //         ->leftJoin('stores', 'stores.id', '=', 'resignations.store_id')
-        //         ->leftJoin('users', 'users.id', '=', 'resignations.emp_id')
-        //         ->select('resignations.*', 'stores.store_name', 'users.emp_code')
-        //         ->where(function ($query) use ($role_get) {
-        //             $query->where('resignations.request_to', $role_get->role_id)
-        //                   ->orWhere('resignations.esculate_to', $role_get->role_id);
-        //         })
-        //         ->get();
-        // // }
-
         return view('approve.reginlist',['resgination'=>$resignation,'hr_list'=>$hr]);
     }
 
@@ -365,7 +263,7 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
             //  $user = auth()->user();
 
-            //  $leave = Leave::findOrFail($request->id);
+             $leave = Leave::findOrFail($request->id);
 
             if($request->status == 'Escalate'){
 
@@ -379,20 +277,28 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
                 $user_id = Auth::user();
 
-                $req_token  = DB::table('users')->where('id',$request->hr)->first();
+                $leave_token  = DB::table('users')->whereIn('id',[$request->hr,$leave->created_by])->get();
 
-                if ($req_token->device_token) {
-                        $taskTitle = "Leave Request";
-                       $taskBody = $user_id->name. " Leave Request Updated to".$request->status ;
+                foreach($leave_token as $req_token){
 
-                       $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+                    if (!is_null($req_token->device_token)) {
 
-                       Notification::create([
-                           'user_id' => $request->hr,
-                           'noty_type' => 'leave',
-                           'type_id' => $request->id
-                       ]);
-               } // notification end
+                        $role_get = DB::table('roles')->where('id', $user_id->role_id)->first();
+                            $taskTitle = "Leave Request";
+                            $taskBody = $user_id->name."[".$role_get->role."] Leave Request Updated to".$request->status ;
+
+                            $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                            Notification::create([
+                                'user_id' => $req_token->id,
+                                'noty_type' => 'leave',
+                                'type_id' => $request->id,
+                                'title'=> $taskTitle,
+                                'body'=> $taskBody,
+                                'c_by'=>$user_id->id
+                            ]);
+                    } // notification end
+                } // foreach end
             }else{
 
                 $status =  DB::table('leaves')->where('id',$request->id)->first();
@@ -416,17 +322,21 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
 
                 if ($req_token->device_token) {
+                    $role_get = DB::table('roles')->where('id', $user_id->role_id)->first();
                     $taskTitle = "Leave Request";
-                   $taskBody = $user_id->name. " Leave Request Updated to".$request->status ;
+                   $taskBody =$user_id->name."[".$role_get->role."] Leave Request Updated to".$request->status ;
 
                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
                    Notification::create([
                        'user_id' => $status->created_by,
                        'noty_type' => 'leave',
-                       'type_id' => $request->id
+                       'type_id' => $request->id,
+                       'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>$user_id->id
                    ]);
-           } // notification end
+                } // notification end
 
 
             }
@@ -436,33 +346,6 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
             return response()->json(['message' => 'Leave updated successfully!'], 200);
 
-                // $leave->status = $request->status;
-
-
-
-            // if ($user->role_id == 12) {
-            //     $leave->request_status = $request->status;
-            //     if($request->status == 'Rejected')
-            //     {
-            //          $leave->status = $request->status;
-            //     }
-            // } elseif ($user->role_id == 3) {
-            //     $leave->esculate_status = $request->status;
-            //     $leave->status = $request->status;
-
-            //      $notification = Notification::create([
-            //                 'user_id' => $leave->user_id,
-            //                 'noty_type' => 'leave',
-            //                 'type_id' => $request->id,
-            //             ]);
-
-            // } else {
-            //     return response()->json(['error' => 'Unauthorized action.'], 403);
-            // }
-
-            // $leave->save();
-
-            // return response()->json(['message' => 'Leave updated successfully!'], 200);
 
     }
 
@@ -471,20 +354,124 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
     public function updaterepair(Request $request)
     {
         $request->validate([
-            'id' => 'required',
+            'rep_id' => 'required',
             'status' => 'required',
         ]);
 
-        try {
-            $repair = Repair::findOrFail($request->id);
+        $req_token  = DB::table('users')->where('role_id',30)->first();
 
-            $repair->status = $request->status;
-            $repair->save();
+        if($request->status == 'Escalate'){
 
-            return response()->json(['message' => 'Repair updated successfully!'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to update Repaair.'], 500);
+            DB::table('maintain_req')
+            ->where('id',$request->rep_id)
+            ->update([
+                'esculate_to'=>$req_token->id,
+                'esculate_status'=>'Pending',
+                'req_status'=>$request->status,
+                'status'=>$request->status
+            ]);
+
+            $user_id = Auth::user();
+
+            $c_by = DB::table('maintain_req')->where('id',$request->rep_id)->first();
+
+            $two_not = DB::table('users')->whereIn('id',[$c_by->c_by,$req_token->id])->get();
+
+            $st_det = DB::table('users')->where('users.id',$c_by->c_by)
+                        ->leftJoin('stores','stores.id','=','users.store_id')
+                        ->first();
+
+            foreach($two_not  as $two_token){
+
+
+
+                    if (!is_null($two_token->device_token)) {
+
+                        $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+                        $taskTitle = "Store Maintenance Update";
+
+                        $taskBody = $st_det->store_name." Maintenance Request has been ".$request->status."by".auth()->user()->name ."[".$role_get->role."]";
+
+                        $response = app(FirebaseService::class)->sendNotification($two_token->device_token,$taskTitle,$taskBody);
+
+                        Notification::create([
+                            'user_id' =>  $two_token->id,
+                            'noty_type' => 'Maintenance',
+                            'type_id' => $request->rep_id,
+                            'title'=> $taskTitle,
+                            'body'=> $taskBody,
+                            'c_by'=>auth()->user()->id
+                        ]);
+                } // notification end
+
+            } // foreach end///.......
+
+            // dd($two_not);
+
+        }else{
+
+            $status =  DB::table('maintain_req')->where('id',$request->rep_id)->first();
+
+            if($status->req_status=='Pending'){
+                $col = 'req_status';
+            }else{
+                $col = 'esculate_status';
+            }
+
+            DB::table('maintain_req')
+            ->where('id',$request->rep_id)
+            ->update([
+                $col=>$request->status,
+                'status'=>$request->status
+            ]);
+
+            $user_id = Auth::user();
+
+            $req_token  = DB::table('users')->where('id',$status->c_by)->first();
+
+
+            if (!is_null($req_token->device_token)) {
+
+                $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+                $st_name = DB::table('stores')->where('id',$req_token->store_id)->first();
+
+                $taskTitle = "Maintenance Request";
+
+                $taskBody = $st_name->store_name." Maintenance Request has been ".$request->status."by".auth()->user()->name ."[".$role_get->role."]";
+
+               $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+               Notification::create([
+                   'user_id' => $status->c_by,
+                   'noty_type' => 'Maintenance',
+                   'type_id' => $request->rep_id,
+                   'title'=> $taskTitle,
+                    'body'=> $taskBody,
+                    'c_by'=>auth()->user()->id
+               ]);
+       } // notification end
+
+
+       if($request->status == 'Approved'){
+            return redirect()->route('maintain.task',['id'=>$request->rep_id])->with(['status'=>'success','message' => 'Maintenance Request updated successfully!']);
+
+       }
+       else{
+        return back()->with(['status'=>'success','message' => 'Maintenance Request updated successfully!']);
+       }
+
+
+
+
+
         }
+
+
+         return back()->with(['status'=>'success','message' => 'Maintenance Request updated successfully!']);
+
+
     }
 
     public function updateresgin(Request $request)
@@ -505,20 +492,36 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
                 'request_status'=>$request->status,
                 'status'=>$request->status
             ]);
-                $req_token  = DB::table('users')->where('id',$request->hr)->first();
 
-                if ($req_token->device_token) {
-                    $taskTitle = "Resignation Request";
-                    $taskBody = $user_id->name. "Esculated for Resignation";
+            $res_cby = DB::table('resignations')->where('id',$request->id)->first();
 
-                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+                 $req_token_lt  = DB::table('users')->whereIn('id',[$request->hr,$res_cby->created_by])->get();
 
-                    Notification::create([
-                        'user_id' => $request->hr,
-                        'noty_type' => 'resignation',
-                        'type_id' => $request->id
-                    ]);
-            } // notification end
+                // dd($req_token_lt);
+
+
+            foreach($req_token_lt as $req_token){
+
+                    if (!is_null($req_token->device_token)) {
+
+                        $role_get = DB::table('roles')->where('id', $user_id->role_id)->first();
+
+                        $taskTitle = "Resignation Request";
+
+                        $taskBody = $user_id->name."[".$role_get->role."] Esculated for Resignation";
+
+                        $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                        Notification::create([
+                            'user_id' => $req_token->id,
+                            'noty_type' => 'resignation',
+                            'type_id' => $request->id,
+                            'title'=> $taskTitle,
+                            'body'=> $taskBody,
+                            'c_by'=>auth()->user()->id
+                        ]);
+                } // notification end
+            }
 
             // dd($req_token->device_token);
         }else{
@@ -542,15 +545,22 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
             $req_token  = DB::table('users')->where('id',$status->emp_id)->first();
 
             if ($req_token->device_token) {
+
+                $role_get = DB::table('roles')->where('id', $user_id->role_id)->first();
+
                 $taskTitle = "Resignation Request";
-                $taskBody = $user_id->name ."-" .$request->status . " for Resignation";
+
+                $taskBody = $user_id->name ."[".$role_get->role."]"."-" .$request->status . " for Resignation";
 
                 $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
                 Notification::create([
                     'user_id' => $status->emp_id,
                     'noty_type' => 'resignation',
-                    'type_id' => $request->id
+                    'type_id' => $request->id,
+                    'title'=> $taskTitle,
+                    'body'=> $taskBody,
+                    'c_by'=>auth()->user()->id
                 ]);
         } // notification end
 
@@ -580,11 +590,52 @@ $leave_count = $repair_count = $transfer_count = $resign_count = $recruit_count 
 
                 $recruit->save();
 
-                // $notification = Notification::create([
+                //  Notification::create([
                 //             'user_id' => $recruit->c_by,
                 //             'noty_type' => 'recuriment',
                 //             'type_id' => $request->id,
+                //             'title'=> $taskTitle,
+                //             'body'=> $taskBody,
+                //             'c_by'=>auth()->user()->id
                 //         ]);
+
+                $hr_asst =  DB::table('users')->where('role_id',5)->first();
+
+                $for_token  = DB::table('users')->whereIn('id',[$recruit->c_by,$hr_asst->id])->get();
+
+                foreach($for_token as $req_token){
+
+                if (!is_null($req_token->device_token)) {
+
+                    $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+                    if($req_token->dept=='HR'){
+
+                        $taskTitle ="Recruitment Request Status";
+                        $taskBody = "Kindly Prepare the Job post for Recruitment -REC".$request->RecruitId;
+
+                    }else{
+
+                        $taskTitle ="Recruitment Request Status";
+                        $taskBody = "Your Recruitment Request has been ".$request->status." by ".auth()->user()->name."[".$role_get->role."]";
+
+                    }
+
+
+                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                    Notification::create([
+                        'user_id' => $req_token->id,
+                        'noty_type' => 'recruitment',
+                        'type_id' => $request->RecruitId,
+                        'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>$user->id
+                    ]);
+                 } // notification end
+
+            } // foreach end....
+
 
             return response()->json(['message' => 'Recruitment updated successfully!'], 200);
         } catch (\Exception $e) {

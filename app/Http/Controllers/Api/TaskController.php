@@ -224,8 +224,12 @@ class TaskController extends Controller
                 $user_assign = User::findOrFail($assignTo);
 
                 if ($user_assign->device_token) {
-                    $taskTitle = $request->task_title;
-                    $taskBody = "You have been assigned a new task: " . $taskTitle;
+
+                    $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+                    $taskTitle = "New Task Assigned";
+                    $taskBody = "You have been assigned a new task: " . $taskTitle." by ".auth()->user()->name."[".$role_get->role."]";
+
 
                     $response = app(FirebaseService::class)->sendNotification(
                         $user_assign->device_token,
@@ -235,7 +239,10 @@ class TaskController extends Controller
                     Notification::create([
                         'user_id' => $assignTo,
                         'noty_type' => 'task',
-                        'type_id' => $task->id
+                        'type_id' => $task->id,
+                        'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>auth()->user()->id
                     ]);
 
                     $notifications[] = [
@@ -311,8 +318,12 @@ public function completedtaskstore(Request $request)
                 $user = User::findOrFail($assignTo);
 
                 if ($user->device_token) {
-                    $taskTitle = $request->task_title;
-                    $taskBody = "You have been assigned a new task: " . $taskTitle;
+
+                    $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+                    $taskTitle = "New Task Assigned";
+                    $taskBody = "You have been assigned a new task: " . $taskTitle." by ".auth()->user()->name."[".$role_get->role."]";
+
 
                     $response = app(FirebaseService::class)->sendNotification(
                         $user->device_token,
@@ -323,7 +334,10 @@ public function completedtaskstore(Request $request)
                     Notification::create([
                         'user_id' => $assignTo,
                         'noty_type' => 'task',
-                        'type_id' => $task->id
+                        'type_id' => $task->id,
+                        'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>auth()->user()->id
                     ]);
 
                     $notifications[] = [
@@ -575,125 +589,168 @@ public function notification_list(Request $request)
 
     $user = $request->user_id;
 
-    // $user = $request->input('user_id');
+     $notifications = DB::table('notifications')
 
-
-    if (!$user) {
-
-        return response()->json(['message' => 'Unauthorized'], 401);
-    }
-
-
-    $notifications = DB::table('notifications')
-        ->select('id', 'user_id', 'noty_type', 'type_id', 'created_at')
         ->where('user_id', $user)
-        ->whereIn('noty_type',['task','resignation','recruitment', 'Recruitment','leave'])
+        ->whereIn('noty_type',['task','resignation','recruitment', 'Recruitment','leave','Store Setup','Maintenance','E_store'])
+        // ->whereIn('noty_type',['leave','Store Setup','Maintenance','E_store'])
+        ->select('id', 'user_id', 'noty_type', 'type_id', 'created_at','title','body')
         ->OrderBy('id','DESC')
         ->get();
 
-        // dd($notifications);
-
-    if ($notifications->isEmpty()) {
-        return response()->json(['message' => 'No notifications found', 'data' => []]);
-    }
-
-    $data = [];
-
-    foreach ($notifications as $notification) {
-
-        $details = null;
-
-        switch ($notification->noty_type) {
-            case 'task':
-                $details = DB::table('tasks')
-                    ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
-                    ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
-                    ->leftJoin('users as assigned_to_user', 'tasks.assign_to', '=', 'assigned_to_user.id')
-                    ->leftJoin('users as assigned_by_user', 'tasks.assign_by', '=', 'assigned_by_user.id')
-                    ->leftJoin('roles as assigned_to_role', 'assigned_to_user.role_id', '=', 'assigned_to_role.id')
-                    ->leftJoin('roles as assigned_by_role', 'assigned_by_user.role_id', '=', 'assigned_by_role.id')
-                    ->where('tasks.id', $notification->type_id)
-                     ->where('tasks.assign_to', $notification->user_id)
-                    ->select(
-                        'tasks.id',
-                        'tasks.task_title',
-                        'categories.category',
-                        'sub_categories.subcategory',
-                        'assigned_to_user.name as assigned_to_name',
-                        'assigned_to_role.role as assigned_to_role',
-                        'assigned_by_user.name as assigned_by_name',
-                        'assigned_by_role.role as assigned_by_role'
-                    )
-                    ->orderBy('tasks.id','desc')
-                    ->first();
-                break;
-
-            case 'leave':
-                $details = DB::table('leaves')
-                ->where('leaves.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
-                        ->leftJoin('users', 'users.id', '=', 'leaves.created_by')  // Correct LEFT JOIN
-                        ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
-                        ->select('leaves.id as lev_id', 'leaves.status', 'users.name','leaves.request_type','roles.role','leaves.created_by as cr_by')
-                        ->orderBy('leaves.id', 'desc')
-                        ->first();
-
-                break;
 
 
-            case 'transfer1':
-                $details = DB::table('transfers')
-                    ->where('id', $notification->type_id)
-                    ->where('emp_id', $user)
-                    ->select('id as tra_id', 'transfer_description')
-                    ->orderBy('transfers.id as tra_id','desc')
-                    ->first();
-                break;
+    ////////////////////////////
 
-                case 'resignation':
-                    $details = DB::table('resignations')
-                        ->where('resignations.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
-                        ->leftJoin('users', 'users.id', '=', 'resignations.created_by')  // Correct LEFT JOIN
-                        ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
-                        ->select('resignations.id as res_id', 'resignations.status', 'users.name','roles.role','resignations.created_by as cr_by')
-                        ->orderBy('resignations.id', 'desc')
-                        ->first();
-                    break;
+    // $user = $request->input('user_id');
 
-            case ('recruitment'||'Recruitment'):
-                $details = DB::table('recruitments as rc')
-                    ->where('rc.id', $notification->type_id)
-                    ->leftJoin('users', 'users.id', '=', 'rc.c_by')  // Correct LEFT JOIN
-                    ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
-                    ->leftJoin('roles as rl',function($join){
-                            $join->on('rl.id','=','rc.role');
-                    })
-                    ->select('rc.id as rec_id', 'rc.description','rc.status','users.name','roles.role','rl.role as ap_role','rc.c_by as cr_by')
-                    ->orderBy('rc.id','desc')
-                    ->first();
-                break;
 
-            default:
-                Log::warning("Unknown notification type: " . $notification->noty_type);
-                break;
-        }
+    // if (!$user) {
 
-        // Convert created_at to IST
-        $created_at_ist = $notification->created_at
-            ? Carbon::parse($notification->created_at)->toDateTimeString()
-            : null;
+    //     return response()->json(['message' => 'Unauthorized'], 401);
+    // }
 
-        // Add to response data
-        $data[] = [
-            'id' => $notification->id,
-            'type_id' => $notification->type_id,
-            'user_id' => $notification->user_id,
-            'noty_type' => $notification->noty_type,
-            'created_at' => $created_at_ist,
-            'details' => $details ?? (object)[], // Ensure empty object instead of null
-        ];
-    }
 
-    return response()->json(['data' => $data]);
+    // $notifications = DB::table('notifications')
+    //     ->select('id', 'user_id', 'noty_type', 'type_id', 'created_at')
+    //     ->where('user_id', $user)
+    //      ->whereIn('noty_type',['leave','task','resignation','recruitment', 'Recruitment','leave','Store Setup','Maintenance','E_store'])
+    //     //  ->whereIn('noty_type',['Maintenance'])
+    //     ->OrderBy('id','DESC')
+    //     ->get();
+
+    //     // dd($notifications);
+
+    // if ($notifications->isEmpty()) {
+    //     return response()->json(['message' => 'No notifications found', 'data' => []]);
+    // }
+
+    // $data = [];
+
+    // foreach ($notifications as $notification) {
+
+    //     $details = null;
+
+    //     switch ($notification->noty_type) {
+    //         case 'task':
+    //             $details = DB::table('tasks')
+    //                 ->leftJoin('categories', 'tasks.category_id', '=', 'categories.id')
+    //                 ->leftJoin('sub_categories', 'tasks.subcategory_id', '=', 'sub_categories.id')
+    //                 ->leftJoin('users as assigned_to_user', 'tasks.assign_to', '=', 'assigned_to_user.id')
+    //                 ->leftJoin('users as assigned_by_user', 'tasks.assign_by', '=', 'assigned_by_user.id')
+    //                 ->leftJoin('roles as assigned_to_role', 'assigned_to_user.role_id', '=', 'assigned_to_role.id')
+    //                 ->leftJoin('roles as assigned_by_role', 'assigned_by_user.role_id', '=', 'assigned_by_role.id')
+    //                 ->where('tasks.id', $notification->type_id)
+    //                  ->where('tasks.assign_to', $notification->user_id)
+    //                 ->select(
+    //                     'tasks.id',
+    //                     'tasks.task_title',
+    //                     'categories.category',
+    //                     'sub_categories.subcategory',
+    //                     'assigned_to_user.name as assigned_to_name',
+    //                     'assigned_to_role.role as assigned_to_role',
+    //                     'assigned_by_user.name as assigned_by_name',
+    //                     'assigned_by_role.role as assigned_by_role'
+    //                 )
+    //                 ->orderBy('tasks.id','desc')
+    //                 ->first();
+    //             break;
+
+    //         case 'leave':
+    //             $details = DB::table('leaves')
+    //             ->where('leaves.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
+    //                     ->leftJoin('users', 'users.id', '=', 'leaves.created_by')  // Correct LEFT JOIN
+    //                     ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
+    //                     ->select('leaves.id as lev_id', 'leaves.status', 'users.name','leaves.request_type','roles.role','leaves.created_by as cr_by')
+    //                     ->orderBy('leaves.id', 'desc')
+    //                     ->first();
+
+    //             break;
+
+
+    //         case 'transfer1':
+    //             $details = DB::table('transfers')
+    //                 ->where('id', $notification->type_id)
+    //                 ->where('emp_id', $user)
+    //                 ->select('id as tra_id', 'transfer_description')
+    //                 ->orderBy('transfers.id as tra_id','desc')
+    //                 ->first();
+    //             break;
+
+    //             case 'resignation':
+    //                 $details = DB::table('resignations')
+    //                     ->where('resignations.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
+    //                     ->leftJoin('users', 'users.id', '=', 'resignations.created_by')  // Correct LEFT JOIN
+    //                     ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
+    //                     ->select('resignations.id as res_id', 'resignations.status', 'users.name','roles.role','resignations.created_by as cr_by')
+    //                     ->orderBy('resignations.id', 'desc')
+    //                     ->first();
+    //                 break;
+
+    //             case 'Store Setup':
+    //                 $details = DB::table('set_up')
+    //                     ->where('set_up.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
+    //                     ->leftJoin('users', 'users.id', '=', 'set_up.c_by')  // Correct LEFT JOIN
+    //                     ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
+    //                     ->select('set_up.id as set_id', 'set_up.status','set_up.st_name', 'users.name','roles.role','set_up.c_by as cr_by')
+    //                     ->orderBy('set_up.id', 'desc')
+    //                     ->first();
+    //                 break;
+    //             case 'E_store':
+    //                 $details = DB::table('e_setup')
+    //                     ->where('e_setup.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
+    //                     ->leftJoin('users', 'users.id', '=', 'e_setup.c_by')  // Correct LEFT JOIN
+    //                     ->leftJoin('set_up', 'set_up.id', '=', 'e_setup.set_id')  // Correct LEFT JOIN
+    //                     ->select('e_setup.id as e_set_id', 'e_setup.status','set_up.st_name','e_setup.sub')
+    //                     ->orderBy('e_setup.id', 'desc')
+    //                     ->first();
+    //                 break;
+    //             case 'Maintenance':
+    //                 $details = DB::table('maintain_req as main')
+    //                     ->where('main.id', $notification->type_id)  // Explicitly refer to 'resignations.id'
+    //                     ->leftJoin('users', 'users.id', '=', 'main.c_by')  // Correct LEFT JOIN
+    //                     ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
+    //                     ->leftJoin('stores', 'stores.id', '=', 'users.store_id')  // Correct LEFT JOIN
+    //                     ->select('main.id as main_id', 'main.status', 'users.name','roles.role','main.c_by as cr_by','stores.store_name','main.req_status','main.status','main.esculate_status')
+    //                     ->orderBy('main.id', 'desc')
+    //                     ->first();
+    //                 break;
+
+    //             case ('recruitment'||'Recruitment'):
+    //                 $details = DB::table('recruitments as rc')
+    //                     ->where('rc.id', $notification->type_id)
+    //                     ->leftJoin('users', 'users.id', '=', 'rc.c_by')  // Correct LEFT JOIN
+    //                     ->leftJoin('roles', 'roles.id', '=', 'users.role_id')  // Correct LEFT JOIN
+    //                     ->leftJoin('roles as rl',function($join){
+    //                             $join->on('rl.id','=','rc.role');
+    //                     })
+    //                     ->select('rc.id as rec_id', 'rc.description','rc.status','users.name','roles.role','rl.role as ap_role','rc.c_by as cr_by')
+    //                     ->orderBy('rc.id','desc')
+    //                     ->first();
+    //                 break;
+
+    //         default:
+    //             Log::warning("Unknown notification type: " . $notification->noty_type);
+    //             break;
+    //     }
+
+    //     // Convert created_at to IST
+    //     $created_at_ist = $notification->created_at
+    //         ? Carbon::parse($notification->created_at)->toDateTimeString()
+    //         : null;
+
+    //     // Add to response data
+    //     $data[] = [
+    //         'id' => $notification->id,
+    //         'type_id' => $notification->type_id,
+    //         'user_id' => $notification->user_id,
+    //         'noty_type' => $notification->noty_type,
+    //         'created_at' => $created_at_ist,
+    //         'details' => $details ?? (object)[], // Ensure empty object instead of null
+    //     ];
+    // }
+
+    return response()->json(['data' => $notifications]);
 }
 
 

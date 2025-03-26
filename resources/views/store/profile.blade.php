@@ -53,7 +53,7 @@
                                 <div class="col-sm-12 col-md-12 col-xl-12 mb-3">
                                     <h6 class="mb-1">Store Start Time</h6>
                                     <h5 class="mb-0">
-                                       {{ (new DateTime($store->store_start_time))->format('h:i A') }}
+                                        {{ (new DateTime($store->store_start_time))->format('h:i A') }}
 
                                     </h5>
                                 </div>
@@ -90,21 +90,24 @@
                     <ul class="nav nav-tabs d-flex justify-content-start align-items-center gap-md-3 gap-xl-3 border-0"
                         id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="profiletabs active"
-                                data-url="{{ route('store.details', ['id' => $store->id]) }}" id="details-tab"
-                                role="tab" data-bs-toggle="tab" type="button" data-bs-target="#details"
+                            <button class="profiletabs active" data-url="{{ route('store.details', ['id' => $store->id]) }}"
+                                id="details-tab" role="tab" data-bs-toggle="tab" type="button" data-bs-target="#details"
                                 aria-controls="details" aria-selected="true">Details</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="profiletabs" data-url="{{ route('store.strength', ['id' => $store->id]) }}"
-                                id="strength-tab" role="tab" data-bs-toggle="tab" type="button"
-                                data-bs-target="#strength" aria-controls="strength" aria-selected="false">Strength</button>
+                                id="strength-tab" role="tab" data-bs-toggle="tab" type="button" data-bs-target="#strength"
+                                aria-controls="strength" aria-selected="false">Strength</button>
                         </li>
+                        {{-- <!-- <li class="nav-item" role="presentation">
+                            <button class="profiletabs" data-url="{{ route('store.workupdate') }}" id="workupdate-tab"
+                                role="tab" data-bs-toggle="tab" type="button" data-bs-target="#workupdate"
+                                aria-controls="workupdate" aria-selected="false">Work Update</button>
+                        </li> --> --}}
                     </ul>
                 </div>
 
                 <div class="tab-content" id="tabContentWrapper">
-
 
                     <p>Loading...</p>
 
@@ -117,22 +120,22 @@
     </div>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             const loadContent = (url) => {
                 $("#tabContentWrapper").html('<p>Loading...</p>');
                 $.ajax({
                     url: url,
                     type: 'GET',
-                    success: function(data) {
+                    success: function (data) {
                         $("#tabContentWrapper").html(data);
                     },
-                    error: function() {
+                    error: function () {
                         $("#tabContentWrapper").html("<p>Error loading content</p>");
                     }
                 });
             };
 
-            $(".profiletabs").on("click", function() {
+            $(".profiletabs").on("click", function () {
                 $(".profiletabs").removeClass("active");
                 $(this).addClass("active");
 

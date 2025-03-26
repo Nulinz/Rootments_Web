@@ -7,120 +7,129 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Repair;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use App\Services\FirebaseService;
+use App\Models\Notification;
 
 
 class RepairController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $user_id = Auth::user()->id;
 
-        $repair=DB::table('repairs')
-                ->leftjoin('stores','stores.id','=','repairs.store_code')
-                ->select('repairs.*','stores.store_code')
-                ->where('repairs.created_by',$user_id)
-                ->get();
-
-        return view('repair.list',['repair'=>$repair]);
+        $rep = DB::table('maintain_req')->where('maintain_req.c_by',auth()->user()->id)
+        ->leftJoin('users','users.id','=','maintain_req.req_to')
+        ->leftJoin('categories','categories.id','=','maintain_req.cat')
+        ->leftJoin('sub_categories','sub_categories.id','=','maintain_req.sub')
+        ->select('maintain_req.*','users.name','categories.category','sub_categories.subcategory','maintain_req.status as m_status')
+        ->get();
+// dd($rep);
+        return view('repair.list',['rep'=>$rep]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('repair.add');
+        $cat =  DB::table('categories')->whereIn('id',[17,18,19,20,21,22,23,24,25,26])->get();
+
+        $req = DB::table('users')->whereIn('role_id',[2,10,11])->get();
+
+        return view('repair.add',['cat'=>$cat,'req_to'=>$req]);
 
     }
-    public function getstorename(Request $request)
+
+    public function store(Request $req)
     {
-         $user_id = auth()->user()->id;
 
-        $storename = DB::table('stores')
-            ->leftJoin('users', 'users.store_id', '=', 'stores.id')
-            ->select('stores.id', 'stores.store_code', 'stores.store_name')
-            ->where('users.id', $user_id)
-            ->first();
+        $user = Auth::user();
+
+        $ins = DB::table('maintain_req')->insertGetId([
+            'title'=>$req->title,
+            'cat'=>$req->category,
+            'sub'=>$req->subcategory,
+            'req_date'=>$req->repair_date,
+            'desp'=>$req->desp,
+            'req_to'=>$req->request_to,
+            'req_status'=>'Pending',
+            'status'=>'Pending',
+            'c_by'=>$user->id,
+            'created_at'=>now(),
+            'updated_at'=>now(),
+        ]);
+
+        $path = 'assets/images/Repair/';
+
+        if ($req->hasFile('repair_file')) {
+            $cer_file = $req->file('repair_file');
+            // $name = date('y') . '-' . Str::upper(Str::random(8)) . '.' . $file->getClientOriginalExtension();
+                $cer_ext = $cer_file->getClientOriginalExtension();
+                $cer_name = uniqid('repair_file_') . '.' . $cer_ext; // Generate a unique filename
+
+            $cer_file->move($path, $cer_name);
+
+            $f_path = $path.$cer_name;
 
 
-        return response()->json($storename);
-    }
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-         $user_id = auth()->user()->id;
-
-          $role_get = DB::table('roles')
-            ->leftJoin('users', 'users.role_id', '=', 'roles.id')
-            ->select('roles.id', 'roles.role', 'roles.role_dept')
-            ->where('users.id', $user_id)
-            ->first();
-
-        if ($role_get) {
-            $repair = new Repair();
-            $repair->store_code = $request->store_code;
-            $repair->store_name = $request->store_name;
-            $repair->repair_date = $request->repair_date;
-            $repair->repair_description = $request->repair_description;
-
-            if ($request->hasFile('repair_file')) {
-                    $file = $request->file('repair_file');
-                    $name = date('y') . '-' . Str::upper(Str::random(8)) . '.' . $file->getClientOriginalExtension();
-                    $path = 'assets/images/Repair/';
-                    $file->move($path, $name);
-
-                    $repair->repair_file = $path . $name;
-                }
-
-            $repair->created_by = $user_id;
-            if ($role_get->role == 'Store Manager') {
-                $repair->request_to = 3;
-            }
-            else {
-                $repair->request_to = 12;
-            }
-
-            $repair->save();
-
-            return redirect()->route('repair.index')->with([
-                'status' => 'success',
-                'message' => 'Repair Request Added successfully!'
-            ]);
         }
+
+        if (!empty($f_path)) {
+            $up_file = DB::table('maintain_req')->where('id', $ins)
+                ->update(['file'=>$f_path]);
+        }
+
+
+                $req_token  = DB::table('users')->where('id',$req->request_to)->first();
+
+                $store_name = DB::table('stores')->where('id',auth()->user()->store_id)->first();
+
+                if (!is_null($req_token->device_token)) {
+
+                    $role_get = DB::table('roles')->where('id', auth()->user()->role_id)->first();
+
+                    $taskTitle ="Maintenance Request";
+
+                    $taskBody = auth()->user()->name ."[".$role_get->role."]". " has Request For Maintenance Request" ." - ".$store_name->store_name;
+
+                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+
+                    Notification::create([
+                        'user_id' => $req_token->id ?? 0,
+                        'noty_type' => 'Maintenance',
+                        'type_id' => $ins,
+                        'title'=> $taskTitle,
+                        'body'=> $taskBody,
+                        'c_by'=>auth()->user()->id
+                    ]);
+                } // notification end
+
+        $rep = DB::table('maintain_req')->where('maintain_req.c_by',auth()->user()->id)
+        ->leftJoin('users','users.id','=','maintain_req.req_to')
+        ->leftJoin('categories','categories.id','=','maintain_req.cat')
+        ->leftJoin('sub_categories','sub_categories.id','=','maintain_req.sub')
+        ->select('maintain_req.*','users.name','categories.category','sub_categories.subcategory','maintain_req.status as m_status')
+        ->get();
+
+        if($ins){
+            return response()->view('repair.list',['rep'=> $rep,'status'=>'success','message'=>'Maintenance Request added Successfully']);
+        }else{
+            return response()->view('repair.list',['rep'=> $rep,'status'=>'Failed','message'=>'Maintenance Request Failed to add']);
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         //
