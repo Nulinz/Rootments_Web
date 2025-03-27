@@ -19,7 +19,7 @@
 
         <div class="container-fluid mt-4 listtable">
             <div class="table-wrapper">
-                <form action="{{ route('store.work') }}" method="POST">
+                <form action="{{ route('store.work') }}" method="POST" id="c_form">
                     @csrf
                     <table class="table table-hover table-striped">
                         <thead>
@@ -220,13 +220,14 @@
                         </tbody>
                     </table>
                     <div class="col-sm-12 col-md-12 col-xl-12 mt-3 d-flex justify-content-center align-items-center">
-                        <button type="submit" class="formbtn">Save</button>
+                        <button type="submit" id="sub" class="formbtn">Save</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
+    <script src="{{ asset('assets/js/form_script.js') }}"></script>
     <script>
         $(document).ready(function() {
     // Trigger calculation whenever any of the 'lymtd' fields change

@@ -12,7 +12,7 @@
         <div class="sidebodyhead my-3">
             <h4 class="m-0">Job Posting Details</h4>
         </div>
-        <form action="{{ route('job_post_add') }}" method="post" id="">
+        <form action="{{ route('job_post_add') }}" method="post" id="c_fomr">
             @csrf
             <div class="container-fluid maindiv">
                 <div class="row">
@@ -112,10 +112,12 @@
             </div>
 
             <div class="col-sm-12 col-md-12 col-xl-12 mt-3 d-flex justify-content-center align-items-center">
-                <button type="submit" id="submitBtn" class="formbtn">Save</button>
+                <button type="submit" id="sub" class="formbtn">Save</button>
             </div>
         </form>
     </div>
+
+    <script src="{{ asset('assets/js/form_script.js') }}"></script>
 
     <script>
         $('#rec_id').on('change',function(){

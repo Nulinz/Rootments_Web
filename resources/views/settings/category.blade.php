@@ -2,7 +2,7 @@
 
     <!-- Category Tab -->
     <div class="container px-0">
-        <form action="{{ route('category.store') }}" method="POST">
+        <form action="{{ route('category.store') }}" method="POST" id="c_form">
             @csrf
             <div class="container-fluid maindiv">
                 <div class="row">
@@ -24,9 +24,11 @@
             </div>
 
             <div class="col-sm-12 col-md-12 col-xl-12 mt-3 d-flex justify-content-center align-items-center">
-                <button type="submit" class="formbtn">Save</button>
+                <button type="submit" id="sub" class="formbtn">Save</button>
             </div>
         </form>
+
+
 
         <div class="sidebodyhead mt-4">
             <h4 class="m-0">Category Details</h4>
@@ -101,6 +103,8 @@
     </div>
 
 </div>
+
+<script src="{{ asset('assets/js/form_script.js') }}"></script>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 

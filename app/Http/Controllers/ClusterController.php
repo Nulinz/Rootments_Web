@@ -366,7 +366,7 @@ class ClusterController extends Controller
         $cluster = DB::table('m_cluster as mc')
             ->leftJoin('users as user', 'user.id', '=', 'mc.cl_name') // Joining users table
             ->where('mc.id', $id) // Filter by the cluster id
-            ->select('user.name', 'user.contact_no', 'user.email', 'mc.alter', 'user.address', 'user.pincode', 'mc.location', 'user.profile_image') // Select the required fields from users table
+            ->select('user.name', 'user.contact_no', 'user.email', 'mc.alter_con as alter', 'user.address', 'user.pincode', 'mc.location', 'user.profile_image') // Select the required fields from users table
             ->first(); // Get the first matching result
 
 

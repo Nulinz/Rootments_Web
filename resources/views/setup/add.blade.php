@@ -12,7 +12,7 @@
         <div class="sidebodyhead my-3">
             <h4 class="m-0">Store Setup Details</h4>
         </div>
-        <form action="{{ route('setup.store') }}" method="POST" id="myForm">
+        <form action="{{ route('setup.store') }}" method="POST" id="c_form">
             @csrf
             <div class="container-fluid maindiv">
                 <div class="row">
@@ -53,10 +53,6 @@
         </form>
     </div>
 
-    <script>
-        $('#myForm').submit(function() {
-            $('#sub').prop('disabled', true).text('Saving...');
-        });
-    </script>
+<script src="{{ asset('assets/js/form_script.js') }}"></script>
 
 @endsection

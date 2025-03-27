@@ -224,9 +224,14 @@ class location_cnt extends Controller
 
             }
 
+
+
+            session()->flash('status', 'success');   // Use 'flash' to keep the session only for the next request
+            session()->flash('message', $alreadyLoggedIn ? 'CheckOut Update Success' : 'CheckIn Update Success');
+
             // Return the district (or locality) as the response
             return response()->json([
-                'status'=>'Success',
+                'status'=>'success',
                 'attd_status'=>'CheckIn Update Success',
                 'district' => $district ?? 'District not found'
             ]);

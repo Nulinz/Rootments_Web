@@ -69,12 +69,6 @@ class LeaveController extends Controller
 
         $user_id = auth()->user();
 
-        //   $role_get = DB::table('roles')
-        //     ->leftJoin('users', 'users.role_id', '=', 'roles.id')
-        //     ->select('roles.id', 'roles.role', 'roles.role_dept')
-        //     ->where('users.id', $user_id->id)
-        //     ->first();
-
 
             $leave = new Leave();
             $leave->start_date = $request->start_date;
@@ -86,7 +80,7 @@ class LeaveController extends Controller
             $leave->user_id = $user_id->id;
             $leave->request_to = $request->request_to;
             $leave->created_by = $user_id->id;
-            $leave->save();
+            $leave_save = $leave->save();
 
             $req_token  = DB::table('users')->where('id',$request->request_to)->first();
 
@@ -109,68 +103,11 @@ class LeaveController extends Controller
                 } // notification end
 
 
-            // $role = $role_get->role;
-            // $role_dept = $role_get->role_dept;
 
-            // if($user_id->role_id >= 13 && $user_id->role_id <= 19){
-
-            // $store_man = DB::table('users')->where('store_id',$user_id->store_id)->where('role_id',12)->first();
-            // $leave->request_to = $store_man->id ?? 2;
-            // $req_to = $store_man->id ?? 2;
-            // $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
-
-            // }
-            // else if(!hasAccess($user_id->role_id,'leave')){
-
-            //     $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->first();
-
-            //     switch($dept->role_dept) {
-            //         // case 'HR':
-            //         //     $arr = 3;
-            //         //     break;
-            //         case 'Finance':
-            //             $arr = 7;
-            //             break;
-            //         case 'Maintenance':
-            //             $arr = 30;
-            //             break;
-            //         case 'Warehouse':
-            //             $arr = 37;
-            //             break;
-            //         case 'Purchase':
-            //             $arr = 41;
-            //             break;
-
-            //     }
-
-            //     $arr1 = DB::table('users')->where('role_id',$arr)->select('id')->first();
-
-            //     // dd($dept);
-
-            //     $leave->request_to = $arr1->id;
-            //     $req_to = $arr1->id;
-            //     $req_token  = DB::table('users')->where('id',$arr1->id)->first();
-
-            //     }
-            //     else{
-            //             $leave->request_to = $request->request_to;
-            //             $req_to = $request->request_to;
-            //             $req_token  = DB::table('users')->where('id',$request->request_to)->first();
-            //             // dd($req_token);
-            //         }
-
-
-
-
-
-
-
-
-
-        return redirect()->route('leave.index')->with([
-            'status' => 'success',
-            'message' => 'Leave Request Added successfully!'
-        ]);
+            return redirect()->route('leave.index')->with([
+                'status' => $leave_save ? 'success' : 'failed',
+                'message' => $leave_save ? 'Leave Request Added successfully!' : 'Leave Request Failed to Add!'
+            ]);
     }
 
 

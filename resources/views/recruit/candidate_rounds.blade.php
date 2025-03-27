@@ -99,7 +99,7 @@
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('add_round') }}" method="POST">
+                <form action="{{ route('add_round') }}" method="POST" id="c_form">
                     @csrf
                     <input hidden type="text" name="app_id" value="{{ $pro->jobid }}">
                     <div class="col-sm-12 col-md-12 mb-3">
@@ -137,13 +137,14 @@
                             required></textarea>
                     </div>
                     <div class="d-flex justify-content-center align-items-center mx-auto">
-                        <button type="submit" class="modalbtn">Save</button>
+                        <button type="submit" id="sub" class="modalbtn">Save</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script src="{{ asset('assets/js/form_script.js') }}"></script>
 
 <script>
     $('#pop_status').on('change',function(){

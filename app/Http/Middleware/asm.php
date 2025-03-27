@@ -19,36 +19,11 @@ class asm
     public function handle(Request $request, Closure $next): Response
     {
 
-        $user = Auth::user();
+        if (Auth::check()) {
+            // Eager load the role_rel for the authenticated user
+            Auth::user()->load('role_rel');
+        }
 
-        // // if($user->role_id==13 && !session()->has('role_updated')){
-        // if($user->role_id==13){
-
-        //     $asm_count = DB::table('asm_store')->where('store_id',$user->store_id)->where('emp_id',$user->id)->count();
-
-
-        //     // session(['role_id' => 12]);
-        //     session(['role_updated' => true]);
-
-        //     // if (session('role_id')&&($asm_count>0)) {
-        //         // Update the role_id of the authenticated user
-        //         $user = Auth::user();
-        //         $user->role_id = 12;  // Update role_id from the session
-        //         Auth::setUser($user);  // Re-set the user to reflect the new role_id
-        //     // }
-
-
-        // }
-
-        //   dd($user->role_id, session('role_id'), Auth::user());
-
-
-
-        // if (Auth::check() && session()->has('role_id')) {
-        //     $user = Auth::user();
-        //     $user->role_id = session('role_id');  // Update role_id from session
-        //     Auth::setUser($user);  // Update the Auth object with the new role_id
-        // }
 
 
         return $next($request);

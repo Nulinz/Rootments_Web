@@ -15,7 +15,7 @@
         <div class="sidebodyhead my-3">
             <h4 class="m-0">Cluster Details</h4>
         </div>
-        <form action="{{ route('cluster.submit') }}" method="POST">
+        <form action="{{ route('cluster.submit') }}" method="POST" id="c_form">
             @csrf
             <div class="container-fluid maindiv">
                 <div class="row">
@@ -100,11 +100,12 @@
 
             <div class="col-sm-12 col-md-12 col-xl-12 mt-3 d-flex justify-content-center align-items-center">
                 <a href="">
-                    <button type="submit" class="formbtn">Save</button>
+                    <button type="submit" id="sub" class="formbtn">Save</button>
                 </a>
             </div>
         </form>
     </div>
+    <script src="{{ asset('assets/js/form_script.js') }}"></script>
 
     <script>
         $('#clustername').on('change', function () {

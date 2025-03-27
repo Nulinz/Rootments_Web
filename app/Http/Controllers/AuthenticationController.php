@@ -29,13 +29,15 @@ class AuthenticationController extends Controller
 
             if (Auth::attempt(['emp_code' => $emp_code, 'password' => $password])) {
 
-                $user = DB::table('users')
-                    ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
-                    ->where('users.id', Auth::id())
-                    ->select('roles.id as role_id','roles.role','roles.role_dept','users.store_id','users.id')
-                    ->first();
+                // $user = DB::table('users')
+                //     ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
+                //     ->where('users.id', Auth::id())
+                //     ->select('roles.role')
+                //     ->first();
 
+                    // $user = Auth::user()->load('role_rel'); // After fetching the user, eager load the role
 
+                    // dd($user);
 
                         $routes = [
                             1 => 'gm.dashboard',
@@ -53,7 +55,8 @@ class AuthenticationController extends Controller
                             41 => 'purchase.index',
                         ];
 
-                    $route = $routes[$user->role_id] ?? 'mydash.dashboard';
+                    // $route = $routes[$user->role_id] ?? 'mydash.dashboard';
+                    $route = $routes[auth()->user()->role_id] ?? 'mydash.dashboard';
 
 
 

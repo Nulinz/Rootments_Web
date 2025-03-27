@@ -87,7 +87,7 @@
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('set.liststore') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('set.liststore') }}" method="POST" enctype="multipart/form-data" id="c_form">
                     @csrf
                     <input type="hidden" class="form-control" name="set_id" value="{{ $set_id }}">
                     <div class="col-sm-12 col-md-12 mb-3">
@@ -121,13 +121,15 @@
                         <input type="file" class="form-control" name="attachment" id="attachment">
                     </div>
                     <div class="d-flex justify-content-center align-items-center mx-auto">
-                        <button type="submit" class="modalbtn">Update</button>
+                        <button type="submit" id="sub" class="modalbtn">Update</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+
 
 <!-- Update Modal -->
 <div class="modal fade" id="updatestsModal" tabindex="-1" aria-labelledby="updatestsModalLabel" aria-hidden="true">
@@ -138,7 +140,7 @@
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('liststore.update') }}" method="POST">
+                <form action="{{ route('liststore.update') }}" method="POST" id="c_form1">
                     @csrf
                     <input type="hidden" class="form-control" name="e_id" id="e_id">
                     <div class="col-sm-12 col-md-12 mb-3">
@@ -155,13 +157,15 @@
                             placeholder="Enter Remarks">nil</textarea>
                     </div>
                     <div class="d-flex justify-content-center align-items-center mx-auto">
-                        <button type="submit" class="modalbtn">Update</button>
+                        <button type="submit" id="sub1" class="modalbtn">Update</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script src="{{ asset('assets/js/form_script.js') }}"></script>
 
 <script>
     $('.listtdbtn').on('click',function(){

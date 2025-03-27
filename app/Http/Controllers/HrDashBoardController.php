@@ -139,6 +139,7 @@ class HrDashBoardController extends Controller
             $absent = DB::table('leaves')
                 ->whereDate('start_date', '<=', $currentDate) // Check if the current date is after or equal to the start_date
                 ->whereDate('end_date', '>=', $currentDate)
+                ->where('leaves.status','Approved')
                 ->leftJoin('users as us','us.id','=','leaves.user_id')
                 ->leftJoin('roles','roles.id','=','us.role_id')
                 ->select('us.name','roles.role','roles.role_dept','us.profile_image') // Check if the current date is before or equal to the end_date

@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="date">Date <span>*</span></label>
-                        <input type="date" class="form-control" name="date" id="date" required value="{{ old('date') }}">
+                        <input type="date" class="form-control" name="date" id="date" required value="{{ date('Y-m-d') }}">
                     </div>
                 </div>
             </div>

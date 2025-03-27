@@ -100,10 +100,10 @@ trait common
 
        switch($r_id) {
         case 1:
-            $arr = [1];
+            $arr = [3,4,5];
             break;
         case 2:
-            $arr = [2];
+            $arr = [3,4,5];
             break;
         case 3:
         case 4:

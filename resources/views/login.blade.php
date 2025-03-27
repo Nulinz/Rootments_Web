@@ -44,7 +44,7 @@
             </div>
             <!-- <h2 class="form-title" id="signup"><span>or</span>Sign up</h2> -->
         </div>
-        <form action="{{ route('login.submit') }}" method="POST">
+        <form action="{{ route('login.submit') }}" method="POST" id="log_form">
             @csrf
             <div class="login slide-up">
                 <div class="center">
@@ -67,11 +67,12 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="submit-btn">Login</button></a>
+                    <button type="submit" id="sub" class="submit-btn">Login</button></a>
                 </div>
             </div>
         </form>
     </div>
+
 
     <!-- SwalFire -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -83,6 +84,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
+<script>
+    // form two
+        $('#log_form').submit(function(e) {
+            // e.preventDefault();
+            $('#sub').prop('disabled', true).text('Logging...');
+        });
+</script>
 
 <script>
     function togglePasswordVisibility(inputId, showId, hideId) {

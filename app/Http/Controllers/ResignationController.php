@@ -8,12 +8,16 @@ use App\Models\Resignation;
 use Illuminate\Support\Facades\Auth;
 use App\Services\FirebaseService;
 use App\Models\Notification;
+use App\Http\Controllers\trait\common;
 
 class ResignationController extends Controller
 {
+    use common;
     /**
      * Display a listing of the resource.
      */
+
+
         public function index()
     {
         $user_id = Auth::user()->id;
@@ -26,26 +30,6 @@ class ResignationController extends Controller
 
         ->get();
 
-        // dd($resgination);
-
-        // foreach($resgination as $res){
-
-        //     $resing_tbl = DB::table('resign_list')->where('res_id', $res->id)->latest()->first();
-
-        //     // If a record is found, assign the status to the res_status field
-        //     // if ($resing_tbl) {
-        //         $res->res_status = $resing_tbl->status ?? null;
-        //         $res->res_formal = $resing_tbl->formality ?? null;
-        //     // }else{
-
-        //     // }
-
-        // }
-
-        //  dd($resgination);
-
-
-
         return view('resgination.list',['resgination'=>$resgination]);
     }
 
@@ -54,41 +38,19 @@ class ResignationController extends Controller
      */
     public function create()
     {
-        // $user_id = Auth::user();
+        $show = $this->role_dept();
 
-        // if($user_id->role_id >= 13 && $user_id->role_id <= 19){
+        $list = DB::table('users')
+        ->whereIn('role_id', $show)
+        ->when($show == [12], function ($query) {
+            return $query->where('store_id', auth()->user()->store_id);
+        })
+        ->select('users.id', 'users.name')
+        ->get();
 
-        // } else if(!hasAccess($user_id->role_id,'leave')){
+        // $hr = DB::table('users')->whereIn('role_id', [3,4,5])->select('users.id','users.name')->get();
 
-        //     $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->first();
-
-        //     switch($dept->role_dept) {
-        //         case 'HR':
-        //             $arr = 3;
-        //             break;
-        //         case 'Finance':
-        //             $arr = 7;
-        //             break;
-        //         case 'Maintenance':
-        //             $arr = 30;
-        //             break;
-        //         case 'Warehouse':
-        //             $arr = 37;
-        //             break;
-        //         case 'Purchase':
-        //             $arr = 41;
-        //             break;
-
-        //     }
-
-        // }else{
-
-        // }
-        $hr = DB::table('users')->whereIn('role_id', [3,4,5])->select('users.id','users.name')->get();
-
-        $user_list =Auth::user();
-
-        return view('resgination.add',['hr_list'=>$hr,'user_log'=>$user_list]);
+        return view('resgination.add',['hr_list'=>$list]);
 
     }
 
@@ -97,15 +59,8 @@ class ResignationController extends Controller
      */
     public function store(Request $request)
     {
-        $user_id = auth()->user();
+         $user_id = auth()->user();
 
-          $role_get = DB::table('roles')
-            ->leftJoin('users', 'users.role_id', '=', 'roles.id')
-            ->select('roles.id', 'roles.role', 'roles.role_dept')
-            ->where('users.id', $user_id->id)
-            ->first();
-
-        if ($role_get) {
 
             $resgination = new Resignation();
             $resgination->emp_id =$request->emp_id;
@@ -114,86 +69,38 @@ class ResignationController extends Controller
             $resgination->loc =$request->loc;
             $resgination->res_date =$request->res_date;
             $resgination->res_reason =$request->res_reason;
-            $resgination->created_by=$user_id->id;
+            $resgination->created_by= $user_id->id;
+            $resgination->request_to = $request->request_to;
+             $res_save = $resgination->save();
 
-            $role = $role_get->role;
-            $role_dept = $role_get->role_dept;
+            $req_token  = DB::table('users')->where('id',$request->request_to)->first();
 
-            if($user_id->role_id >= 13 && $user_id->role_id <= 19){
+            if (!is_null($req_token->device_token)) {
 
-                $store_man = DB::table('users')->where('store_id',$user_id->store_id)->where('role_id',12)->first();
-                        $resgination->request_to = $store_man->id ?? 2;
-                         $req_to = $store_man->id ?? 2;
-                        $req_token  = DB::table('users')->where('id',$store_man->id ?? 2)->first();
-            }
-            else if(!hasAccess($user_id->role_id,'leave')){
-
-                $dept = DB::table('roles')->where('id',$user_id->role_id)->select('role_dept')->first();
-
-                switch($dept->role_dept) {
-                    case 'HR':
-                        $arr = 3;
-                        break;
-                    case 'Finance':
-                        $arr = 7;
-                        break;
-                    case 'Maintenance':
-                        $arr = 30;
-                        break;
-                    case 'Warehouse':
-                        $arr = 37;
-                        break;
-                    case 'Purchase':
-                        $arr = 41;
-                        break;
-
-                }
-
-                $arr1 = DB::table('users')->where('role_id',$arr)->select('id')->first();
-
-                $resgination->request_to = $arr1->id;
-                $req_to = $arr1->id;
-                $req_token  = DB::table('users')->where('id',$arr1->id)->first();
-
-            } else{
-                    $resgination->request_to = $request->request_to;
-                     $req_to = $request->request_to;
-                    $req_token  = DB::table('users')->where('id',$request->request_to)->first();
-                }
-
-
-            $resgination->save();
-
-
-            // dd($req_token->device_token);
-
-
-            if ($req_token->device_token) {
                 $role_get = DB::table('roles')->where('id', $user_id->role_id)->first();
 
-                    $taskTitle = "Resignation Request";
+                $taskTitle = "Resignation Request";
 
-                    $taskBody = $user_id->name."[".$role_get->role."] Requested for Resignation";
+                $taskBody = $user_id->name."[".$user_id->role_rel->role."] Requested for Resignation";
 
-                    $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
+                $response = app(FirebaseService::class)->sendNotification($req_token->device_token,$taskTitle,$taskBody);
 
-                    Notification::create([
-                        'user_id' => $req_to,
-                        'noty_type' => 'resignation',
-                        'type_id' => $resgination->id,
-                        'title'=> $taskTitle,
-                        'body'=> $taskBody,
-                        'c_by'=>auth()->user()->id
-                    ]);
+                Notification::create([
+                    'user_id' => $req_token->id,
+                    'noty_type' => 'resignation',
+                    'type_id' => $resgination->id,
+                    'title'=> $taskTitle,
+                    'body'=> $taskBody,
+                    'c_by'=>auth()->user()->id
+                ]);
+
+                // dd($response);
             } // notification end
 
-        }
-
-        // dd($req_token->device_token);
 
         return redirect()->route('resignation.index')->with([
-            'status' => 'success',
-            'message' => 'Resgination Request Added successfully!',
+            'status' => $res_save ? 'success' : 'failed',
+            'message' => $res_save ? 'Resgination Request Added successfully!' : 'Resgination Request Failed to Add!'
         ]);
     }
 

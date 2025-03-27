@@ -379,7 +379,7 @@
                     <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="row" id="taskForm" enctype="multipart/form-data">
+                    <form class="row" id="taskForm" enctype="multipart/form-data" id="c_form">
                         <input type="hidden" name="f_id" id="f_id" value="">
                         <input type="hidden" name="task_id" id="task_id" value="">
                         <input type="hidden" name="category_id" id="cat_id" value="">
@@ -446,7 +446,7 @@
                         </div>
 
                         <div class="d-flex justify-content-center align-items-center mx-auto">
-                            <button type="submit" class="modalbtn">Assign</button>
+                            <button type="submit" id="sub" class="modalbtn">Assign</button>
                         </div>
                     </form>
 
@@ -454,6 +454,8 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ asset('assets/js/form_script.js') }}"></script>
 
     <script>
         $(document).ready(function () {

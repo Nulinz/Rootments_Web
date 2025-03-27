@@ -11,7 +11,7 @@
         <div class="sidebodyhead my-3">
             <h4 class="m-0">Maintenance Request Details</h4>
         </div>
-        <form action="{{ route('repair.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('repair.store') }}" method="POST" enctype="multipart/form-data" id="c_form">
             @csrf
             <div class="container-fluid maindiv my-3">
                 <div class="row">
@@ -63,10 +63,12 @@
             </div>
 
             <div class="col-sm-12 col-md-12 col-xl-12 mt-3 d-flex justify-content-center align-items-center">
-                <button type="submit" class="formbtn">Request</button>
+                <button type="submit" id="sub" class="formbtn">Request</button>
             </div>
         </form>
     </div>
+
+    <script src="{{ asset('assets/js/form_script.js') }}"></script>
 
     <script>
         $(document).ready(function() {

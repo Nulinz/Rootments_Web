@@ -53,7 +53,7 @@
             </div>
             <div class="modal-body">
                 {{-- @dd($for_arr); --}}
-                <form action="{{ route('resign.formality') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('resign.formality') }}" method="POST" enctype="multipart/form-data" id="c_form">
                     @csrf
                     <input hidden type="text" name="res_id" value="{{ $pro->res_id }}">
                     <div class="col-sm-12 col-md-12 mb-3">
@@ -85,10 +85,11 @@
                         <input type="file" class="form-control" name="attachment" id="attachment">
                     </div>
                     <div class="d-flex justify-content-center align-items-center mx-auto">
-                        <button type="submit" class="modalbtn">Save</button>
+                        <button type="submit" id="sub" class="modalbtn">Save</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script src="{{ asset('assets/js/form_script.js') }}"></script>

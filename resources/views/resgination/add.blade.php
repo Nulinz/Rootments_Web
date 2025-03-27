@@ -11,14 +11,19 @@
         <div class="sidebodyhead my-3">
             <h4 class="m-0">Resign Request Details</h4>
         </div>
-        <form action="{{ route('resignation.store') }}" method="post">
+        <form action="{{ route('resignation.store') }}" method="post" id="c_form">
             @csrf
+            @php
+            $user = auth()->user();
+            $role = $user->role_id;
+
+            @endphp
             <div class="container-fluid maindiv my-3">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="empid">Employee Code <span>*</span></label>
-                        <input type="text" class="form-control" value="{{ $user_log->emp_code }}" readonly>
-                        <input hidden type="text" name="emp_id" value="{{ $user_log->id }}">
+                        <input type="text" class="form-control" value="{{ $user->emp_code }}" readonly>
+                        <input hidden type="text" name="emp_id" value="{{ $user->id }}">
                         {{-- <select class="form-select" name="emp_id" id="empcode" autofocus required>
                             <option value="" selected disabled>Select Options</option>
 
@@ -26,7 +31,7 @@
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                         <label for="empname">Employee Name <span>*</span></label>
-                        <input type="text" class="form-control" name="emp_name" id="empname" value="{{ $user_log->name }}"
+                        <input type="text" class="form-control" name="emp_name" id="empname" value="{{ $user->name }}"
                             placeholder="Enter Employee Name" readonly required>
                     </div>
                     {{-- <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
@@ -51,12 +56,8 @@
                         <input type="date" class="form-control" pattern="\d{4}-\d{2}-\d{2}" min="1000-01-01"
                             max="9999-12-31" name="res_date" id="resigndate" required>
                     </div>
-                    @php
-                        $user = auth()->user();
-                        $role = $user->role_id;
 
-                    @endphp
-                   @if(hasAccess($role,'employee'))
+
                         <div class="col-sm-12 col-md-4 col-xl-4 mb-3 inputs">
                             <label for="reqtype">Request To <span>*</span></label>
                             <select class="form-select" name="request_to" id="" required>
@@ -65,41 +66,22 @@
                                 @endforeach
                             </select>
                         </div>
-                    @endif
+
                 </div>
             </div>
 
             <div class="col-sm-12 col-md-12 col-xl-12 mt-3 d-flex justify-content-center align-items-center">
-                <button type="submit" class="formbtn">Request</button>
+                <button type="submit" id="sub" class="formbtn">Request</button>
             </div>
         </form>
     </div>
 
-    <script>
-        $(document).ready(function () {
-            // $.ajax({
-            //     url: '{{ route('get_emp_name') }}',
-            //     type: 'POST',
-            //     data: {
-            //         _token: '{{ csrf_token() }}'
-            //     },
-            //     success: function (data) {
-            //         console.log(data);
-            //         if (data) {
-            //             $('#empname').val(data.name);
-            //             $('#empcode').append(
-            //                 `<option value="${data.id}" selected>${data.emp_code}</option>`);
-            //             $('#empname').val(data.name);
-            //             $('#store').append(
-            //                 `<option value="${data.store_id}" selected>${data.store_code} - ${data.store_name}</option>`
-            //             );
+    <script src="{{ asset('assets/js/form_script.js') }}"></script>
 
-            //         }
-            //     },
-            //     error: function () {
-            //         alert('Failed to fetch store details.');
-            //     }
-            // });
+    {{-- <script>
+        $('#c_form').submit(function(e) {
+            // e.preventDefault();
+            $('#sub').prop('disabled', true).text('Saving...');
         });
-    </script>
+    </script> --}}
 @endsection

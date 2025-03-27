@@ -465,25 +465,27 @@
             <li class="mb-3">
                 @php
                     $user_check = Auth::user()->id;
-                    $attd = DB::table('attendance')->where('user_id', $user_check)->whereDate('c_on', date('Y-m-d'))->count();
+                     $attd = DB::table('attendance')->where('user_id', $user_check)->whereDate('c_on', date('Y-m-d'))->select(DB::raw('count(*) as count'), 'out_add')->first();
                 @endphp
 
-                @if($attd == 0)
+                @if($attd->count == 0)
                     <a onclick="getLocation()">
-                        <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
+                        <button class="btn0 mx-auto btn-toggle collapsed attd" aria-expanded="false">
                             <div class="btnname">
                                 <i class="fa-solid fa-right-to-bracket" style="color: green;"></i> &nbsp;CheckIn
                             </div>
                         </button>
                     </a>
                 @else
+                    @if(is_null($attd->out_add))
                     <a onclick="getLocation()">
-                        <button class="btn0 mx-auto btn-toggle collapsed" aria-expanded="false">
+                        <button class="btn0 mx-auto btn-toggle collapsed attd" aria-expanded="false">
                             <div class="btnname">
                                 <i class="fa-solid fa-right-to-bracket" style="color: red;"></i> &nbsp;CheckOut
                             </div>
                         </button>
                     </a>
+                    @endif
                 @endif
             </li>
 
@@ -826,6 +828,7 @@
 <script>
     function getLocation() {
 
+                $('.attd').hide();
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -845,10 +848,33 @@
                         _token: '{{ csrf_token() }}' // CSRF token for security
                     },
                     success: function (data) {
-                        // Process and display the location data
-                        // if (data.attd_status=='Success') {
-                        //  alert('Status: ' + data.attd_status);
-                        window.location.reload();
+
+                        if (data.status == 'success') {
+                                // Store the status and message in the session via JavaScript
+                                @if (Session::has('status') && Session::has('message'))
+
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: 'top-end',
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.addEventListener('mouseenter', Swal.stopTimer);
+                                            toast.addEventListener('mouseleave', Swal.resumeTimer);
+                                        },
+                                        customClass: {
+                                            title: 'toast-title'
+                                        }
+                                    });
+
+                                    Toast.fire({
+                                        icon: "{{ Session::get('status') }}",
+                                        title: "{{ Session::get('message') }}",
+                                    })
+                                @endif
+                            }
+                          window.location.reload();
 
 
                     },

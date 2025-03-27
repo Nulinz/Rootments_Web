@@ -69,7 +69,7 @@
                 <!--    </div>-->
                 <!--</div>-->
                 <div class="table-wrapper">
-                    <form action="{{route('payroll.insert')}}" method="POST" id="my_form">
+                    <form action="{{route('payroll.insert')}}" method="POST" id="c_form">
                         @csrf
                         <input type="hidden" class="form-control" name="month" id="" value="{{$post_mon}}">
                         <input type="hidden" class="form-control" name="store" id="" value="{{$post_store}}">
@@ -131,13 +131,15 @@
                             </tbody>
                         </table>
                         <div class="col-sm-12 col-md-12 col-xl-12 mt-3 d-flex justify-content-center align-items-center">
-                            <button type="submit" class="formbtn">Save</button>
+                            <button type="submit" id="sub" class="formbtn">Save</button>
                         </div>
                     </form>
                 </div>
             </div>
         @endif
     </div>
+
+    <script src="{{ asset('assets/js/form_script.js') }}"></script>
 
     <script>
         $('#dept').on('change', function () {

@@ -19,9 +19,7 @@
                     <button class="profiletabs" data-url="{{ route('subcategory') }}" type="button">Sub Category</button>
                 </li>
                 @endif
-                <!-- <li class="nav-item" role="presentation">
-                    <button class="profiletabs" data-url="{{ route('roles') }}" type="button">Role</button>
-                </li> -->
+
                 <li class="nav-item" role="presentation">
                     <button class="profiletabs @if(!(hasAccess($role,'cat/sub'))){{'active'}}@endif" data-url="{{ route('password') }}" type="button">Password</button>
                 </li>

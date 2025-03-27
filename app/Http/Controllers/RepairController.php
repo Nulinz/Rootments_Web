@@ -107,11 +107,11 @@ class RepairController extends Controller
         ->select('maintain_req.*','users.name','categories.category','sub_categories.subcategory','maintain_req.status as m_status')
         ->get();
 
-        if($ins){
-            return response()->view('repair.list',['rep'=> $rep,'status'=>'success','message'=>'Maintenance Request added Successfully']);
-        }else{
-            return response()->view('repair.list',['rep'=> $rep,'status'=>'Failed','message'=>'Maintenance Request Failed to add']);
-        }
+        return redirect()->route('repair.index')->with([
+            'status' => $ins ? 'success' : 'failed',
+            'message' => $ins ? 'Maintenance Request Added successfully!' : 'Maintenance Request Failed to Add!'
+        ]);
+
 
     }
 
