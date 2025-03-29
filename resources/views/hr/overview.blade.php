@@ -46,23 +46,23 @@
                                             </td>
 
                                             <td>@if(!is_null($data->in_time))
-                                                    {{ date("h:i", strtotime($data->in_time)) }}
-                                                @endif
+                                                {{ date("h:i", strtotime($data->in_time)) }}
+                                            @endif
                                             </td>
                                             <td>@if(!is_null($data->out_time))
-                                                    {{ date("h:i", strtotime($data->out_time)) }}
-                                                @endif
+                                                {{ date("h:i", strtotime($data->out_time)) }}
+                                            @endif
                                             </td>
                                             <td>
                                                 @if ($data->status == 'approved')
-                                                    <button class="" data-bs-toggle="tooltip"
-                                                        data-id="{{ $data->user_id }}" data-bs-title="Approved"><i
+                                                    <button class="" data-bs-toggle="tooltip" data-id="{{ $data->user_id }}"
+                                                        data-bs-title="Approved"><i
                                                             class="text-success fa-circle-check fas"></i></button>
                                                 @else
                                                     @if(!empty($data->in_time))
-                                                    <button class="approve-attendance" data-bs-toggle="tooltip"
-                                                        data-id="{{ $data->user_id }}" data-bs-title="Not Approved"><i
-                                                            class="text-warning fa-circle-check fas"></i></button>
+                                                        <button class="approve-attendance" data-bs-toggle="tooltip"
+                                                            data-id="{{ $data->user_id }}" data-bs-title="Not Approved"><i
+                                                                class="text-warning fa-circle-check fas"></i></button>
                                                     @endif
                                                 @endif
                                             </td>
@@ -152,7 +152,8 @@
                                             <td>
                                                 <div class="d-flex align-items-center justify-content-start gap-2">
                                                     {{-- @if ($hr->profile_image) --}}
-                                                        <img src="{{ asset($hr->profile_image ?? 'assets/images/avatar.png') }}" alt="">
+                                                    <img src="{{ asset($hr->profile_image ?? 'assets/images/avatar.png') }}"
+                                                        alt="">
                                                     {{-- @endif --}}
                                                     <div>
                                                         <h5 class="mb-0">{{ $hr->name }}</h5>
@@ -162,24 +163,24 @@
                                             </td>
 
                                             <td>@if(!is_null($hr->in_time))
-                                                    {{ date("h:i", strtotime($hr->in_time)) }}
-                                                @endif
+                                                {{ date("h:i", strtotime($hr->in_time)) }}
+                                            @endif
                                             </td>
                                             <td>@if(!is_null($hr->out_time))
-                                                    {{ date("h:i", strtotime($hr->out_time)) }}
-                                                @endif
+                                                {{ date("h:i", strtotime($hr->out_time)) }}
+                                            @endif
                                             </td>
                                             <td>
                                                 @if ($hr->status == 'approved')
-                                                    <button class="" data-bs-toggle="tooltip"
-                                                        data-id="{{ $hr->user_id }}" data-bs-title="Approved"><i
+                                                    <button class="" data-bs-toggle="tooltip" data-id="{{ $hr->user_id }}"
+                                                        data-bs-title="Approved"><i
                                                             class="text-success fa-circle-check fas"></i></button>
                                                 @else
-                                                     @if(!empty($hr->in_time))
+                                                    @if(!empty($hr->in_time))
 
-                                                    <button class="approve-attendance1" data-bs-toggle="tooltip"
-                                                        data-id="{{ $hr->user_id }}" data-bs-title="Not Approved"><i
-                                                            class="text-warning fa-circle-check fas"></i></button>
+                                                        <button class="approve-attendance1" data-bs-toggle="tooltip"
+                                                            data-id="{{ $hr->user_id }}" data-bs-title="Not Approved"><i
+                                                                class="text-warning fa-circle-check fas"></i></button>
                                                     @endif
                                                 @endif
                                             </td>
@@ -210,7 +211,8 @@
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center justify-content-start gap-2">
-                                                        <img src="{{ asset($ab->profile_image ?? 'assets/images/avatar.png') }}" alt="">
+                                                    <img src="{{ asset($ab->profile_image ?? 'assets/images/avatar.png') }}"
+                                                        alt="">
                                                     <div>
                                                         <h5 class="mb-0">{{ $ab->name }}</h5>
                                                         <h6 class="mb-0">{{ $ab->role_dept }}</h6>
@@ -223,6 +225,48 @@
 
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-xl-4 cards mb-3">
+                    <div class="cardsdiv">
+                        <div class="cardshead">
+                            <h6 class="card1h6 mb-2">Storewise Absent List</h6>
+                        </div>
+                        <div class="accordion" id="accordion1">
+                            <div class="accordion-item border-0">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button rounded-0 collapsed p-2" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false"
+                                        aria-controls="collapse1">
+                                        STR01 - Suitor's Guy Edappally
+                                    </button>
+                                </h2>
+                                <div id="collapse1" class="accordion-collapse collapse" data-bs-parent="#accordion1">
+                                    <div class="accordion-body p-2">
+                                        <div class="cardtable">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <div
+                                                                class="d-flex align-items-center justify-content-start gap-2">
+                                                                <img src="{{ asset('assets/images/avatar.png') }}" alt="">
+                                                                <div>
+                                                                    <h5 class="mb-0">Revathi</h5>
+                                                                    <h6 class="mb-0">HR</h6>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>Manager</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -304,30 +348,30 @@
         });
 
 
-        $('.approve-attendance1').on("click",function () {
-                let userId = $(this).data("id");
+        $('.approve-attendance1').on("click", function () {
+            let userId = $(this).data("id");
 
-                console.log(userId);
-                $.ajax({
-                    url: "{{ route('attendance.approve') }}",
-                    type: "POST",
-                    data: {
-                        user_id: userId,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            alert("Attendance Approved!");
-                            location.reload();
-                        } else {
-                            alert("Something went wrong!");
-                        }
-                    },
-                    error: function () {
-                        alert("Error occurred!");
+            console.log(userId);
+            $.ajax({
+                url: "{{ route('attendance.approve') }}",
+                type: "POST",
+                data: {
+                    user_id: userId,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert("Attendance Approved!");
+                        location.reload();
+                    } else {
+                        alert("Something went wrong!");
                     }
-                });
+                },
+                error: function () {
+                    alert("Error occurred!");
+                }
             });
+        });
 
     </script>
 @endsection
